@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.37956081081081,
-        "y": 1.9399493243243238
+        "x": 2.4210304054054053,
+        "y": 4.202871621621622
       },
       "isLocked": false,
       "linkedName": "lowstation"
@@ -20,8 +20,8 @@
         "y": 5.467736486486485
       },
       "prevControl": {
-        "x": 1.9368243243243244,
-        "y": 6.900591216216216
+        "x": 3.6068412162162162,
+        "y": 6.5942567567567565
       },
       "nextControl": null,
       "isLocked": false,
@@ -33,8 +33,8 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 2.0,
-    "maxAcceleration": 0.5,
+    "maxVelocity": 5.0,
+    "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
@@ -48,7 +48,7 @@
   "folder": "lowstation_to_place",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -124.46081627137178
+    "rotation": 56.15465973892833
   },
   "useDefaultConstraints": true
 }
