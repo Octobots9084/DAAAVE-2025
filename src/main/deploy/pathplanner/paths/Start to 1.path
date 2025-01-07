@@ -58,10 +58,10 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.8069294551023309
+    "rotation": 0.806929455102331
   },
   "reversed": false,
-  "folder": "Algea Start",
+  "folder": "start_to_algea",
   "idealStartingState": {
     "velocity": 0,
     "rotation": 0.10968808610712538

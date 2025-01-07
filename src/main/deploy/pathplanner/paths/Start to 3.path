@@ -45,10 +45,10 @@
     "rotation": -118.88658176691074
   },
   "reversed": false,
-  "folder": "Algea Start",
+  "folder": "start_to_algea",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -89.19307054489761
+    "rotation": -89.19307054489762
   },
   "useDefaultConstraints": true
 }

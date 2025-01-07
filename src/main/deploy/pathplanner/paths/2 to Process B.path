@@ -25,7 +25,7 @@
       },
       "nextControl": {
         "x": 6.4527423441283105,
-        "y": 2.6988781353284588
+        "y": 2.6988781353284583
       },
       "isLocked": false,
       "linkedName": null
@@ -58,10 +58,10 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -92.43664824681001
+    "rotation": -92.43664824681002
   },
   "reversed": false,
-  "folder": "Algea Processor",
+  "folder": "algea_to_processor",
   "idealStartingState": {
     "velocity": 0,
     "rotation": -60.33328479305356
