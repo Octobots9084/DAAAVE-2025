@@ -21,7 +21,7 @@
       },
       "prevControl": {
         "x": 5.903,
-        "y": 0.4857499999999993
+        "y": 0.4857499999999994
       },
       "nextControl": null,
       "isLocked": false,
@@ -45,7 +45,7 @@
     "rotation": -90.81845546168857
   },
   "reversed": false,
-  "folder": "Algea Processor",
+  "folder": "algea_to_processor",
   "idealStartingState": {
     "velocity": 0,
     "rotation": 1.0230301886678272

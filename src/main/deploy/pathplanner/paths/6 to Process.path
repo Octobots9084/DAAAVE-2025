@@ -45,7 +45,7 @@
     "rotation": -90.78482460299185
   },
   "reversed": false,
-  "folder": "Algea Processor",
+  "folder": "algea_to_processor",
   "idealStartingState": {
     "velocity": 0,
     "rotation": 59.40002130679107
