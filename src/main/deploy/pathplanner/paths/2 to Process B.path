@@ -1,0 +1,70 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 3.6855,
+        "y": 5.41925
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 5.17725,
+        "y": 6.1114999999999995
+      },
+      "isLocked": false,
+      "linkedName": "2"
+    },
+    {
+      "anchor": {
+        "x": 6.054749999999999,
+        "y": 4.161499999999999
+      },
+      "prevControl": {
+        "x": 5.664749999999999,
+        "y": 5.59475
+      },
+      "nextControl": {
+        "x": 6.4527423441283105,
+        "y": 2.6988781353284588
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 6.903,
+        "y": 0.4857499999999993
+      },
+      "prevControl": {
+        "x": 6.522750000000001,
+        "y": 2.1725
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "Processor"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": -92.43664824681001
+  },
+  "reversed": false,
+  "folder": "Algea Processor",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": -60.33328479305356
+  },
+  "useDefaultConstraints": true
+}
