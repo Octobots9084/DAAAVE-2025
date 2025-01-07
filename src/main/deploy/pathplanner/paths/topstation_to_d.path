@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.5593749999999997,
-        "y": 7.068581081081081
+        "x": 2.0142995155037324,
+        "y": 6.383868673606709
       },
       "isLocked": false,
       "linkedName": "topstation"
@@ -20,8 +20,8 @@
         "y": 2.5624999999999987
       },
       "prevControl": {
-        "x": 2.3518581081081082,
-        "y": 2.414273648648649
+        "x": 2.7254003761763768,
+        "y": 3.024090457499635
       },
       "nextControl": null,
       "isLocked": false,
@@ -48,7 +48,7 @@
   "folder": "topstation_to_place",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 126.86989764584403
+    "rotation": -52.78964006550805
   },
   "useDefaultConstraints": true
 }
