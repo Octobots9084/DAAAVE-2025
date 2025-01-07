@@ -1,5 +1,3 @@
 package frc.robot.Subsystems.CoralIntake;
 
-public class CoralIntake {
-    
-}
+public class CoralIntake {}
