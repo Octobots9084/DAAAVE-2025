@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.5574324324324325,
-        "y": 5.299746621621621
+        "x": 2.8567499999999995,
+        "y": 4.03475
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.9842281005100835,
-        "y": 4.777637009771745
+        "x": 2.27175,
+        "y": 2.4065
       },
       "isLocked": false,
-      "linkedName": "l"
+      "linkedName": "1"
     },
     {
       "anchor": {
-        "x": 1.264864864864865,
-        "y": 1.0703547297297291
+        "x": 6.903,
+        "y": 0.4857499999999993
       },
       "prevControl": {
-        "x": 2.7389373268373784,
-        "y": 2.887492624575871
+        "x": 5.903,
+        "y": 0.4857499999999993
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "lowstation"
+      "linkedName": "Processor"
     }
   ],
   "rotationTargets": [],
@@ -33,7 +33,7 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 5.0,
+    "maxVelocity": 3.0,
     "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
@@ -42,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 52.92386348975296
+    "rotation": -90.81845546168857
   },
   "reversed": false,
-  "folder": "place_to_lowstation",
+  "folder": "Algea Processor",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -60.8025139539355
+    "rotation": 1.0230301886678272
   },
   "useDefaultConstraints": true
 }

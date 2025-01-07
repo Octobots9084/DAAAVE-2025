@@ -3,29 +3,45 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.5574324324324325,
-        "y": 5.299746621621621
+        "x": 8.02425,
+        "y": 5.90675
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.9842281005100835,
-        "y": 4.777637009771745
+        "x": 7.0395,
+        "y": 5.86775
       },
       "isLocked": false,
-      "linkedName": "l"
+      "linkedName": null
     },
     {
       "anchor": {
-        "x": 1.264864864864865,
-        "y": 1.0703547297297291
+        "x": 3.4125,
+        "y": 5.41925
       },
       "prevControl": {
-        "x": 2.7389373268373784,
-        "y": 2.887492624575871
+        "x": 4.42497262819773,
+        "y": 6.055661366295719
+      },
+      "nextControl": {
+        "x": 3.07125,
+        "y": 5.204749999999999
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 2.8567499999999995,
+        "y": 4.03475
+      },
+      "prevControl": {
+        "x": 2.8326130970243844,
+        "y": 4.70068213956256
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "lowstation"
+      "linkedName": "1"
     }
   ],
   "rotationTargets": [],
@@ -33,7 +49,7 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 5.0,
+    "maxVelocity": 3.0,
     "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
@@ -42,13 +58,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 52.92386348975296
+    "rotation": 0.8069294551023309
   },
   "reversed": false,
-  "folder": "place_to_lowstation",
+  "folder": "Algea Start",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -60.8025139539355
+    "rotation": 0.10968808610712538
   },
   "useDefaultConstraints": true
 }

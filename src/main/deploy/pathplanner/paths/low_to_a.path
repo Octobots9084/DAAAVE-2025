@@ -48,7 +48,7 @@
   "folder": "low_to_place_ignore",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": -178.124667712621
   },
   "useDefaultConstraints": true
 }

@@ -8,8 +8,13 @@
       },
       "prevControl": null,
       "nextControl": {
+<<<<<<< HEAD
         "x": 2.262922297297297,
         "y": 2.6810810810810803
+=======
+        "x": 3.3795608108108093,
+        "y": 1.9399493243243233
+>>>>>>> c3410d15446ce22fc2b4dca996058c9b6e7cd701
       },
       "isLocked": false,
       "linkedName": "lowstation"
