@@ -1,0 +1,70 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 8.02425,
+        "y": 5.90675
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 7.0395,
+        "y": 5.86775
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 3.4125,
+        "y": 5.41925
+      },
+      "prevControl": {
+        "x": 4.42497262819773,
+        "y": 6.055661366295719
+      },
+      "nextControl": {
+        "x": 3.07125,
+        "y": 5.204749999999999
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 2.8567499999999995,
+        "y": 4.03475
+      },
+      "prevControl": {
+        "x": 2.8326130970243844,
+        "y": 4.70068213956256
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "1"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 0.8069294551023309
+  },
+  "reversed": false,
+  "folder": "Algea Start",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 0.10968808610712538
+  },
+  "useDefaultConstraints": true
+}
