@@ -3,48 +3,49 @@
   "robotLength": 0.7874,
   "holonomicMode": true,
   "pathFolders": [
+<<<<<<< HEAD
     "algea_to_processor",
+=======
+>>>>>>> c0443fa9ab2baed95db3835957e9eba43e1b530c
     "Old",
     "initial_to_collect",
     "initial_to_place",
-    "low_to_place",
+    "low_to_place_ignore",
     "lowstation_to_place",
+<<<<<<< HEAD
     "mid_to_place",
     "place_to_low",
+=======
+    "mid_to_place_ignore",
+    "place_to_low_ignore",
+>>>>>>> c0443fa9ab2baed95db3835957e9eba43e1b530c
     "place_to_lowstation",
-    "place_to_mid",
-    "place_to_top",
+    "place_to_mid_ignore",
+    "place_to_top_ignore",
     "place_to_topstation",
+<<<<<<< HEAD
     "start_to_algea",
     "top_to_place",
+=======
+    "top_to_place_ignore",
+>>>>>>> c0443fa9ab2baed95db3835957e9eba43e1b530c
     "topstation_to_place"
   ],
   "autoFolders": [
     "Old"
   ],
-  "defaultMaxVel": 2.0,
-  "defaultMaxAccel": 0.5,
+  "defaultMaxVel": 5.0,
+  "defaultMaxAccel": 3.0,
   "defaultMaxAngVel": 540.0,
   "defaultMaxAngAccel": 720.0,
-  "defaultNominalVoltage": 12.0,
   "robotMass": 22.6796,
   "robotMOI": 0.103228,
+  "robotWheelbase": 0.546,
   "robotTrackwidth": 0.61,
   "driveWheelRadius": 0.0381,
   "driveGearing": 3.6363,
   "maxDriveSpeed": 6.0,
   "driveMotorType": "krakenX60",
   "driveCurrentLimit": 60.0,
-  "wheelCOF": 2.4,
-  "flModuleX": 0.273,
-  "flModuleY": 0.273,
-  "frModuleX": 0.273,
-  "frModuleY": -0.273,
-  "blModuleX": -0.273,
-  "blModuleY": 0.273,
-  "brModuleX": -0.273,
-  "brModuleY": -0.273,
-  "bumperOffsetX": 0.0,
-  "bumperOffsetY": 0.0,
-  "robotFeatures": []
+  "wheelCOF": 2.4
 }
