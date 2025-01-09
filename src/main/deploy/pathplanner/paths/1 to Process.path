@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.27175,
-        "y": 2.4065
+        "x": 2.592613636363636,
+        "y": 2.3148721590909087
       },
       "isLocked": false,
       "linkedName": "1"
@@ -20,8 +20,8 @@
         "y": 0.4857499999999993
       },
       "prevControl": {
-        "x": 5.903,
-        "y": 0.4857499999999994
+        "x": 5.464305766321807,
+        "y": 0.3783694601156114
       },
       "nextControl": null,
       "isLocked": false,
@@ -33,8 +33,8 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 3.0,
-    "maxAcceleration": 3.0,
+    "maxVelocity": 9.81,
+    "maxAcceleration": 7.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
@@ -42,7 +42,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -90.81845546168857
+    "rotation": -0.7779300303205546
   },
   "reversed": false,
   "folder": "algea_to_processor",

@@ -3,16 +3,16 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.6464999999999996,
-        "y": 2.669749999999999
+        "x": 5.425084459459459,
+        "y": 2.7304898648648646
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.6995000000000005,
-        "y": 1.9189999999999998
+        "x": 6.201702098800261,
+        "y": 1.2124873571389467
       },
       "isLocked": false,
-      "linkedName": "6"
+      "linkedName": "f"
     },
     {
       "anchor": {
@@ -20,8 +20,8 @@
         "y": 0.4857499999999993
       },
       "prevControl": {
-        "x": 5.62575,
-        "y": 1.28525
+        "x": 7.014624129795372,
+        "y": 1.267421224803766
       },
       "nextControl": null,
       "isLocked": false,
@@ -33,8 +33,8 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 3.0,
-    "maxAcceleration": 3.0,
+    "maxVelocity": 9.81,
+    "maxAcceleration": 7.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
@@ -42,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -90.78482460299185
+    "rotation": -90.0
   },
   "reversed": false,
   "folder": "algea_to_processor",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 59.40002130679107
+    "rotation": 120.28492834940225
   },
   "useDefaultConstraints": true
 }

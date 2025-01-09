@@ -1,0 +1,54 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 5.158277027027027,
+        "y": 2.5427364864864863
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 5.842300852327666,
+        "y": 1.1027934783316846
+      },
+      "isLocked": false,
+      "linkedName": "e"
+    },
+    {
+      "anchor": {
+        "x": 6.903,
+        "y": 0.4857499999999993
+      },
+      "prevControl": {
+        "x": 6.967210414322488,
+        "y": 1.3232993037869665
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "Processor"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 9.81,
+    "maxAcceleration": 7.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": -90.35069664266454
+  },
+  "reversed": false,
+  "folder": "algea_to_processor",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 120.28492834940225
+  },
+  "useDefaultConstraints": true
+}
