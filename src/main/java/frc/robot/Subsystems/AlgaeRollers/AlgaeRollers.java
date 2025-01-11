@@ -1,26 +1,23 @@
 package frc.robot.Subsystems.AlgaeRollers;
 
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import org.littletonrobotics.junction.Logger;
 
 public class AlgaeRollers extends SubsystemBase {
-    private final AlgaeRollersIOSparkMax io;
+    private final AlgaeRollersIOSystems io;
     private final AlgaeRollersIOInputsAutoLogged inputs = new AlgaeRollersIOInputsAutoLogged();
-
-    private static AlgaeRollers instance;
-
-    public static void setInstance(AlgaeRollers subsystem) {
-        AlgaeRollers.instance = subsystem;
-    }
-
+    private static AlgaeRollers instance = null;
+    
     public static AlgaeRollers getInstance() {
+        if (instance == null) {
+            instance = new AlgaeRollers(new AlgaeRollersIOSystems());
+        }
         return instance;
     }
-    /** Creates a new Flywheel. */
-    public AlgaeRollers(AlgaeRollersIOSparkMax io) {
+    
+    public AlgaeRollers(AlgaeRollersIOSystems io) {
         this.io = io;
-        io.configurePID(8, 0, 0);
     }
 
     @Override
@@ -32,7 +29,6 @@ public class AlgaeRollers extends SubsystemBase {
     /** Run closed loop at the specified velocity. */
     public void setState(AlgaeRollersStates state) {
         io.setVoltage(state.voltage);
-
         Logger.recordOutput("AlgaeRollers/State", state);
     }
 

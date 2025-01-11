@@ -2,8 +2,8 @@ package frc.robot.Subsystems.AlgaeRollers;
 
 public enum AlgaeRollersStates {
     // TODO change volt values
-    INTAKE(0),
-    OUTPUT(0),
+    INTAKE(1),
+    OUTPUT(-1),
     OFF(0);
 
     public double voltage;
