@@ -15,12 +15,15 @@ public class Wrist extends SubsystemBase {
   }
 
   public static Wrist getInstance() {
+    if (instance == null) {
+      instance = new Wrist();
+    }
     return instance;
   }
 
   /** Creates a new Flywheel. */
-  public Wrist(WristIOSparkMax io) {
-    this.io = io;
+  public Wrist() {
+    this.io = new WristIOSparkMax();
     io.configurePID(8, 0, 0);
   }
 
@@ -32,15 +35,11 @@ public class Wrist extends SubsystemBase {
 
   /** Run closed loop at the specified velocity. */
   public void setState(WristStates state) {
-    io.setPosition(state.wristPosition);
+    io.setState(state);
     Logger.recordOutput("Wrist/State", state);
   }
 
   public boolean isAtState(WristStates state, double tolerance) {
     return MathUtil.isNear(this.inputs.wristPositionRotations, state.wristPosition, tolerance);
-  }
-
-  public void setPosition(double target) {
-    io.setPosition(target);
   }
 }

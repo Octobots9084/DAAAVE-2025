@@ -9,15 +9,16 @@ import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
 public class WristIOSparkMax implements WristIO {
-  private final SparkMax wristMotor =
-      new SparkMax(1 /* motor id to be changed */, MotorType.kBrushless);
+  // TODO - motor id to be changed
+  private final SparkMax wristMotor = new SparkMax(1, MotorType.kBrushless);
   // private double feedForward = 0;
 
   private SparkMaxConfig config;
 
   public WristIOSparkMax() {
     config = new SparkMaxConfig();
-    config.inverted(false).idleMode(IdleMode.kBrake);
+    config.inverted(false);
+    config.idleMode(IdleMode.kBrake);
     config.signals.primaryEncoderPositionAlwaysOn(true);
     config.signals.primaryEncoderPositionPeriodMs(10);
     config.voltageCompensation(0);
@@ -46,9 +47,9 @@ public class WristIOSparkMax implements WristIO {
   }
 
   @Override
-  public void setPosition(double wristPosition) {
+  public void setState(WristStates state) {
     wristMotor
         .getClosedLoopController()
-        .setReference(wristPosition, ControlType.kPosition, null, 0);
+        .setReference(state.wristPosition, ControlType.kPosition, null, 0);
   }
 }

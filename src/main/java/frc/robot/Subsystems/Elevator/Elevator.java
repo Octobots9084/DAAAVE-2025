@@ -15,11 +15,15 @@ public class Elevator extends SubsystemBase {
   }
 
   public static Elevator getInstance() {
+    if (instance == null) {
+      instance = new Elevator();
+    }
     return instance;
   }
+
   /** Creates a new Elevator. */
-  public Elevator(ElevatorIOSparkMax io) {
-    this.io = io;
+  public Elevator() {
+    this.io = new ElevatorIOSparkMax();
     io.configurePID(8, 0, 0);
   }
 
@@ -38,6 +42,6 @@ public class Elevator extends SubsystemBase {
 
   public boolean isAtState(ElevatorStates state, double tolerance) {
     return MathUtil.isNear(this.inputs.leftPositionRotations, state.leftPosition, tolerance)
-        && MathUtil.isNear(this.inputs.rightPositionRotations, state.rightPosition, tolerance);
+        || MathUtil.isNear(this.inputs.rightPositionRotations, state.rightPosition, tolerance);
   }
 }

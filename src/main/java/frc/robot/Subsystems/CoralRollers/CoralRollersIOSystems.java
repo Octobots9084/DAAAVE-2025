@@ -17,7 +17,8 @@ public class CoralRollersIOSystems implements CoralRollersIO {
 
   public CoralRollersIOSystems() {
     config = new SparkMaxConfig();
-    config.inverted(false).idleMode(IdleMode.kBrake);
+    config.inverted(false);
+    config.idleMode(IdleMode.kBrake);
     config.smartCurrentLimit(30, 60);
     motor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     motor.setPeriodicFrameTimeout(30);
@@ -27,12 +28,12 @@ public class CoralRollersIOSystems implements CoralRollersIO {
 
   @Override
   public void updateInputs(CoralRollersIOInputs inputs) {
-    inputs.VelocityRPM = motor.getEncoder().getVelocity();
-    inputs.AppliedVolts = motor.getAppliedOutput() * motor.getBusVoltage();
-    inputs.CurrentAmps = motor.getOutputCurrent();
+    inputs.velocityRPM = motor.getEncoder().getVelocity();
+    inputs.appliedVolts = motor.getAppliedOutput() * motor.getBusVoltage();
+    inputs.currentAmps = motor.getOutputCurrent();
     // TODO change 100
-    inputs.mouthBeam = mouthBeam.getValue() > 100;
-    inputs.rearBeam = rearBeam.getValue() > 100;
+    inputs.isIntaking = mouthBeam.getValue() > 100;
+    inputs.hasCoral = rearBeam.getValue() > 100;
   }
 
   @Override
@@ -42,5 +43,18 @@ public class CoralRollersIOSystems implements CoralRollersIO {
 
   public void getVoltage(double voltage) {
     motor.getBusVoltage();
+  }
+
+  // TODO - Actually change these values
+  public boolean isIntaking() {
+    return this.mouthBeam.getValue() > 100;
+  }
+
+  public boolean hasCoral() {
+    return this.rearBeam.getValue() > 100;
+  }
+
+  public SparkMax getMotor() {
+    return motor;
   }
 }

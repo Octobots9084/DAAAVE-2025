@@ -10,13 +10,13 @@ public class CoralRollers extends SubsystemBase {
 
   public static CoralRollers getInstance() {
     if (instance == null) {
-      instance = new CoralRollers(new CoralRollersIOSystems());
+      instance = new CoralRollers();
     }
     return instance;
   }
 
-  public CoralRollers(CoralRollersIOSystems io) {
-    this.io = io;
+  public CoralRollers() {
+    this.io = new CoralRollersIOSystems();
   }
 
   @Override
@@ -27,5 +27,13 @@ public class CoralRollers extends SubsystemBase {
 
   public void setState(CoralRollersState state) {
     io.setVoltage(state.voltage);
+  }
+
+  public boolean isIntaking() {
+    return this.io.isIntaking();
+  }
+
+  public boolean hasCoral() {
+    return this.io.hasCoral();
   }
 }

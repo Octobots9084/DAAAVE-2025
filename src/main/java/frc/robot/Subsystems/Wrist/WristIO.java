@@ -14,7 +14,7 @@ public interface WristIO {
   /** Updates the set of loggable inputs. */
   public default void updateInputs(WristIOInputs inputs) {}
 
-  public default void setPosition(double wristPosition) {}
+  public default void setState(WristStates state) {}
 
   /** Set velocity PID constants. */
   public default void configurePID(double kP, double kI, double kD) {}

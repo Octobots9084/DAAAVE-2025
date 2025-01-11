@@ -21,7 +21,8 @@ public class ElevatorIOSparkMax implements ElevatorIO {
 
   public ElevatorIOSparkMax() {
     leftConfig = new SparkMaxConfig();
-    leftConfig.inverted(false).idleMode(IdleMode.kBrake);
+    leftConfig.inverted(false);
+    leftConfig.idleMode(IdleMode.kBrake);
     leftConfig.signals.primaryEncoderPositionAlwaysOn(true);
     leftConfig.signals.primaryEncoderPositionPeriodMs(10);
     leftConfig.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder);
@@ -36,7 +37,8 @@ public class ElevatorIOSparkMax implements ElevatorIO {
     leftMotor.setCANMaxRetries(5);
 
     rightConfig = new SparkMaxConfig();
-    rightConfig.inverted(false).idleMode(IdleMode.kBrake);
+    rightConfig.inverted(false);
+    rightConfig.idleMode(IdleMode.kBrake);
     rightConfig.signals.primaryEncoderPositionAlwaysOn(true);
     rightConfig.signals.primaryEncoderPositionPeriodMs(10);
     rightConfig.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder);

@@ -17,10 +17,11 @@ public class AlgaeRollersIOSystems implements AlgaeRollersIO {
 
   public AlgaeRollersIOSystems() {
     config = new SparkMaxConfig();
-    config.inverted(false).idleMode(IdleMode.kBrake);
+    config.inverted(false);
+    config.idleMode(IdleMode.kBrake);
     config.signals.primaryEncoderPositionAlwaysOn(true);
     config.signals.primaryEncoderPositionPeriodMs(10);
-    config.voltageCompensation(11);
+    config.voltageCompensation(11); // TODO: Voltage comp on rollers?
     config.smartCurrentLimit(30, 60);
     motor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     motor.setPeriodicFrameTimeout(30);
@@ -34,7 +35,7 @@ public class AlgaeRollersIOSystems implements AlgaeRollersIO {
     inputs.appliedVolts = motor.getAppliedOutput() * motor.getBusVoltage();
     inputs.currentAmps = motor.getOutputCurrent();
     // TODO: update value
-    inputs.beamValue = beamInput.getValue() < 100;
+    inputs.beamValue = beamInput.getValue() > 100;
   }
 
   @Override
@@ -48,5 +49,10 @@ public class AlgaeRollersIOSystems implements AlgaeRollersIO {
 
   public SparkMax getMotor() {
     return motor;
+  }
+
+  // TODO - Actually change these values
+  public boolean hasAlgae() {
+    return beamInput.getValue() > 100;
   }
 }

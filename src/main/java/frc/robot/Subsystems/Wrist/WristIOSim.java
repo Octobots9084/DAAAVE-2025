@@ -4,13 +4,12 @@ import com.revrobotics.sim.SparkRelativeEncoderSim;
 import edu.wpi.first.math.MathUtil;
 
 public class WristIOSim implements WristIO {
-
-  private double appliedVolts = 6;
+  WristIOSparkMax sparkMaxes = new WristIOSparkMax();
+  SparkRelativeEncoderSim wristSparkSim = new SparkRelativeEncoderSim(sparkMaxes.getWristMotor());
+  private double appliedVolts = 0;
 
   @Override
   public void updateInputs(WristIOInputs inputs) {
-    WristIOSparkMax sparkMaxes = new WristIOSparkMax();
-    SparkRelativeEncoderSim wristSparkSim = new SparkRelativeEncoderSim(sparkMaxes.getWristMotor());
 
     inputs.wristPositionRotations = wristSparkSim.getPosition();
     inputs.wristVelocityRPM = wristSparkSim.getVelocity();

@@ -11,13 +11,13 @@ public class AlgaeRollers extends SubsystemBase {
 
   public static AlgaeRollers getInstance() {
     if (instance == null) {
-      instance = new AlgaeRollers(new AlgaeRollersIOSystems());
+      instance = new AlgaeRollers();
     }
     return instance;
   }
 
-  public AlgaeRollers(AlgaeRollersIOSystems io) {
-    this.io = io;
+  public AlgaeRollers() {
+    this.io = new AlgaeRollersIOSystems();
   }
 
   @Override
