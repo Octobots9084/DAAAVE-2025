@@ -850,6 +850,14 @@ public class SwerveDrive {
     return states;
   }
 
+  public SwerveModuleState[] getDesiredStates() {
+    SwerveModuleState[] states = new SwerveModuleState[swerveDriveConfiguration.moduleCount];
+    for (SwerveModule module : swerveModules) {
+      states[module.moduleNumber] = module.getDesiredState();
+    }
+    return states;
+  }
+
   /**
    * Gets the current module positions (azimuth and wheel position (meters)).
    *

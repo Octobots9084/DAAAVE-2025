@@ -83,6 +83,8 @@ public class SwerveModule {
   private boolean antiJitterEnabled = true;
   /** Last swerve module state applied. */
   private SwerveModuleState lastState;
+
+  private SwerveModuleState desiredState;
   /** Angle offset from the absolute encoder. */
   private double angleOffset;
   /** Simulated swerve module. */
@@ -363,6 +365,7 @@ public class SwerveModule {
    */
   public void setDesiredState(SwerveModuleState desiredState, boolean isOpenLoop, boolean force) {
 
+    this.desiredState = desiredState;
     desiredState.optimize(Rotation2d.fromDegrees(getAbsolutePosition()));
 
     // If we are forcing the angle
@@ -493,6 +496,10 @@ public class SwerveModule {
       return simModule.getState();
     }
     return new SwerveModuleState(velocity, azimuth);
+  }
+
+  public SwerveModuleState getDesiredState() {
+    return desiredState;
   }
 
   /**

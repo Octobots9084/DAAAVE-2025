@@ -96,6 +96,14 @@ public class SwerveIOSystem implements SwerveIO {
     return swerveDrive.getStates();
   }
 
+  public SwerveModuleState[] getModuleDesiredStates() {
+    return swerveDrive.getDesiredStates();
+  }
+
+  public SwerveModuleState[] getSwerveModuleTargetStates() {
+    return swerveDrive.swerveModuleStates;
+  }
+
   public SwerveModulePosition[] getPositions() {
     return swerveDrive.getModulePositions();
   }
@@ -124,6 +132,10 @@ public class SwerveIOSystem implements SwerveIO {
     swerveDrive.addVisionMeasurement(robotPose, timestamp, visionMeasurementStdDevs);
   }
 
+  public SwerveDrive getSwerveDrive() {
+    return swerveDrive;
+  }
+
   @Override
   public void updateInputs(SwerveIOInputs inputs) {
     // TODO - Implement
@@ -131,5 +143,6 @@ public class SwerveIOSystem implements SwerveIO {
     inputs.speeds = this.getSpeeds();
 
     inputs.swerveModuleStates = this.getModuleStates();
+    inputs.swerveModuleDesiredStates = this.getModuleDesiredStates();
   }
 }

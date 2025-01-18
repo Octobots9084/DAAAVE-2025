@@ -12,6 +12,7 @@ public interface SwerveIO {
     public ChassisSpeeds speeds = new ChassisSpeeds();
     public ChassisSpeeds targetSpeeds = new ChassisSpeeds();
     public SwerveModuleState[] swerveModuleStates;
+    public SwerveModuleState[] swerveModuleDesiredStates;
   }
 
   /** Updates the set of loggable inputs. */

@@ -105,6 +105,10 @@ public class Swerve extends SubsystemBase {
     return this.io.getModuleStates();
   }
 
+  public SwerveModuleState[] getModuleDesiredStates() {
+    return this.io.getModuleDesiredStates();
+  }
+
   public SwerveModulePosition[] getPositions() {
     return this.io.getPositions();
   }
