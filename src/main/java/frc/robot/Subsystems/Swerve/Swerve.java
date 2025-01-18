@@ -12,119 +12,124 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import java.util.function.DoubleSupplier;
 import org.littletonrobotics.junction.Logger;
-import swervelib.SwerveDrive;
 
 /** Basic simulation of a swerve subsystem with the methods needed by PathPlanner */
 public class Swerve extends SubsystemBase {
-    SwerveIOSystem io;
-    private final SwerveIOInputsAutoLogged inputs = new SwerveIOInputsAutoLogged();
-    private static Swerve INSTANCE = null;
+  SwerveIOSystem io;
+  private final SwerveIOInputsAutoLogged inputs = new SwerveIOInputsAutoLogged();
+  private static Swerve INSTANCE = null;
 
-    public static Swerve getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new Swerve();
-        }
-
-        return INSTANCE;
+  public static Swerve getInstance() {
+    if (INSTANCE == null) {
+      INSTANCE = new Swerve();
     }
 
-    public Swerve() {
-        this.io = new SwerveIOSystem();
-    }
+    return INSTANCE;
+  }
 
-    public void zeroGyro() {
-        this.io.zeroGyro();
-    }
+  public Swerve() {
+    this.io = new SwerveIOSystem();
+  }
 
-    @Override
-    public void periodic() {
-        this.io.updateInputs(inputs);
-        Logger.processInputs("Swerve Drive", inputs);
-    }
+  public void zeroGyro() {
+    this.io.zeroGyro();
+  }
 
-    public double getGyro() {
-        return this.io.getGyro();
-    }
+  @Override
+  public void periodic() {
+    this.io.updateInputs(inputs);
+    Logger.processInputs("Swerve Drive", inputs);
+  }
 
-    public Pose2d getPose() {
-        return this.io.getPose();
-    }
+  public double getGyro() {
+    return this.io.getGyro();
+  }
 
-    public void resetPose(Pose2d pose) {
-        // System.out.println(pose);
-        this.io.resetPose(pose);
-    }
+  public Pose2d getPose() {
+    return this.io.getPose();
+  }
 
-    public ChassisSpeeds getSpeeds() {
-        return this.io.getSpeeds();
-    }
+  public void resetPose(Pose2d pose) {
+    // System.out.println(pose);
+    this.io.resetPose(pose);
+  }
 
-    public void driveFieldRelative(ChassisSpeeds fieldRelativeSpeeds) {
-        this.io.driveFieldRelative(fieldRelativeSpeeds);
-    }
+  public ChassisSpeeds getSpeeds() {
+    return this.io.getSpeeds();
+  }
 
-    public void driveRobotRelative(ChassisSpeeds robotRelativeSpeeds) {
-        this.io.driveRobotRelative(robotRelativeSpeeds);
-    }
+  public void driveFieldRelative(ChassisSpeeds fieldRelativeSpeeds) {
+    this.io.driveFieldRelative(fieldRelativeSpeeds);
+  }
 
-    public SwerveModuleState[] getModuleStates() {
-        return this.io.getModuleStates();
-    }
+  public void driveRobotRelative(ChassisSpeeds robotRelativeSpeeds) {
+    SmartDashboard.putString("Chassis speeds", robotRelativeSpeeds.toString());
+    this.io.driveRobotRelative(robotRelativeSpeeds);
+  }
 
-    public SwerveModulePosition[] getPositions() {
-        return this.io.getPositions();
-    }
+  public SwerveModuleState[] getModuleStates() {
+    return this.io.getModuleStates();
+  }
 
-    /**
-     * Command to drive the robot using translative values and heading as a setpoint.
-     *
-     * @param translationX Translation in the X direction.
-     * @param translationY Translation in the Y direction.
-     * @param headingX Heading X to calculate angle of the joystick.
-     * @param headingY Heading Y to calculate angle of the joystick.
-     * @return Drive command.
-     */
-    public Command driveCommand(
-        DoubleSupplier translationX,
-        DoubleSupplier translationY,
-        DoubleSupplier headingX,
-        DoubleSupplier headingY) {
-        return run(
-            () -> {
-                double xInput = Math.pow(translationX.getAsDouble(), 3); // Smooth controll out
-                double yInput = Math.pow(translationY.getAsDouble(), 3); // Smooth controll out
-                // Make the robot move
-                driveFieldRelative(this.io.getTargetSpeeds(xInput, yInput, headingX.getAsDouble(), headingY.getAsDouble()));
-            });
-    }
+  public SwerveModulePosition[] getPositions() {
+    return this.io.getPositions();
+  }
 
-    /**
-     * Command to drive the robot using translative values and heading as angular velocity.
-     *
-     * @param translationX Translation in the X direction.
-     * @param translationY Translation in the Y direction.
-     * @param angularRotationX Rotation of the robot to set
-     * @return Drive command.
-     */
-    public Command driveCommand(
-        DoubleSupplier translationX, DoubleSupplier translationY, DoubleSupplier angularRotationX) {
-        return run(
-            () -> {
-                // Make the robot move
-                this.io.driveRobotRelative(new Translation2d(
-                translationX.getAsDouble() * this.io.getMaximumChassisVelocity(),
-                translationY.getAsDouble() * this.io.getMaximumChassisVelocity()),
-                angularRotationX.getAsDouble() * this.io.getMaximumChassisAngularVelocity(),
-                true,
-                false);
-            });
-    }
+  /**
+   * Command to drive the robot using translative values and heading as a setpoint.
+   *
+   * @param translationX Translation in the X direction.
+   * @param translationY Translation in the Y direction.
+   * @param headingX Heading X to calculate angle of the joystick.
+   * @param headingY Heading Y to calculate angle of the joystick.
+   * @return Drive command.
+   */
+  public Command driveCommand(
+      DoubleSupplier translationX,
+      DoubleSupplier translationY,
+      DoubleSupplier headingX,
+      DoubleSupplier headingY) {
+    return run(
+        () -> {
+          double xInput = Math.pow(translationX.getAsDouble(), 3); // Smooth controll out
+          double yInput = Math.pow(translationY.getAsDouble(), 3); // Smooth controll out
+          // Make the robot move
+          driveFieldRelative(
+              this.io.getTargetSpeeds(
+                  xInput, yInput, headingX.getAsDouble(), headingY.getAsDouble()));
+        });
+  }
 
-    public void addVisionReading(Pose2d robotPose, double timestamp, Matrix<N3, N1> visionMeasurementStdDevs) {
-        this.io.addVisionReading(robotPose, timestamp, visionMeasurementStdDevs);
-    }
+  /**
+   * Command to drive the robot using translative values and heading as angular velocity.
+   *
+   * @param translationX Translation in the X direction.
+   * @param translationY Translation in the Y direction.
+   * @param angularRotationX Rotation of the robot to set
+   * @return Drive command.
+   */
+  public Command driveCommand(
+      DoubleSupplier translationX, DoubleSupplier translationY, DoubleSupplier angularRotationX) {
+    return run(
+        () -> {
+          // Make the robot move
+          this.io.driveRobotRelative(
+              new Translation2d(
+                  translationX.getAsDouble() * this.io.getMaximumChassisVelocity(),
+                  translationY.getAsDouble() * this.io.getMaximumChassisVelocity()),
+              angularRotationX.getAsDouble() * this.io.getMaximumChassisAngularVelocity(),
+              true,
+              false);
+        });
+  }
+
+  public void addVisionReading(
+      Pose2d robotPose, double timestamp, Matrix<N3, N1> visionMeasurementStdDevs) {
+    this.io.addVisionReading(robotPose, timestamp, visionMeasurementStdDevs);
+  }
 }

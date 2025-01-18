@@ -4,14 +4,14 @@
 
 package frc.robot.Commands.swerve.drivebase;
 
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Subsystems.Swerve.Swerve;
 import java.util.function.DoubleSupplier;
 
-/**
- * An example command that uses an example subsystem.
- */
+/** An example command that uses an example subsystem. */
 public class TeleopDrive extends Command {
   private final DoubleSupplier vX;
   private final DoubleSupplier vY;
@@ -22,23 +22,25 @@ public class TeleopDrive extends Command {
    *
    * @param swerve The subsystem used by this command.
    */
-    public TeleopDrive(DoubleSupplier vX, DoubleSupplier vY, DoubleSupplier omega) {
-        this.vX = vX;
-        this.vY = vY;
-        this.omega = omega;
-    }
+  public TeleopDrive(DoubleSupplier vX, DoubleSupplier vY, DoubleSupplier omega) {
+    this.vX = vX;
+    this.vY = vY;
+    this.omega = omega;
+    this.addRequirements(Swerve.getInstance());
+  }
 
-    // Called when the command is initially scheduled.
-    @Override
-    public void initialize() {
-    }
+  // Called when the command is initially scheduled.
+  @Override
+  public void initialize() {
+    SmartDashboard.putString("Command", "command");
+  }
 
-    public void drive(ChassisSpeeds velocity) {
-    }
-
-    // Called every time the scheduler runs while the command is scheduled.
-    @Override
-    public void execute() {
-        Swerve.getInstance().driveFieldRelative(new ChassisSpeeds(vX.getAsDouble(), vY.getAsDouble(), omega.getAsDouble()));
-    }
+  // Called every time the scheduler runs while the command is scheduled.
+  @Override
+  public void execute() {
+    SmartDashboard.putString("the code works!!", "nope sorry");
+    Swerve.getInstance()
+        .driveFieldRelative(
+                new ChassisSpeeds(vX.getAsDouble(), vY.getAsDouble(), omega.getAsDouble()));
+  }
 }

@@ -19,97 +19,100 @@ import swervelib.telemetry.SwerveDriveTelemetry;
 import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
 
 public class SwerveIOSystem implements SwerveIO {
-    private SwerveDrive swerveDrive;
-    File swerveJsonDirectory = new File(Filesystem.getDeployDirectory(), "swerve");
-    double maximumSpeed = 4.5;
-    private Field2d field = new Field2d();
+  private SwerveDrive swerveDrive;
+  File swerveJsonDirectory = new File(Filesystem.getDeployDirectory(), "swerve");
+  double maximumSpeed = 4.5;
+  private Field2d field = new Field2d();
 
-    public SwerveIOSystem() {
-        SwerveDriveTelemetry.verbosity = TelemetryVerbosity.HIGH;
-        try {
-        swerveDrive = new SwerveParser(swerveJsonDirectory).createSwerveDrive(maximumSpeed);
-        swerveDrive.setHeadingCorrection(
-            false); // Heading correction should only be used while controlling the robot via
-        // angle.
-        swerveDrive.setCosineCompensator(
-            !SwerveDriveTelemetry.isSimulation); // Disables cosine compensation
-        // for simulations since it causes discrepancies not seen in real life.
-        swerveDrive.setAngularVelocityCompensation(true, true, 0.1);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        SmartDashboard.putData("Field", field);
+  public SwerveIOSystem() {
+    SwerveDriveTelemetry.verbosity = TelemetryVerbosity.HIGH;
+    try {
+      swerveDrive = new SwerveParser(swerveJsonDirectory).createSwerveDrive(maximumSpeed);
+      swerveDrive.setHeadingCorrection(
+          false); // Heading correction should only be used while controlling the robot via
+      // angle.
+      swerveDrive.setCosineCompensator(
+          !SwerveDriveTelemetry.isSimulation); // Disables cosine compensation
+      // for simulations since it causes discrepancies not seen in real life.
+      swerveDrive.setAngularVelocityCompensation(true, true, 0.1);
+    } catch (IOException e) {
+      e.printStackTrace();
     }
 
-    public void zeroGyro() {
-        swerveDrive.zeroGyro();
-    }
+    SmartDashboard.putData("Field", field);
+  }
 
-    public double getGyro() {
-        return swerveDrive.getGyroRotation3d().getZ();
-    }
+  public void zeroGyro() {
+    swerveDrive.zeroGyro();
+  }
 
-    public Pose2d getPose() {
-        return swerveDrive.getPose();
-    }
+  public double getGyro() {
+    return swerveDrive.getGyroRotation3d().getZ();
+  }
 
-    public void resetPose(Pose2d pose) {
-        swerveDrive.resetOdometry(pose);
-    }
+  public Pose2d getPose() {
+    return swerveDrive.getPose();
+  }
 
-    public ChassisSpeeds getSpeeds() {
-        return swerveDrive.getRobotVelocity();
-    }
+  public void resetPose(Pose2d pose) {
+    swerveDrive.resetOdometry(pose);
+  }
 
-    public void driveRobotRelative(ChassisSpeeds robotRelativeSpeeds) {
-        swerveDrive.drive(robotRelativeSpeeds);
-    }
+  public ChassisSpeeds getSpeeds() {
+    return swerveDrive.getRobotVelocity();
+  }
 
-    public void driveFieldRelative(ChassisSpeeds fieldRelativeSpeeds) {
-        swerveDrive.driveFieldOriented(fieldRelativeSpeeds);
-    }
+  public void driveRobotRelative(ChassisSpeeds robotRelativeSpeeds) {
+    swerveDrive.drive(robotRelativeSpeeds);
+  }
 
-    public void driveRobotRelative(Translation2d translation, double rotation, boolean fieldRelative, boolean isOpenLoop) {
-        swerveDrive.drive(translation, rotation, fieldRelative, isOpenLoop);
-    }
+  public void driveFieldRelative(ChassisSpeeds fieldRelativeSpeeds) {
+    swerveDrive.driveFieldOriented(fieldRelativeSpeeds);
+  }
 
-    public SwerveModuleState[] getModuleStates() {
-        return swerveDrive.getStates();
-    }
+  public void driveRobotRelative(
+      Translation2d translation, double rotation, boolean fieldRelative, boolean isOpenLoop) {
+    swerveDrive.drive(translation, rotation, fieldRelative, isOpenLoop);
+  }
 
-    public SwerveModulePosition[] getPositions() {
-        return swerveDrive.getModulePositions();
-    }
+  public SwerveModuleState[] getModuleStates() {
+    return swerveDrive.getStates();
+  }
 
-    public ChassisSpeeds getTargetSpeeds(double xInput, double yInput, double headingX, double headingY) {
-        return swerveDrive.swerveController.getTargetSpeeds(
-                    xInput,
-                    yInput,
-                    headingX,
-                    headingY,
-                    swerveDrive.getYaw().getRadians(),
-                    swerveDrive.getMaximumChassisVelocity());
-    }
+  public SwerveModulePosition[] getPositions() {
+    return swerveDrive.getModulePositions();
+  }
 
-    public double getMaximumChassisVelocity() {
-        return swerveDrive.getMaximumChassisVelocity();
-    }
+  public ChassisSpeeds getTargetSpeeds(
+      double xInput, double yInput, double headingX, double headingY) {
+    return swerveDrive.swerveController.getTargetSpeeds(
+        xInput,
+        yInput,
+        headingX,
+        headingY,
+        swerveDrive.getYaw().getRadians(),
+        swerveDrive.getMaximumChassisVelocity());
+  }
 
-    public double getMaximumChassisAngularVelocity() {
-        return swerveDrive.getMaximumChassisAngularVelocity();
-    }
+  public double getMaximumChassisVelocity() {
+    return swerveDrive.getMaximumChassisVelocity();
+  }
 
-    public void addVisionReading(Pose2d robotPose, double timestamp, Matrix<N3, N1> visionMeasurementStdDevs) {
-        swerveDrive.addVisionMeasurement(robotPose, timestamp, visionMeasurementStdDevs);
-    }
+  public double getMaximumChassisAngularVelocity() {
+    return swerveDrive.getMaximumChassisAngularVelocity();
+  }
 
-    @Override
-    public void updateInputs(SwerveIOInputs inputs) {
-        // TODO - Implement
-        inputs.pose = this.getPose();
-        inputs.speeds = this.getSpeeds();
+  public void addVisionReading(
+      Pose2d robotPose, double timestamp, Matrix<N3, N1> visionMeasurementStdDevs) {
+    swerveDrive.addVisionMeasurement(robotPose, timestamp, visionMeasurementStdDevs);
+  }
 
-        inputs.swerveModuleStates = this.getModuleStates();
-    }
+  @Override
+  public void updateInputs(SwerveIOInputs inputs) {
+    // TODO - Implement
+    inputs.pose = this.getPose();
+    inputs.speeds = this.getSpeeds();
+
+    inputs.swerveModuleStates = this.getModuleStates();
+  }
 }
