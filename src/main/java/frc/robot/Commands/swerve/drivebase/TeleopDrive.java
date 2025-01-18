@@ -4,7 +4,6 @@
 
 package frc.robot.Commands.swerve.drivebase;
 
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -41,6 +40,6 @@ public class TeleopDrive extends Command {
     SmartDashboard.putString("the code works!!", "nope sorry");
     Swerve.getInstance()
         .driveFieldRelative(
-                new ChassisSpeeds(vX.getAsDouble(), vY.getAsDouble(), omega.getAsDouble()));
+            new ChassisSpeeds(vX.getAsDouble(), vY.getAsDouble(), omega.getAsDouble()));
   }
 }
