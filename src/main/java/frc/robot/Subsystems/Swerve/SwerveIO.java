@@ -8,10 +8,6 @@ import org.littletonrobotics.junction.AutoLog;
 public interface SwerveIO {
   @AutoLog
   public static class SwerveIOInputs {
-    // TODO - Implement
-    public enum DriveState {None, Manual, AlignReefLeft, AlignReefRight, AlignProcessor, AlignSource}; 
-    public DriveState driveState = DriveState.None;
-
     public Pose2d pose = new Pose2d();
     public ChassisSpeeds speeds = new ChassisSpeeds();
     public ChassisSpeeds targetSpeeds = new ChassisSpeeds();

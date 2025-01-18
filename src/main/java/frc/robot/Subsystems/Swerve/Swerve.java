@@ -23,6 +23,8 @@ public class Swerve extends SubsystemBase {
   SwerveIOSystem io;
   private final SwerveIOInputsAutoLogged inputs = new SwerveIOInputsAutoLogged();
   private static Swerve INSTANCE = null;
+  public enum DriveState {None, Manual, AlignReefLeft, AlignReefRight, AlignProcessor, AlignSource}; 
+  public DriveState driveState = DriveState.None;
 
   public static Swerve getInstance() {
     if (INSTANCE == null) {
@@ -57,6 +59,11 @@ public class Swerve extends SubsystemBase {
   public void resetPose(Pose2d pose) {
     // System.out.println(pose);
     this.io.resetPose(pose);
+  }
+
+  public void setDriveState(DriveState state) {
+    driveState = state;
+    Logger.recordOutput("DriveState", state);
   }
 
   public ChassisSpeeds getSpeeds() {
