@@ -52,6 +52,10 @@ public class Swerve extends SubsystemBase {
     this.io = new SwerveIOSystem();
   }
 
+  public SwerveIOSystem getIo() {
+    return io;
+  }
+
   public void zeroGyro() {
     this.io.zeroGyro();
   }

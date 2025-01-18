@@ -10,7 +10,7 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 
 public class WristIOSparkMax implements WristIO {
   // TODO - motor id to be changed
-  private final SparkMax wristMotor = new SparkMax(1, MotorType.kBrushless);
+  private final SparkMax wristMotor = new SparkMax(17, MotorType.kBrushless);
   // private double feedForward = 0;
 
   private SparkMaxConfig config;

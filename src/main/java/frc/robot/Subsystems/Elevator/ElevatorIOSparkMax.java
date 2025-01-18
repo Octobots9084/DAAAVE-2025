@@ -11,8 +11,8 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 
 public class ElevatorIOSparkMax implements ElevatorIO {
   // TODO replace device ids with actual ones
-  private final SparkMax leftMotor = new SparkMax(18, MotorType.kBrushless);
-  private final SparkMax rightMotor = new SparkMax(19, MotorType.kBrushless);
+  private final SparkMax leftMotor = new SparkMax(15, MotorType.kBrushless);
+  private final SparkMax rightMotor = new SparkMax(16, MotorType.kBrushless);
   private double feedForward = 0;
 
   private SparkMaxConfig leftConfig;

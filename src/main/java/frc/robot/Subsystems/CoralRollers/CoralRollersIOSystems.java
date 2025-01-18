@@ -9,9 +9,9 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.wpilibj.AnalogInput;
 
 public class CoralRollersIOSystems implements CoralRollersIO {
-  private final SparkMax motor = new SparkMax(18, MotorType.kBrushless);
-  private final AnalogInput mouthBeam = new AnalogInput(0);
-  private final AnalogInput rearBeam = new AnalogInput(0);
+  private final SparkMax motor = new SparkMax(14, MotorType.kBrushless);
+  private final AnalogInput mouthBeam = new AnalogInput(2);
+  private final AnalogInput rearBeam = new AnalogInput(3);
 
   private SparkMaxConfig config;
 

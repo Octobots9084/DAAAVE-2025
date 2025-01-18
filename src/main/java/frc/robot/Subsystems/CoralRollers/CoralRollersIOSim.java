@@ -7,8 +7,8 @@ import edu.wpi.first.wpilibj.simulation.AnalogInputSim;
 public class CoralRollersIOSim implements CoralRollersIO {
   CoralRollersIOSystems sparkMaxes = new CoralRollersIOSystems();
   SparkRelativeEncoderSim SparkSim = new SparkRelativeEncoderSim(sparkMaxes.getMotor());
-  AnalogInputSim rearBeamSim = new AnalogInputSim(0);
-  AnalogInputSim mouthBeamSim = new AnalogInputSim(0);
+  AnalogInputSim rearBeamSim = new AnalogInputSim(2);
+  AnalogInputSim mouthBeamSim = new AnalogInputSim(3);
   private double appliedVolts = 11;
 
   @Override

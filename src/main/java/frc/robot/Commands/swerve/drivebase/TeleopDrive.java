@@ -44,7 +44,10 @@ public class TeleopDrive extends Command {
         SmartDashboard.putString("the code works!!", "nope sorry");
         Swerve.getInstance()
             .driveFieldRelative(
-                new ChassisSpeeds(vX.getAsDouble(), vY.getAsDouble(), omega.getAsDouble()));
+                new ChassisSpeeds(
+                    vX.getAsDouble() * swerveInstance.getIo().getMaxSpeed(),
+                    vY.getAsDouble() * swerveInstance.getIo().getMaxSpeed(),
+                    omega.getAsDouble() * swerveInstance.getIo().getMaxTurnSpeed()));
         break;
       case AlignReefLeft:
         break;
@@ -58,7 +61,10 @@ public class TeleopDrive extends Command {
         SmartDashboard.putString("the code works!!", "nope sorry");
         Swerve.getInstance()
             .driveFieldRelative(
-                new ChassisSpeeds(vX.getAsDouble(), vY.getAsDouble(), omega.getAsDouble()));
+                new ChassisSpeeds(
+                    vX.getAsDouble() * swerveInstance.getIo().getMaxSpeed(),
+                    vY.getAsDouble() * swerveInstance.getIo().getMaxSpeed(),
+                    omega.getAsDouble() * swerveInstance.getIo().getMaxTurnSpeed()));
         break;
     }
   }

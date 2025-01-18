@@ -61,14 +61,14 @@ public class RobotContainer {
     Swerve.getInstance().setDefaultCommand(closedFieldRel);
     SmartDashboard.putString("test", "test");
 
-    this.algaeRollers = new AlgaeRollers();
-    this.coralRollers = new CoralRollers();
-    this.elevator = new Elevator();
-    this.wrist = new Wrist();
+    // this.algaeRollers = new AlgaeRollers();
+    // this.coralRollers = new CoralRollers();
+    // this.elevator = new Elevator();
+    // this.wrist = new Wrist();
 
-    this.algaeRollersManual = new AlgaeRollersManual();
-    this.coralRollersManuel = new CoralRollersManual();
-    this.elevatorManel = new ElevatorManual();
-    this.wristManuel = new WristManual();
+    // this.algaeRollersManual = new AlgaeRollersManual();
+    // this.coralRollersManuel = new CoralRollersManual();
+    // this.elevatorManel = new ElevatorManual();
+    // this.wristManuel = new WristManual();
   }
 }

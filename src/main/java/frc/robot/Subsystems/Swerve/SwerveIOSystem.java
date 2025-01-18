@@ -22,6 +22,7 @@ public class SwerveIOSystem implements SwerveIO {
   private SwerveDrive swerveDrive;
   File swerveJsonDirectory = new File(Filesystem.getDeployDirectory(), "swerve");
   double maximumSpeed = 4.5;
+  double maxTurnSpeed = 5;
   private Field2d field = new Field2d();
 
   public SwerveIOSystem() {
@@ -40,6 +41,22 @@ public class SwerveIOSystem implements SwerveIO {
     }
 
     SmartDashboard.putData("Field", field);
+  }
+
+  public void setMaxSpeed(double speed) {
+    maximumSpeed = speed;
+  }
+
+  public double getMaxSpeed() {
+    return maximumSpeed;
+  }
+
+  public void setMaxTurnSpeed(double speed) {
+    maxTurnSpeed = speed;
+  }
+
+  public double getMaxTurnSpeed() {
+    return maxTurnSpeed;
   }
 
   public void zeroGyro() {
