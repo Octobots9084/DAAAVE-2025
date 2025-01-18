@@ -23,8 +23,14 @@ public class Swerve extends SubsystemBase {
   SwerveIOSystem io;
   private final SwerveIOInputsAutoLogged inputs = new SwerveIOInputsAutoLogged();
   private static Swerve INSTANCE = null;
-  public enum DriveState {None, Manual, AlignReefLeft, AlignReefRight, AlignProcessor, AlignSource}; 
-  public DriveState driveState = DriveState.None;
+  public static enum DriveState {None, Manual, AlignReefLeft, AlignReefRight, AlignProcessor, AlignSource}; 
+  private DriveState driveState = DriveState.None;
+
+  public boolean isAllignedToSorce;
+  public boolean isAllignedToCoralRight;
+  public boolean isAllignedToCoralLeft;
+  public boolean isAllignedToProcessor;
+  
 
   public static Swerve getInstance() {
     if (INSTANCE == null) {
@@ -64,6 +70,11 @@ public class Swerve extends SubsystemBase {
   public void setDriveState(DriveState state) {
     driveState = state;
     Logger.recordOutput("DriveState", state);
+  }
+  
+  public DriveState getDriveState()
+  {
+    return driveState;
   }
 
   public ChassisSpeeds getSpeeds() {

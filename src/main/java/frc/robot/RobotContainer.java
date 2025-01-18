@@ -7,8 +7,16 @@ package frc.robot;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
+import frc.robot.Commands.AlgaeRollers.AlgaeRollersManual;
+import frc.robot.Commands.Wrist.WristManual;
+import frc.robot.Commands.CoralRollers.CoralRollersManual;
+import frc.robot.Commands.Elevator.ElevatorManual;
 import frc.robot.Commands.swerve.drivebase.TeleopDrive;
+import frc.robot.Subsystems.AlgaeRollers.AlgaeRollers;
+import frc.robot.Subsystems.Elevator.Elevator;
+import frc.robot.Subsystems.CoralRollers.CoralRollers;
 import frc.robot.Subsystems.Swerve.Swerve;
+import frc.robot.Subsystems.Wrist.Wrist;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -19,6 +27,16 @@ import frc.robot.Subsystems.Swerve.Swerve;
 public class RobotContainer {
 
   // The robot's subsystems and commands are defined here...
+  private AlgaeRollers algaeRollers;
+  private CoralRollers coralRollers;
+  private Elevator elevator;
+  private Wrist wrist;
+
+  private AlgaeRollersManual algaeRollersManual;
+  private CoralRollersManual coralRollersManuel;
+  private ElevatorManual elevatorManel;
+  private WristManual wristManuel;
+
   // Replace with CommandPS4Controller or CommandJoystick if needed
   CommandJoystick driverLeft = new CommandJoystick(Constants.OperatorConstants.DRIVER_LEFT);
   CommandJoystick driverRight = new CommandJoystick(Constants.OperatorConstants.DRIVER_RIGHT);
@@ -42,5 +60,15 @@ public class RobotContainer {
     Swerve.getInstance();
     Swerve.getInstance().setDefaultCommand(closedFieldRel);
     SmartDashboard.putString("test", "test");
+
+    this.algaeRollers = new AlgaeRollers();
+    this.coralRollers = new CoralRollers();
+    this.elevator = new Elevator();
+    this.wrist = new Wrist();
+
+    this.algaeRollersManual = new AlgaeRollersManual();
+    this.coralRollersManuel = new CoralRollersManual();
+    this.elevatorManel = new ElevatorManual();
+    this.wristManuel = new WristManual();
   }
 }
