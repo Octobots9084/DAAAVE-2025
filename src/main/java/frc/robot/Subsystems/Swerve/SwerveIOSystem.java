@@ -100,10 +100,6 @@ public class SwerveIOSystem implements SwerveIO {
     return swerveDrive.getDesiredStates();
   }
 
-  public SwerveModuleState[] getSwerveModuleTargetStates() {
-    return swerveDrive.swerveModuleStates;
-  }
-
   public SwerveModulePosition[] getPositions() {
     return swerveDrive.getModulePositions();
   }
