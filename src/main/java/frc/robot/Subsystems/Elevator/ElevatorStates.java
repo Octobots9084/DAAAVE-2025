@@ -3,6 +3,7 @@ package frc.robot.Subsystems.Elevator;
 public enum ElevatorStates {
   // TODO edit these to the actual positions
   LOW(0),
+  LEVEL1(0),
   LEVEL2(0),
   LEVEL3(0),
   LEVEL4(0),

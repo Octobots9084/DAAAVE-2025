@@ -5,13 +5,14 @@ import frc.robot.Subsystems.AlgaeRollers.AlgaeRollers;
 import frc.robot.Subsystems.AlgaeRollers.AlgaeRollersStates;
 
 public class SetAlgaeRollersState extends InstantCommand {
-    private AlgaeRollersStates targetState;
-    public SetAlgaeRollersState(AlgaeRollersStates targetState) {
-        this.targetState = targetState;
-    }
+  private AlgaeRollersStates targetState;
 
-    @Override
-    public void initialize(){
-        AlgaeRollers.getInstance().setState(targetState);
-    }
+  public SetAlgaeRollersState(AlgaeRollersStates targetState) {
+    this.targetState = targetState;
+  }
+
+  @Override
+  public void initialize() {
+    AlgaeRollers.getInstance().setState(targetState);
+  }
 }

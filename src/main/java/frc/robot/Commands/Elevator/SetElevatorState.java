@@ -5,13 +5,14 @@ import frc.robot.Subsystems.Elevator.Elevator;
 import frc.robot.Subsystems.Elevator.ElevatorStates;
 
 public class SetElevatorState extends InstantCommand {
-    private ElevatorStates targetState;
-    public SetElevatorState(ElevatorStates targetState) {
-        this.targetState = targetState;
-    }
+  private ElevatorStates targetState;
 
-    @Override
-    public void initialize(){
-        Elevator.getInstance().setState(targetState);
-    }
+  public SetElevatorState(ElevatorStates targetState) {
+    this.targetState = targetState;
+  }
+
+  @Override
+  public void initialize() {
+    Elevator.getInstance().setState(targetState);
+  }
 }
