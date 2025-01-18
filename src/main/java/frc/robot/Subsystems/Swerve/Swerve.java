@@ -26,7 +26,7 @@ public class Swerve extends SubsystemBase {
 
     public static Swerve getInstance() {
         if (INSTANCE == null) {
-        INSTANCE = new Swerve();
+            INSTANCE = new Swerve();
         }
 
         return INSTANCE;
@@ -64,8 +64,7 @@ public class Swerve extends SubsystemBase {
     }
 
     public void driveFieldRelative(ChassisSpeeds fieldRelativeSpeeds) {
-        driveRobotRelative(
-            ChassisSpeeds.fromFieldRelativeSpeeds(fieldRelativeSpeeds, getPose().getRotation()));
+        this.io.driveFieldRelative(fieldRelativeSpeeds);
     }
 
     public void driveRobotRelative(ChassisSpeeds robotRelativeSpeeds) {

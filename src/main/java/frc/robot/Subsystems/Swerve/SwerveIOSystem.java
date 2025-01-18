@@ -66,6 +66,10 @@ public class SwerveIOSystem implements SwerveIO {
         swerveDrive.drive(robotRelativeSpeeds);
     }
 
+    public void driveFieldRelative(ChassisSpeeds fieldRelativeSpeeds) {
+        swerveDrive.driveFieldOriented(fieldRelativeSpeeds);
+    }
+
     public void driveRobotRelative(Translation2d translation, double rotation, boolean fieldRelative, boolean isOpenLoop) {
         swerveDrive.drive(translation, rotation, fieldRelative, isOpenLoop);
     }
@@ -103,5 +107,9 @@ public class SwerveIOSystem implements SwerveIO {
     @Override
     public void updateInputs(SwerveIOInputs inputs) {
         // TODO - Implement
+        inputs.pose = this.getPose();
+        inputs.speeds = this.getSpeeds();
+
+        inputs.swerveModuleStates = this.getModuleStates();
     }
 }
