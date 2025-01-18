@@ -5,13 +5,14 @@ import frc.robot.Subsystems.CoralRollers.CoralRollers;
 import frc.robot.Subsystems.CoralRollers.CoralRollersState;
 
 public class SetCoralRollersState extends InstantCommand {
-    private CoralRollersState targetState;
-    public SetCoralRollersState(CoralRollersState targetState) {
-        this.targetState = targetState;
-    }
+  private CoralRollersState targetState;
 
-    @Override
-    public void initialize(){
-        CoralRollers.getInstance().setState(targetState);
-    }
+  public SetCoralRollersState(CoralRollersState targetState) {
+    this.targetState = targetState;
+  }
+
+  @Override
+  public void initialize() {
+    CoralRollers.getInstance().setState(targetState);
+  }
 }

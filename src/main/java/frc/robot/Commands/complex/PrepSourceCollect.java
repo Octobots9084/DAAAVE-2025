@@ -8,12 +8,11 @@ import frc.robot.Subsystems.CoralRollers.CoralRollersState;
 import frc.robot.Subsystems.Elevator.ElevatorStates;
 import frc.robot.Subsystems.Wrist.WristStates;
 
-public class PrepSourceCollect extends SequentialCommandGroup{
-    public PrepSourceCollect (ElevatorStates elevatorState, WristStates wristState, CoralRollersState coralRollerState, boolean alignToSource) {
-        addCommands(
-            new SetElevatorState(elevatorState),
-            new SetWristState(wristState),
-            new SetCoralRollersState(coralRollerState)
-        );
-    }
+public class PrepSourceCollect extends SequentialCommandGroup {
+  public PrepSourceCollect() {
+    addCommands(
+      new SetElevatorState(ElevatorStates.LOW),
+      new SetWristState(WristStates.HORIZONTAL),
+      new SetCoralRollersState(CoralRollersState.INTAKING));
+  }
 }

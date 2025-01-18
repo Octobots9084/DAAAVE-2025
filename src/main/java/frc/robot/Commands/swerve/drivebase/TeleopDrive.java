@@ -8,7 +8,6 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Subsystems.Swerve.Swerve;
-
 import java.util.function.DoubleSupplier;
 
 /** An example command that uses an example subsystem. */
@@ -39,25 +38,21 @@ public class TeleopDrive extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    //TODO 𓃕
+    // TODO 𓃕
     switch (swerveInstance.getDriveState()) {
       case Manual:
-      SmartDashboard.putString("the code works!!", "nope sorry");
-      Swerve.getInstance()
-          .driveFieldRelative(
-              new ChassisSpeeds(vX.getAsDouble(), vY.getAsDouble(), omega.getAsDouble()));
+        SmartDashboard.putString("the code works!!", "nope sorry");
+        Swerve.getInstance()
+            .driveFieldRelative(
+                new ChassisSpeeds(vX.getAsDouble(), vY.getAsDouble(), omega.getAsDouble()));
         break;
       case AlignReefLeft:
-        
         break;
       case AlignReefRight:
-        
         break;
       case AlignProcessor:
-        
         break;
       case AlignSource:
-        
         break;
       default:
         SmartDashboard.putString("the code works!!", "nope sorry");

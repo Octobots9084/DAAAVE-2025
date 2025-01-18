@@ -5,21 +5,22 @@ import frc.robot.Subsystems.Wrist.Wrist;
 import frc.robot.Subsystems.Wrist.WristStates;
 
 public class SetWristStateTolerance extends Command {
-    private WristStates targetState;
-    private double tolerance;
-    private Wrist wrist = Wrist.getInstance();
-    public SetWristStateTolerance(WristStates targetState,double tolerance) {
-        this.targetState = targetState;
-        this.tolerance = tolerance;
-    }
+  private WristStates targetState;
+  private double tolerance;
+  private Wrist wrist = Wrist.getInstance();
 
-    @Override
-    public void initialize(){
-        wrist.setState(targetState);
-    }
+  public SetWristStateTolerance(WristStates targetState, double tolerance) {
+    this.targetState = targetState;
+    this.tolerance = tolerance;
+  }
 
-    @Override
-    public boolean isFinished(){
-        return wrist.isAtState(targetState,tolerance);
-    }
+  @Override
+  public void initialize() {
+    wrist.setState(targetState);
+  }
+
+  @Override
+  public boolean isFinished() {
+    return wrist.isAtState(targetState, tolerance);
+  }
 }
