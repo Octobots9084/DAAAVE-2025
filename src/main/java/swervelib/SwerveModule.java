@@ -1,5 +1,6 @@
 package swervelib;
 
+import static edu.wpi.first.units.Units.InchesPerSecond;
 import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.RadiansPerSecond;
 import static edu.wpi.first.units.Units.RotationsPerSecond;
@@ -16,6 +17,7 @@ import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.util.MathUtil;
 import swervelib.encoders.SparkMaxEncoderSwerve;
 import swervelib.encoders.SwerveAbsoluteEncoder;
 import swervelib.math.SwerveMath;
@@ -72,6 +74,8 @@ public class SwerveModule {
   private final DoublePublisher angleSetpointPublisher;
   /** Maximum {@link LinearVelocity} for the drive motor of the swerve module. */
   private LinearVelocity maxDriveVelocity;
+  /** Maximum velocity for the drive motor of the swerve module. */
+  private double maxDriveVelocityMetersPerSecond;
   /** Maximum {@link AngularVelocity} for the azimuth/angle motor of the swerve module. */
   private AngularVelocity maxAngularVelocity;
   /** Feedforward for the drive motor during closed loop control. */
@@ -80,6 +84,8 @@ public class SwerveModule {
   private boolean antiJitterEnabled = true;
   /** Last swerve module state applied. */
   private SwerveModuleState lastState;
+
+  private SwerveModuleState desiredState;
   /** Angle offset from the absolute encoder. */
   private double angleOffset;
   /** Simulated swerve module. */
@@ -138,7 +144,9 @@ public class SwerveModule {
     absolutePositionCache = new Cache<>(this::getRawAbsolutePosition, 20);
 
     // Config angle motor/controller
-    angleMotor.configureIntegratedEncoder(moduleConfiguration.conversionFactors.angle.factor);
+    if (!angleMotor.isAttachedAbsoluteEncoder()) {
+      angleMotor.configureIntegratedEncoder(moduleConfiguration.conversionFactors.angle.factor);
+    }
     angleMotor.configurePIDF(moduleConfiguration.anglePIDF);
     angleMotor.configurePIDWrapping(0, 360);
     angleMotor.setInverted(moduleConfiguration.angleMotorInverted);
@@ -168,6 +176,7 @@ public class SwerveModule {
 
     // Save the current state.
     lastState = getState();
+    this.desiredState = new SwerveModuleState();
 
     noEncoderWarning =
         new Alert(
@@ -357,29 +366,27 @@ public class SwerveModule {
    *     desired state onto the swerve module.
    */
   public void setDesiredState(SwerveModuleState desiredState, boolean isOpenLoop, boolean force) {
-
     desiredState.optimize(Rotation2d.fromDegrees(getAbsolutePosition()));
 
     // If we are forcing the angle
     if (!force && antiJitterEnabled) {
       // Prevents module rotation if speed is less than 1%
-      SwerveMath.antiJitter(
-          desiredState, lastState, Math.min(maxDriveVelocity.in(MetersPerSecond), 4));
+      SwerveMath.antiJitter(desiredState, lastState, Math.min(maxDriveVelocityMetersPerSecond, 4));
     }
 
     // Cosine compensation.
-    LinearVelocity nextVelocity =
+    double nextVelocityMetersPerSecond =
         configuration.useCosineCompensator
             ? getCosineCompensatedVelocity(desiredState)
-            : MetersPerSecond.of(desiredState.speedMetersPerSecond);
-    LinearVelocity curVelocity = MetersPerSecond.of(lastState.speedMetersPerSecond);
-    desiredState.speedMetersPerSecond = nextVelocity.magnitude();
+            : desiredState.speedMetersPerSecond;
+    double curVelocityMetersPerSecond = lastState.speedMetersPerSecond;
+    desiredState.speedMetersPerSecond = nextVelocityMetersPerSecond;
 
     setDesiredState(
         desiredState,
         isOpenLoop,
         driveMotorFeedforward.calculateWithVelocities(
-            curVelocity.in(MetersPerSecond), nextVelocity.in(MetersPerSecond)));
+            curVelocityMetersPerSecond, nextVelocityMetersPerSecond));
   }
 
   /**
@@ -393,6 +400,10 @@ public class SwerveModule {
    */
   public void setDesiredState(
       SwerveModuleState desiredState, boolean isOpenLoop, double driveFeedforwardVoltage) {
+    this.desiredState =
+        new SwerveModuleState(
+            desiredState.speedMetersPerSecond,
+            new Rotation2d(MathUtil.wrapToCircle(desiredState.angle.getRadians(), 2 * Math.PI)));
 
     if (isOpenLoop) {
       double percentOutput =
@@ -444,7 +455,7 @@ public class SwerveModule {
    * @param desiredState Desired {@link SwerveModuleState} to use.
    * @return Cosine compensated velocity in meters/second.
    */
-  private LinearVelocity getCosineCompensatedVelocity(SwerveModuleState desiredState) {
+  private double getCosineCompensatedVelocity(SwerveModuleState desiredState) {
     double cosineScalar = 1.0;
     // Taken from the CTRE SwerveModule class.
     // https://api.ctr-electronics.com/phoenix6/release/java/src-html/com/ctre/phoenix6/mechanisms/swerve/SwerveModule.html#line.46
@@ -461,7 +472,7 @@ public class SwerveModule {
       cosineScalar = 1;
     }
 
-    return MetersPerSecond.of(desiredState.speedMetersPerSecond).times(cosineScalar);
+    return desiredState.speedMetersPerSecond * cosineScalar;
   }
 
   /**
@@ -489,6 +500,10 @@ public class SwerveModule {
       return simModule.getState();
     }
     return new SwerveModuleState(velocity, azimuth);
+  }
+
+  public SwerveModuleState getDesiredState() {
+    return desiredState;
   }
 
   /**
@@ -675,15 +690,26 @@ public class SwerveModule {
    * @return {@link LinearVelocity} max velocity of the drive wheel.
    */
   public LinearVelocity getMaxVelocity() {
+    getMaxDriveVelocityMetersPerSecond();
+    return maxDriveVelocity;
+  }
+
+  /**
+   * Get the maximum drive velocity of the module in Meters Per Second.
+   *
+   * @return Maximum drive motor velocity in Meters Per Second.
+   */
+  public double getMaxDriveVelocityMetersPerSecond() {
     if (maxDriveVelocity == null) {
       maxDriveVelocity =
-          MetersPerSecond.of(
-              (RadiansPerSecond.of(driveMotor.getSimMotor().freeSpeedRadPerSec)
-                          .in(RotationsPerSecond)
+          InchesPerSecond.of(
+              (driveMotor.getSimMotor().freeSpeedRadPerSec
                       / configuration.conversionFactors.drive.gearRatio)
-                  * configuration.conversionFactors.drive.diameter);
+                  * configuration.conversionFactors.drive.diameter
+                  / 2.0);
+      maxDriveVelocityMetersPerSecond = maxDriveVelocity.in(MetersPerSecond);
     }
-    return maxDriveVelocity;
+    return maxDriveVelocityMetersPerSecond;
   }
 
   /**
@@ -706,11 +732,24 @@ public class SwerveModule {
   /** Update data sent to {@link SmartDashboard}. */
   public void updateTelemetry() {
     if (absoluteEncoder != null) {
-      rawAbsoluteAnglePublisher.set(absoluteEncoder.getAbsolutePosition());
+      rawAbsoluteAnglePublisher.set(getAbsolutePosition());
     }
-    rawAnglePublisher.set(angleMotor.getPosition());
-    rawDriveEncoderPublisher.set(drivePositionCache.getValue());
-    rawDriveVelocityPublisher.set(driveVelocityCache.getValue());
+    if (SwerveDriveTelemetry.isSimulation
+        && SwerveDriveTelemetry.verbosity == TelemetryVerbosity.HIGH) {
+      SwerveModulePosition pos = simModule.getPosition();
+      SwerveModuleState state = simModule.getState();
+      rawAnglePublisher.set(pos.angle.getDegrees());
+      rawDriveEncoderPublisher.set(pos.distanceMeters);
+      rawDriveVelocityPublisher.set(state.speedMetersPerSecond);
+      // For code coverage
+      angleMotor.getPosition();
+      drivePositionCache.getValue();
+      driveVelocityCache.getValue();
+    } else {
+      rawAnglePublisher.set(angleMotor.getPosition());
+      rawDriveEncoderPublisher.set(drivePositionCache.getValue());
+      rawDriveVelocityPublisher.set(driveVelocityCache.getValue());
+    }
     adjAbsoluteAnglePublisher.set(getAbsolutePosition());
     absoluteEncoderIssuePublisher.set(getAbsoluteEncoderReadIssue());
   }

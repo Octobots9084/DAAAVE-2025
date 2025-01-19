@@ -4,7 +4,6 @@
 
 package frc.robot.Commands.swerve.drivebase;
 
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -16,6 +15,7 @@ public class TeleopDrive extends Command {
   private final DoubleSupplier vX;
   private final DoubleSupplier vY;
   private final DoubleSupplier omega;
+  private static Swerve swerveInstance = Swerve.getInstance();
 
   /**
    * Creates a new ExampleCommand.
@@ -38,9 +38,34 @@ public class TeleopDrive extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    SmartDashboard.putString("the code works!!", "nope sorry");
-    Swerve.getInstance()
-        .driveFieldRelative(
-                new ChassisSpeeds(vX.getAsDouble(), vY.getAsDouble(), omega.getAsDouble()));
+    // TODO 𓃕
+    switch (swerveInstance.getDriveState()) {
+      case Manual:
+        SmartDashboard.putString("the code works!!", "nope sorry");
+        Swerve.getInstance()
+            .driveFieldRelative(
+                new ChassisSpeeds(
+                    vX.getAsDouble() * swerveInstance.getIo().getMaxSpeed(),
+                    vY.getAsDouble() * swerveInstance.getIo().getMaxSpeed(),
+                    omega.getAsDouble() * swerveInstance.getIo().getMaxTurnSpeed()));
+        break;
+      case AlignReefLeft:
+        break;
+      case AlignReefRight:
+        break;
+      case AlignProcessor:
+        break;
+      case AlignSource:
+        break;
+      default:
+        SmartDashboard.putString("the code works!!", "nope sorry");
+        Swerve.getInstance()
+            .driveFieldRelative(
+                new ChassisSpeeds(
+                    vX.getAsDouble() * swerveInstance.getIo().getMaxSpeed(),
+                    vY.getAsDouble() * swerveInstance.getIo().getMaxSpeed(),
+                    omega.getAsDouble() * swerveInstance.getIo().getMaxTurnSpeed()));
+        break;
+    }
   }
 }

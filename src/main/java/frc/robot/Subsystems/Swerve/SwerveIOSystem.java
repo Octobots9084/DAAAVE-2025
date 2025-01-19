@@ -22,6 +22,7 @@ public class SwerveIOSystem implements SwerveIO {
   private SwerveDrive swerveDrive;
   File swerveJsonDirectory = new File(Filesystem.getDeployDirectory(), "swerve");
   double maximumSpeed = 4.5;
+  double maxTurnSpeed = 5;
   private Field2d field = new Field2d();
 
   public SwerveIOSystem() {
@@ -40,6 +41,22 @@ public class SwerveIOSystem implements SwerveIO {
     }
 
     SmartDashboard.putData("Field", field);
+  }
+
+  public void setMaxSpeed(double speed) {
+    maximumSpeed = speed;
+  }
+
+  public double getMaxSpeed() {
+    return maximumSpeed;
+  }
+
+  public void setMaxTurnSpeed(double speed) {
+    maxTurnSpeed = speed;
+  }
+
+  public double getMaxTurnSpeed() {
+    return maxTurnSpeed;
   }
 
   public void zeroGyro() {
@@ -79,6 +96,10 @@ public class SwerveIOSystem implements SwerveIO {
     return swerveDrive.getStates();
   }
 
+  public SwerveModuleState[] getModuleDesiredStates() {
+    return swerveDrive.getDesiredStates();
+  }
+
   public SwerveModulePosition[] getPositions() {
     return swerveDrive.getModulePositions();
   }
@@ -107,6 +128,10 @@ public class SwerveIOSystem implements SwerveIO {
     swerveDrive.addVisionMeasurement(robotPose, timestamp, visionMeasurementStdDevs);
   }
 
+  public SwerveDrive getSwerveDrive() {
+    return swerveDrive;
+  }
+
   @Override
   public void updateInputs(SwerveIOInputs inputs) {
     // TODO - Implement
@@ -114,5 +139,6 @@ public class SwerveIOSystem implements SwerveIO {
     inputs.speeds = this.getSpeeds();
 
     inputs.swerveModuleStates = this.getModuleStates();
+    inputs.swerveModuleDesiredStates = this.getModuleDesiredStates();
   }
 }

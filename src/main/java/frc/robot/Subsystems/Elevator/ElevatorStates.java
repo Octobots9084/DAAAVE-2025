@@ -6,6 +6,7 @@ public enum ElevatorStates {
   LEVEL1(0),
   LEVEL2(0),
   LEVEL3(0),
+  LEVEL4(0),
   CLIMB(0);
 
   public double leftPosition;

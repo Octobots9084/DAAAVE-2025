@@ -6,7 +6,6 @@ import static edu.wpi.first.units.Units.Inches;
 import static edu.wpi.first.units.Units.KilogramSquareMeters;
 import static edu.wpi.first.units.Units.Kilograms;
 import static edu.wpi.first.units.Units.Meters;
-import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.Newtons;
 import static edu.wpi.first.units.Units.RadiansPerSecond;
 import static edu.wpi.first.units.Units.Seconds;
@@ -95,10 +94,16 @@ public class SwerveDrive {
           AlertType.kWarning);
   /** NT4 Publisher for the IMU reading. */
   private final DoublePublisher rawIMUPublisher =
-      NetworkTableInstance.getDefault().getDoubleTopic("swerve/Raw IMU Yaw").publish();
+      NetworkTableInstance.getDefault()
+          .getTable("SmartDashboard")
+          .getDoubleTopic("swerve/imu/raw")
+          .publish();
   /** NT4 Publisher for the IMU reading adjusted by offset and inversion. */
   private final DoublePublisher adjustedIMUPublisher =
-      NetworkTableInstance.getDefault().getDoubleTopic("swerve/Adjusted IMU Yaw").publish();
+      NetworkTableInstance.getDefault()
+          .getTable("SmartDashboard")
+          .getDoubleTopic("swerve/imu/adjusted")
+          .publish();
   /** Field object. */
   public Field2d field = new Field2d();
   /** Swerve controller for controlling heading of the robot. */
@@ -169,7 +174,9 @@ public class SwerveDrive {
       SwerveControllerConfiguration controllerConfig,
       double maxSpeedMPS,
       Pose2d startingPose) {
-    this.maxChassisSpeedMPS = maxSpeedMPS;
+    this.attainableMaxTranslationalSpeedMetersPerSecond = this.maxChassisSpeedMPS = maxSpeedMPS;
+    this.attainableMaxRotationalVelocityRadiansPerSecond =
+        Math.PI * 2; // Defaulting to something reasonable for most robots
     swerveDriveConfiguration = config;
     swerveController = new SwerveController(controllerConfig);
     // Create Kinematics from swerve module locations.
@@ -491,7 +498,7 @@ public class SwerveDrive {
     ChassisSpeeds velocity = new ChassisSpeeds(translation.getX(), translation.getY(), rotation);
 
     if (fieldRelative) {
-      ChassisSpeeds.fromFieldRelativeSpeeds(velocity, getOdometryHeading());
+      velocity = ChassisSpeeds.fromFieldRelativeSpeeds(velocity, getOdometryHeading());
     }
     drive(velocity, isOpenLoop, new Translation2d());
   }
@@ -543,33 +550,45 @@ public class SwerveDrive {
   }
 
   /**
-   * Set the maximum speeds for desaturation.
+   * Set the maximum attainable speeds for desaturation.
    *
    * @param attainableMaxTranslationalSpeedMetersPerSecond The absolute max speed that your robot
    *     can reach while translating in meters per second.
    * @param attainableMaxRotationalVelocityRadiansPerSecond The absolute max speed the robot can
    *     reach while rotating in radians per second.
    */
-  public void setMaximumSpeeds(
+  public void setMaximumAttainableSpeeds(
       double attainableMaxTranslationalSpeedMetersPerSecond,
       double attainableMaxRotationalVelocityRadiansPerSecond) {
     this.attainableMaxTranslationalSpeedMetersPerSecond =
         attainableMaxTranslationalSpeedMetersPerSecond;
     this.attainableMaxRotationalVelocityRadiansPerSecond =
         attainableMaxRotationalVelocityRadiansPerSecond;
-    this.swerveController.config.maxAngularVelocity =
-        attainableMaxRotationalVelocityRadiansPerSecond;
+  }
+
+  /**
+   * Set the maximum allowable speeds for desaturation.
+   *
+   * @param maxTranslationalSpeedMetersPerSecond The allowable max speed that your robot should
+   *     reach while translating in meters per second.
+   * @param maxRotationalVelocityRadiansPerSecond The allowable max speed the robot should reach
+   *     while rotating in radians per second.
+   */
+  public void setMaximumAllowableSpeeds(
+      double maxTranslationalSpeedMetersPerSecond, double maxRotationalVelocityRadiansPerSecond) {
+    this.maxChassisSpeedMPS = maxTranslationalSpeedMetersPerSecond;
+    this.swerveController.config.maxAngularVelocity = maxRotationalVelocityRadiansPerSecond;
   }
 
   /**
    * Get the maximum velocity from {@link
    * SwerveDrive#attainableMaxTranslationalSpeedMetersPerSecond} or {@link
-   * SwerveDrive#maxChassisSpeedMPS} whichever is higher.
+   * SwerveDrive#maxChassisSpeedMPS} whichever is the lower limit on the robot's speed.
    *
-   * @return Maximum speed in meters/second.
+   * @return Minimum speed in meters/second of physically attainable and user allowable limits.
    */
   public double getMaximumChassisVelocity() {
-    return Math.max(this.attainableMaxTranslationalSpeedMetersPerSecond, maxChassisSpeedMPS);
+    return Math.min(this.attainableMaxTranslationalSpeedMetersPerSecond, maxChassisSpeedMPS);
   }
 
   /**
@@ -577,8 +596,8 @@ public class SwerveDrive {
    *
    * @return {@link LinearVelocity} representing the maximum drive speed of a module.
    */
-  public LinearVelocity getMaximumModuleDriveVelocity() {
-    return swerveModules[0].getMaxVelocity();
+  public double getMaximumModuleDriveVelocity() {
+    return swerveModules[0].getMaxDriveVelocityMetersPerSecond();
   }
 
   /**
@@ -593,12 +612,14 @@ public class SwerveDrive {
   /**
    * Get the maximum angular velocity, either {@link
    * SwerveDrive#attainableMaxRotationalVelocityRadiansPerSecond} or {@link
-   * SwerveControllerConfiguration#maxAngularVelocity}.
+   * SwerveControllerConfiguration#maxAngularVelocity}, whichever is the lower limit on the robot's
+   * speed.
    *
-   * @return Maximum angular velocity in radians per second.
+   * @return Minimum angular velocity in radians per second of physically attainable and user
+   *     allowable limits.
    */
   public double getMaximumChassisAngularVelocity() {
-    return Math.max(
+    return Math.min(
         this.attainableMaxRotationalVelocityRadiansPerSecond,
         swerveController.config.maxAngularVelocity);
   }
@@ -614,9 +635,10 @@ public class SwerveDrive {
   private void setRawModuleStates(
       SwerveModuleState[] desiredStates, ChassisSpeeds desiredChassisSpeed, boolean isOpenLoop) {
     // Desaturates wheel speeds
-    double maxModuleSpeedMPS = getMaximumModuleDriveVelocity().in(MetersPerSecond);
-    if (attainableMaxTranslationalSpeedMetersPerSecond != 0
-        || attainableMaxRotationalVelocityRadiansPerSecond != 0) {
+    double maxModuleSpeedMPS = getMaximumModuleDriveVelocity();
+    if ((attainableMaxTranslationalSpeedMetersPerSecond != 0
+            || attainableMaxRotationalVelocityRadiansPerSecond != 0)
+        && attainableMaxTranslationalSpeedMetersPerSecond != maxChassisSpeedMPS) {
       SwerveDriveKinematics.desaturateWheelSpeeds(
           desiredStates,
           desiredChassisSpeed,
@@ -646,7 +668,7 @@ public class SwerveDrive {
    */
   public void setModuleStates(SwerveModuleState[] desiredStates, boolean isOpenLoop) {
     SwerveDriveTelemetry.startCtrlCycle();
-    double maxModuleSpeedMPS = getMaximumModuleDriveVelocity().in(MetersPerSecond);
+    double maxModuleSpeedMPS = getMaximumModuleDriveVelocity();
     desiredStates = kinematics.toSwerveModuleStates(kinematics.toChassisSpeeds(desiredStates));
     SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, maxModuleSpeedMPS);
 
@@ -824,6 +846,14 @@ public class SwerveDrive {
     SwerveModuleState[] states = new SwerveModuleState[swerveDriveConfiguration.moduleCount];
     for (SwerveModule module : swerveModules) {
       states[module.moduleNumber] = module.getState();
+    }
+    return states;
+  }
+
+  public SwerveModuleState[] getDesiredStates() {
+    SwerveModuleState[] states = new SwerveModuleState[swerveDriveConfiguration.moduleCount];
+    for (SwerveModule module : swerveModules) {
+      states[module.moduleNumber] = module.getDesiredState();
     }
     return states;
   }
@@ -1016,7 +1046,7 @@ public class SwerveDrive {
   public void updateOdometry() {
     SwerveDriveTelemetry.startOdomCycle();
     odometryLock.lock();
-    invalidateCache();
+    //    invalidateCache();
     try {
       // Update odometry
       swerveDrivePoseEstimator.update(getYaw(), getModulePositions());

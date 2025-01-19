@@ -10,8 +10,8 @@ import edu.wpi.first.wpilibj.AnalogInput;
 
 public class AlgaeRollersIOSystems implements AlgaeRollersIO {
   // TODO Change device ID
-  private final SparkMax motor = new SparkMax(18, MotorType.kBrushless);
-  private final AnalogInput beamInput = new AnalogInput(0);
+  private final SparkMax motor = new SparkMax(13, MotorType.kBrushless);
+  private final AnalogInput beamInput = new AnalogInput(1);
   // private double feedForward = 0;
   private SparkMaxConfig config;
 
