@@ -5,7 +5,6 @@
 package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
-
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -31,7 +30,6 @@ import frc.robot.Subsystems.Wrist.Wrist;
 public class RobotContainer {
 
   private final SendableChooser<Command> autoChooser;
-
 
   // The robot's subsystems and commands are defined here...
   private AlgaeRollers algaeRollers;
@@ -83,11 +81,11 @@ public class RobotContainer {
   }
 
   /**
-     * Use this to pass the autonomous command to the main {@link Robot} class.
-     *
-     * @return the command to run in autonomous
-     */
-    public Command getAutonomousCommand() {
-      return autoChooser.getSelected();
+   * Use this to pass the autonomous command to the main {@link Robot} class.
+   *
+   * @return the command to run in autonomous
+   */
+  public Command getAutonomousCommand() {
+    return autoChooser.getSelected();
   }
 }

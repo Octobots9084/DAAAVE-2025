@@ -48,11 +48,13 @@ public class AlignReef extends Command {
 
   @Override
   public boolean isFinished() {
-    if((aligningRight && swerve.isAlignedToCoralRight)||(!aligningRight && swerve.isAlignedToCoralLeft)){
-        CommandScheduler.getInstance().schedule(new SetCoralRollersState(CoralRollersState.REJECTING));
+    if ((aligningRight && swerve.isAlignedToCoralRight)
+        || (!aligningRight && swerve.isAlignedToCoralLeft)) {
+      CommandScheduler.getInstance()
+          .schedule(new SetCoralRollersState(CoralRollersState.REJECTING));
     }
-    //check if the coral has left robot
-    //if true return true
+    // check if the coral has left robot
+    // if true return true
     return false;
   }
 }
