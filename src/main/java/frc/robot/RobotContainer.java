@@ -56,7 +56,7 @@ public class RobotContainer {
                 MathUtil.applyDeadband(
                     -driverLeft.getRawAxis(1), Constants.OperatorConstants.LEFT_X_DEADBAND),
             () -> -driverLeft.getRawAxis(0),
-            () -> -driverRight.getRawAxis(0));
+            () -> driverRight.getRawAxis(0));
     Swerve.getInstance();
     Swerve.getInstance().setDefaultCommand(closedFieldRel);
     SmartDashboard.putString("test", "test");

@@ -175,6 +175,7 @@ public class SwerveModule {
 
     // Save the current state.
     lastState = getState();
+    this.desiredState = new SwerveModuleState();
 
     noEncoderWarning =
         new Alert(
