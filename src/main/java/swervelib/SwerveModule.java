@@ -17,6 +17,7 @@ import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.util.MathUtil;
 import swervelib.encoders.SparkMaxEncoderSwerve;
 import swervelib.encoders.SwerveAbsoluteEncoder;
 import swervelib.math.SwerveMath;
@@ -366,7 +367,6 @@ public class SwerveModule {
    */
   public void setDesiredState(SwerveModuleState desiredState, boolean isOpenLoop, boolean force) {
     desiredState.optimize(Rotation2d.fromDegrees(getAbsolutePosition()));
-    this.desiredState = desiredState;
 
     // If we are forcing the angle
     if (!force && antiJitterEnabled) {
@@ -400,6 +400,10 @@ public class SwerveModule {
    */
   public void setDesiredState(
       SwerveModuleState desiredState, boolean isOpenLoop, double driveFeedforwardVoltage) {
+    this.desiredState =
+        new SwerveModuleState(
+            desiredState.speedMetersPerSecond,
+            new Rotation2d(MathUtil.wrapToCircle(desiredState.angle.getRadians(), 2 * Math.PI)));
 
     if (isOpenLoop) {
       double percentOutput =
