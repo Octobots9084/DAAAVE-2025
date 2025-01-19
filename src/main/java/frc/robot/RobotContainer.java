@@ -4,8 +4,12 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.auto.AutoBuilder;
+
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import frc.robot.Commands.AlgaeRollers.AlgaeRollersManual;
 import frc.robot.Commands.CoralRollers.CoralRollersManual;
@@ -25,6 +29,9 @@ import frc.robot.Subsystems.Wrist.Wrist;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
+
+  private final SendableChooser<Command> autoChooser;
+
 
   // The robot's subsystems and commands are defined here...
   private AlgaeRollers algaeRollers;
@@ -50,6 +57,9 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the trigger bindings
 
+    autoChooser = AutoBuilder.buildAutoChooser(); // Default auto will be `Commands.none()`
+    SmartDashboard.putData("Auto Mode", autoChooser);
+
     TeleopDrive closedFieldRel =
         new TeleopDrive(
             () ->
@@ -70,5 +80,14 @@ public class RobotContainer {
     // this.coralRollersManuel = new CoralRollersManual();
     // this.elevatorManel = new ElevatorManual();
     // this.wristManuel = new WristManual();
+  }
+
+  /**
+     * Use this to pass the autonomous command to the main {@link Robot} class.
+     *
+     * @return the command to run in autonomous
+     */
+    public Command getAutonomousCommand() {
+      return autoChooser.getSelected();
   }
 }
