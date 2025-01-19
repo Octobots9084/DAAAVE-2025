@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.885472972972973,
-        "y": 3.837246621621621
+        "x": 2.8618465909090913,
+        "y": 3.990099431818182
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.0627705153320983,
-        "y": 2.570874294243281
+        "x": 2.4131250000000004,
+        "y": 2.5940767045454542
       },
       "isLocked": false,
       "linkedName": "b"
     },
     {
       "anchor": {
-        "x": 1.525653409090909,
-        "y": 0.67953125
+        "x": 1.6552840909090907,
+        "y": 0.7194176136363637
       },
       "prevControl": {
-        "x": 2.3011808942477887,
-        "y": 1.7625698807355175
+        "x": 2.0242329545454547,
+        "y": 1.6268323863636351
       },
       "nextControl": null,
       "isLocked": false,
@@ -33,16 +33,16 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 9.81,
+    "maxVelocity": 9.0,
     "maxAcceleration": 7.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
-    "nominalVoltage": 12.0,
+    "nominalVoltage": 10.0,
     "unlimited": false
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 53.567758597874096
+    "rotation": 55.0
   },
   "reversed": false,
   "folder": "place_to_lowstation",

@@ -13,43 +13,43 @@
         {
           "type": "path",
           "data": {
-            "pathName": "f_to_low"
+            "pathName": "f_to_lowstation"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "low_to_b"
+            "pathName": "lowstation_to_e"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "b_to_mid"
+            "pathName": "e_to_lowstation"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "mid_to_a"
+            "pathName": "lowstation_to_d"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "a_to_top"
+            "pathName": "d_to_lowstation"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "top_to_l"
+            "pathName": "lowstation_to_c"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "l_to_topstation"
+            "pathName": "c_to_lowstation"
           }
         }
       ]

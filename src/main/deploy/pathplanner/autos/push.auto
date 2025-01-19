@@ -7,37 +7,25 @@
         {
           "type": "path",
           "data": {
-            "pathName": "initial_to_f"
+            "pathName": "back"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "f_to_lowstation"
+            "pathName": "side"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "lowstation_to_c"
+            "pathName": "push"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "c_to_lowstation"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "lowstation_to_e"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "e_to_process"
+            "pathName": "around"
           }
         }
       ]

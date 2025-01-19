@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.101120746363367,
-        "y": 0.5239861942272497
+        "x": 5.9627356062996,
+        "y": 0.3830988538183493
       },
       "isLocked": false,
       "linkedName": "Processor"
@@ -20,24 +20,24 @@
         "y": 1.00859375
       },
       "prevControl": {
-        "x": 4.856164772727273,
-        "y": 0.729389204545454
+        "x": 4.736587566612149,
+        "y": 0.7838627437444948
       },
       "nextControl": {
-        "x": 3.769827488349409,
-        "y": 1.1833809054794877
+        "x": 3.8871888046574625,
+        "y": 1.1318654648478834
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 1.525653409090909,
-        "y": 0.67953125
+        "x": 1.6552840909090907,
+        "y": 0.7194176136363637
       },
       "prevControl": {
-        "x": 2.357769452481792,
-        "y": 1.9927237155707318
+        "x": 2.389919788214418,
+        "y": 1.9429617792993596
       },
       "nextControl": null,
       "isLocked": false,
@@ -49,11 +49,11 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 9.81,
+    "maxVelocity": 9.0,
     "maxAcceleration": 7.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
-    "nominalVoltage": 12.0,
+    "nominalVoltage": 10.0,
     "unlimited": false
   },
   "goalEndState": {

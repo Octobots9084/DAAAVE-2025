@@ -7,43 +7,43 @@
         {
           "type": "path",
           "data": {
-            "pathName": "initial_to_i"
+            "pathName": "initial_to_j"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "i_to_topstation"
+            "pathName": "j_to_topstation"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "topstation_to_a"
+            "pathName": "topstation_to_k"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "a_to_topstation"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "topstation_to_b"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "b_to_topstation"
+            "pathName": "k_to_topstation"
           }
         },
         {
           "type": "path",
           "data": {
             "pathName": "topstation_to_l"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "l_to_topstation"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "topstation_to_a"
           }
         }
       ]

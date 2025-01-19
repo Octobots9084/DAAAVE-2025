@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 6.1425,
-        "y": 3.966499999999999
+        "x": 7.039943181818181,
+        "y": 0.8091619318181813
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.973329726718688,
-        "y": 2.549395721309831
+        "x": 7.478693181818182,
+        "y": 2.045639204545454
       },
       "isLocked": false,
-      "linkedName": "4"
+      "linkedName": "end"
     },
     {
       "anchor": {
-        "x": 6.903,
-        "y": 0.4857499999999993
+        "x": 5.215142045454546,
+        "y": 2.823423295454545
       },
       "prevControl": {
-        "x": 6.836003646608304,
-        "y": 3.738820420691923
+        "x": 6.4217045454545465,
+        "y": 3.1325426136363625
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Processor"
+      "linkedName": "f"
     }
   ],
   "rotationTargets": [],
@@ -33,22 +33,22 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 9.81,
+    "maxVelocity": 9.0,
     "maxAcceleration": 7.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
-    "nominalVoltage": 12.0,
+    "nominalVoltage": 10.0,
     "unlimited": false
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.307530132484423
+    "rotation": 119.99999999999999
   },
   "reversed": false,
-  "folder": "algea_to_processor",
+  "folder": "push_paths",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 179.3634064240365
+    "rotation": 180.0
   },
   "useDefaultConstraints": true
 }
