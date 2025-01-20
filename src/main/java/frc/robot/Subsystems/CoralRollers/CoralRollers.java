@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import org.littletonrobotics.junction.Logger;
 
 public class CoralRollers extends SubsystemBase {
-  private final CoralRollersIO io;
+  public final CoralRollersIO io;
   private static CoralRollers instance = null;
   private final CoralRollersIOInputsAutoLogged inputs = new CoralRollersIOInputsAutoLogged();
 
@@ -35,7 +35,7 @@ public class CoralRollers extends SubsystemBase {
   }
 
   public boolean hasCoral() {
-    return this.io.hasCoral();
+    return io.hasCoral();
   }
 
   public void updateSim() {
