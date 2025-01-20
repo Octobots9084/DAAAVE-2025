@@ -5,15 +5,12 @@
 package frc.robot;
 
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
-import frc.robot.Constants.OperatorConstants;
 import frc.robot.Commands.AlgaeRollers.AlgaeRollersManual;
 import frc.robot.Commands.CoralRollers.CoralRollersManual;
 import frc.robot.Commands.Elevator.ElevatorManual;
 import frc.robot.Commands.Wrist.WristManual;
 import frc.robot.Commands.swerve.drivebase.TeleopDrive;
+import frc.robot.Constants.OperatorConstants;
 import frc.robot.Subsystems.AlgaeRollers.AlgaeRollers;
 import frc.robot.Subsystems.AlgaeRollers.AlgaeRollersIO;
 import frc.robot.Subsystems.AlgaeRollers.AlgaeRollersIOSim;
@@ -33,7 +30,6 @@ import frc.robot.Subsystems.Wrist.Wrist;
 import frc.robot.Subsystems.Wrist.WristIO;
 import frc.robot.Subsystems.Wrist.WristIOSim;
 import frc.robot.Subsystems.Wrist.WristIOSparkMax;
-import frc.robot.Subsystems.Wrist.WristStates;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -54,7 +50,6 @@ public class RobotContainer {
   private CoralRollersManual coralRollersManuel;
   private ElevatorManual elevatorManel;
   private WristManual wristManuel;
-
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -116,18 +111,17 @@ public class RobotContainer {
     TeleopDrive closedFieldRel =
         new TeleopDrive(
             () ->
-              MathUtil.applyDeadband(
-                -ButtonConfig.driverLeft.getRawAxis(1), OperatorConstants.LEFT_Y_DEADBAND),
-            () -> 
-              MathUtil.applyDeadband(
-                -ButtonConfig.driverLeft.getRawAxis(0), OperatorConstants.LEFT_X_DEADBAND),
-            () -> 
-              MathUtil.applyDeadband(
-                ButtonConfig.driverRight.getRawAxis(0), OperatorConstants.RIGHT_X_DEADBAND));
+                MathUtil.applyDeadband(
+                    -ButtonConfig.driverLeft.getRawAxis(1), OperatorConstants.LEFT_Y_DEADBAND),
+            () ->
+                MathUtil.applyDeadband(
+                    -ButtonConfig.driverLeft.getRawAxis(0), OperatorConstants.LEFT_X_DEADBAND),
+            () ->
+                MathUtil.applyDeadband(
+                    ButtonConfig.driverRight.getRawAxis(0), OperatorConstants.RIGHT_X_DEADBAND));
     Swerve.getInstance();
     Swerve.getInstance().setDefaultCommand(closedFieldRel);
     ButtonConfig buttons = new ButtonConfig();
     buttons.initTeleop();
-
   }
 }

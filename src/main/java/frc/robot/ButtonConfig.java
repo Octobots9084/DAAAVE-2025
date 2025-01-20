@@ -13,6 +13,12 @@ public class ButtonConfig {
   CommandJoystick coDriverButtons = ControlMap.CO_DRIVER_BUTTONS;
 
   public void initTeleop() {
-    driverButtons.button(6).onTrue(new InstantCommand(()->{Swerve.getInstance().zeroGyro();}));
+    driverButtons
+        .button(6)
+        .onTrue(
+            new InstantCommand(
+                () -> {
+                  Swerve.getInstance().zeroGyro();
+                }));
   }
 }

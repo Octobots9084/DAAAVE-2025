@@ -400,7 +400,7 @@ public class SwerveModule {
    */
   public void setDesiredState(
       SwerveModuleState desiredState, boolean isOpenLoop, double driveFeedforwardVoltage) {
-    this.desiredState =
+        this.desiredState =
         new SwerveModuleState(
             desiredState.speedMetersPerSecond,
             new Rotation2d(MathUtil.wrapToCircle(desiredState.angle.getRadians(), 2 * Math.PI)));
