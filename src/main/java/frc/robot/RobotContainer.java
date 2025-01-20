@@ -55,18 +55,21 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the trigger bindings
 
-    autoChooser = AutoBuilder.buildAutoChooser(); // Default auto will be `Commands.none()`
-    SmartDashboard.putData("Auto Mode", autoChooser);
-
     TeleopDrive closedFieldRel =
         new TeleopDrive(
             () ->
                 MathUtil.applyDeadband(
-                    -driverLeft.getRawAxis(1), Constants.OperatorConstants.LEFT_X_DEADBAND),
-            () -> -driverLeft.getRawAxis(0),
-            () -> driverRight.getRawAxis(0));
+                    -driverLeft.getRawAxis(1), Constants.OperatorConstants.LEFT_Y_DEADBAND),
+            () ->
+                MathUtil.applyDeadband(
+                    -driverLeft.getRawAxis(0), Constants.OperatorConstants.LEFT_X_DEADBAND),
+            () ->
+                MathUtil.applyDeadband(
+                    driverRight.getRawAxis(0), Constants.OperatorConstants.RIGHT_X_DEADBAND));
     Swerve.getInstance();
     Swerve.getInstance().setDefaultCommand(closedFieldRel);
+    autoChooser = AutoBuilder.buildAutoChooser(); // Default auto will be `Commands.none()`
+    SmartDashboard.putData("Auto Mode", autoChooser);
     SmartDashboard.putString("test", "test");
 
     // this.algaeRollers = new AlgaeRollers();
