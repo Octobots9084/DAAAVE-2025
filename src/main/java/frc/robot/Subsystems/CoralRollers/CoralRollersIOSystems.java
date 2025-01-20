@@ -1,5 +1,6 @@
 package frc.robot.Subsystems.CoralRollers;
 
+import com.ctre.phoenix6.hardware.CANrange;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
@@ -11,7 +12,7 @@ import edu.wpi.first.wpilibj.AnalogInput;
 public class CoralRollersIOSystems implements CoralRollersIO {
   private final SparkMax motor = new SparkMax(14, MotorType.kBrushless);
   private final AnalogInput mouthBeam = new AnalogInput(2);
-  private final AnalogInput rearBeam = new AnalogInput(3);
+  public CANrange coralDetector = new CANrange(0);
 
   private SparkMaxConfig config;
 
@@ -32,8 +33,8 @@ public class CoralRollersIOSystems implements CoralRollersIO {
     inputs.appliedVolts = motor.getAppliedOutput() * motor.getBusVoltage();
     inputs.currentAmps = motor.getOutputCurrent();
     // TODO change 100
-    inputs.isIntaking = mouthBeam.getValue() > 100;
-    inputs.hasCoral = rearBeam.getValue() > 100;
+    inputs.coralInShute = mouthBeam.getValue() > 100;
+    inputs.hasCoral = hasCoral();
   }
 
   @Override
@@ -51,6 +52,6 @@ public class CoralRollersIOSystems implements CoralRollersIO {
   }
 
   public boolean hasCoral() {
-    return this.rearBeam.getValue() > 100;
+    return coralDetector.getDistance().getValueAsDouble() < 0.05;
   }
 }
