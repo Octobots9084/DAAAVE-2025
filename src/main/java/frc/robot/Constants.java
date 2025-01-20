@@ -42,7 +42,7 @@ public final class Constants {
     REPLAY
   }
 
-  public class OperatorConstants {
+  public static class OperatorConstants {
     // Joystick Deadband
     public static final double LEFT_X_DEADBAND = 0.07;
     public static final double LEFT_Y_DEADBAND = 0.07;
