@@ -4,6 +4,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Commands.CoralRollers.SetCoralRollersState;
 import frc.robot.States.*;
+import frc.robot.Subsystems.CoralRollers.CoralRollers;
+
 import frc.robot.Subsystems.CoralRollers.CoralRollersState;
 import frc.robot.Subsystems.Elevator.ElevatorStates;
 import frc.robot.Subsystems.Swerve.Swerve;
@@ -54,7 +56,9 @@ public class AlignReef extends Command {
           .schedule(new SetCoralRollersState(CoralRollersState.REJECTING));
     }
     // check if the coral has left robot
-    // if true return true
+    if(!CoralRollers.getInstance().io.hasCoral()){
+      return true;
+    }
     return false;
   }
 }
