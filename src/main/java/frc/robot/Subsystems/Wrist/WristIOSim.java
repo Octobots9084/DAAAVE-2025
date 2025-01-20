@@ -1,24 +1,42 @@
 package frc.robot.Subsystems.Wrist;
 
-import com.revrobotics.sim.SparkRelativeEncoderSim;
-import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.system.plant.DCMotor;
+import edu.wpi.first.math.system.plant.LinearSystemId;
+import edu.wpi.first.wpilibj.simulation.DCMotorSim;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class WristIOSim implements WristIO {
-  WristIOSparkMax sparkMaxes = new WristIOSparkMax();
-  SparkRelativeEncoderSim wristSparkSim = new SparkRelativeEncoderSim(sparkMaxes.getWristMotor());
-  private double appliedVolts = 0;
+  DCMotorSim motorSim =
+      new DCMotorSim(
+          LinearSystemId.createDCMotorSystem(DCMotor.getNeo550(1), 0.025, 1), DCMotor.getNeo550(1));
+  PIDController simController = new PIDController(0, 0, 0);
+  double targetPosition;
 
   @Override
   public void updateInputs(WristIOInputs inputs) {
 
-    inputs.wristPositionRotations = wristSparkSim.getPosition();
-    inputs.wristVelocityRPM = wristSparkSim.getVelocity();
-    inputs.wristAppliedVolts = appliedVolts;
-    inputs.wristCurrentAmps = 0;
-    inputs.wristTemperature = 0;
+    inputs.wristPositionRotations = motorSim.getAngularPositionRotations();
+    inputs.wristVelocityRPM = motorSim.getAngularVelocityRPM();
+    inputs.wristAppliedVolts = motorSim.getInputVoltage();
+    inputs.wristCurrentAmps = motorSim.getCurrentDrawAmps();
   }
 
-  public void setVoltage(double volts) {
-    appliedVolts = MathUtil.clamp(volts, -7.0, 7.0);
+  @Override
+  public void configurePID(double kP, double kI, double kD) {
+    simController.setPID(kP, kI, kD);
+  }
+
+  @Override
+  public void setPosition(double position) {
+    SmartDashboard.putNumber("Position", position);
+    targetPosition = position;
+  }
+
+  @Override
+  public void updateSim() {
+    motorSim.setInputVoltage(
+        simController.calculate(motorSim.getAngularPositionRotations(), targetPosition));
+    motorSim.update(0.02);
   }
 }

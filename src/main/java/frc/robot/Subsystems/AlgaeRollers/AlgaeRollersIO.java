@@ -14,7 +14,13 @@ public interface AlgaeRollersIO {
   /** Updates the set of loggable inputs. */
   public default void updateInputs(AlgaeRollersIOInputs inputs) {}
 
-  public default void setVoltage(double Position) {}
+  public default void setVoltage(double volts) {}
+
+  public default double getVoltage() {
+    return 0;
+  }
+
+  public default void updateSim() {}
 
   public default boolean hasAlgae() {
     return false;

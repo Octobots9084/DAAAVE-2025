@@ -53,8 +53,4 @@ public class CoralRollersIOSystems implements CoralRollersIO {
   public boolean hasCoral() {
     return this.rearBeam.getValue() > 100;
   }
-
-  public SparkMax getMotor() {
-    return motor;
-  }
 }

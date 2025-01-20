@@ -16,11 +16,13 @@ public interface CoralRollersIO {
 
   public default void setVoltage(double Position) {}
 
-  public default boolean hasCoral() {
-    return false;
+  public default double getVoltage() {
+    return 0;
   }
 
-  public default boolean isIntaking() {
+  public default void updateSim() {}
+
+  public default boolean hasCoral() {
     return false;
   }
 }

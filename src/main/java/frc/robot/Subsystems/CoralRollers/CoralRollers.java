@@ -4,19 +4,24 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import org.littletonrobotics.junction.Logger;
 
 public class CoralRollers extends SubsystemBase {
-  private final CoralRollersIOSystems io;
+  private final CoralRollersIO io;
   private static CoralRollers instance = null;
   private final CoralRollersIOInputsAutoLogged inputs = new CoralRollersIOInputsAutoLogged();
 
   public static CoralRollers getInstance() {
     if (instance == null) {
-      instance = new CoralRollers();
+      throw new IllegalStateException("CoralRollers instance not set");
     }
     return instance;
   }
 
-  public CoralRollers() {
-    this.io = new CoralRollersIOSystems();
+  public static CoralRollers setInstance(CoralRollersIO io) {
+    instance = new CoralRollers(io);
+    return instance;
+  }
+
+  public CoralRollers(CoralRollersIO io) {
+    this.io = io;
   }
 
   @Override
@@ -29,11 +34,11 @@ public class CoralRollers extends SubsystemBase {
     io.setVoltage(state.voltage);
   }
 
-  public boolean isIntaking() {
-    return this.io.isIntaking();
-  }
-
   public boolean hasCoral() {
     return this.io.hasCoral();
+  }
+
+  public void updateSim() {
+    io.updateSim();
   }
 }

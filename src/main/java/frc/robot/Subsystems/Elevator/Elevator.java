@@ -5,26 +5,26 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import org.littletonrobotics.junction.Logger;
 
 public class Elevator extends SubsystemBase {
-  private final ElevatorIOSparkMax io;
+  private final ElevatorIO io;
   private final ElevatorIOInputsAutoLogged inputs = new ElevatorIOInputsAutoLogged();
 
   private static Elevator instance;
 
-  public static void setInstance(Elevator subsystem) {
-    Elevator.instance = subsystem;
-  }
-
   public static Elevator getInstance() {
     if (instance == null) {
-      instance = new Elevator();
+      throw new IllegalStateException("Elevator instance not set");
     }
     return instance;
   }
 
-  /** Creates a new Elevator. */
-  public Elevator() {
-    this.io = new ElevatorIOSparkMax();
-    io.configurePID(8, 0, 0);
+  public static Elevator setInstance(ElevatorIO io) {
+    instance = new Elevator(io);
+    return instance;
+  }
+
+  private Elevator(ElevatorIO io) {
+    this.io = io;
+    this.io.configurePID(0.2, 0, 0);
   }
 
   @Override
@@ -33,7 +33,6 @@ public class Elevator extends SubsystemBase {
     Logger.processInputs("Elevator", inputs);
   }
 
-  /** Run closed loop at the specified velocity. */
   public void setState(ElevatorStates state) {
     io.setPosition(state.leftPosition, state.rightPosition);
 
@@ -43,5 +42,9 @@ public class Elevator extends SubsystemBase {
   public boolean isAtState(ElevatorStates state, double tolerance) {
     return MathUtil.isNear(this.inputs.leftPositionRotations, state.leftPosition, tolerance)
         || MathUtil.isNear(this.inputs.rightPositionRotations, state.rightPosition, tolerance);
+  }
+
+  public void updateSim() {
+    io.updateSim();
   }
 }

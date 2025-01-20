@@ -11,8 +11,8 @@ import frc.robot.Subsystems.Wrist.WristStates;
 public class PrepSourceCollect extends SequentialCommandGroup {
   public PrepSourceCollect() {
     addCommands(
-      new SetElevatorState(ElevatorStates.LOW),
-      new SetWristState(WristStates.HORIZONTAL),
-      new SetCoralRollersState(CoralRollersState.INTAKING));
+        new SetElevatorState(ElevatorStates.LOW),
+        new SetWristState(WristStates.HORIZONTAL),
+        new SetCoralRollersState(CoralRollersState.INTAKING));
   }
 }

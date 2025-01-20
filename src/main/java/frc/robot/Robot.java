@@ -15,6 +15,10 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.Subsystems.AlgaeRollers.AlgaeRollers;
+import frc.robot.Subsystems.CoralRollers.CoralRollers;
+import frc.robot.Subsystems.Elevator.Elevator;
+import frc.robot.Subsystems.Wrist.Wrist;
 import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
@@ -125,5 +129,10 @@ public class Robot extends LoggedRobot {
 
   /** This function is called periodically whilst in simulation. */
   @Override
-  public void simulationPeriodic() {}
+  public void simulationPeriodic() {
+    AlgaeRollers.getInstance().updateSim();
+    CoralRollers.getInstance().updateSim();
+    Elevator.getInstance().updateSim();
+    Wrist.getInstance().updateSim();
+  }
 }

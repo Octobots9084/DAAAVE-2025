@@ -77,9 +77,9 @@ public class ElevatorIOSparkMax implements ElevatorIO {
 
   @Override
   public void configurePID(double kP, double kI, double kD) {
-    rightConfig.closedLoop.pid(0, 0, 0);
+    rightConfig.closedLoop.pid(kP, kI, kD);
 
-    leftConfig.closedLoop.pid(0, 0, 0);
+    leftConfig.closedLoop.pid(kP, kI, kD);
   }
 
   @Override
