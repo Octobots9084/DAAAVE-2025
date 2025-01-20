@@ -8,6 +8,7 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
+import frc.robot.Constants.OperatorConstants;
 import frc.robot.Commands.AlgaeRollers.AlgaeRollersManual;
 import frc.robot.Commands.CoralRollers.CoralRollersManual;
 import frc.robot.Commands.Elevator.ElevatorManual;
@@ -54,14 +55,6 @@ public class RobotContainer {
   private ElevatorManual elevatorManel;
   private WristManual wristManuel;
 
-  // Replace with CommandPS4Controller or CommandJoystick if needed
-  CommandJoystick driverLeft = new CommandJoystick(Constants.OperatorConstants.DRIVER_LEFT);
-  CommandJoystick driverRight = new CommandJoystick(Constants.OperatorConstants.DRIVER_RIGHT);
-  CommandJoystick driverButtons = new CommandJoystick(Constants.OperatorConstants.DRIVER_BUTTONS);
-  CommandJoystick coDriverLeft = new CommandJoystick(Constants.OperatorConstants.CO_DRIVER_LEFT);
-  CommandJoystick coDriverRight = new CommandJoystick(Constants.OperatorConstants.CO_DRIVER_RIGHT);
-  CommandJoystick coDriverButtons =
-      new CommandJoystick(Constants.OperatorConstants.CO_DRIVER_BUTTONS);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -123,21 +116,18 @@ public class RobotContainer {
     TeleopDrive closedFieldRel =
         new TeleopDrive(
             () ->
-                MathUtil.applyDeadband(
-                    -driverLeft.getRawAxis(1), Constants.OperatorConstants.LEFT_X_DEADBAND),
-            () -> -driverLeft.getRawAxis(0),
-            () -> driverRight.getRawAxis(0));
+              MathUtil.applyDeadband(
+                -ButtonConfig.driverLeft.getRawAxis(1), OperatorConstants.LEFT_Y_DEADBAND),
+            () -> 
+              MathUtil.applyDeadband(
+                -ButtonConfig.driverLeft.getRawAxis(0), OperatorConstants.LEFT_X_DEADBAND),
+            () -> 
+              MathUtil.applyDeadband(
+                ButtonConfig.driverRight.getRawAxis(0), OperatorConstants.RIGHT_X_DEADBAND));
     Swerve.getInstance();
     Swerve.getInstance().setDefaultCommand(closedFieldRel);
-    SmartDashboard.putString("test", "test");
+    ButtonConfig buttons = new ButtonConfig();
+    buttons.initTeleop();
 
-    driverLeft
-        .button(3)
-        .onTrue(
-            new InstantCommand(
-                () -> {
-                  SmartDashboard.putString("Command Triggered", "Command");
-                  wrist.setState(WristStates.FOURTYFIVE);
-                }));
   }
 }
