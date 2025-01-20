@@ -2,7 +2,7 @@
   "drive": {
     "type": "talonfx",
     "id": 9,
-    "canbus": "KrakensBus"
+    "canbus": null
   },
   "angle": {
     "type": "sparkmax",

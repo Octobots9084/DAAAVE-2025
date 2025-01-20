@@ -5,13 +5,12 @@
 package frc.robot;
 
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.Constants.OperatorConstants;
 import frc.robot.Commands.AlgaeRollers.AlgaeRollersManual;
 import frc.robot.Commands.CoralRollers.CoralRollersManual;
 import frc.robot.Commands.Elevator.ElevatorManual;
 import frc.robot.Commands.Wrist.WristManual;
 import frc.robot.Commands.swerve.drivebase.TeleopDrive;
+import frc.robot.Constants.OperatorConstants;
 import frc.robot.Subsystems.AlgaeRollers.AlgaeRollers;
 import frc.robot.Subsystems.CoralRollers.CoralRollers;
 import frc.robot.Subsystems.Elevator.Elevator;
@@ -37,7 +36,6 @@ public class RobotContainer {
   private ElevatorManual elevatorManel;
   private WristManual wristManuel;
 
-
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
@@ -45,21 +43,19 @@ public class RobotContainer {
     TeleopDrive closedFieldRel =
         new TeleopDrive(
             () ->
-              MathUtil.applyDeadband(
-                -ButtonConfig.driverLeft.getRawAxis(1), OperatorConstants.LEFT_Y_DEADBAND),
-            () -> 
-              MathUtil.applyDeadband(
-                -ButtonConfig.driverLeft.getRawAxis(0), OperatorConstants.LEFT_X_DEADBAND),
-            () -> 
-              MathUtil.applyDeadband(
-                ButtonConfig.driverRight.getRawAxis(0), OperatorConstants.RIGHT_X_DEADBAND));
+                MathUtil.applyDeadband(
+                    -ButtonConfig.driverLeft.getRawAxis(1), OperatorConstants.LEFT_Y_DEADBAND),
+            () ->
+                MathUtil.applyDeadband(
+                    -ButtonConfig.driverLeft.getRawAxis(0), OperatorConstants.LEFT_X_DEADBAND),
+            () ->
+                MathUtil.applyDeadband(
+                    ButtonConfig.driverRight.getRawAxis(0), OperatorConstants.RIGHT_X_DEADBAND));
     Swerve.getInstance();
     Swerve.getInstance().setDefaultCommand(closedFieldRel);
 
     ButtonConfig buttons = new ButtonConfig();
     buttons.initTeleop();
-
-
 
     // this.algaeRollers = new AlgaeRollers();
     // this.coralRollers = new CoralRollers();

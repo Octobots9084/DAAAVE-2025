@@ -2,6 +2,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
+import frc.robot.Commands.complex.AlignToTarget;
 import frc.robot.Subsystems.Swerve.Swerve;
 
 public class ButtonConfig {
@@ -13,6 +14,13 @@ public class ButtonConfig {
   CommandJoystick coDriverButtons = ControlMap.CO_DRIVER_BUTTONS;
 
   public void initTeleop() {
-    driverButtons.button(6).onTrue(new InstantCommand(()->{Swerve.getInstance().zeroGyro();}));
+    driverButtons.button(1).whileTrue(new AlignToTarget());
+    driverButtons
+        .button(6)
+        .onTrue(
+            new InstantCommand(
+                () -> {
+                  Swerve.getInstance().zeroGyro();
+                }));
   }
 }
