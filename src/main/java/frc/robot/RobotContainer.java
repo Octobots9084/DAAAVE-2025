@@ -15,11 +15,26 @@ import frc.robot.Commands.CoralRollers.CoralRollersManual;
 import frc.robot.Commands.Elevator.ElevatorManual;
 import frc.robot.Commands.Wrist.WristManual;
 import frc.robot.Commands.swerve.drivebase.TeleopDrive;
+import frc.robot.Constants.OperatorConstants;
 import frc.robot.Subsystems.AlgaeRollers.AlgaeRollers;
+import frc.robot.Subsystems.AlgaeRollers.AlgaeRollersIO;
+import frc.robot.Subsystems.AlgaeRollers.AlgaeRollersIOSim;
+import frc.robot.Subsystems.AlgaeRollers.AlgaeRollersIOSystems;
 import frc.robot.Subsystems.CoralRollers.CoralRollers;
+import frc.robot.Subsystems.CoralRollers.CoralRollersIO;
+import frc.robot.Subsystems.CoralRollers.CoralRollersIOSim;
+import frc.robot.Subsystems.CoralRollers.CoralRollersIOSystems;
 import frc.robot.Subsystems.Elevator.Elevator;
+import frc.robot.Subsystems.Elevator.ElevatorIO;
+import frc.robot.Subsystems.Elevator.ElevatorIOSim;
+import frc.robot.Subsystems.Elevator.ElevatorIOSparkMax;
 import frc.robot.Subsystems.Swerve.Swerve;
+import frc.robot.Subsystems.Swerve.SwerveIO;
+import frc.robot.Subsystems.Swerve.SwerveIOSystem;
 import frc.robot.Subsystems.Wrist.Wrist;
+import frc.robot.Subsystems.Wrist.WristIO;
+import frc.robot.Subsystems.Wrist.WristIOSim;
+import frc.robot.Subsystems.Wrist.WristIOSparkMax;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -36,51 +51,87 @@ public class RobotContainer {
   private CoralRollers coralRollers;
   private Elevator elevator;
   private Wrist wrist;
+  private Swerve swerve;
 
   private AlgaeRollersManual algaeRollersManual;
   private CoralRollersManual coralRollersManuel;
   private ElevatorManual elevatorManel;
   private WristManual wristManuel;
 
-  // Replace with CommandPS4Controller or CommandJoystick if needed
-  CommandJoystick driverLeft = new CommandJoystick(Constants.OperatorConstants.DRIVER_LEFT);
-  CommandJoystick driverRight = new CommandJoystick(Constants.OperatorConstants.DRIVER_RIGHT);
-  CommandJoystick driverButtons = new CommandJoystick(Constants.OperatorConstants.DRIVER_BUTTONS);
-  CommandJoystick coDriverLeft = new CommandJoystick(Constants.OperatorConstants.CO_DRIVER_LEFT);
-  CommandJoystick coDriverRight = new CommandJoystick(Constants.OperatorConstants.CO_DRIVER_RIGHT);
-  CommandJoystick coDriverButtons =
-      new CommandJoystick(Constants.OperatorConstants.CO_DRIVER_BUTTONS);
-
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    // Configure the trigger bindings
+    switch (Constants.currentMode) {
+      case REAL:
+        AlgaeRollers.setInstance(new AlgaeRollersIOSystems());
+        algaeRollers = AlgaeRollers.getInstance();
+
+        CoralRollers.setInstance(new CoralRollersIOSystems());
+        coralRollers = CoralRollers.getInstance();
+
+        Elevator.setInstance(new ElevatorIOSparkMax());
+        elevator = Elevator.getInstance();
+
+        Wrist.setInstance(new WristIOSparkMax());
+        wrist = Wrist.getInstance();
+
+        Swerve.setInstance(new SwerveIOSystem());
+        swerve = Swerve.getInstance();
+        break;
+
+      case SIM:
+        AlgaeRollers.setInstance(new AlgaeRollersIOSim());
+        algaeRollers = AlgaeRollers.getInstance();
+
+        CoralRollers.setInstance(new CoralRollersIOSim());
+        coralRollers = CoralRollers.getInstance();
+
+        Elevator.setInstance(new ElevatorIOSim());
+        elevator = Elevator.getInstance();
+
+        Wrist.setInstance(new WristIOSim());
+        wrist = Wrist.getInstance();
+
+        Swerve.setInstance(new SwerveIOSystem());
+        swerve = Swerve.getInstance();
+        break;
+
+      case REPLAY:
+        AlgaeRollers.setInstance(new AlgaeRollersIO() {});
+        algaeRollers = AlgaeRollers.getInstance();
+
+        CoralRollers.setInstance(new CoralRollersIO() {});
+        coralRollers = CoralRollers.getInstance();
+
+        Elevator.setInstance(new ElevatorIO() {});
+        elevator = Elevator.getInstance();
+
+        Wrist.setInstance(new WristIO() {});
+        wrist = Wrist.getInstance();
+
+        Swerve.setInstance(new SwerveIO() {});
+        swerve = Swerve.getInstance();
+        break;
+      default:
+        break;
+    }
 
     TeleopDrive closedFieldRel =
         new TeleopDrive(
             () ->
                 MathUtil.applyDeadband(
-                    -driverLeft.getRawAxis(1), Constants.OperatorConstants.LEFT_Y_DEADBAND),
+                    -ButtonConfig.driverLeft.getRawAxis(1), OperatorConstants.LEFT_Y_DEADBAND),
             () ->
                 MathUtil.applyDeadband(
-                    -driverLeft.getRawAxis(0), Constants.OperatorConstants.LEFT_X_DEADBAND),
+                    -ButtonConfig.driverLeft.getRawAxis(0), OperatorConstants.LEFT_X_DEADBAND),
             () ->
                 MathUtil.applyDeadband(
-                    driverRight.getRawAxis(0), Constants.OperatorConstants.RIGHT_X_DEADBAND));
+                    ButtonConfig.driverRight.getRawAxis(0), OperatorConstants.RIGHT_X_DEADBAND));
     Swerve.getInstance();
     Swerve.getInstance().setDefaultCommand(closedFieldRel);
     autoChooser = AutoBuilder.buildAutoChooser(); // Default auto will be `Commands.none()`
     SmartDashboard.putData("Auto Mode", autoChooser);
-    SmartDashboard.putString("test", "test");
-
-    // this.algaeRollers = new AlgaeRollers();
-    // this.coralRollers = new CoralRollers();
-    // this.elevator = new Elevator();
-    // this.wrist = new Wrist();
-
-    // this.algaeRollersManual = new AlgaeRollersManual();
-    // this.coralRollersManuel = new CoralRollersManual();
-    // this.elevatorManel = new ElevatorManual();
-    // this.wristManuel = new WristManual();
+    ButtonConfig buttons = new ButtonConfig();
+    buttons.initTeleop();
   }
 
   /**

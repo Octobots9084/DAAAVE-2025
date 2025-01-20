@@ -8,11 +8,13 @@ public interface CoralRollersIO {
     public double velocityRPM = 0.0;
     public double appliedVolts = 0.0;
     public double currentAmps = 0.0;
-    public boolean isIntaking = false;
     public boolean hasCoral = false;
+    public boolean coralInShute = false;
   }
 
-  public default void updateInputs(CoralRollersIOInputs inputs) {}
+  public default void updateInputs(CoralRollersIOInputs inputs) {
+    hasCoral();
+  }
 
   public default void setVoltage(double Position) {}
 
@@ -23,4 +25,7 @@ public interface CoralRollersIO {
   public default boolean isIntaking() {
     return false;
   }
+
+  public default void updateSim() {}
+  ;
 }

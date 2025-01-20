@@ -25,7 +25,7 @@ import org.littletonrobotics.junction.Logger;
 
 /** Basic simulation of a swerve subsystem with the methods needed by PathPlanner */
 public class Swerve extends SubsystemBase {
-  SwerveIOSystem io;
+  SwerveIO io;
   private final SwerveIOInputsAutoLogged inputs = new SwerveIOInputsAutoLogged();
   private static Swerve INSTANCE = null;
 
@@ -47,9 +47,13 @@ public class Swerve extends SubsystemBase {
 
   public static Swerve getInstance() {
     if (INSTANCE == null) {
-      INSTANCE = new Swerve();
+      throw new IllegalStateException("Swerve instance not set");
     }
+    return INSTANCE;
+  }
 
+  public static Swerve setInstance(SwerveIO io) {
+    INSTANCE = new Swerve(io);
     return INSTANCE;
   }
 
@@ -86,7 +90,7 @@ public class Swerve extends SubsystemBase {
     }
   }
 
-  public SwerveIOSystem getIo() {
+  public SwerveIO getIo() {
     return io;
   }
 
@@ -109,7 +113,6 @@ public class Swerve extends SubsystemBase {
   }
 
   public void resetPose(Pose2d pose) {
-    // System.out.println(pose);
     this.io.resetPose(pose);
   }
 

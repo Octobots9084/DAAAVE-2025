@@ -1,26 +1,33 @@
 package frc.robot.Subsystems.AlgaeRollers;
 
-import com.revrobotics.sim.SparkRelativeEncoderSim;
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.system.plant.DCMotor;
+import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.wpilibj.simulation.AnalogInputSim;
+import edu.wpi.first.wpilibj.simulation.DCMotorSim;
 
 public class AlgaeRollersIOSim implements AlgaeRollersIO {
-  AlgaeRollersIOSystems sparkMaxes = new AlgaeRollersIOSystems();
-  SparkRelativeEncoderSim SparkSim = new SparkRelativeEncoderSim(sparkMaxes.getMotor());
   AnalogInputSim beamInputSim = new AnalogInputSim(0);
-  private double appliedVolts = 11;
+  DCMotorSim motorSim =
+      new DCMotorSim(
+          LinearSystemId.createDCMotorSystem(DCMotor.getNeo550(1), 0.025, 1), DCMotor.getNeo550(1));
 
   @Override
   public void updateInputs(AlgaeRollersIOInputs inputs) {
-    inputs.velocityRPM = SparkSim.getVelocity();
-    inputs.appliedVolts = appliedVolts;
-    inputs.currentAmps = 0;
+    inputs.velocityRPM = motorSim.getAngularVelocityRPM();
+    inputs.appliedVolts = motorSim.getInputVoltage();
+    inputs.currentAmps = motorSim.getCurrentDrawAmps();
     inputs.beamValue = this.hasAlgae();
-    // inputs.temperature = 0;
   }
 
+  @Override
   public void setVoltage(double volts) {
-    appliedVolts = MathUtil.clamp(volts, -12.0, 12.0);
+    motorSim.setInput(MathUtil.clamp(volts, -12.0, 12.0));
+  }
+
+  @Override
+  public void updateSim() {
+    motorSim.update(0.02);
   }
 
   // TODO - Actually change these values

@@ -47,10 +47,6 @@ public class AlgaeRollersIOSystems implements AlgaeRollersIO {
     return motor.getBusVoltage();
   }
 
-  public SparkMax getMotor() {
-    return motor;
-  }
-
   // TODO - Actually change these values
   public boolean hasAlgae() {
     return beamInput.getValue() > 100;

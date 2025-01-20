@@ -35,7 +35,7 @@ public class SwerveIOSystem implements SwerveIO {
       swerveDrive.setCosineCompensator(
           !SwerveDriveTelemetry.isSimulation); // Disables cosine compensation
       // for simulations since it causes discrepancies not seen in real life.
-      swerveDrive.setAngularVelocityCompensation(true, true, 0.1);
+      // swerveDrive.setAngularVelocityCompensation(true, true, 0.1);
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -96,10 +96,6 @@ public class SwerveIOSystem implements SwerveIO {
     return swerveDrive.getStates();
   }
 
-  public SwerveModuleState[] getModuleDesiredStates() {
-    return swerveDrive.getDesiredStates();
-  }
-
   public SwerveModulePosition[] getPositions() {
     return swerveDrive.getModulePositions();
   }
@@ -130,6 +126,10 @@ public class SwerveIOSystem implements SwerveIO {
 
   public SwerveDrive getSwerveDrive() {
     return swerveDrive;
+  }
+
+  public SwerveModuleState[] getModuleDesiredStates() {
+    return swerveDrive.getDesiredStates();
   }
 
   @Override
