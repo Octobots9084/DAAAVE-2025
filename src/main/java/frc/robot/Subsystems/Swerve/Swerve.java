@@ -57,8 +57,8 @@ public class Swerve extends SubsystemBase {
     return INSTANCE;
   }
 
-  public Swerve() {
-    this.io = new SwerveIOSystem();
+  public Swerve(SwerveIO io) {
+    this.io = io;
     try {
       RobotConfig config = RobotConfig.fromGUISettings();
 

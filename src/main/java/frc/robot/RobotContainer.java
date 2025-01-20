@@ -9,7 +9,6 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import frc.robot.Commands.AlgaeRollers.AlgaeRollersManual;
 import frc.robot.Commands.CoralRollers.CoralRollersManual;
 import frc.robot.Commands.Elevator.ElevatorManual;
