@@ -5,6 +5,8 @@ import com.ctre.phoenix6.configs.FovParamsConfigs;
 import com.ctre.phoenix6.hardware.CANrange;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N4;
@@ -43,11 +45,11 @@ public class AlignVision extends SubsystemBase {
   private List<PhotonPipelineResult> results;
   private double aveLidarDist;
   private double diffLidarDist;
-  private double[] refPosition;
+  private Transform2d refPosition;
 
-  private double speed;
-  private double lidarSpeed;
-  private double gyroSpeed;
+  private double ySpeed;
+  private double xSpeed;
+  private double turnSpeed;
 
   public AlignVision() {
     this.swerve = Swerve.getInstance();
@@ -79,7 +81,7 @@ public class AlignVision extends SubsystemBase {
     results = cam.getAllUnreadResults();
   }
 
-  public double[] getReferenceRobotPosition() {
+  public Transform2d getReferenceRobotPosition() {
     // Transform Tag Coordinates to Camera Coordinates from photonvision.
     Matrix<N4, N4> transformTagToCamera;
 
@@ -99,14 +101,15 @@ public class AlignVision extends SubsystemBase {
         // Transform Tag Position into Robot Coordinates
         referenceRobotPosition = VisionConstants.transformFrontLeftToRobot.times(
             transformTagToCamera.times(VisionConstants.referenceTagPosition));
-        return referenceRobotPosition.getData();
+        return new Transform2d(referenceRobotPosition.getData()[0], referenceRobotPosition.getData()[1],
+            new Rotation2d(referenceRobotPosition.getData()[2]));
 
       } else {
-        return new double[] { Double.NaN };
+        return Transform2d.kZero;
       }
 
     } else {
-      return new double[] { Double.NaN };
+      return Transform2d.kZero;
     }
   }
 
@@ -116,28 +119,28 @@ public class AlignVision extends SubsystemBase {
     refPosition = this.getReferenceRobotPosition();
 
     try {
-      if (!Double.isNaN(refPosition[0])) {
+      if (refPosition.getX() != Transform2d.kZero.getX() && refPosition.getY() != Transform2d.kZero.getY()) {
 
-        speed = pidController.calculate(refPosition[1], 0.1524);
-        lidarSpeed = this.areBothLidarsValid()
+        ySpeed = pidController.calculate(refPosition.getY(), 0.1524);
+        xSpeed = this.areBothLidarsValid()
             ? lidarPIDController.calculate(aveLidarDist, .12)
-            : cameraDepthPIDController.calculate(refPosition[0], 0.381);
-        gyroSpeed = this.areBothLidarsValid()
+            : cameraDepthPIDController.calculate(refPosition.getX(), 0.381);
+        turnSpeed = this.areBothLidarsValid()
             ? -gyroPIDController.calculate(Math.asin(diffLidarDist / .605), 0)
             : gyroPIDController.calculate(swerve.getGyro(), Math.toRadians(-60));
 
       } else {
-        speed = 0;
-        lidarSpeed = 0;
-        gyroSpeed = 0;
+        ySpeed = 0;
+        xSpeed = 0;
+        turnSpeed = 0;
       }
     } catch (Exception e) {
-      speed = 0;
-      lidarSpeed = 0;
-      gyroSpeed = 0;
+      ySpeed = 0;
+      xSpeed = 0;
+      turnSpeed = 0;
     }
 
-    return new ChassisSpeeds(-lidarSpeed, -speed, gyroSpeed);
+    return new ChassisSpeeds(-xSpeed, -ySpeed, turnSpeed);
   }
 
   public PhotonCamera getCamera() {
