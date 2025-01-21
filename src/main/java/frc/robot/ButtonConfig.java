@@ -2,7 +2,9 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
-import frc.robot.Commands.complex.AlignToTarget;
+import frc.robot.Commands.complex.AlignReef;
+import frc.robot.States.ReefAlignmentPosition;
+import frc.robot.States.ReefTargetHeight;
 import frc.robot.Subsystems.Swerve.Swerve;
 
 public class ButtonConfig {
@@ -14,7 +16,9 @@ public class ButtonConfig {
   CommandJoystick coDriverButtons = ControlMap.CO_DRIVER_BUTTONS;
 
   public void initTeleop() {
-    driverButtons.button(1).whileTrue(new AlignToTarget());
+    driverButtons
+        .button(1)
+        .whileTrue(new AlignReef(ReefTargetHeight.L1, ReefAlignmentPosition.LEFT));
     driverButtons
         .button(6)
         .onTrue(

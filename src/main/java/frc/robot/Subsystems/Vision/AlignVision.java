@@ -8,6 +8,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N4;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.VisionConstants;
 import frc.robot.Subsystems.Swerve.Swerve;
@@ -119,14 +120,18 @@ public class AlignVision extends SubsystemBase {
       if (!Double.isNaN(refPosition[0])) {
 
         speed = pidController.calculate(refPosition[1], 0.1524);
+        SmartDashboard.putNumber("Hori Speed", speed);
         lidarSpeed =
             this.areBothLidarsValid()
                 ? lidarPIDController.calculate(aveLidarDist, .12)
                 : cameraDepthPIDController.calculate(refPosition[0], 0.381);
+        SmartDashboard.putNumber("Depth Speed", lidarSpeed);
         gyroSpeed =
             this.areBothLidarsValid()
                 ? -gyroPIDController.calculate(Math.asin(diffLidarDist / .605), 0)
                 : gyroPIDController.calculate(swerve.getGyro(), Math.toRadians(-60));
+        SmartDashboard.putNumber("Gyro Speed", gyroSpeed);
+
       } else {
         speed = 0;
         lidarSpeed = 0;

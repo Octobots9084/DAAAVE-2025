@@ -52,7 +52,7 @@ public class TeleopDrive extends Command {
                     omega.getAsDouble() * swerveInstance.getIo().getMaxTurnSpeed()));
         break;
       case AlignReefLeft:
-        break;
+        swerveInstance.driveRobotRelative(alignInstance.getAlignChassisSpeeds());
       case AlignReefRight:
         break;
       case AlignProcessor:
