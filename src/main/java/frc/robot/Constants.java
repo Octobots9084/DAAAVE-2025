@@ -13,6 +13,7 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.config.PIDConstants;
 import edu.wpi.first.wpilibj.RobotBase;
 
 /**
@@ -33,6 +34,11 @@ public final class Constants {
 
     /** Replaying from a log file. */
     REPLAY
+  }
+
+  public static final class Swerve {
+    public static final PIDConstants translationConstants = new PIDConstants(5, 0.0, 0.0);
+    public static final PIDConstants rotationConstants = new PIDConstants(5, 0.0, 0.0);
   }
 
   public static class OperatorConstants {

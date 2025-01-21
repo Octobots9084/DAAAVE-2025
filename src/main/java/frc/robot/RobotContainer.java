@@ -4,7 +4,11 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.auto.AutoBuilder;
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Commands.AlgaeRollers.AlgaeRollersManual;
 import frc.robot.Commands.CoralRollers.CoralRollersManual;
 import frc.robot.Commands.Elevator.ElevatorManual;
@@ -38,6 +42,8 @@ import frc.robot.Subsystems.Wrist.WristIOSparkMax;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
+
+  private final SendableChooser<Command> autoChooser;
 
   // The robot's subsystems and commands are defined here...
   private AlgaeRollers algaeRollers;
@@ -118,10 +124,21 @@ public class RobotContainer {
                     -ButtonConfig.driverLeft.getRawAxis(0), OperatorConstants.LEFT_X_DEADBAND),
             () ->
                 MathUtil.applyDeadband(
-                    ButtonConfig.driverRight.getRawAxis(0), OperatorConstants.RIGHT_X_DEADBAND));
+                    -ButtonConfig.driverRight.getRawAxis(0), OperatorConstants.RIGHT_X_DEADBAND));
     Swerve.getInstance();
     Swerve.getInstance().setDefaultCommand(closedFieldRel);
+    autoChooser = AutoBuilder.buildAutoChooser(); // Default auto will be `Commands.none()`
+    SmartDashboard.putData("Auto Mode", autoChooser);
     ButtonConfig buttons = new ButtonConfig();
     buttons.initTeleop();
+  }
+
+  /**
+   * Use this to pass the autonomous command to the main {@link Robot} class.
+   *
+   * @return the command to run in autonomous
+   */
+  public Command getAutonomousCommand() {
+    return autoChooser.getSelected();
   }
 }
