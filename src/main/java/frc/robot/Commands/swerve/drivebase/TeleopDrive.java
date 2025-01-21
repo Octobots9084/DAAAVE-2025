@@ -54,7 +54,7 @@ public class TeleopDrive extends Command {
       case AlignReefLeft:
         break;
       case AlignReefRight:
-        swerveInstance.driveFieldRelative(alignInstance.getAlignSpeeds());
+        break;
       case AlignProcessor:
         break;
       case AlignSource:

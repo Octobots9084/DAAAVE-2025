@@ -2,6 +2,7 @@ package frc.robot.Commands.complex;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Subsystems.Swerve.Swerve;
 import frc.robot.Subsystems.Vision.AlignVision;
@@ -38,15 +39,14 @@ public class AlignToTarget extends Command {
 
     try {
       if (!Double.isNaN(refPosition[0])) {
+
         speed = pidController.calculate(refPosition[1], 0.1524);
-        lidarSpeed =
-            alignVision.areBothLidarsValid()
-                ? lidarPIDController.calculate(aveLidarDist, .12)
-                : cameraDepthPIDController.calculate(refPosition[0], 0.381);
-        gyroSpeed =
-            alignVision.areBothLidarsValid()
-                ? gyroPIDController.calculate(Math.asin(diffLidarDist / .605), 0)
-                : gyroPIDController.calculate(swerve.getGyro(), Math.toRadians(-60));
+        lidarSpeed = alignVision.areBothLidarsValid()
+            ? lidarPIDController.calculate(aveLidarDist, .12)
+            : cameraDepthPIDController.calculate(refPosition[0], 0.381);
+        gyroSpeed = alignVision.areBothLidarsValid()
+            ? -gyroPIDController.calculate(Math.asin(diffLidarDist / .605), 0)
+            : gyroPIDController.calculate(swerve.getGyro(), Math.toRadians(-60));
       } else {
         speed = 0;
         lidarSpeed = 0;
