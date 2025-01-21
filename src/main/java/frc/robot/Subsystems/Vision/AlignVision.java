@@ -39,9 +39,14 @@ public class AlignVision extends SubsystemBase {
   private PIDController cameraDepthPIDController;
   private PIDController gyroPIDController;
 
+  private List<PhotonPipelineResult> results;
   private double aveLidarDist;
   private double diffLidarDist;
   private double[] refPosition;
+
+  private double speed;
+  private double lidarSpeed;
+  private double gyroSpeed;
 
   public AlignVision() {
     this.swerve = Swerve.getInstance();
@@ -54,7 +59,7 @@ public class AlignVision extends SubsystemBase {
     this.lidarPIDController = new PIDController(2, 0, 0);
     this.cameraDepthPIDController = new PIDController(1.25, 0, 0);
     this.gyroPIDController = new PIDController(4, 0, 0);
-    gyroPIDController.enableContinuousInput(0, 2 * Math.PI);
+    this.gyroPIDController.enableContinuousInput(0, 2 * Math.PI);
 
     this.paramsConfigs = new FovParamsConfigs();
     paramsConfigs.withFOVRangeX(6.75);
@@ -70,11 +75,10 @@ public class AlignVision extends SubsystemBase {
 
   @Override
   public void periodic() {
+    results = cam.getAllUnreadResults();
   }
 
-  public double[] getReferenceRobotPosition(PhotonCamera camera) {
-    List<PhotonPipelineResult> results = camera.getAllUnreadResults();
-
+  public double[] getReferenceRobotPosition() {
     // Transform Tag Coordinates to Camera Coordinates from photonvision.
     Matrix<N4, N4> transformTagToCamera;
 
@@ -92,17 +96,49 @@ public class AlignVision extends SubsystemBase {
         // 1});
 
         // Transform Tag Position into Robot Coordinates
-        referenceRobotPosition = VisionConstants.transformFrontLeftToRobot.times(
-            transformTagToCamera.times(VisionConstants.referenceTagPosition));
+        referenceRobotPosition =
+            VisionConstants.transformFrontLeftToRobot.times(
+                transformTagToCamera.times(VisionConstants.referenceTagPosition));
         return referenceRobotPosition.getData();
 
       } else {
-        return new double[] { Double.NaN };
+        return new double[] {Double.NaN};
       }
 
     } else {
-      return new double[] { Double.NaN };
+      return new double[] {Double.NaN};
     }
+  }
+
+  public ChassisSpeeds getAlignChassisSpeeds() {
+    aveLidarDist = (this.getRightLidarDistance() + this.getLeftLidarDistance()) / 2;
+    diffLidarDist = this.getRightLidarDistance() - this.getLeftLidarDistance();
+    refPosition = this.getReferenceRobotPosition();
+
+    try {
+      if (!Double.isNaN(refPosition[0])) {
+
+        speed = pidController.calculate(refPosition[1], 0.1524);
+        lidarSpeed =
+            this.areBothLidarsValid()
+                ? lidarPIDController.calculate(aveLidarDist, .12)
+                : cameraDepthPIDController.calculate(refPosition[0], 0.381);
+        gyroSpeed =
+            this.areBothLidarsValid()
+                ? -gyroPIDController.calculate(Math.asin(diffLidarDist / .605), 0)
+                : gyroPIDController.calculate(swerve.getGyro(), Math.toRadians(-60));
+      } else {
+        speed = 0;
+        lidarSpeed = 0;
+        gyroSpeed = 0;
+      }
+    } catch (Exception e) {
+      speed = 0;
+      lidarSpeed = 0;
+      gyroSpeed = 0;
+    }
+
+    return new ChassisSpeeds(-lidarSpeed, -speed, gyroSpeed);
   }
 
   public PhotonCamera getCamera() {
