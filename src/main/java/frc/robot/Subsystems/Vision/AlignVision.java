@@ -97,17 +97,16 @@ public class AlignVision extends SubsystemBase {
         // 1});
 
         // Transform Tag Position into Robot Coordinates
-        referenceRobotPosition =
-            VisionConstants.transformFrontLeftToRobot.times(
-                transformTagToCamera.times(VisionConstants.referenceTagPosition));
+        referenceRobotPosition = VisionConstants.transformFrontLeftToRobot.times(
+            transformTagToCamera.times(VisionConstants.referenceTagPosition));
         return referenceRobotPosition.getData();
 
       } else {
-        return new double[] {Double.NaN};
+        return new double[] { Double.NaN };
       }
 
     } else {
-      return new double[] {Double.NaN};
+      return new double[] { Double.NaN };
     }
   }
 
@@ -120,17 +119,12 @@ public class AlignVision extends SubsystemBase {
       if (!Double.isNaN(refPosition[0])) {
 
         speed = pidController.calculate(refPosition[1], 0.1524);
-        SmartDashboard.putNumber("Hori Speed", speed);
-        lidarSpeed =
-            this.areBothLidarsValid()
-                ? lidarPIDController.calculate(aveLidarDist, .12)
-                : cameraDepthPIDController.calculate(refPosition[0], 0.381);
-        SmartDashboard.putNumber("Depth Speed", lidarSpeed);
-        gyroSpeed =
-            this.areBothLidarsValid()
-                ? -gyroPIDController.calculate(Math.asin(diffLidarDist / .605), 0)
-                : gyroPIDController.calculate(swerve.getGyro(), Math.toRadians(-60));
-        SmartDashboard.putNumber("Gyro Speed", gyroSpeed);
+        lidarSpeed = this.areBothLidarsValid()
+            ? lidarPIDController.calculate(aveLidarDist, .12)
+            : cameraDepthPIDController.calculate(refPosition[0], 0.381);
+        gyroSpeed = this.areBothLidarsValid()
+            ? -gyroPIDController.calculate(Math.asin(diffLidarDist / .605), 0)
+            : gyroPIDController.calculate(swerve.getGyro(), Math.toRadians(-60));
 
       } else {
         speed = 0;
