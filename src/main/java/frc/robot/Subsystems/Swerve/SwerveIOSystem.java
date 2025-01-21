@@ -21,7 +21,7 @@ import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
 public class SwerveIOSystem implements SwerveIO {
   private SwerveDrive swerveDrive;
   File swerveJsonDirectory = new File(Filesystem.getDeployDirectory(), "swerve");
-  double maximumSpeed = 4.5;
+  double maximumSpeed = 10;
   double maxTurnSpeed = 5;
   private Field2d field = new Field2d();
 
@@ -35,7 +35,7 @@ public class SwerveIOSystem implements SwerveIO {
       swerveDrive.setCosineCompensator(
           !SwerveDriveTelemetry.isSimulation); // Disables cosine compensation
       // for simulations since it causes discrepancies not seen in real life.
-      // swerveDrive.setAngularVelocityCompensation(true, true, 0.1);
+      swerveDrive.setAngularVelocityCompensation(true, true, -0.075);
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -128,9 +128,9 @@ public class SwerveIOSystem implements SwerveIO {
     return swerveDrive;
   }
 
-  public SwerveModuleState[] getModuleDesiredStates() {
-    return swerveDrive.getDesiredStates();
-  }
+  // public SwerveModuleState[] getModuleDesiredStates() {
+  //   return swerveDrive.getDesiredStates();
+  // }
 
   @Override
   public void updateInputs(SwerveIOInputs inputs) {
