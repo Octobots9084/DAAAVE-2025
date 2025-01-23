@@ -8,6 +8,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Subsystems.Swerve.Swerve;
+import frc.robot.Subsystems.Vision.AlignVision;
 import java.util.function.DoubleSupplier;
 
 /** An example command that uses an example subsystem. */
@@ -16,6 +17,7 @@ public class TeleopDrive extends Command {
   private final DoubleSupplier vY;
   private final DoubleSupplier omega;
   private static Swerve swerveInstance = Swerve.getInstance();
+  private static AlignVision alignInstance = AlignVision.getInstance();
 
   /**
    * Creates a new ExampleCommand.
@@ -50,7 +52,7 @@ public class TeleopDrive extends Command {
                     omega.getAsDouble() * swerveInstance.getIo().getMaxTurnSpeed()));
         break;
       case AlignReefLeft:
-        break;
+        swerveInstance.driveRobotRelative(alignInstance.getAlignChassisSpeeds());
       case AlignReefRight:
         break;
       case AlignProcessor:

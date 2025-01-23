@@ -112,15 +112,24 @@ public class RobotContainer {
                     -ButtonConfig.driverLeft.getRawAxis(0), OperatorConstants.LEFT_X_DEADBAND),
             () ->
                 MathUtil.applyDeadband(
-                    -ButtonConfig.driverRight.getRawAxis(0), OperatorConstants.RIGHT_X_DEADBAND));
+                    ButtonConfig.driverRight.getRawAxis(0), OperatorConstants.RIGHT_X_DEADBAND));
     Swerve.getInstance();
     Swerve.getInstance().setDefaultCommand(closedFieldRel);
     autoChooser = AutoBuilder.buildAutoChooser(); // Default auto will be `Commands.none()`
     SmartDashboard.putData("Auto Mode", autoChooser);
     ButtonConfig buttons = new ButtonConfig();
     buttons.initTeleop();
-  }
 
+    // this.algaeRollers = new AlgaeRollers();
+    // this.coralRollers = new CoralRollers();
+    // this.elevator = new Elevator();
+    // this.wrist = new Wrist();
+
+    // this.algaeRollersManual = new AlgaeRollersManual();
+    // this.coralRollersManuel = new CoralRollersManual();
+    // this.elevatorManel = new ElevatorManual();
+    // this.wristManuel = new WristManual();
+  }
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
