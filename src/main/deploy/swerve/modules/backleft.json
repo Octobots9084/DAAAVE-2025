@@ -1,8 +1,8 @@
 {
   "drive": {
-    "type": "talonfx",
+    "type": "krakenx60foc",
     "id": 9,
-    "canbus": null
+    "canbus": "KrakensBus"
   },
   "angle": {
     "type": "sparkmax_neo",
