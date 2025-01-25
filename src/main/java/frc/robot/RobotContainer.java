@@ -6,6 +6,7 @@ package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -34,6 +35,9 @@ import frc.robot.Subsystems.Wrist.Wrist;
 import frc.robot.Subsystems.Wrist.WristIO;
 import frc.robot.Subsystems.Wrist.WristIOSim;
 import frc.robot.Subsystems.Wrist.WristIOSparkMax;
+import org.ironmaple.simulation.SimulatedArena;
+import org.ironmaple.simulation.seasonspecific.reefscape2025.ReefscapeAlgaeOnField;
+import org.ironmaple.simulation.seasonspecific.reefscape2025.ReefscapeCoralAlgaeStack;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -78,7 +82,11 @@ public class RobotContainer {
         break;
 
       case SIM:
-        AlgaeRollers.setInstance(new AlgaeRollersIOSim());
+        Swerve.setInstance(new SwerveIOSystem());
+        swerve = Swerve.getInstance();
+
+        AlgaeRollers.setInstance(
+            new AlgaeRollersIOSim(swerve.getIo().getSwerveDrive().getMapleSimDrive().get()));
         algaeRollers = AlgaeRollers.getInstance();
 
         CoralRollers.setInstance(new CoralRollersIOSim());
@@ -90,8 +98,12 @@ public class RobotContainer {
         Wrist.setInstance(new WristIOSim());
         wrist = Wrist.getInstance();
 
-        Swerve.setInstance(new SwerveIOSystem());
-        swerve = Swerve.getInstance();
+        SimulatedArena.getInstance()
+            .addGamePiece(new ReefscapeAlgaeOnField(new Translation2d(3, 3)));
+        SimulatedArena.getInstance()
+            .addGamePiece(new ReefscapeAlgaeOnField(new Translation2d(4, 3)));
+        SimulatedArena.getInstance()
+            .addGamePiece(new ReefscapeCoralAlgaeStack(new Translation2d(3, 1.5)));
         break;
 
       case REPLAY:

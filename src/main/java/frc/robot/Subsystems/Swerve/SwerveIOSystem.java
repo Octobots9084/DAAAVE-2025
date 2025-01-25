@@ -2,6 +2,7 @@ package frc.robot.Subsystems.Swerve;
 
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
@@ -28,7 +29,9 @@ public class SwerveIOSystem implements SwerveIO {
   public SwerveIOSystem() {
     SwerveDriveTelemetry.verbosity = TelemetryVerbosity.HIGH;
     try {
-      swerveDrive = new SwerveParser(swerveJsonDirectory).createSwerveDrive(maximumSpeed);
+      swerveDrive =
+          new SwerveParser(swerveJsonDirectory)
+              .createSwerveDrive(maximumSpeed, new Pose2d(2, 2, new Rotation2d(0)));
       swerveDrive.setHeadingCorrection(
           false); // Heading correction should only be used while controlling the robot via
       // angle.
