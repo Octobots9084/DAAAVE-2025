@@ -40,7 +40,7 @@ import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
-public class Vision implements Runnable {
+public class VisionCamera implements Runnable {
   private final PhotonCamera camera;
   private final PhotonPoseEstimator photonEstimator;
   private Matrix<N3, N1> curStdDevs;
@@ -48,8 +48,12 @@ public class Vision implements Runnable {
       new AtomicReference<EstimatedRobotPose>();
   private final AtomicReference<Matrix<N3, N1>> atomicStdDev =
       new AtomicReference<Matrix<N3, N1>>();
+  private final AtomicReference<PhotonPipelineResult> atomicPhotonResult =
+      new AtomicReference<PhotonPipelineResult>();
 
-  public Vision(String photonCameraName, Transform3d robotToCamera) {
+  private PhotonPipelineResult latestResult;
+
+  public VisionCamera(String photonCameraName, Transform3d robotToCamera) {
     camera = new PhotonCamera(photonCameraName);
 
     photonEstimator =
@@ -58,25 +62,22 @@ public class Vision implements Runnable {
     photonEstimator.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);
   }
 
-  /**
-   * The latest estimated robot pose on the field from vision data. This may be empty. This should
-   * only be called once per loop.
-   *
-   * <p>Also includes updates for the standard deviations, which can (optionally) be retrieved with
-   * {@link getEstimationStdDevs}
-   *
-   * @return An {@link EstimatedRobotPose} with an estimated pose, estimate timestamp, and targets
-   *     used for estimation.
-   */
   public Optional<EstimatedRobotPose> getEstimatedGlobalPose() {
     Optional<EstimatedRobotPose> visionEst = Optional.empty();
     List<PhotonPipelineResult> unreadResults = camera.getAllUnreadResults();
+
     if (!unreadResults.isEmpty()) {
-      visionEst = photonEstimator.update(unreadResults.get(unreadResults.size() - 1));
-      updateEstimationStdDevs(visionEst, unreadResults.get(unreadResults.size() - 1).getTargets());
+      latestResult = unreadResults.get(unreadResults.size() - 1);
+      atomicPhotonResult.set(latestResult);
+      visionEst = photonEstimator.update(latestResult);
+      updateEstimationStdDevs(visionEst, latestResult.getTargets());
     }
 
     return visionEst;
+  }
+
+  public boolean isConnected() {
+    return camera.isConnected();
   }
 
   @Override
@@ -95,6 +96,10 @@ public class Vision implements Runnable {
 
   public Matrix<N3, N1> grabLatestStdDev() {
     return atomicStdDev.getAndSet(null);
+  }
+
+  public PhotonPipelineResult grabLatestResult() {
+    return atomicPhotonResult.getAndSet(null);
   }
 
   /**

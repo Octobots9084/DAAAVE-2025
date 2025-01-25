@@ -21,7 +21,6 @@ import edu.wpi.first.math.Nat;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
-import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.numbers.N4;
@@ -80,6 +79,9 @@ public final class Constants {
 
     public static final Transform3d camOneTransform = new Transform3d(0, 0, 0, new Rotation3d(0, 0, Math.toRadians(0)));
 
+    public static final Transform3d triceratopsTransform = new Transform3d(0, 0.5379, 0,
+        new Rotation3d(0, 0, Math.toRadians(0)));
+
     // Position of the AprilTag in Tag Coordinates.
     public static final Matrix<N4, N1> referenceTagPosition = new Matrix<>(Nat.N4(), Nat.N1(),
         new double[] { 0, 0, 0, 1 });
@@ -90,7 +92,7 @@ public final class Constants {
     // The standard deviations of our vision estimated poses, which affect
     // correction rate
     // (Fake values. Experiment and determine estimation noise on an actual robot.)
-    public static final Matrix<N3, N1> kSingleTagStdDevs = VecBuilder.fill(4, 4, 8);
-    public static final Matrix<N3, N1> kMultiTagStdDevs = VecBuilder.fill(0.5, 0.5, 1);
+    public static final Matrix<N3, N1> kSingleTagStdDevs = VecBuilder.fill(0.2, 0.2, 0.2);
+    public static final Matrix<N3, N1> kMultiTagStdDevs = VecBuilder.fill(0.2, 0.2, 0.2);
   }
 }

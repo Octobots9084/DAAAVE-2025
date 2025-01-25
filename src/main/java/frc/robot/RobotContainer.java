@@ -32,7 +32,7 @@ import frc.robot.Subsystems.Elevator.ElevatorIOSparkMax;
 import frc.robot.Subsystems.Swerve.Swerve;
 import frc.robot.Subsystems.Swerve.SwerveIO;
 import frc.robot.Subsystems.Swerve.SwerveIOSystem;
-import frc.robot.Subsystems.Vision.VisionEstimation;
+import frc.robot.Subsystems.Vision.VisionSubsystem;
 import frc.robot.Subsystems.Wrist.Wrist;
 import frc.robot.Subsystems.Wrist.WristIO;
 import frc.robot.Subsystems.Wrist.WristIOSim;
@@ -150,7 +150,7 @@ public class RobotContainer {
     Swerve.getInstance().setDefaultCommand(closedFieldRel);
     autoChooser = AutoBuilder.buildAutoChooser(); // Default auto will be `Commands.none()`
     SmartDashboard.putData("Auto Mode", autoChooser);
-    VisionEstimation.getInstance();
+    VisionSubsystem.getInstance();
     ButtonConfig buttons = new ButtonConfig();
     buttons.initTeleop();
 
