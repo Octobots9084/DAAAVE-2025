@@ -1,0 +1,55 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "initial_to_i"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "i_to_topstation"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "topstation_to_j"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "j_to_topstation"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "topstation_to_k"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "k_to_topstation"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "topstation_to_l"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": "28pt",
+  "choreoAuto": false
+}
