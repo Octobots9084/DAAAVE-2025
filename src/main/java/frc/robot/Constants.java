@@ -13,17 +13,24 @@
 
 package frc.robot;
 
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.Nat;
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.numbers.N1;
+import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.numbers.N4;
 import edu.wpi.first.wpilibj.RobotBase;
 
 /**
- * This class defines the runtime mode used by AdvantageKit. The mode is always "real" when running
- * on a roboRIO. Change the value of "simMode" to switch between "sim" (physics sim) and "replay"
+ * This class defines the runtime mode used by AdvantageKit. The mode is always
+ * "real" when running
+ * on a roboRIO. Change the value of "simMode" to switch between "sim" (physics
+ * sim) and "replay"
  * (log replay from a file).
  */
 public final class Constants {
@@ -58,12 +65,24 @@ public final class Constants {
   public static class VisionConstants {
     public static final boolean USE_VISION = true;
 
-    // Transform Camera Coordinates to Robot Coordinates. Based on camera mounting position.
-    public static final Matrix<N4, N4> transformFrontLeftToRobot =
-        new Transform3d(0.1524, 0.3556, 0, new Rotation3d(0, 0, Math.toRadians(-35.0))).toMatrix();
+    // Transform Camera Coordinates to Robot Coordinates. Based on camera mounting
+    // position.
+    public static final Matrix<N4, N4> transformFrontLeftToRobot = new Transform3d(0.1524, 0.3556, 0,
+        new Rotation3d(0, 0, Math.toRadians(-35.0))).toMatrix();
+
+    public static final Transform3d camOneTransform = new Transform3d(0, 0, 0, new Rotation3d(0, 0, Math.toRadians(0)));
 
     // Position of the AprilTag in Tag Coordinates.
-    public static final Matrix<N4, N1> referenceTagPosition =
-        new Matrix<>(Nat.N4(), Nat.N1(), new double[] {0, 0, 0, 1});
+    public static final Matrix<N4, N1> referenceTagPosition = new Matrix<>(Nat.N4(), Nat.N1(),
+        new double[] { 0, 0, 0, 1 });
+
+    // The layout of the AprilTags on the field
+    public static final AprilTagFieldLayout kTagLayout = AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
+
+    // The standard deviations of our vision estimated poses, which affect
+    // correction rate
+    // (Fake values. Experiment and determine estimation noise on an actual robot.)
+    public static final Matrix<N3, N1> kSingleTagStdDevs = VecBuilder.fill(4, 4, 8);
+    public static final Matrix<N3, N1> kMultiTagStdDevs = VecBuilder.fill(0.5, 0.5, 1);
   }
 }

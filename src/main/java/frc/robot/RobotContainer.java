@@ -15,6 +15,7 @@ import frc.robot.Subsystems.AlgaeRollers.AlgaeRollers;
 import frc.robot.Subsystems.CoralRollers.CoralRollers;
 import frc.robot.Subsystems.Elevator.Elevator;
 import frc.robot.Subsystems.Swerve.Swerve;
+import frc.robot.Subsystems.Vision.VisionEstimation;
 import frc.robot.Subsystems.Wrist.Wrist;
 
 /**
@@ -53,7 +54,7 @@ public class RobotContainer {
                     ButtonConfig.driverRight.getRawAxis(0), OperatorConstants.RIGHT_X_DEADBAND));
     Swerve.getInstance();
     Swerve.getInstance().setDefaultCommand(closedFieldRel);
-
+    VisionEstimation.getInstance();
     ButtonConfig buttons = new ButtonConfig();
     buttons.initTeleop();
 
