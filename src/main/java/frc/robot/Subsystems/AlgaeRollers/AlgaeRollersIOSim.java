@@ -43,8 +43,6 @@ public class AlgaeRollersIOSim implements AlgaeRollersIO {
                 IntakeSimulation.IntakeSide.LEFT,
                 // The intake can hold up to 1 note
                 1);
-
-    intakeSimulation.startIntake();
   }
 
   @Override
