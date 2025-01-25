@@ -7,49 +7,49 @@
         {
           "type": "path",
           "data": {
-            "pathName": "initial_to_j"
+            "pathName": "initial_to_g"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "j_to_topstation"
+            "pathName": "g_to_lowstation"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "topstation_to_k"
+            "pathName": "lowstation_to_c"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "k_to_topstation"
+            "pathName": "c_to_lowstation"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "topstation_to_l"
+            "pathName": "lowstation_to_c"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "l_to_topstation"
+            "pathName": "c_to_lowstation"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "topstation_to_a"
+            "pathName": "lowstation_to_c"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "28pt",
+  "folder": "stack",
   "choreoAuto": false
 }

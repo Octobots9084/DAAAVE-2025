@@ -7,25 +7,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "initial_to_j"
+            "pathName": "initial_to_h"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "j_to_topstation"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "topstation_to_k"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "k_to_topstation"
+            "pathName": "h_to_topstation"
           }
         },
         {
@@ -50,6 +38,6 @@
     }
   },
   "resetOdom": true,
-  "folder": "28pt",
+  "folder": "21pt",
   "choreoAuto": false
 }

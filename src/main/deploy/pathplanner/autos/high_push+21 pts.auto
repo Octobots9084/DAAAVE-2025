@@ -7,7 +7,25 @@
         {
           "type": "path",
           "data": {
-            "pathName": "initial_to_j"
+            "pathName": "back_high"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "side_high"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "push_high"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "around_high"
           }
         },
         {
@@ -31,18 +49,6 @@
         {
           "type": "path",
           "data": {
-            "pathName": "topstation_to_l"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "l_to_topstation"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
             "pathName": "topstation_to_a"
           }
         }
@@ -50,6 +56,6 @@
     }
   },
   "resetOdom": true,
-  "folder": "28pt",
+  "folder": "push",
   "choreoAuto": false
 }
