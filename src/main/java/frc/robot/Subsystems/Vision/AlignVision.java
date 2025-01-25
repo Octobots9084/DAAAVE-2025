@@ -94,13 +94,17 @@ public class AlignVision extends SubsystemBase {
         // Get transformation matrix from photonvision
         transformTagToCamera = result.getBestTarget().getBestCameraToTarget().toMatrix();
 
-        // referenceTagPosition = new Matrix<>(Nat.N4(), Nat.N1(), new double[]{0.381, 0.1524, 0,
+        // referenceTagPosition = new Matrix<>(Nat.N4(), Nat.N1(), new double[]{0.381,
+        // 0.1524, 0,
         // 1});
 
         // Transform Tag Position into Robot Coordinates
-        referenceRobotPosition = VisionConstants.transformFrontLeftToRobot.times(
-            transformTagToCamera.times(VisionConstants.referenceTagPosition));
-        return new Transform2d(referenceRobotPosition.getData()[0], referenceRobotPosition.getData()[1],
+        referenceRobotPosition =
+            VisionConstants.transformFrontLeftToRobot.times(
+                transformTagToCamera.times(VisionConstants.referenceTagPosition));
+        return new Transform2d(
+            referenceRobotPosition.getData()[0],
+            referenceRobotPosition.getData()[1],
             new Rotation2d(referenceRobotPosition.getData()[2]));
 
       } else {
@@ -118,15 +122,18 @@ public class AlignVision extends SubsystemBase {
     refPosition = this.getReferenceRobotPosition();
 
     try {
-      if (refPosition.getX() != Transform2d.kZero.getX() && refPosition.getY() != Transform2d.kZero.getY()) {
+      if (refPosition.getX() != Transform2d.kZero.getX()
+          && refPosition.getY() != Transform2d.kZero.getY()) {
 
         ySpeed = pidController.calculate(refPosition.getY(), 0.1524);
-        xSpeed = this.areBothLidarsValid()
-            ? lidarPIDController.calculate(aveLidarDist, .12)
-            : cameraDepthPIDController.calculate(refPosition.getX(), 0.381);
-        turnSpeed = this.areBothLidarsValid()
-            ? -gyroPIDController.calculate(Math.asin(diffLidarDist / .605), 0)
-            : gyroPIDController.calculate(swerve.getGyro(), Math.toRadians(-60));
+        xSpeed =
+            this.areBothLidarsValid()
+                ? lidarPIDController.calculate(aveLidarDist, .12)
+                : cameraDepthPIDController.calculate(refPosition.getX(), 0.381);
+        turnSpeed =
+            this.areBothLidarsValid()
+                ? -gyroPIDController.calculate(Math.asin(diffLidarDist / .605), 0)
+                : gyroPIDController.calculate(swerve.getGyro(), Math.toRadians(-60));
 
       } else {
         ySpeed = 0;

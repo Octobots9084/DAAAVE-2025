@@ -99,40 +99,42 @@ public class RobotContainer {
         break;
 
       case REPLAY:
-        AlgaeRollers.setInstance(new AlgaeRollersIO() {});
+        AlgaeRollers.setInstance(new AlgaeRollersIO() {
+        });
         algaeRollers = AlgaeRollers.getInstance();
 
-        CoralRollers.setInstance(new CoralRollersIO() {});
+        CoralRollers.setInstance(new CoralRollersIO() {
+        });
         coralRollers = CoralRollers.getInstance();
 
-        Elevator.setInstance(new ElevatorIO() {});
+        Elevator.setInstance(new ElevatorIO() {
+        });
         elevator = Elevator.getInstance();
 
-        Wrist.setInstance(new WristIO() {});
+        Wrist.setInstance(new WristIO() {
+        });
         wrist = Wrist.getInstance();
 
-        Swerve.setInstance(new SwerveIO() {});
+        Swerve.setInstance(new SwerveIO() {
+        });
         swerve = Swerve.getInstance();
         break;
       default:
         break;
     }
 
-    TeleopDrive closedFieldRel =
-        new TeleopDrive(
-            () ->
-                MathUtil.applyDeadband(
-                    -ButtonConfig.driverLeft.getRawAxis(1), OperatorConstants.LEFT_Y_DEADBAND),
-            () ->
-                MathUtil.applyDeadband(
-                    -ButtonConfig.driverLeft.getRawAxis(0), OperatorConstants.LEFT_X_DEADBAND),
-            () ->
-                MathUtil.applyDeadband(
-                    ButtonConfig.driverRight.getRawAxis(0), OperatorConstants.RIGHT_X_DEADBAND));
+    TeleopDrive closedFieldRel = new TeleopDrive(
+        () -> MathUtil.applyDeadband(
+            -ButtonConfig.driverLeft.getRawAxis(1), OperatorConstants.LEFT_Y_DEADBAND),
+        () -> MathUtil.applyDeadband(
+            -ButtonConfig.driverLeft.getRawAxis(0), OperatorConstants.LEFT_X_DEADBAND),
+        () -> MathUtil.applyDeadband(
+            ButtonConfig.driverRight.getRawAxis(0), OperatorConstants.RIGHT_X_DEADBAND));
     Swerve.getInstance();
     Swerve.getInstance().setDefaultCommand(closedFieldRel);
     autoChooser = AutoBuilder.buildAutoChooser(); // Default auto will be `Commands.none()`
     SmartDashboard.putData("Auto Mode", autoChooser);
+    VisionEstimation.getInstance();
     ButtonConfig buttons = new ButtonConfig();
     buttons.initTeleop();
 
@@ -146,6 +148,7 @@ public class RobotContainer {
     // this.elevatorManel = new ElevatorManual();
     // this.wristManuel = new WristManual();
   }
+
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
