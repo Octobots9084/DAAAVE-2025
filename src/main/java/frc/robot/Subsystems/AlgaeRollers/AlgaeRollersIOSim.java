@@ -4,6 +4,7 @@ import static edu.wpi.first.units.Units.Meters;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
@@ -61,30 +62,33 @@ public class AlgaeRollersIOSim implements AlgaeRollersIO {
     } else if (volts == AlgaeRollersStates.OFF.voltage) {
       intakeSimulation.stopIntake();
     } else if (volts == AlgaeRollersStates.OUTPUT.voltage) {
-        if (this.hasAlgae()) {
-            // removes algae from the algae intake rollers
-            intakeSimulation.obtainGamePieceFromIntake();
-            ReefscapeAlgaeOnFly.setHitNetCallBack(() -> System.out.println("ALGAE hits NET!"));
-            // adds algae to the arena as having been output from the robot
-            SimulatedArena.getInstance()
-                .addGamePieceProjectile(
-                    new ReefscapeAlgaeOnFly(
-                            drivetrain.getSimulatedDriveTrainPose().getTranslation(),
-                            new Translation2d(),
-                            drivetrain.getDriveTrainSimulatedChassisSpeedsFieldRelative(),
-                            drivetrain.getSimulatedDriveTrainPose().getRotation(),
-                            // TODO - fix values
-                            0.1, // initial height of the ball, in meters
-                            0.5, // initial velocity, in m/s
-                            Math.toRadians(0)) // shooter angle
-                        .withProjectileTrajectoryDisplayCallBack(
-                            (poses) ->
-                                Logger.recordOutput(
-                                    "successfulShotsTrajectory", poses.toArray(Pose3d[]::new)),
-                            (poses) ->
-                                Logger.recordOutput(
-                                    "missedShotsTrajectory", poses.toArray(Pose3d[]::new))));
-          }
+      if (this.hasAlgae()) {
+        // removes algae from the algae intake rollers
+        intakeSimulation.obtainGamePieceFromIntake();
+        ReefscapeAlgaeOnFly.setHitNetCallBack(() -> System.out.println("ALGAE hits NET!"));
+        // adds algae to the arena as having been output from the robot
+        SimulatedArena.getInstance()
+            .addGamePieceProjectile(
+                new ReefscapeAlgaeOnFly(
+                        drivetrain.getSimulatedDriveTrainPose().getTranslation(),
+                        new Translation2d(0.6, 0),
+                        drivetrain.getDriveTrainSimulatedChassisSpeedsFieldRelative(),
+                        drivetrain
+                            .getSimulatedDriveTrainPose()
+                            .getRotation()
+                            .plus(new Rotation2d(Math.PI / 2)),
+                        // TODO - fix values
+                        0.1, // initial height of the ball, in meters
+                        0.5, // initial velocity, in m/s
+                        Math.toRadians(0)) // shooter angle
+                    .withProjectileTrajectoryDisplayCallBack(
+                        (poses) ->
+                            Logger.recordOutput(
+                                "successfulShotsTrajectory", poses.toArray(Pose3d[]::new)),
+                        (poses) ->
+                            Logger.recordOutput(
+                                "missedShotsTrajectory", poses.toArray(Pose3d[]::new))));
+      }
     }
   }
 
