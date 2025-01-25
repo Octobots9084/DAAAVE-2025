@@ -11,6 +11,7 @@ public class Wrist extends SubsystemBase {
   private WristStates targetState = WristStates.VERTICAL;
 
   private static Wrist instance;
+  private WristStates state = WristStates.FOURTYFIVE;
 
   public static Wrist getInstance() {
     if (instance == null) {
@@ -39,6 +40,11 @@ public class Wrist extends SubsystemBase {
     io.setPosition(state.wristPosition);
     targetState = state;
     Logger.recordOutput("Wrist/State", state);
+    this.state = state;
+  }
+
+  public WristStates getState() {
+    return this.state;
   }
 
   public WristStates getState() {

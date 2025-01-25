@@ -2,7 +2,10 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
+import frc.robot.Commands.CoralRollers.SetCoralRollersState;
+import frc.robot.Commands.complex.AlignReef;
 import frc.robot.Commands.complex.AlignSource;
+import frc.robot.Subsystems.CoralRollers.CoralRollersState;
 import frc.robot.Subsystems.Swerve.Swerve;
 
 public class ButtonConfig {
@@ -35,6 +38,11 @@ public class ButtonConfig {
     // processor align? (4)
     driverButtons.button(4).whileTrue(new AlignSource());
 
+    driverButtons
+        .button(-1)
+        .whileTrue(new AlignReef().andThen(new SetCoralRollersState(CoralRollersState.OUTPUT)));
+
     // driverButtons.button(-1).whileTrue(new ScoreCoral()); TODO Implement
+
   }
 }

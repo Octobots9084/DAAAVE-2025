@@ -44,7 +44,7 @@ public class Elevator extends SubsystemBase {
   }
 
   public void setState(ElevatorStates state) {
-    io.setPosition(state.leftPosition, state.rightPosition);
+    io.setPosition(state.position, state.position);
 
     Logger.recordOutput("Elevator/State", state);
   }

@@ -1,5 +1,6 @@
 {
   "conversionFactors": {
+    "NOTE - gearRatio needs to be 10 for simulation": true,
     "angle": {
       "gearRatio": 1,
       "factor": 0

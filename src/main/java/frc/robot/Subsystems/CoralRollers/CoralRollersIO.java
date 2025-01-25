@@ -12,7 +12,7 @@ public interface CoralRollersIO {
     public double appliedVolts = 0.0;
     public double currentAmps = 0.0;
     public boolean hasCoral = false;
-    public boolean coralInShute = false;
+    public boolean coralInChute = false;
   }
 
   public default void updateInputs(CoralRollersIOInputs inputs) {
@@ -21,11 +21,13 @@ public interface CoralRollersIO {
 
   public default void setVoltage(double Position) {}
 
+  // coral is in the claw
   public default boolean hasCoral() {
     return coralDetector.getDistance().getValueAsDouble() < 0.5;
   }
 
-  public default boolean coralInShute() {
+  // coral is in the intake funnel area (NOT the claw)
+  public default boolean coralInChute() {
     return false;
   }
 

@@ -12,6 +12,7 @@ public class WristIOSim implements WristIO {
           LinearSystemId.createDCMotorSystem(DCMotor.getNeo550(1), 0.025, 1), DCMotor.getNeo550(1));
   PIDController simController = new PIDController(0, 0, 0);
   double targetPosition;
+  WristStates state = WristStates.LOW;
 
   @Override
   public void updateInputs(WristIOInputs inputs) {
@@ -31,6 +32,8 @@ public class WristIOSim implements WristIO {
   public void setPosition(double position) {
     SmartDashboard.putNumber("Position", position);
     targetPosition = position;
+
+    
   }
 
   @Override
@@ -38,5 +41,9 @@ public class WristIOSim implements WristIO {
     motorSim.setInputVoltage(
         simController.calculate(motorSim.getAngularPositionRotations(), targetPosition));
     motorSim.update(0.02);
+  }
+
+  public WristStates getState() {
+    return this.state;
   }
 }

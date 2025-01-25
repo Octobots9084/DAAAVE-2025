@@ -33,7 +33,7 @@ public class CoralRollersIOSystems implements CoralRollersIO {
     inputs.appliedVolts = motor.getAppliedOutput() * motor.getBusVoltage();
     inputs.currentAmps = motor.getOutputCurrent();
     // TODO change 100
-    inputs.coralInShute = mouthBeam.getValue() > 100;
+    inputs.coralInChute = mouthBeam.getValue() > 100;
     inputs.hasCoral = hasCoral();
   }
 
