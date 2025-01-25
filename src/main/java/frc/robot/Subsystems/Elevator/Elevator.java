@@ -50,15 +50,15 @@ public class Elevator extends SubsystemBase {
   }
 
   public boolean isAtState(ElevatorStates state, double tolerance) {
-    return MathUtil.isNear(this.inputs.leftPositionRotations, targetLevel.leftPosition, tolerance)
+    return MathUtil.isNear(this.inputs.leftPositionRotations, targetLevel.position, tolerance)
         || MathUtil.isNear(
-            this.inputs.rightPositionRotations, targetLevel.rightPosition, tolerance);
+            this.inputs.rightPositionRotations, targetLevel.position, tolerance);
   }
 
   public boolean isAtState(double tolerance) {
-    return MathUtil.isNear(this.inputs.leftPositionRotations, targetLevel.leftPosition, tolerance)
+    return MathUtil.isNear(this.inputs.leftPositionRotations, targetLevel.position, tolerance)
         || MathUtil.isNear(
-            this.inputs.rightPositionRotations, targetLevel.rightPosition, tolerance);
+            this.inputs.rightPositionRotations, targetLevel.position, tolerance);
   }
 
   public void updateSim() {

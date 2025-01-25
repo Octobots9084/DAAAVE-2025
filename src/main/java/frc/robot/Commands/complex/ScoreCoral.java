@@ -53,9 +53,9 @@ public class ScoreCoral extends Command {
     if (elevatorInPos
         && wristInPosition
         && isAligned
-        && (coralRollers.getState() != CoralRollersState.REJECTING))
+        && (coralRollers.getState() != CoralRollersState.OUTPUT))
       CommandScheduler.getInstance()
-          .schedule(new SetCoralRollersState(CoralRollersState.REJECTING));
+          .schedule(new SetCoralRollersState(CoralRollersState.OUTPUT));
     //
   }
 

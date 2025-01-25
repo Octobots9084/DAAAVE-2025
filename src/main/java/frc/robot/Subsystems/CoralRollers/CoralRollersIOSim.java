@@ -90,18 +90,7 @@ public class CoralRollersIOSim implements CoralRollersIO {
     if (this.hasCoral() && state == CoralRollersState.OUTPUT) {
         this.hasCoralInClaw = false;
       // removes algae from the algae intake rollers
-      double dropHeight = 0;
-      ReefTargetLevel elevatorTargetHeight = Elevator.getInstance().getReefTargetLevel();
-      if (elevatorTargetHeight == ReefTargetLevel.L1) {
-        dropHeight = ElevatorStates.LEVEL1.position;
-      } else if (elevatorTargetHeight == ReefTargetLevel.L2) {
-        dropHeight = ElevatorStates.LEVEL2.position;
-      } else if (elevatorTargetHeight == ReefTargetLevel.L3) {
-        dropHeight = ElevatorStates.LEVEL3.position;
-      } else {
-        dropHeight = ElevatorStates.LEVEL4.position;
-      }
-
+      double dropHeight = Elevator.getInstance().getReefTargetLevel().position;
       double wristAngle = Wrist.getInstance().getState().wristPosition;
 
       SimulatedArena.getInstance()
