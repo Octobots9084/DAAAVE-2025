@@ -20,6 +20,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.States.ReefTargetOrientation;
+import frc.robot.States.ReefTargetSide;
 import java.util.function.DoubleSupplier;
 import org.littletonrobotics.junction.Logger;
 
@@ -29,11 +31,13 @@ public class Swerve extends SubsystemBase {
   private final SwerveIOInputsAutoLogged inputs = new SwerveIOInputsAutoLogged();
   private static Swerve INSTANCE = null;
 
+  public ReefTargetOrientation alignmentOrientation;
+  public ReefTargetSide reefTargetSide;
+
   public static enum DriveState {
     None,
     Manual,
-    AlignReefLeft,
-    AlignReefRight,
+    AlignReef,
     AlignProcessor,
     AlignSource
   };
@@ -44,6 +48,8 @@ public class Swerve extends SubsystemBase {
   public boolean isAlignedToCoralRight;
   public boolean isAlignedToCoralLeft;
   public boolean isAlignedToProcessor;
+  private ReefTargetSide targetSide;
+  private ReefTargetOrientation targetOrientation;
 
   public static Swerve getInstance() {
     if (INSTANCE == null) {
@@ -55,6 +61,24 @@ public class Swerve extends SubsystemBase {
   public static Swerve setInstance(SwerveIO io) {
     INSTANCE = new Swerve(io);
     return INSTANCE;
+  }
+
+  public void setReefTargetSide(ReefTargetSide side) {
+    targetSide = side;
+    Logger.recordOutput("Reef Allignment Target Side", targetSide);
+  }
+
+  public void setReefTargetOrientation(ReefTargetOrientation orientation) {
+    targetOrientation = orientation;
+    Logger.recordOutput("Reef Allignment Target Position", targetOrientation);
+  }
+
+  public ReefTargetSide getReefTargetSide() {
+    return targetSide;
+  }
+
+  public ReefTargetOrientation getReefTargetOrientation() {
+    return targetOrientation;
   }
 
   public Swerve(SwerveIO io) {
