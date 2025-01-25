@@ -6,6 +6,8 @@ package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -30,10 +32,14 @@ import frc.robot.Subsystems.Elevator.ElevatorIOSparkMax;
 import frc.robot.Subsystems.Swerve.Swerve;
 import frc.robot.Subsystems.Swerve.SwerveIO;
 import frc.robot.Subsystems.Swerve.SwerveIOSystem;
+import frc.robot.Subsystems.Vision.VisionEstimation;
 import frc.robot.Subsystems.Wrist.Wrist;
 import frc.robot.Subsystems.Wrist.WristIO;
 import frc.robot.Subsystems.Wrist.WristIOSim;
 import frc.robot.Subsystems.Wrist.WristIOSparkMax;
+
+import java.util.Optional;
+
 import org.ironmaple.simulation.SimulatedArena;
 
 /**
@@ -62,6 +68,16 @@ public class RobotContainer {
   public RobotContainer() {
     switch (Constants.currentMode) {
       case REAL:
+        Optional<Alliance> ally = DriverStation.getAlliance();
+        if (ally.isPresent()) {
+          if (ally.get() == Alliance.Red) {
+            Constants.isBlueAlliance = false;
+          }
+          if (ally.get() == Alliance.Blue) {
+            Constants.isBlueAlliance = true;
+          }
+        }
+
         AlgaeRollers.setInstance(new AlgaeRollersIOSystems());
         algaeRollers = AlgaeRollers.getInstance();
 

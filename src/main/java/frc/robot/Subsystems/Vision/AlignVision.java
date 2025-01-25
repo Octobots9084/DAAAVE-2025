@@ -11,7 +11,12 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N4;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.Constants.VisionConstants;
+import frc.robot.States.AlignOffset;
+import frc.robot.States.ReefTargetLevel;
+// import frc.robot.States.ReefTargetOrientation;
+import frc.robot.States.ReefTargetSide;
 import frc.robot.Subsystems.Swerve.Swerve;
 import java.util.List;
 import org.photonvision.PhotonCamera;
@@ -49,6 +54,10 @@ public class AlignVision extends SubsystemBase {
   private double ySpeed;
   private double xSpeed;
   private double turnSpeed;
+  private int currentOffset;
+  // private static ReefTargetOrientation selectedReefOrientation;
+  private static ReefTargetSide selectedPoleSide;
+  private static ReefTargetLevel selectedLevel;
 
   public AlignVision() {
     this.swerve = Swerve.getInstance();
@@ -99,9 +108,8 @@ public class AlignVision extends SubsystemBase {
         // 1});
 
         // Transform Tag Position into Robot Coordinates
-        referenceRobotPosition =
-            VisionConstants.transformFrontLeftToRobot.times(
-                transformTagToCamera.times(VisionConstants.referenceTagPosition));
+        referenceRobotPosition = VisionConstants.transformFrontLeftToRobot.times(
+            transformTagToCamera.times(VisionConstants.referenceTagPosition));
         return new Transform2d(
             referenceRobotPosition.getData()[0],
             referenceRobotPosition.getData()[1],
@@ -116,24 +124,47 @@ public class AlignVision extends SubsystemBase {
     }
   }
 
+  // private double handleAngle() {
+  //   if (selectedReefOrientation == ReefTargetOrientation.AB) {
+  //     return 0;
+  //   } else if (selectedReefOrientation == ReefTargetOrientation.CD) {
+  //     return 60;
+  //   } else if (selectedReefOrientation == ReefTargetOrientation.EF) {
+  //     return 120;
+  //   } else if (selectedReefOrientation == ReefTargetOrientation.GH) {
+  //     return 180;
+  //   } else if (selectedReefOrientation == ReefTargetOrientation.IJ) {
+  //     return -120;
+  //   } else if (selectedReefOrientation == ReefTargetOrientation.KL) {
+  //     return -60;
+  //   } else {
+  //     return Double.NaN;
+  //   }
+  // }
+
+  private int calcFindOffset(int tagID, ReefTargetSide side, ReefTargetLevel level) {
+    int offset = Constants.isBlueAlliance ? 17 : 6;
+
+    return 6 * (tagID - offset) + (3 * side.ordinal()) + level.ordinal();
+  }
+
   public ChassisSpeeds getAlignChassisSpeeds() {
     aveLidarDist = (this.getRightLidarDistance() + this.getLeftLidarDistance()) / 2;
     diffLidarDist = this.getRightLidarDistance() - this.getLeftLidarDistance();
     refPosition = this.getReferenceRobotPosition();
+    currentOffset = calcFindOffset(currentOffset, selectedPoleSide, selectedLevel);
 
     try {
       if (refPosition.getX() != Transform2d.kZero.getX()
-          && refPosition.getY() != Transform2d.kZero.getY()) {
+          && refPosition.getY() != Transform2d.kZero.getY() && !Double.isNaN(0)) {
 
         ySpeed = pidController.calculate(refPosition.getY(), 0.1524);
-        xSpeed =
-            this.areBothLidarsValid()
-                ? lidarPIDController.calculate(aveLidarDist, .12)
-                : cameraDepthPIDController.calculate(refPosition.getX(), 0.381);
-        turnSpeed =
-            this.areBothLidarsValid()
-                ? -gyroPIDController.calculate(Math.asin(diffLidarDist / .605), 0)
-                : gyroPIDController.calculate(swerve.getGyro(), Math.toRadians(-60));
+        xSpeed = this.areBothLidarsValid()
+            ? lidarPIDController.calculate(aveLidarDist, .12)
+            : cameraDepthPIDController.calculate(refPosition.getX(), 0.381);
+        turnSpeed = this.areBothLidarsValid()
+            ? -gyroPIDController.calculate(Math.asin(diffLidarDist / .605), 0)
+            : gyroPIDController.calculate(swerve.getGyro(), Math.toRadians(0));
 
       } else {
         ySpeed = 0;
@@ -171,5 +202,17 @@ public class AlignVision extends SubsystemBase {
 
   public boolean getLeftLidarDetect() {
     return leftRange.getIsDetected().getValue();
+  }
+
+  // public static void setReefOrientation(ReefTargetOrientation orientation) {
+  //   selectedReefOrientation = orientation;
+  // }
+
+  public static void setPoleSide(ReefTargetSide side) {
+    selectedPoleSide = side;
+  }
+
+  public static void setPoleLevel(ReefTargetLevel level) {
+    selectedLevel = level;
   }
 }

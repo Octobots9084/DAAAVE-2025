@@ -13,13 +13,22 @@ public class States {
     RIGHT
   }
 
-  public enum ReefTargetOrientation {
+  public enum BlueReefTargetOrientation {
+    CD,
+    AB,
+    KL,
+    IJ,
+    GH,
+    EF
+  }
+
+  public enum RedReefTargetOrientation {
+    KL,
     AB,
     CD,
     EF,
     GH,
-    IJ,
-    KL
+    IJ
   }
 
   public enum AlignOffset {
