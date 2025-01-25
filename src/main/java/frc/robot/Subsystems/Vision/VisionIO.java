@@ -1,6 +1,7 @@
 package frc.robot.Subsystems.Vision;
 
 import edu.wpi.first.math.Matrix;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import org.littletonrobotics.junction.AutoLog;
@@ -15,6 +16,12 @@ public interface VisionIO {
     public boolean middleLeftConnected = false;
     public boolean middleRightConnected = false;
     public boolean backMiddleConnected = false;
+
+    public Pose3d frontLeftPose;
+    public Pose3d frontRightPose;
+    public Pose3d middleLeftPose;
+    public Pose3d middleRightPose;
+    public Pose3d backMiddlePose;
 
     public PhotonPipelineResult frontLeftResult = null;
     public PhotonPipelineResult frontRightResult = null;
