@@ -20,7 +20,7 @@ public class VisionIOSystem implements VisionIO {
   public final VisionCamera frontLeftCamera = new VisionCamera("CamOne", VisionConstants.camOneTransform);
   // public final VisionCamera frontRightCamera = new VisionCamera("Triceratops",
   // VisionConstants.triceratopsTransform);
-  public StdDevs stdDevsCalculation;
+  // public StdDevs stdDevsCalculation;
   private final Notifier allNotifier = new Notifier(
       () -> {
         frontLeftCamera.run();
@@ -32,7 +32,7 @@ public class VisionIOSystem implements VisionIO {
 
     allNotifier.setName("runAll");
     allNotifier.startPeriodic(0.02);
-    stdDevsCalculation = new StdDevs();
+    // stdDevsCalculation = new StdDevs();
   }
 
   public void closeNotifiers() {
@@ -47,13 +47,6 @@ public class VisionIOSystem implements VisionIO {
     inputs.frontLeftResult = frontLeftCamera.grabLatestResult();
     // inputs.frontRightResult = frontRightCamera.grabLatestResult();
 
-    // if (frontLeftCamera.grabLatestEstimatedPose() != null) {
-    // inputs.frontLeftPose =
-    // frontLeftCamera.grabLatestEstimatedPose().estimatedPose;
-    // }
-
-    // inputs.frontRightPose =
-    // frontRightCamera.grabLatestEstimatedPose().estimatedPose;
   }
 
   public void updatePose() {
@@ -72,11 +65,15 @@ public class VisionIOSystem implements VisionIO {
   public void addVisionReading(EstimatedRobotPose pose, Matrix<N3, N1> stdDevs) {
     if (pose != null && stdDevs != null) {
       Pose2d pose2d = pose.estimatedPose.toPose2d();
-      stdDevsCalculation.update(pose2d.getX(), pose2d.getY(), pose2d.getRotation().getRadians());
-      SmartDashboard.putNumber("StdDevsX", stdDevsCalculation.getStandardDeviationX());
-      SmartDashboard.putNumber("StdDevsY", stdDevsCalculation.getStandardDeviationY());
+      // stdDevsCalculation.update(pose2d.getX(), pose2d.getY(),
+      // pose2d.getRotation().getRadians());
+      // SmartDashboard.putNumber("StdDevsX",
+      // stdDevsCalculation.getStandardDeviationX());
+      // SmartDashboard.putNumber("StdDevsY",
+      // stdDevsCalculation.getStandardDeviationY());
 
-      SmartDashboard.putNumber("StdDevsRot", stdDevsCalculation.getStandardDeviationRotation());
+      // SmartDashboard.putNumber("StdDevsRot",
+      // stdDevsCalculation.getStandardDeviationRotation());
       swerve.addVisionReading(pose2d, pose.timestampSeconds, stdDevs);
     }
   }
