@@ -8,7 +8,7 @@ import org.littletonrobotics.junction.Logger;
 public class Elevator extends SubsystemBase {
   private final ElevatorIO io;
   private final ElevatorIOInputsAutoLogged inputs = new ElevatorIOInputsAutoLogged();
-  private ReefTargetLevel targetLevel;
+  private ReefTargetLevel targetLevel = ReefTargetLevel.L4;
 
   private static Elevator instance;
 
@@ -45,14 +45,14 @@ public class Elevator extends SubsystemBase {
   }
 
   public void setState(ElevatorStates state) {
-    io.setPosition(state.leftPosition, state.rightPosition);
+    io.setPosition(state.position, state.position);
 
     Logger.recordOutput("Elevator/State", state);
   }
 
   public boolean isAtState(ElevatorStates state, double tolerance) {
-    return MathUtil.isNear(this.inputs.leftPositionRotations, state.leftPosition, tolerance)
-        || MathUtil.isNear(this.inputs.rightPositionRotations, state.rightPosition, tolerance);
+    return MathUtil.isNear(this.inputs.leftPositionRotations, state.position, tolerance)
+        || MathUtil.isNear(this.inputs.rightPositionRotations, state.position, tolerance);
   }
 
   public void updateSim() {

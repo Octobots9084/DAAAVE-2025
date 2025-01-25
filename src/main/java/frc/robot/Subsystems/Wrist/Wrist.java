@@ -9,6 +9,7 @@ public class Wrist extends SubsystemBase {
   private final WristIOInputsAutoLogged inputs = new WristIOInputsAutoLogged();
 
   private static Wrist instance;
+  private WristStates state = WristStates.FOURTYFIVE;
 
   public static Wrist getInstance() {
     if (instance == null) {
@@ -36,6 +37,11 @@ public class Wrist extends SubsystemBase {
   public void setState(WristStates state) {
     io.setPosition(state.wristPosition);
     Logger.recordOutput("Wrist/State", state);
+    this.state = state;
+  }
+
+  public WristStates getState() {
+    return this.state;
   }
 
   public boolean isAtState(WristStates state, double tolerance) {

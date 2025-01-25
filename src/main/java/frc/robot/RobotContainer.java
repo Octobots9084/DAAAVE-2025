@@ -54,9 +54,9 @@ public class RobotContainer {
   private Swerve swerve;
 
   private AlgaeRollersManual algaeRollersManual;
-  private CoralRollersManual coralRollersManuel;
-  private ElevatorManual elevatorManel;
-  private WristManual wristManuel;
+  private CoralRollersManual coralRollersManual;
+  private ElevatorManual elevatorManual;
+  private WristManual wristManual;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -86,7 +86,8 @@ public class RobotContainer {
             new AlgaeRollersIOSim(swerve.getIo().getSwerveDrive().getMapleSimDrive().get()));
         algaeRollers = AlgaeRollers.getInstance();
 
-        CoralRollers.setInstance(new CoralRollersIOSim());
+        CoralRollers.setInstance(
+            new CoralRollersIOSim(swerve.getIo().getSwerveDrive().getMapleSimDrive().get()));
         coralRollers = CoralRollers.getInstance();
 
         Elevator.setInstance(new ElevatorIOSim());
@@ -142,9 +143,9 @@ public class RobotContainer {
     // this.wrist = new Wrist();
 
     // this.algaeRollersManual = new AlgaeRollersManual();
-    // this.coralRollersManuel = new CoralRollersManual();
+    // this.coralRollersManual = new CoralRollersManual();
     // this.elevatorManel = new ElevatorManual();
-    // this.wristManuel = new WristManual();
+    // this.wristManual = new WristManual();
   }
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.

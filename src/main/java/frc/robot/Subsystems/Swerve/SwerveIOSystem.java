@@ -31,7 +31,7 @@ public class SwerveIOSystem implements SwerveIO {
     try {
       swerveDrive =
           new SwerveParser(swerveJsonDirectory)
-              .createSwerveDrive(maximumSpeed, new Pose2d(2, 2, new Rotation2d(0)));
+              .createSwerveDrive(maximumSpeed, new Pose2d(3.1, 4, new Rotation2d(0)));
       swerveDrive.setHeadingCorrection(
           false); // Heading correction should only be used while controlling the robot via
       // angle.

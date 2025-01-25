@@ -40,6 +40,6 @@ public class ButtonConfig {
 
     driverButtons
         .button(-1)
-        .whileTrue(new AlignReef().andThen(new SetCoralRollersState(CoralRollersState.REJECTING)));
+        .whileTrue(new AlignReef().andThen(new SetCoralRollersState(CoralRollersState.OUTPUT)));
   }
 }

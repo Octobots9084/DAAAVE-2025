@@ -21,6 +21,7 @@ import org.littletonrobotics.junction.Logger;
 public class AlgaeRollersIOSim implements AlgaeRollersIO {
   AnalogInputSim beamInputSim = new AnalogInputSim(0);
   SwerveDriveSimulation drivetrain;
+  AlgaeRollersStates state = AlgaeRollersStates.OFF;
   DCMotorSim motorSim =
       new DCMotorSim(
           LinearSystemId.createDCMotorSystem(DCMotor.getNeo550(1), 0.025, 1), DCMotor.getNeo550(1));
@@ -59,42 +60,47 @@ public class AlgaeRollersIOSim implements AlgaeRollersIO {
 
     if (volts == AlgaeRollersStates.INTAKE.voltage) {
       intakeSimulation.startIntake();
+      this.state = AlgaeRollersStates.INTAKE;
     } else if (volts == AlgaeRollersStates.OFF.voltage) {
       intakeSimulation.stopIntake();
+      this.state = AlgaeRollersStates.OFF;
     } else if (volts == AlgaeRollersStates.OUTPUT.voltage) {
-      if (this.hasAlgae()) {
-      // removes algae from the algae intake rollers
-      intakeSimulation.obtainGamePieceFromIntake();
-      ReefscapeAlgaeOnFly.setHitNetCallBack(() -> System.out.println("ALGAE hits NET!"));
-      // adds algae to the arena as having been output from the robot
-      ReefscapeAlgaeOnFly.setHitNetCallBack(() -> System.out.println("ALGAE hits NET!"));
-      SimulatedArena.getInstance()
-          .addGamePieceProjectile(
-              new ReefscapeAlgaeOnFly(
-                      this.drivetrain.getSimulatedDriveTrainPose().getTranslation(),
-                      new Translation2d(-0.6, 0),
-                      this.drivetrain.getDriveTrainSimulatedChassisSpeedsFieldRelative(),
-                      drivetrain
-                          .getSimulatedDriveTrainPose()
-                          .getRotation()
-                          .plus(new Rotation2d(-Math.PI / 2)),
-                      Meters.of(0.1), // initial height of the ball, in meters
-                      MetersPerSecond.of(-0.5), // initial velocity, in m/s
-                      Degrees.of(0)) // shooter angle
-                  .withProjectileTrajectoryDisplayCallBack(
-                      (poses) ->
-                          Logger.recordOutput(
-                              "successfulShotsTrajectory", poses.toArray(Pose3d[]::new)),
-                      (poses) ->
-                          Logger.recordOutput(
-                              "missedShotsTrajectory", poses.toArray(Pose3d[]::new))));
-      }
+      this.state = AlgaeRollersStates.OUTPUT;
     }
   }
 
   @Override
   public void updateSim() {
     motorSim.update(0.02);
+
+    if (this.hasAlgae() && this.state == AlgaeRollersStates.OUTPUT) {
+        // removes algae from the intake
+        intakeSimulation.obtainGamePieceFromIntake();
+        // removes algae from the algae intake rollers
+        ReefscapeAlgaeOnFly.setHitNetCallBack(() -> System.out.println("ALGAE hits NET!"));
+        // adds algae to the arena as having been output from the robot
+        ReefscapeAlgaeOnFly.setHitNetCallBack(() -> System.out.println("ALGAE hits NET!"));
+        SimulatedArena.getInstance()
+            .addGamePieceProjectile(
+                new ReefscapeAlgaeOnFly(
+                        this.drivetrain.getSimulatedDriveTrainPose().getTranslation(),
+                        new Translation2d(-0.6, 0),
+                        this.drivetrain.getDriveTrainSimulatedChassisSpeedsFieldRelative(),
+                        drivetrain
+                            .getSimulatedDriveTrainPose()
+                            .getRotation()
+                            .plus(new Rotation2d(-Math.PI / 2)),
+                        Meters.of(0.1), // initial height of the ball, in meters
+                        MetersPerSecond.of(-0.5), // initial velocity, in m/s
+                        Degrees.of(0)) // shooter angle
+                    .withProjectileTrajectoryDisplayCallBack(
+                        (poses) ->
+                            Logger.recordOutput(
+                                "successfulShotsTrajectory", poses.toArray(Pose3d[]::new)),
+                        (poses) ->
+                            Logger.recordOutput(
+                                "missedShotsTrajectory", poses.toArray(Pose3d[]::new))));
+      }
   }
 
   @Override
