@@ -7,7 +7,7 @@ import frc.robot.Subsystems.Wrist.Wrist;
 
 public class SetTargetReefLevel extends Command {
   public SetTargetReefLevel(ElevatorStates targetLevel) {
-        Elevator.getInstance().setReefTargetLevel(targetLevel);
-        Wrist.getInstance().setState(targetLevel);
-    }
+    Elevator.getInstance().setReefTargetLevel(targetLevel);
+    Wrist.getInstance().setState(targetLevel);
+  }
 }

@@ -35,6 +35,7 @@ public class CoralRollers extends SubsystemBase {
     coralRollersState = state;
     io.setVoltage(state.voltage);
   }
+
   public CoralRollersState getState() {
     return coralRollersState;
   }

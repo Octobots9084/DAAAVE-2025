@@ -1,8 +1,6 @@
 package frc.robot.Commands.Elevator;
 
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import frc.robot.Subsystems.CoralRollers.CoralRollers;
 import frc.robot.Subsystems.Elevator.Elevator;
 import frc.robot.Subsystems.Elevator.ElevatorStates;
 
