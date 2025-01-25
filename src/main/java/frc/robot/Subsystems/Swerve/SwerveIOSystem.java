@@ -2,6 +2,7 @@ package frc.robot.Subsystems.Swerve;
 
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
@@ -21,21 +22,23 @@ import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
 public class SwerveIOSystem implements SwerveIO {
   private SwerveDrive swerveDrive;
   File swerveJsonDirectory = new File(Filesystem.getDeployDirectory(), "swerve");
-  double maximumSpeed = 4.5;
+  double maximumSpeed = 10;
   double maxTurnSpeed = 5;
   private Field2d field = new Field2d();
 
   public SwerveIOSystem() {
     SwerveDriveTelemetry.verbosity = TelemetryVerbosity.HIGH;
     try {
-      swerveDrive = new SwerveParser(swerveJsonDirectory).createSwerveDrive(maximumSpeed);
+      swerveDrive =
+          new SwerveParser(swerveJsonDirectory)
+              .createSwerveDrive(maximumSpeed, new Pose2d(2, 2, new Rotation2d(0)));
       swerveDrive.setHeadingCorrection(
           false); // Heading correction should only be used while controlling the robot via
       // angle.
       swerveDrive.setCosineCompensator(
           !SwerveDriveTelemetry.isSimulation); // Disables cosine compensation
       // for simulations since it causes discrepancies not seen in real life.
-      swerveDrive.setAngularVelocityCompensation(true, true, 0.1);
+      swerveDrive.setAngularVelocityCompensation(true, true, -0.075);
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -96,10 +99,6 @@ public class SwerveIOSystem implements SwerveIO {
     return swerveDrive.getStates();
   }
 
-  public SwerveModuleState[] getModuleDesiredStates() {
-    return swerveDrive.getDesiredStates();
-  }
-
   public SwerveModulePosition[] getPositions() {
     return swerveDrive.getModulePositions();
   }
@@ -131,6 +130,10 @@ public class SwerveIOSystem implements SwerveIO {
   public SwerveDrive getSwerveDrive() {
     return swerveDrive;
   }
+
+  // public SwerveModuleState[] getModuleDesiredStates() {
+  //   return swerveDrive.getDesiredStates();
+  // }
 
   @Override
   public void updateInputs(SwerveIOInputs inputs) {

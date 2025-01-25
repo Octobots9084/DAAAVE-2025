@@ -13,6 +13,7 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.config.PIDConstants;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.Nat;
 import edu.wpi.first.math.geometry.Rotation3d;
@@ -39,6 +40,11 @@ public final class Constants {
 
     /** Replaying from a log file. */
     REPLAY
+  }
+
+  public static final class Swerve {
+    public static final PIDConstants translationConstants = new PIDConstants(5, 0.0, 0.0);
+    public static final PIDConstants rotationConstants = new PIDConstants(5, 0.0, 0.0);
   }
 
   public static class OperatorConstants {

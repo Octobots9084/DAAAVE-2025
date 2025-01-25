@@ -19,8 +19,9 @@ public class SetCoralRollersStateTolerance extends Command {
     coralRollers.setState(targetState);
   }
 
-  // @Override
-  // public boolean isFinished(){
-  //     return coralRollers.isAtState(targetState,tolerance);
-  // }
+  @Override
+  public boolean isFinished() {
+    return true;
+    // return coralRollers.isAtState(targetState,tolerance);
+  }
 }

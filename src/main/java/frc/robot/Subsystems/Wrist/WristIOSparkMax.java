@@ -1,5 +1,6 @@
 package frc.robot.Subsystems.Wrist;
 
+import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
@@ -30,10 +31,6 @@ public class WristIOSparkMax implements WristIO {
     wristMotor.setCANMaxRetries(5);
   }
 
-  public SparkMax getWristMotor() {
-    return wristMotor;
-  }
-
   public void updateInputs(WristIOInputs inputs) {
     inputs.wristPositionRotations = wristMotor.getEncoder().getPosition();
     inputs.wristVelocityRPM = wristMotor.getEncoder().getVelocity();
@@ -43,13 +40,13 @@ public class WristIOSparkMax implements WristIO {
 
   @Override
   public void configurePID(double kP, double kI, double kD) {
-    config.closedLoop.pid(0, 0, 0);
+    config.closedLoop.pid(kP, kI, kD);
   }
 
   @Override
-  public void setState(WristStates state) {
+  public void setPosition(double position) {
     wristMotor
         .getClosedLoopController()
-        .setReference(state.wristPosition, ControlType.kPosition, null, 0);
+        .setReference(position, ControlType.kPosition, ClosedLoopSlot.kSlot0, 0);
   }
 }

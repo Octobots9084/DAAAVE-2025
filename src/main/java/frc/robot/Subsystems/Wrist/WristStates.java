@@ -4,7 +4,7 @@ public enum WristStates {
   // TODO edit these to the actual positions
   LOW(0),
   HORIZONTAL(0),
-  FOURTYFIVE(0),
+  FOURTYFIVE(45),
   VERTICAL(0),
   CLIMB(0);
 

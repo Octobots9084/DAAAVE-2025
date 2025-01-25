@@ -23,6 +23,7 @@ public interface ElevatorIO {
 
   public default void setPosition(double leftPosition, double rightPosition) {}
 
+  public default void updateSim() {}
   /** Set velocity PID constants. */
   public default void configurePID(double kP, double kI, double kD) {}
 }
