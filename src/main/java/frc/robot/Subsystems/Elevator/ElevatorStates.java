@@ -7,6 +7,7 @@ public enum ElevatorStates {
   LEVEL2(0),
   LEVEL3(100),
   LEVEL4(3),
+  INTAKE(0),
   CLIMB(0);
 
   public double position;

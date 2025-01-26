@@ -2,13 +2,12 @@ package frc.robot.Subsystems.Elevator;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.States.ReefTargetLevel;
 import org.littletonrobotics.junction.Logger;
 
 public class Elevator extends SubsystemBase {
   private final ElevatorIO io;
   private final ElevatorIOInputsAutoLogged inputs = new ElevatorIOInputsAutoLogged();
-  private ReefTargetLevel targetLevel = ReefTargetLevel.L4;
+  private ElevatorStates targetLevel;
 
   private static Elevator instance;
 
@@ -19,12 +18,12 @@ public class Elevator extends SubsystemBase {
     return instance;
   }
 
-  public void setReefTargetLevel(ReefTargetLevel level) {
+  public void setReefTargetLevel(ElevatorStates level) {
     targetLevel = level;
     Logger.recordOutput("Elevator Target Level", targetLevel);
   }
 
-  public ReefTargetLevel getReefTargetLevel() {
+  public ElevatorStates getReefTargetLevel() {
     return targetLevel;
   }
 
@@ -51,8 +50,15 @@ public class Elevator extends SubsystemBase {
   }
 
   public boolean isAtState(ElevatorStates state, double tolerance) {
-    return MathUtil.isNear(this.inputs.leftPositionRotations, state.position, tolerance)
-        || MathUtil.isNear(this.inputs.rightPositionRotations, state.position, tolerance);
+    return MathUtil.isNear(this.inputs.leftPositionRotations, targetLevel.position, tolerance)
+        || MathUtil.isNear(
+            this.inputs.rightPositionRotations, targetLevel.position, tolerance);
+  }
+
+  public boolean isAtState(double tolerance) {
+    return MathUtil.isNear(this.inputs.leftPositionRotations, targetLevel.position, tolerance)
+        || MathUtil.isNear(
+            this.inputs.rightPositionRotations, targetLevel.position, tolerance);
   }
 
   public void updateSim() {
