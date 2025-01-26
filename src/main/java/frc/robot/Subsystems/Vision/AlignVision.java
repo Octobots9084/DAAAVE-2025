@@ -109,42 +109,6 @@ public class AlignVision extends SubsystemBase {
 
   }
 
-  private int calcOrientationOffset(ReefTargetOrientation orientation, ReefTargetSide side, ReefTargetLevel level) {
-
-    return (6 * orientation.ordinal()) + (3 * side.ordinal()) + level.ordinal();
-  }
-
-  private int handleTurnAngle(AlignState state) {
-    // Different orientations of the reef (Degrees)
-    if (state == AlignState.Reef) {
-      switch (selectedReefOrientation) {
-        case AB:
-          return 0;
-        case CD:
-          return 60;
-        case EF:
-          return 120;
-        case GH:
-          return 180;
-        case IJ:
-          return -120;
-        case KL:
-          return -60;
-        default:
-          return Integer.MAX_VALUE;
-      }
-    } else if (state == AlignState.Processor) {
-      return -90;
-    } else if (state == AlignState.Source && (this.isValidAlignTag(1) || this.isValidAlignTag(13))) {
-      return 135;
-    } else if (state == AlignState.Source && (this.isValidAlignTag(2) || this.isValidAlignTag(12))) {
-      return -135;
-    } else {
-      return Integer.MAX_VALUE;
-    }
-
-  }
-
   public ChassisSpeeds getAlignChassisSpeeds(AlignState state) {
     result = vision.inputs.frontLeftResult;
     double ySpeed = 0;
@@ -203,6 +167,42 @@ public class AlignVision extends SubsystemBase {
     }
 
     return new ChassisSpeeds(-xSpeed, -ySpeed, turnSpeed);
+  }
+
+  private int calcOrientationOffset(ReefTargetOrientation orientation, ReefTargetSide side, ReefTargetLevel level) {
+
+    return (6 * orientation.ordinal()) + (3 * side.ordinal()) + level.ordinal();
+  }
+
+  private int handleTurnAngle(AlignState state) {
+    // Different orientations of the reef (Degrees)
+    if (state == AlignState.Reef) {
+      switch (selectedReefOrientation) {
+        case AB:
+          return 0;
+        case CD:
+          return 60;
+        case EF:
+          return 120;
+        case GH:
+          return 180;
+        case IJ:
+          return -120;
+        case KL:
+          return -60;
+        default:
+          return Integer.MAX_VALUE;
+      }
+    } else if (state == AlignState.Processor) {
+      return -90;
+    } else if (state == AlignState.Source && (this.isValidAlignTag(1) || this.isValidAlignTag(13))) {
+      return 135;
+    } else if (state == AlignState.Source && (this.isValidAlignTag(2) || this.isValidAlignTag(12))) {
+      return -135;
+    } else {
+      return Integer.MAX_VALUE;
+    }
+
   }
 
   private double calculateXSpeed(double aveLidarDist, Transform2d refPosition) {
