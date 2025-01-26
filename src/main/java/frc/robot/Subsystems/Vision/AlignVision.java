@@ -121,6 +121,7 @@ public class AlignVision extends SubsystemBase {
     int currentOffsetIndex = state == AlignState.Reef
         ? calcOrientationOffset(selectedReefOrientation, selectedPoleSide, selectedLevel)
         : 0;
+
     Transform2d refPosition = this.getReferenceRobotPosition();
     AlignOffset currentOffset = state == AlignState.Reef ? AlignOffset.values()[currentOffsetIndex]
         : null;
@@ -152,6 +153,12 @@ public class AlignVision extends SubsystemBase {
         ySpeed = pidController.calculate(refPosition.getY(), targetDistance);
         xSpeed = this.calculateXSpeed(aveLidarDist, refPosition);
         turnSpeed = this.calculateTurnSpeed(diffLidarDist, state);
+
+        if (Double.isNaN(turnSpeed)) {
+          ySpeed = 0;
+          xSpeed = 0;
+          turnSpeed = 0;
+        }
 
       } else {
         ySpeed = 0;
@@ -212,9 +219,15 @@ public class AlignVision extends SubsystemBase {
   }
 
   private double calculateTurnSpeed(double diffLidarDist, AlignState state) {
+    int turnAngle = handleTurnAngle(state);
+
+    if (turnAngle == Integer.MAX_VALUE) {
+      return Double.NaN;
+    }
+
     return this.areBothLidarsValid()
         ? -gyroPIDController.calculate(Math.asin(diffLidarDist / VisionConstants.lidarTurnAngleBaseline), 0)
-        : gyroPIDController.calculate(swerve.getGyro(), Math.toRadians(handleTurnAngle(state)));
+        : gyroPIDController.calculate(swerve.getGyro(), Math.toRadians(turnAngle));
   }
 
   private boolean isValidAlignTag(int tagID) {
