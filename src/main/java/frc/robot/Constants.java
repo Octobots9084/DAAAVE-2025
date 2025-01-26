@@ -13,6 +13,8 @@
 
 package frc.robot;
 
+import java.util.List;
+
 import com.pathplanner.lib.config.PIDConstants;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
@@ -85,6 +87,19 @@ public final class Constants {
 
     // Constant Distance from Tag to Pole (6in in meters)
     public static final double distanceToPole = 0.1524;
+
+    // Max Depth Distance of Lidar from Tag (Meters)
+    public static final double maxLidarDepthDistance = 0.12;
+
+    // Max Depth Distance of Camera from Tag (Meters)
+    public static final double maxCameraDepthDistance = 0.381;
+
+    // Lidar Turn Angle Baseline (Might Be Radians)
+    public static final double lidarTurnAngleBaseline = 0.605;
+
+    // List of tags that can be used for alignment
+    public static final List<Integer> validAlignTags = List.of(1, 2, 3, 6, 7, 8, 9, 10, 11, 12, 13, 16, 17, 18, 19, 20,
+        21, 22);
 
     // The layout of the AprilTags on the field
     public static final AprilTagFieldLayout kTagLayout = AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);

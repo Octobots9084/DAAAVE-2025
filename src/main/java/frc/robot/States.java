@@ -77,4 +77,11 @@ public class States {
       return redOffsetValue;
     }
   }
+
+  public enum AlignState {
+    Reef,
+    Processor,
+    Source,
+    Manual
+  }
 }
