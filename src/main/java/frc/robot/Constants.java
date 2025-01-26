@@ -25,13 +25,10 @@ import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.numbers.N4;
 import edu.wpi.first.wpilibj.RobotBase;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 
 /**
- * This class defines the runtime mode used by AdvantageKit. The mode is always
- * "real" when running
- * on a roboRIO. Change the value of "simMode" to switch between "sim" (physics
- * sim) and "replay"
+ * This class defines the runtime mode used by AdvantageKit. The mode is always "real" when running
+ * on a roboRIO. Change the value of "simMode" to switch between "sim" (physics sim) and "replay"
  * (log replay from a file).
  */
 public final class Constants {
@@ -85,6 +82,9 @@ public final class Constants {
     // Position of the AprilTag in Tag Coordinates.
     public static final Matrix<N4, N1> referenceTagPosition = new Matrix<>(Nat.N4(), Nat.N1(),
         new double[] { 0, 0, 0, 1 });
+
+    // Constant Distance from Tag to Pole (6in in meters)
+    public static final double distanceToPole = 0.1524;
 
     // The layout of the AprilTags on the field
     public static final AprilTagFieldLayout kTagLayout = AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);

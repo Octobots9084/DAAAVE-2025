@@ -10,16 +10,19 @@ import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N4;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.VisionConstants;
 import frc.robot.States.AlignOffset;
 import frc.robot.States.ReefTargetLevel;
+import frc.robot.States.ReefTargetOrientation;
 // import frc.robot.States.ReefTargetOrientation;
 import frc.robot.States.ReefTargetSide;
 import frc.robot.Subsystems.Swerve.Swerve;
 import java.util.List;
 import org.photonvision.PhotonCamera;
+import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.targeting.PhotonPipelineResult;
 
 public class AlignVision extends SubsystemBase {
@@ -34,8 +37,8 @@ public class AlignVision extends SubsystemBase {
   }
 
   private Swerve swerve;
+  private VisionSubsystem vision;
 
-  private PhotonCamera cam;
   private CANrangeConfiguration configuration;
   private FovParamsConfigs paramsConfigs;
   private CANrange rightRange;
@@ -46,7 +49,7 @@ public class AlignVision extends SubsystemBase {
   private PIDController cameraDepthPIDController;
   private PIDController gyroPIDController;
 
-  private List<PhotonPipelineResult> results;
+  private PhotonPipelineResult result;
   private double aveLidarDist;
   private double diffLidarDist;
   private Transform2d refPosition;
@@ -54,15 +57,17 @@ public class AlignVision extends SubsystemBase {
   private double ySpeed;
   private double xSpeed;
   private double turnSpeed;
-  private int currentOffset;
-  // private static ReefTargetOrientation selectedReefOrientation;
+  private double turnAngle;
+  private int currentOffsetIndex;
+  private AlignOffset currentOffset;
+  private static ReefTargetOrientation selectedReefOrientation;
   private static ReefTargetSide selectedPoleSide;
   private static ReefTargetLevel selectedLevel;
 
   public AlignVision() {
     this.swerve = Swerve.getInstance();
+    this.vision = VisionSubsystem.getInstance();
 
-    this.cam = new PhotonCamera("CamOne");
     this.leftRange = new CANrange(10);
     this.rightRange = new CANrange(12);
 
@@ -84,18 +89,11 @@ public class AlignVision extends SubsystemBase {
     leftRange.getConfigurator().apply(configuration);
   }
 
-  @Override
-  public void periodic() {
-    results = cam.getAllUnreadResults();
-  }
-
-  public Transform2d getReferenceRobotPosition() {
+  private Transform2d getReferenceRobotPosition() {
     // Transform Tag Coordinates to Camera Coordinates from photonvision.
     Matrix<N4, N4> transformTagToCamera;
 
-    if (!results.isEmpty()) {
-      var result = results.get(results.size() - 1);
-
+    if (result != null) {
       if (result.getBestTarget() != null && result.getBestTarget().getFiducialId() == 16) {
         // Position of the AprilTag in Robot Coordinates.
         Matrix<N4, N1> referenceRobotPosition = null;
@@ -124,47 +122,64 @@ public class AlignVision extends SubsystemBase {
     }
   }
 
-  // private double handleAngle() {
-  //   if (selectedReefOrientation == ReefTargetOrientation.AB) {
-  //     return 0;
-  //   } else if (selectedReefOrientation == ReefTargetOrientation.CD) {
-  //     return 60;
-  //   } else if (selectedReefOrientation == ReefTargetOrientation.EF) {
-  //     return 120;
-  //   } else if (selectedReefOrientation == ReefTargetOrientation.GH) {
-  //     return 180;
-  //   } else if (selectedReefOrientation == ReefTargetOrientation.IJ) {
-  //     return -120;
-  //   } else if (selectedReefOrientation == ReefTargetOrientation.KL) {
-  //     return -60;
-  //   } else {
-  //     return Double.NaN;
-  //   }
-  // }
+  private int calcFindOffset(ReefTargetOrientation orientation, ReefTargetSide side, ReefTargetLevel level) {
 
-  private int calcFindOffset(int tagID, ReefTargetSide side, ReefTargetLevel level) {
-    int offset = Constants.isBlueAlliance ? 17 : 6;
+    if (orientation == ReefTargetOrientation.AB) {
+      turnAngle = 0;
+    } else if (orientation == ReefTargetOrientation.CD) {
+      turnAngle = 60;
+    } else if (orientation == ReefTargetOrientation.EF) {
+      turnAngle = 120;
+    } else if (orientation == ReefTargetOrientation.GH) {
+      turnAngle = 180;
+    } else if (orientation == ReefTargetOrientation.IJ) {
+      turnAngle = -120;
+    } else if (orientation == ReefTargetOrientation.KL) {
+      turnAngle = -60;
+    } else {
+      turnAngle = Double.NaN;
+    }
 
-    return 6 * (tagID - offset) + (3 * side.ordinal()) + level.ordinal();
+    return (6 * orientation.ordinal()) + (3 * side.ordinal()) + level.ordinal();
   }
 
   public ChassisSpeeds getAlignChassisSpeeds() {
+    result = vision.inputs.frontLeftResult;
+
     aveLidarDist = (this.getRightLidarDistance() + this.getLeftLidarDistance()) / 2;
     diffLidarDist = this.getRightLidarDistance() - this.getLeftLidarDistance();
     refPosition = this.getReferenceRobotPosition();
-    currentOffset = calcFindOffset(currentOffset, selectedPoleSide, selectedLevel);
+    currentOffsetIndex = calcFindOffset(selectedReefOrientation, selectedPoleSide, selectedLevel);
+    currentOffset = AlignOffset.values()[currentOffsetIndex];
+    SmartDashboard.putNumber("currentOffsetIndex", currentOffsetIndex);
+    SmartDashboard.putNumber("currentOffset", currentOffset.getBlueOffsetValue());
+    var target = 0;
 
     try {
       if (refPosition.getX() != Transform2d.kZero.getX()
-          && refPosition.getY() != Transform2d.kZero.getY() && !Double.isNaN(0)) {
+          && refPosition.getY() != Transform2d.kZero.getY()
+          && !Double.isNaN(turnAngle)) {
 
-        ySpeed = pidController.calculate(refPosition.getY(), 0.1524);
+        if (Constants.isBlueAlliance) {
+          target += currentOffset.getBlueOffsetValue();
+        } else {
+          target += currentOffset.getRedOffsetValue();
+        }
+
+        if (selectedPoleSide == ReefTargetSide.LEFT) {
+          target += VisionConstants.distanceToPole;
+        } else {
+          target -= VisionConstants.distanceToPole;
+        }
+
+        ySpeed = pidController.calculate(refPosition.getY(), target);
         xSpeed = this.areBothLidarsValid()
             ? lidarPIDController.calculate(aveLidarDist, .12)
             : cameraDepthPIDController.calculate(refPosition.getX(), 0.381);
+
         turnSpeed = this.areBothLidarsValid()
             ? -gyroPIDController.calculate(Math.asin(diffLidarDist / .605), 0)
-            : gyroPIDController.calculate(swerve.getGyro(), Math.toRadians(0));
+            : gyroPIDController.calculate(swerve.getGyro(), Math.toRadians(turnAngle));
 
       } else {
         ySpeed = 0;
@@ -178,10 +193,6 @@ public class AlignVision extends SubsystemBase {
     }
 
     return new ChassisSpeeds(-xSpeed, -ySpeed, turnSpeed);
-  }
-
-  public PhotonCamera getCamera() {
-    return cam;
   }
 
   public double getRightLidarDistance() {
@@ -204,9 +215,9 @@ public class AlignVision extends SubsystemBase {
     return leftRange.getIsDetected().getValue();
   }
 
-  // public static void setReefOrientation(ReefTargetOrientation orientation) {
-  //   selectedReefOrientation = orientation;
-  // }
+  public static void setReefOrientation(ReefTargetOrientation orientation) {
+    selectedReefOrientation = orientation;
+  }
 
   public static void setPoleSide(ReefTargetSide side) {
     selectedPoleSide = side;

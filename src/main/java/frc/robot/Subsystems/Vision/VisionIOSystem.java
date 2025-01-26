@@ -6,7 +6,6 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj.Notifier;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.VisionConstants;
 import frc.robot.Subsystems.Swerve.Swerve;
 import org.photonvision.EstimatedRobotPose;
@@ -59,6 +58,10 @@ public class VisionIOSystem implements VisionIO {
 
     addVisionReading(frontLeftPose, frontLeftStdDevs);
     // addVisionReading(frontRightPose, frontRightStdDevs);
+  }
+
+  public VisionCamera getFrontLeftCamera() {
+    return frontLeftCamera;
   }
 
   @Override

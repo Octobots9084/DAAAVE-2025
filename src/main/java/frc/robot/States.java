@@ -13,61 +13,53 @@ public class States {
     RIGHT
   }
 
-  public enum BlueReefTargetOrientation {
-    CD,
-    AB,
-    KL,
-    IJ,
-    GH,
-    EF
-  }
-
-  public enum RedReefTargetOrientation {
-    KL,
+  public enum ReefTargetOrientation {
     AB,
     CD,
     EF,
     GH,
-    IJ
+    IJ,
+    KL
+
   }
 
   public enum AlignOffset {
-    A1(0, 0),
-    A2(0, 0),
-    A3(0, 0),
-    B1(0, 0),
-    B2(0, 0),
-    B3(0, 0),
-    C1(0, 0),
-    C2(0, 0),
-    C3(0, 0),
-    D1(0, 0),
-    D2(0, 0),
-    D3(0, 0),
-    E1(0, 0),
-    E2(0, 0),
-    E3(0, 0),
-    F1(0, 0),
-    F2(0, 0),
-    F3(0, 0),
-    G1(0, 0),
-    G2(0, 0),
-    G3(0, 0),
-    H1(0, 0),
-    H2(0, 0),
-    H3(0, 0),
-    I1(0, 0),
-    I2(0, 0),
-    I3(0, 0),
-    J1(0, 0),
-    J2(0, 0),
-    J3(0, 0),
-    K1(0, 0),
-    K2(0, 0),
-    K3(0, 0),
-    L1(0, 0),
-    L2(0, 0),
-    L3(0, 0);
+    A1(1, 1),
+    A2(2, 2),
+    A3(3, 3),
+    B1(4, 4),
+    B2(5, 5),
+    B3(6, 6),
+    C1(7, 7),
+    C2(8, 8),
+    C3(9, 9),
+    D1(10, 10),
+    D2(11, 11),
+    D3(12, 12),
+    E1(13, 13),
+    E2(14, 14),
+    E3(15, 15),
+    F1(16, 16),
+    F2(17, 17),
+    F3(18, 18),
+    G1(19, 19),
+    G2(20, 20),
+    G3(21, 21),
+    H1(22, 22),
+    H2(23, 23),
+    H3(24, 24),
+    I1(25, 25),
+    I2(26, 26),
+    I3(27, 27),
+    J1(28, 28),
+    J2(29, 29),
+    J3(30, 30),
+    K1(31, 31),
+    K2(32, 32),
+    K3(33, 33),
+    L1(34, 34),
+    L2(35, 35),
+    L3(36, 36);
 
     private final int blueOffsetValue;
     private final int redOffsetValue;
