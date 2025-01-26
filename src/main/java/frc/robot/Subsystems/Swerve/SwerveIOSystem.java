@@ -140,5 +140,6 @@ public class SwerveIOSystem implements SwerveIO {
 
     inputs.swerveModuleStates = this.getModuleStates();
     inputs.swerveModuleDesiredStates = this.getModuleDesiredStates();
+    inputs.gyroAngleRadians = swerveDrive.getGyro().getRotation3d().toRotation2d().getRadians();
   }
 }

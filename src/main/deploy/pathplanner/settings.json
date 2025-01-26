@@ -25,7 +25,7 @@
     "stack",
     "push"
   ],
-  "defaultMaxVel": 9.0,
+  "defaultMaxVel": 8.0,
   "defaultMaxAccel": 6.0,
   "defaultMaxAngVel": 540.0,
   "defaultMaxAngAccel": 720.0,
