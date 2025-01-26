@@ -68,6 +68,7 @@ public class AlgaeRollersIOSim implements AlgaeRollersIO {
             intakeSimulation.stopIntake();
             this.state = AlgaeRollersStates.OFF;
         } else if (volts == AlgaeRollersStates.OUTPUT.voltage) {
+            intakeSimulation.stopIntake();
             this.state = AlgaeRollersStates.OUTPUT;
         }
     }
@@ -88,7 +89,7 @@ public class AlgaeRollersIOSim implements AlgaeRollersIO {
                 .addGamePieceProjectile(
                     new ReefscapeAlgaeOnFly(
                         this.drivetrain.getSimulatedDriveTrainPose().getTranslation(),
-                        new Translation2d(-0.5, 0),
+                        new Translation2d(-0.6, 0),
                         this.drivetrain.getDriveTrainSimulatedChassisSpeedsFieldRelative(),
                         drivetrain
                             .getSimulatedDriveTrainPose()
@@ -107,9 +108,9 @@ public class AlgaeRollersIOSim implements AlgaeRollersIO {
         }
 
         if (this.hasAlgae()) {
-            algaeInRobot = new Pose3d[]{new Pose3d(drivetrain.getSimulatedDriveTrainPose()).plus(new Transform3d(0, 0.5, 0.4, new Rotation3d()))};
-            Logger.recordOutput("FieldSimulation/AlgaeInRobot", algaeInRobot);
+            algaeInRobot = new Pose3d[]{new Pose3d(drivetrain.getSimulatedDriveTrainPose()).plus(new Transform3d(0, 0.6, 0.4, new Rotation3d()))};
         }
+        Logger.recordOutput("FieldSimulation/AlgaeInRobot", algaeInRobot);
     }
 
     @Override
