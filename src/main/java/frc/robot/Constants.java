@@ -86,7 +86,7 @@ public final class Constants {
         new double[] { 0, 0, 0, 1 });
 
     // Constant Distance from Tag to Pole (6in in meters)
-    public static final double distanceToPole = 0.1524;
+    public static final double distanceToPole = 0.164;
 
     // Max Depth Distance of Lidar from Tag (Meters)
     public static final double maxLidarDepthDistance = 0.12;
