@@ -5,6 +5,9 @@ import static edu.wpi.first.units.Units.Meters;
 import static edu.wpi.first.units.Units.MetersPerSecond;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
@@ -21,6 +24,7 @@ import org.ironmaple.simulation.IntakeSimulation;
 import org.ironmaple.simulation.SimulatedArena;
 import org.ironmaple.simulation.drivesims.SwerveDriveSimulation;
 import org.ironmaple.simulation.seasonspecific.reefscape2025.ReefscapeCoralOnFly;
+import org.littletonrobotics.junction.Logger;
 
 public class CoralRollersIOSim implements CoralRollersIO {
   CoralRollersIOSystems sparkMaxes = new CoralRollersIOSystems();
@@ -78,50 +82,60 @@ public class CoralRollersIOSim implements CoralRollersIO {
 
   @Override
   public void updateSim() {
+    Pose3d[] coralInRobot = {};
     motorSim.update(0.02);
 
+    double dropHeight = 0;
+    ReefTargetLevel elevatorTargetHeight = Elevator.getInstance().getReefTargetLevel();
+    if (elevatorTargetHeight == ReefTargetLevel.L1) {
+      dropHeight = ElevatorStates.LEVEL1.position;
+    } else if (elevatorTargetHeight == ReefTargetLevel.L2) {
+      dropHeight = ElevatorStates.LEVEL2.position;
+    } else if (elevatorTargetHeight == ReefTargetLevel.L3) {
+      dropHeight = ElevatorStates.LEVEL3.position;
+    } else {
+      dropHeight = ElevatorStates.LEVEL4.position;
+    }
+
+    double wristAngle = Wrist.getInstance().getState().wristPosition;
+
     // coral in chute and intaking, so coral moves from chute to claw
-    if (this.coralInChute() && state == CoralRollersState.INTAKING) {
-        intakeSimulation.obtainGamePieceFromIntake();
-        this.hasCoralInClaw = true;
+    if (this.coralInChute()) {
+        if (state == CoralRollersState.INTAKING) {
+            intakeSimulation.obtainGamePieceFromIntake();
+            this.hasCoralInClaw = true;
+        } else {
+            coralInRobot = new Pose3d[]{new Pose3d(drivetrain.getSimulatedDriveTrainPose()).plus(new Transform3d(0.7, 0, dropHeight, new Rotation3d()))};
+            // visualizes holding a coral
+            Logger.recordOutput("FieldSimulation/CoralInRobot", coralInRobot);
+        }
     }
 
     // coral in claw is released
-    if (this.hasCoral() && state == CoralRollersState.OUTPUT) {
-        this.hasCoralInClaw = false;
-      // removes algae from the algae intake rollers
-      double dropHeight = 0;
-      ReefTargetLevel elevatorTargetHeight = Elevator.getInstance().getReefTargetLevel();
-      if (elevatorTargetHeight == ReefTargetLevel.L1) {
-        dropHeight = ElevatorStates.LEVEL1.position;
-      } else if (elevatorTargetHeight == ReefTargetLevel.L2) {
-        dropHeight = ElevatorStates.LEVEL2.position;
-      } else if (elevatorTargetHeight == ReefTargetLevel.L3) {
-        dropHeight = ElevatorStates.LEVEL3.position;
-      } else {
-        dropHeight = ElevatorStates.LEVEL4.position;
-      }
-
-      double wristAngle = Wrist.getInstance().getState().wristPosition;
-
-      SimulatedArena.getInstance()
-          .addGamePieceProjectile(
-              new ReefscapeCoralOnFly(
-                  // Obtain robot position from drive simulation
-                  this.drivetrain.getSimulatedDriveTrainPose().getTranslation(),
-                  // The scoring mechanism is installed at (0.46, 0) (meters) on the robot
-                  new Translation2d(0.35, 0),
-                  // Obtain robot speed from drive simulation
-                  this.drivetrain.getDriveTrainSimulatedChassisSpeedsFieldRelative(),
-                  // Obtain robot facing from drive simulation
-                  this.drivetrain.getSimulatedDriveTrainPose().getRotation(),
-                  // The height at which the coral is ejected
-                  Meters.of(dropHeight),
-                  // The initial speed of the coral
-                  // TODO - use actual speed
-                  MetersPerSecond.of(2),
-                  // The angle of the wrist
-                  Degrees.of(wristAngle)));
+    if (this.hasCoral()) {
+        if (state == CoralRollersState.OUTPUT) {
+            this.hasCoralInClaw = false;
+        // removes algae from the algae intake rollers
+        
+        SimulatedArena.getInstance()
+            .addGamePieceProjectile(
+                new ReefscapeCoralOnFly(
+                    // Obtain robot position from drive simulation
+                    this.drivetrain.getSimulatedDriveTrainPose().getTranslation(),
+                    // The scoring mechanism is installed at (0.46, 0) (meters) on the robot
+                    new Translation2d(0.35, 0),
+                    // Obtain robot speed from drive simulation
+                    this.drivetrain.getDriveTrainSimulatedChassisSpeedsFieldRelative(),
+                    // Obtain robot facing from drive simulation
+                    this.drivetrain.getSimulatedDriveTrainPose().getRotation(),
+                    // The height at which the coral is ejected
+                    Meters.of(dropHeight),
+                    // The initial speed of the coral
+                    // TODO - use actual speed
+                    MetersPerSecond.of(2),
+                    // The angle of the wrist
+                    Degrees.of(wristAngle)));
+        }    
     }
   }
 

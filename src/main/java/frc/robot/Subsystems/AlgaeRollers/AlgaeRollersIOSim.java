@@ -19,70 +19,70 @@ import org.ironmaple.simulation.seasonspecific.reefscape2025.ReefscapeAlgaeOnFly
 import org.littletonrobotics.junction.Logger;
 
 public class AlgaeRollersIOSim implements AlgaeRollersIO {
-  AnalogInputSim beamInputSim = new AnalogInputSim(0);
-  SwerveDriveSimulation drivetrain;
-  AlgaeRollersStates state = AlgaeRollersStates.OFF;
-  DCMotorSim motorSim =
-      new DCMotorSim(
-          LinearSystemId.createDCMotorSystem(DCMotor.getNeo550(1), 0.025, 1), DCMotor.getNeo550(1));
+    AnalogInputSim beamInputSim = new AnalogInputSim(0);
+    SwerveDriveSimulation drivetrain;
+    AlgaeRollersStates state = AlgaeRollersStates.OFF;
+    DCMotorSim motorSim =
+        new DCMotorSim(
+            LinearSystemId.createDCMotorSystem(DCMotor.getNeo550(1), 0.025, 1), DCMotor.getNeo550(1));
 
-  private final IntakeSimulation intakeSimulation;
+    private final IntakeSimulation intakeSimulation;
 
-  public AlgaeRollersIOSim(SwerveDriveSimulation driveTrain) {
-    this.drivetrain = driveTrain;
-    // Here, create the intake simulation with respect to the intake on your real robot
-    this.intakeSimulation =
-        IntakeSimulation
-            .InTheFrameIntake( // Specify the type of game pieces that the intake can collect
-                "Algae",
-                // Specify the drivetrain to which this intake is attached
-                driveTrain,
-                // Specify width of the intake
-                // TODO - fix width
-                Meters.of(0.7),
-                // The intake is mounted on the back side of the chassis
-                IntakeSimulation.IntakeSide.LEFT,
-                // The intake can hold up to 1 note
-                1);
-  }
-
-  @Override
-  public void updateInputs(AlgaeRollersIOInputs inputs) {
-    inputs.velocityRPM = motorSim.getAngularVelocityRPM();
-    inputs.appliedVolts = motorSim.getInputVoltage();
-    inputs.currentAmps = motorSim.getCurrentDrawAmps();
-    inputs.beamValue = this.hasAlgae();
-  }
-
-  @Override
-  public void setVoltage(double volts) {
-    motorSim.setInput(MathUtil.clamp(volts, -12.0, 12.0));
-
-    if (volts == AlgaeRollersStates.INTAKE.voltage) {
-      intakeSimulation.startIntake();
-      this.state = AlgaeRollersStates.INTAKE;
-    } else if (volts == AlgaeRollersStates.OFF.voltage) {
-      intakeSimulation.stopIntake();
-      this.state = AlgaeRollersStates.OFF;
-    } else if (volts == AlgaeRollersStates.OUTPUT.voltage) {
-      this.state = AlgaeRollersStates.OUTPUT;
+    public AlgaeRollersIOSim(SwerveDriveSimulation driveTrain) {
+        this.drivetrain = driveTrain;
+        // Here, create the intake simulation with respect to the intake on your real robot
+        this.intakeSimulation =
+            IntakeSimulation
+                .InTheFrameIntake( // Specify the type of game pieces that the intake can collect
+                    "Algae",
+                    // Specify the drivetrain to which this intake is attached
+                    driveTrain,
+                    // Specify width of the intake
+                    // TODO - fix width
+                    Meters.of(0.7),
+                    // The intake is mounted on the back side of the chassis
+                    IntakeSimulation.IntakeSide.LEFT,
+                    // The intake can hold up to 1 note
+                    1);
     }
-  }
 
-  @Override
-  public void updateSim() {
-    motorSim.update(0.02);
+    @Override
+    public void updateInputs(AlgaeRollersIOInputs inputs) {
+        inputs.velocityRPM = motorSim.getAngularVelocityRPM();
+        inputs.appliedVolts = motorSim.getInputVoltage();
+        inputs.currentAmps = motorSim.getCurrentDrawAmps();
+        inputs.beamValue = this.hasAlgae();
+    }
 
-    if (this.hasAlgae() && this.state == AlgaeRollersStates.OUTPUT) {
-        // removes algae from the intake
-        intakeSimulation.obtainGamePieceFromIntake();
-        // removes algae from the algae intake rollers
-        ReefscapeAlgaeOnFly.setHitNetCallBack(() -> System.out.println("ALGAE hits NET!"));
-        // adds algae to the arena as having been output from the robot
-        ReefscapeAlgaeOnFly.setHitNetCallBack(() -> System.out.println("ALGAE hits NET!"));
-        SimulatedArena.getInstance()
-            .addGamePieceProjectile(
-                new ReefscapeAlgaeOnFly(
+    @Override
+    public void setVoltage(double volts) {
+        motorSim.setInput(MathUtil.clamp(volts, -12.0, 12.0));
+
+        if (volts == AlgaeRollersStates.INTAKE.voltage) {
+        intakeSimulation.startIntake();
+        this.state = AlgaeRollersStates.INTAKE;
+        } else if (volts == AlgaeRollersStates.OFF.voltage) {
+        intakeSimulation.stopIntake();
+        this.state = AlgaeRollersStates.OFF;
+        } else if (volts == AlgaeRollersStates.OUTPUT.voltage) {
+        this.state = AlgaeRollersStates.OUTPUT;
+        }
+    }
+
+    @Override
+    public void updateSim() {
+        motorSim.update(0.02);
+
+        if (this.hasAlgae() && this.state == AlgaeRollersStates.OUTPUT) {
+            // removes algae from the intake
+            intakeSimulation.obtainGamePieceFromIntake();
+            // removes algae from the algae intake rollers
+            ReefscapeAlgaeOnFly.setHitNetCallBack(() -> System.out.println("ALGAE hits NET!"));
+            // adds algae to the arena as having been output from the robot
+            ReefscapeAlgaeOnFly.setHitNetCallBack(() -> System.out.println("ALGAE hits NET!"));
+            SimulatedArena.getInstance()
+                .addGamePieceProjectile(
+                    new ReefscapeAlgaeOnFly(
                         this.drivetrain.getSimulatedDriveTrainPose().getTranslation(),
                         new Translation2d(-0.6, 0),
                         this.drivetrain.getDriveTrainSimulatedChassisSpeedsFieldRelative(),
@@ -100,11 +100,11 @@ public class AlgaeRollersIOSim implements AlgaeRollersIO {
                         (poses) ->
                             Logger.recordOutput(
                                 "missedShotsTrajectory", poses.toArray(Pose3d[]::new))));
-      }
-  }
+        }
+    }
 
-  @Override
-  public boolean hasAlgae() {
-    return intakeSimulation.getGamePiecesAmount() != 0;
-  }
+    @Override
+    public boolean hasAlgae() {
+        return intakeSimulation.getGamePiecesAmount() != 0;
+    }
 }
