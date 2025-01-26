@@ -7,7 +7,7 @@ import org.littletonrobotics.junction.Logger;
 public class Elevator extends SubsystemBase {
   private final ElevatorIO io;
   private final ElevatorIOInputsAutoLogged inputs = new ElevatorIOInputsAutoLogged();
-  private ElevatorStates targetLevel;
+  private ElevatorStates targetLevel = ElevatorStates.LOW;
 
   private static Elevator instance;
 
