@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import frc.robot.Commands.CoralRollers.SetCoralRollersState;
 import frc.robot.Commands.complex.AlignReef;
 import frc.robot.Commands.complex.AlignSource;
+import frc.robot.Commands.complex.ScoreCoral;
 import frc.robot.Subsystems.CoralRollers.CoralRollersState;
 import frc.robot.Subsystems.Swerve.Swerve;
 
@@ -42,7 +43,6 @@ public class ButtonConfig {
         .button(-1)
         .whileTrue(new AlignReef().andThen(new SetCoralRollersState(CoralRollersState.OUTPUT)));
 
-    // driverButtons.button(-1).whileTrue(new ScoreCoral()); TODO Implement
-
+    // driverButtons.button(-1).whileTrue(new ScoreCoral()); // TODO - Implement
   }
 }

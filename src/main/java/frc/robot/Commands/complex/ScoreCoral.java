@@ -46,8 +46,8 @@ public class ScoreCoral extends Command {
 
   @Override
   public void execute() {
-    elevatorInPos = elevator.isAtState(targetElevatorState, 0.1 /*set actual tolerance*/);
-    wristInPosition = wrist.isAtState(targetElevatorState, 0.1 /*set actual tolerance*/);
+    elevatorInPos = elevator.isAtState(targetElevatorState, 0.1 /*TODO - set actual tolerance*/);
+    wristInPosition = wrist.isAtState(targetElevatorState, 0.1 /*TODO - set actual tolerance*/);
     isAligned = true; // Need vision code
 
     if (elevatorInPos
@@ -56,7 +56,6 @@ public class ScoreCoral extends Command {
         && (coralRollers.getState() != CoralRollersState.OUTPUT))
       CommandScheduler.getInstance()
           .schedule(new SetCoralRollersState(CoralRollersState.OUTPUT));
-    //
   }
 
   @Override
