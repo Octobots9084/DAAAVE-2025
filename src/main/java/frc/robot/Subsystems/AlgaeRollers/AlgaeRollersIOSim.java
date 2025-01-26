@@ -7,6 +7,8 @@ import static edu.wpi.first.units.Units.MetersPerSecond;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
@@ -44,6 +46,7 @@ public class AlgaeRollersIOSim implements AlgaeRollersIO {
                     IntakeSimulation.IntakeSide.LEFT,
                     // The intake can hold up to 1 note
                     1);
+        this.intakeSimulation.startIntake();
     }
 
     @Override
@@ -59,19 +62,20 @@ public class AlgaeRollersIOSim implements AlgaeRollersIO {
         motorSim.setInput(MathUtil.clamp(volts, -12.0, 12.0));
 
         if (volts == AlgaeRollersStates.INTAKE.voltage) {
-        intakeSimulation.startIntake();
-        this.state = AlgaeRollersStates.INTAKE;
+            intakeSimulation.startIntake();
+            this.state = AlgaeRollersStates.INTAKE;
         } else if (volts == AlgaeRollersStates.OFF.voltage) {
-        intakeSimulation.stopIntake();
-        this.state = AlgaeRollersStates.OFF;
+            intakeSimulation.stopIntake();
+            this.state = AlgaeRollersStates.OFF;
         } else if (volts == AlgaeRollersStates.OUTPUT.voltage) {
-        this.state = AlgaeRollersStates.OUTPUT;
+            this.state = AlgaeRollersStates.OUTPUT;
         }
     }
 
     @Override
     public void updateSim() {
         motorSim.update(0.02);
+        Pose3d[] algaeInRobot = {};
 
         if (this.hasAlgae() && this.state == AlgaeRollersStates.OUTPUT) {
             // removes algae from the intake
@@ -84,13 +88,13 @@ public class AlgaeRollersIOSim implements AlgaeRollersIO {
                 .addGamePieceProjectile(
                     new ReefscapeAlgaeOnFly(
                         this.drivetrain.getSimulatedDriveTrainPose().getTranslation(),
-                        new Translation2d(-0.6, 0),
+                        new Translation2d(-0.5, 0),
                         this.drivetrain.getDriveTrainSimulatedChassisSpeedsFieldRelative(),
                         drivetrain
                             .getSimulatedDriveTrainPose()
                             .getRotation()
                             .plus(new Rotation2d(-Math.PI / 2)),
-                        Meters.of(0.1), // initial height of the ball, in meters
+                        Meters.of(0.40), // initial height of the ball, in meters
                         MetersPerSecond.of(-0.5), // initial velocity, in m/s
                         Degrees.of(0)) // shooter angle
                     .withProjectileTrajectoryDisplayCallBack(
@@ -100,6 +104,11 @@ public class AlgaeRollersIOSim implements AlgaeRollersIO {
                         (poses) ->
                             Logger.recordOutput(
                                 "missedShotsTrajectory", poses.toArray(Pose3d[]::new))));
+        }
+
+        if (this.hasAlgae()) {
+            algaeInRobot = new Pose3d[]{new Pose3d(drivetrain.getSimulatedDriveTrainPose()).plus(new Transform3d(0, 0.5, 0.4, new Rotation3d()))};
+            Logger.recordOutput("FieldSimulation/AlgaeInRobot", algaeInRobot);
         }
     }
 
