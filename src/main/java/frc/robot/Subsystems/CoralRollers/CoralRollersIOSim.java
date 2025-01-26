@@ -84,19 +84,25 @@ public class CoralRollersIOSim implements CoralRollersIO {
   public void updateSim() {
     Pose3d[] coralInRobot = {};
     motorSim.update(0.02);
+    double dropHeight = Elevator.getInstance().getReefTargetLevel().position;
+    double wristAngle = Wrist.getInstance().getState().wristPosition;
 
     // coral in chute and intaking, so coral moves from chute to claw
-    if (this.coralInChute() && state == CoralRollersState.INTAKING) {
-        intakeSimulation.obtainGamePieceFromIntake();
-        this.hasCoralInClaw = true;
+    if (this.coralInChute()) {
+        if (state == CoralRollersState.INTAKING) {
+            intakeSimulation.obtainGamePieceFromIntake();
+            this.hasCoralInClaw = true;
+        } else {
+            coralInRobot = new Pose3d[]{new Pose3d(drivetrain.getSimulatedDriveTrainPose()).plus(new Transform3d(0.7, 0, dropHeight, new Rotation3d()))};
+        }
+
+        Logger.recordOutput("FieldSimulation/CoralInRobot", coralInRobot);
     }
 
     // coral in claw is released
     if (this.hasCoral() && state == CoralRollersState.OUTPUT) {
         this.hasCoralInClaw = false;
       // removes algae from the algae intake rollers
-      double dropHeight = Elevator.getInstance().getReefTargetLevel().position;
-      double wristAngle = Wrist.getInstance().getState().wristPosition;
 
       SimulatedArena.getInstance()
           .addGamePieceProjectile(
