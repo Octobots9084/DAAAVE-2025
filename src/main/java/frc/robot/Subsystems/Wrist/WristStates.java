@@ -5,7 +5,7 @@ public enum WristStates {
   LOW(0),
   HORIZONTAL(0),
   FOURTYFIVE(45),
-  VERTICAL(0),
+  VERTICAL(90), // maybe?
   CLIMB(0);
 
   public double wristPosition;

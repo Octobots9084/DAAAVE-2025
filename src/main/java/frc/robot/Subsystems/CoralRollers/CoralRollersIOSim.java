@@ -84,7 +84,7 @@ public class CoralRollersIOSim implements CoralRollersIO {
   public void updateSim() {
     Pose3d[] coralInRobot = {};
     motorSim.update(0.02);
-    double dropHeight = Elevator.getInstance().getReefTargetLevel().position;
+    double dropHeight = Elevator.getInstance().getReefTargetLevel().position/25; // NOTE - divided by 25 as a placeholder for the actual conversion factor
     double wristAngle = Wrist.getInstance().getState().wristPosition;
 
     // coral in chute and intaking, so coral moves from chute to claw
@@ -93,7 +93,7 @@ public class CoralRollersIOSim implements CoralRollersIO {
             intakeSimulation.obtainGamePieceFromIntake();
             this.hasCoralInClaw = true;
         } else {
-            coralInRobot = new Pose3d[]{new Pose3d(drivetrain.getSimulatedDriveTrainPose()).plus(new Transform3d(0.7, 0, dropHeight, new Rotation3d()))};
+            coralInRobot = new Pose3d[]{new Pose3d(drivetrain.getSimulatedDriveTrainPose()).plus(new Transform3d(0.7, 0, dropHeight, new Rotation3d(0, wristAngle, 0)))};
         }
 
         Logger.recordOutput("FieldSimulation/CoralInRobot", coralInRobot);

@@ -1,12 +1,17 @@
 package frc.robot;
 
+import org.littletonrobotics.junction.Logger;
+
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import frc.robot.Commands.CoralRollers.SetCoralRollersState;
+import frc.robot.Commands.Elevator.SetElevatorState;
 import frc.robot.Commands.complex.AlignReef;
 import frc.robot.Commands.complex.AlignSource;
 import frc.robot.Commands.complex.ScoreCoral;
 import frc.robot.Subsystems.CoralRollers.CoralRollersState;
+import frc.robot.Subsystems.Elevator.ElevatorStates;
 import frc.robot.Subsystems.Swerve.Swerve;
 
 public class ButtonConfig {
@@ -44,5 +49,10 @@ public class ButtonConfig {
         .whileTrue(new AlignReef().andThen(new SetCoralRollersState(CoralRollersState.OUTPUT)));
 
     // driverButtons.button(-1).whileTrue(new ScoreCoral()); // TODO - Implement
+    // NOTE - This is just for testing:
+    driverButtons.button(7).onTrue(new SetElevatorState(ElevatorStates.LEVEL1));
+    driverButtons.button(8).onTrue(new SetElevatorState(ElevatorStates.LEVEL2));
+    driverButtons.button(9).onTrue(new SetElevatorState(ElevatorStates.LEVEL3));
+    driverButtons.button(10).onTrue(new SetElevatorState(ElevatorStates.LEVEL4));
   }
 }

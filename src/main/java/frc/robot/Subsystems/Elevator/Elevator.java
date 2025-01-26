@@ -18,11 +18,6 @@ public class Elevator extends SubsystemBase {
     return instance;
   }
 
-  public void setReefTargetLevel(ElevatorStates level) {
-    targetLevel = level;
-    Logger.recordOutput("Elevator Target Level", targetLevel);
-  }
-
   public ElevatorStates getReefTargetLevel() {
     return targetLevel;
   }
@@ -45,7 +40,7 @@ public class Elevator extends SubsystemBase {
 
   public void setState(ElevatorStates state) {
     io.setPosition(state.position, state.position);
-
+    targetLevel = state;
     Logger.recordOutput("Elevator/State", state);
   }
 
