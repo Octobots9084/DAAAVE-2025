@@ -13,8 +13,6 @@
 
 package frc.robot;
 
-import java.util.List;
-
 import com.pathplanner.lib.config.PIDConstants;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
@@ -27,6 +25,7 @@ import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.numbers.N4;
 import edu.wpi.first.wpilibj.RobotBase;
+import java.util.List;
 
 /**
  * This class defines the runtime mode used by AdvantageKit. The mode is always "real" when running
@@ -74,7 +73,7 @@ public final class Constants {
     // Transform Camera Coordinates to Robot Coordinates. Based on camera mounting
     // position.
     public static final Matrix<N4, N4> transformFrontLeftToRobot = new Transform3d(0.1524, 0.3556, 0,
-        new Rotation3d(0, 0, Math.toRadians(-35.0))).toMatrix();
+        new Rotation3d(0, 0, Math.toRadians(-28))).toMatrix();
 
     public static final Transform3d camOneTransform = new Transform3d(0, 0, 0, new Rotation3d(0, 0, Math.toRadians(0)));
 
@@ -97,9 +96,9 @@ public final class Constants {
     // Lidar Turn Angle Baseline (Might Be Radians)
     public static final double lidarTurnAngleBaseline = 0.605;
 
-    // List of tags that can be used for alignment
-    public static final List<Integer> validAlignTags = List.of(1, 2, 3, 6, 7, 8, 9, 10, 11, 12, 13, 16, 17, 18, 19, 20,
-        21, 22);
+    // List of tags that can be used for alignment (Remove 4)
+    public static final List<Integer> validAlignTags = List.of(1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 16, 17, 18, 19,
+        20, 21, 22);
 
     // The layout of the AprilTags on the field
     public static final AprilTagFieldLayout kTagLayout = AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
