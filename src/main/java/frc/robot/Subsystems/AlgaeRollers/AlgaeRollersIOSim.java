@@ -41,7 +41,7 @@ public class AlgaeRollersIOSim implements AlgaeRollersIO {
                     driveTrain,
                     // Specify width of the intake
                     // TODO - fix width
-                    Meters.of(0.7),
+                    Meters.of(0.5),
                     // The intake is mounted on the back side of the chassis
                     IntakeSimulation.IntakeSide.LEFT,
                     // The intake can hold up to 1 note

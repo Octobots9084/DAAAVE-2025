@@ -27,7 +27,7 @@ public class ButtonConfig {
   public void initTeleop() {
 
     driverButtons
-        .button(11)
+        .button(4)
         .onTrue(
             new InstantCommand(
                 () -> {
@@ -52,8 +52,8 @@ public class ButtonConfig {
 
     // driverButtons.button(-1).whileTrue(new ScoreCoral()); // TODO - Implement
     // NOTE - This is just for testing:
-    driverButtons.button(5).onTrue(new SetAlgaeRollersState(AlgaeRollersStates.OUTPUT));
-    driverButtons.button(6).onTrue(new SetAlgaeRollersState(AlgaeRollersStates.INTAKE));
+    driverButtons.button(5).onTrue(new SetCoralRollersState(CoralRollersState.INTAKING));
+    driverButtons.button(6).onTrue(new SetCoralRollersState(CoralRollersState.OUTPUT));
     driverButtons.button(7).onTrue(new SetElevatorState(ElevatorStates.LEVEL1));
     driverButtons.button(8).onTrue(new SetElevatorState(ElevatorStates.LEVEL2));
     driverButtons.button(9).onTrue(new SetElevatorState(ElevatorStates.LEVEL3));

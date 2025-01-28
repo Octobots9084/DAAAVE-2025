@@ -50,7 +50,7 @@ public class CoralRollersIOSim implements CoralRollersIO {
                 driveTrain,
                 // Specify width of the intake
                 // TODO - fix width
-                Meters.of(0.7),
+                Meters.of(0.5),
                 // The intake is mounted on the back side of the chassis
                 IntakeSimulation.IntakeSide.BACK,
                 // The intake can hold up to 1 note
@@ -84,54 +84,57 @@ public class CoralRollersIOSim implements CoralRollersIO {
   public void updateSim() {
     Pose3d[] coralInRobot = {};
     motorSim.update(0.02);
-    double dropHeight = Elevator.getInstance().getReefTargetLevel().position/25; // NOTE - divided by 25 as a placeholder for the actual conversion factor
+    // NOTE - divided by 25 as a placeholder for the actual conversion factor
+    // NOTE - the addition at the end is the base height of the robot
+    double dropHeight = Elevator.getInstance().getReefTargetLevel().position/25 + 0.1;
     double wristAngle = Wrist.getInstance().getState().wristPosition;
 
     // coral in chute and intaking, so coral moves from chute to claw
-    if (this.coralInChute()) {
-        if (state == CoralRollersState.INTAKING) {
-            intakeSimulation.obtainGamePieceFromIntake();
-            this.hasCoralInClaw = true;
-        } else {
-            coralInRobot = new Pose3d[]{new Pose3d(drivetrain.getSimulatedDriveTrainPose()).plus(new Transform3d(0.7, 0, dropHeight, new Rotation3d(0, wristAngle, 0)))};
-        }
-
-        Logger.recordOutput("FieldSimulation/CoralInRobot", coralInRobot);
+    if (this.coralInChute() && state == CoralRollersState.INTAKING) {
+        intakeSimulation.obtainGamePieceFromIntake();
+        this.hasCoralInClaw = true;
     }
+
+    if (this.hasCoralInClaw) {
+        coralInRobot = new Pose3d[]{new Pose3d(drivetrain.getSimulatedDriveTrainPose()).plus(new Transform3d(0.7, 0, dropHeight, new Rotation3d(0, wristAngle, 0)))};
+    } else if (this.coralInChute()) {
+        coralInRobot = new Pose3d[]{new Pose3d(drivetrain.getSimulatedDriveTrainPose()).plus(new Transform3d(0, 0, 0.75, new Rotation3d(0, 0.26, 0)))};
+    }
+    Logger.recordOutput("FieldSimulation/CoralInRobot", coralInRobot);
 
     // coral in claw is released
     if (this.hasCoral() && state == CoralRollersState.OUTPUT) {
         this.hasCoralInClaw = false;
-      // removes algae from the algae intake rollers
+        // removes algae from the algae intake rollers
 
-      SimulatedArena.getInstance()
-          .addGamePieceProjectile(
-              new ReefscapeCoralOnFly(
-                  // Obtain robot position from drive simulation
-                  this.drivetrain.getSimulatedDriveTrainPose().getTranslation(),
-                  // The scoring mechanism is installed at (0.46, 0) (meters) on the robot
-                  new Translation2d(0.35, 0),
-                  // Obtain robot speed from drive simulation
-                  this.drivetrain.getDriveTrainSimulatedChassisSpeedsFieldRelative(),
-                  // Obtain robot facing from drive simulation
-                  this.drivetrain.getSimulatedDriveTrainPose().getRotation(),
-                  // The height at which the coral is ejected
-                  Meters.of(dropHeight),
-                  // The initial speed of the coral
-                  // TODO - use actual speed
-                  MetersPerSecond.of(2),
-                  // The angle of the wrist
-                  Degrees.of(wristAngle)));
+        SimulatedArena.getInstance()
+            .addGamePieceProjectile(
+                new ReefscapeCoralOnFly(
+                    // Obtain robot position from drive simulation
+                    this.drivetrain.getSimulatedDriveTrainPose().getTranslation(),
+                    // The scoring mechanism is installed at (0.46, 0) (meters) on the robot
+                    new Translation2d(0.7, 0),
+                    // Obtain robot speed from drive simulation
+                    this.drivetrain.getDriveTrainSimulatedChassisSpeedsFieldRelative(),
+                    // Obtain robot facing from drive simulation
+                    this.drivetrain.getSimulatedDriveTrainPose().getRotation(),
+                    // The height at which the coral is ejected
+                    Meters.of(dropHeight),
+                    // The initial speed of the coral
+                    // TODO - use actual speed
+                    MetersPerSecond.of(2),
+                    // The angle of the wrist
+                    Degrees.of(wristAngle)));
+        }
     }
-  }
 
-  @Override
-  public boolean hasCoral() {
-    return this.hasCoralInClaw;
-  }
+    @Override
+    public boolean hasCoral() {
+        return this.hasCoralInClaw;
+    }
 
-  @Override
-  public boolean coralInChute() {
-    return this.intakeSimulation.getGamePiecesAmount() != 0;
-  }
+    @Override
+    public boolean coralInChute() {
+        return this.intakeSimulation.getGamePiecesAmount() != 0;
+    }
 }
