@@ -48,7 +48,7 @@
   "folder": "place_to_topstation",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -119.99999999999999
+    "rotation": -119.89890183861456
   },
   "useDefaultConstraints": true
 }
