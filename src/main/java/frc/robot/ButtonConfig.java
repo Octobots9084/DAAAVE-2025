@@ -6,11 +6,11 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import frc.robot.Commands.AlgaeRollers.SetAlgaeRollersState;
+import frc.robot.Commands.complex.CancelAllCommands;
 import frc.robot.Commands.CoralRollers.SetCoralRollersState;
 import frc.robot.Commands.Elevator.SetElevatorState;
-import frc.robot.Commands.complex.AlignReef;
-import frc.robot.Commands.complex.AlignSource;
 import frc.robot.Commands.complex.ScoreCoral;
+import frc.robot.Commands.complex.SetTargetReefLevel;
 import frc.robot.Subsystems.AlgaeRollers.AlgaeRollersStates;
 import frc.robot.Subsystems.CoralRollers.CoralRollersState;
 import frc.robot.Subsystems.Elevator.ElevatorStates;
@@ -36,7 +36,7 @@ public class ButtonConfig {
     // reef align
 
     // source align
-    driverButtons.button(1).whileTrue(new AlignSource());
+    //driverButtons.button(1).whileTrue(new AlignSource());
 
     // climb(no commands yet)
     // driverButtons
@@ -44,11 +44,9 @@ public class ButtonConfig {
     //     .onTrue(); (change for switch)
 
     // processor align? (4)
-    driverButtons.button(4).whileTrue(new AlignSource());
+    //driverButtons.button(4).whileTrue(new AlignSource());
 
-    driverButtons
-        .button(-1)
-        .whileTrue(new AlignReef().andThen(new SetCoralRollersState(CoralRollersState.OUTPUT)));
+    //driverButtons.button(-1).whileTrue(new AlignReef().andThen(new SetCoralRollersState(CoralRollersState.OUTPUT)));
 
     // driverButtons.button(-1).whileTrue(new ScoreCoral()); // TODO - Implement
     // NOTE - This is just for testing:
