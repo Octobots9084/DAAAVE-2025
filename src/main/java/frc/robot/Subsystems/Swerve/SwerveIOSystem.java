@@ -22,7 +22,7 @@ public class SwerveIOSystem implements SwerveIO {
   private SwerveDrive swerveDrive;
   File swerveJsonDirectory = new File(Filesystem.getDeployDirectory(), "swerve");
   double maximumSpeed = 12;
-  double maxTurnSpeed = 5;
+  double maxTurnSpeed = 8;
   private Field2d field = new Field2d();
 
   public SwerveIOSystem() {
