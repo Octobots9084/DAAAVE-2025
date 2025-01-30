@@ -9,12 +9,14 @@ import frc.robot.Commands.AlgaeRollers.SetAlgaeRollersState;
 import frc.robot.Commands.complex.CancelAllCommands;
 import frc.robot.Commands.CoralRollers.SetCoralRollersState;
 import frc.robot.Commands.Elevator.SetElevatorState;
+import frc.robot.Commands.Wrist.SetWristState;
 import frc.robot.Commands.complex.ScoreCoral;
 import frc.robot.Commands.complex.SetTargetReefLevel;
 import frc.robot.Subsystems.AlgaeRollers.AlgaeRollersStates;
 import frc.robot.Subsystems.CoralRollers.CoralRollersState;
 import frc.robot.Subsystems.Elevator.ElevatorStates;
 import frc.robot.Subsystems.Swerve.Swerve;
+import frc.robot.Subsystems.Wrist.WristStates;
 
 public class ButtonConfig {
   static CommandJoystick driverLeft = ControlMap.DRIVER_LEFT;
@@ -52,9 +54,9 @@ public class ButtonConfig {
     // NOTE - This is just for testing:
     driverButtons.button(5).onTrue(new SetCoralRollersState(CoralRollersState.INTAKING));
     driverButtons.button(6).onTrue(new SetCoralRollersState(CoralRollersState.OUTPUT));
-    driverButtons.button(7).onTrue(new SetElevatorState(ElevatorStates.LEVEL1));
-    driverButtons.button(8).onTrue(new SetElevatorState(ElevatorStates.LEVEL2));
-    driverButtons.button(9).onTrue(new SetElevatorState(ElevatorStates.LEVEL3));
-    driverButtons.button(10).onTrue(new SetElevatorState(ElevatorStates.LEVEL4));
+    driverButtons.button(7).onTrue(new SetWristState(WristStates.FOURTYFIVE).andThen(new SetElevatorState(ElevatorStates.LEVEL1)));
+    driverButtons.button(8).onTrue(new SetWristState(WristStates.FOURTYFIVE).andThen(new SetElevatorState(ElevatorStates.LEVEL2)));
+    driverButtons.button(9).onTrue(new SetWristState(WristStates.FOURTYFIVE).andThen(new SetElevatorState(ElevatorStates.LEVEL3)));
+    driverButtons.button(10).onTrue(new SetWristState(WristStates.FOURTYFIVE).andThen(new SetElevatorState(ElevatorStates.LEVEL4)));
   }
 }

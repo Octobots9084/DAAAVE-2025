@@ -3,6 +3,7 @@ package frc.robot.Subsystems.CoralRollers;
 import static edu.wpi.first.units.Units.Degrees;
 import static edu.wpi.first.units.Units.Meters;
 import static edu.wpi.first.units.Units.MetersPerSecond;
+import static edu.wpi.first.units.Units.Radians;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose3d;
@@ -86,7 +87,7 @@ public class CoralRollersIOSim implements CoralRollersIO {
     motorSim.update(0.02);
     // NOTE - divided by 25 as a placeholder for the actual conversion factor
     // NOTE - the addition at the end is the base height of the robot
-    double dropHeight = Elevator.getInstance().getReefTargetLevel().position/25 + 0.1;
+    double dropHeight = Elevator.getInstance().getReefTargetLevel().position/20 + 0.1;
     double wristAngle = Wrist.getInstance().getState().wristPosition;
 
     // coral in chute and intaking, so coral moves from chute to claw
@@ -96,7 +97,7 @@ public class CoralRollersIOSim implements CoralRollersIO {
     }
 
     if (this.hasCoralInClaw) {
-        coralInRobot = new Pose3d[]{new Pose3d(drivetrain.getSimulatedDriveTrainPose()).plus(new Transform3d(0.7, 0, dropHeight, new Rotation3d(0, wristAngle, 0)))};
+        coralInRobot = new Pose3d[]{new Pose3d(drivetrain.getSimulatedDriveTrainPose()).plus(new Transform3d(0.35, 0, dropHeight, new Rotation3d(0, wristAngle, 0)))};
     } else if (this.coralInChute()) {
         coralInRobot = new Pose3d[]{new Pose3d(drivetrain.getSimulatedDriveTrainPose()).plus(new Transform3d(0, 0, 0.75, new Rotation3d(0, 0.26, 0)))};
     }
@@ -113,7 +114,7 @@ public class CoralRollersIOSim implements CoralRollersIO {
                     // Obtain robot position from drive simulation
                     this.drivetrain.getSimulatedDriveTrainPose().getTranslation(),
                     // The scoring mechanism is installed at (0.46, 0) (meters) on the robot
-                    new Translation2d(0.7, 0),
+                    new Translation2d(0.35, 0),
                     // Obtain robot speed from drive simulation
                     this.drivetrain.getDriveTrainSimulatedChassisSpeedsFieldRelative(),
                     // Obtain robot facing from drive simulation
@@ -122,9 +123,9 @@ public class CoralRollersIOSim implements CoralRollersIO {
                     Meters.of(dropHeight),
                     // The initial speed of the coral
                     // TODO - use actual speed
-                    MetersPerSecond.of(2),
+                    MetersPerSecond.of(1),
                     // The angle of the wrist
-                    Degrees.of(wristAngle)));
+                    Radians.of(-wristAngle)));
         }
     }
 
