@@ -16,6 +16,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.Commands.ReefSelection.ShowSelection;
 import frc.robot.Subsystems.AlgaeRollers.AlgaeRollers;
 import frc.robot.Subsystems.CoralRollers.CoralRollers;
 import frc.robot.Subsystems.Elevator.Elevator;
@@ -129,7 +130,9 @@ public class Robot extends LoggedRobot {
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+    ShowSelection.displayReefSelection();
+  }
 
   /** This function is called once when test mode is enabled. */
   @Override
