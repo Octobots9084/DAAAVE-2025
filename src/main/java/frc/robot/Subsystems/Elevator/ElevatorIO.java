@@ -22,6 +22,8 @@ public interface ElevatorIO {
   public default void updateInputs(ElevatorIOInputs inputs) {}
 
   public default void setPosition(double leftPosition, double rightPosition) {}
+  
+  public default double getPosition() {return 0;}
 
   public default void updateSim() {}
   /** Set velocity PID constants. */

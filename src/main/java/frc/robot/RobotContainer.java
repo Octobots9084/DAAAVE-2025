@@ -12,6 +12,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Commands.AlgaeRollers.AlgaeRollersManual;
 import frc.robot.Commands.CoralRollers.CoralRollersManual;
 import frc.robot.Commands.Elevator.ElevatorManual;
+import frc.robot.Commands.ManuelControll.ElevatorManualControl;
+import frc.robot.Commands.ManuelControll.ElevatorManualControl;
 import frc.robot.Commands.Wrist.WristManual;
 import frc.robot.Commands.swerve.drivebase.TeleopDrive;
 import frc.robot.Constants.OperatorConstants;
@@ -131,11 +133,18 @@ public class RobotContainer {
                 MathUtil.applyDeadband(
                     ButtonConfig.driverRight.getRawAxis(0), OperatorConstants.RIGHT_X_DEADBAND));
     swerve.setDefaultCommand(closedFieldRel);
+    
+    
+    ElevatorManualControl elevatorManualControl = new ElevatorManualControl(() ->
+    MathUtil.applyDeadband(
+        -ButtonConfig.driverRight.getRawAxis(1), OperatorConstants.LEFT_Y_DEADBAND));
+    Elevator.getInstance().setDefaultCommand(elevatorManualControl);
+
+
     autoChooser = AutoBuilder.buildAutoChooser(); // Default auto will be `Commands.none()`
     SmartDashboard.putData("Auto Mode", autoChooser);
     ButtonConfig buttons = new ButtonConfig();
     buttons.initTeleop();
-
     // this.algaeRollers = new AlgaeRollers();
     // this.coralRollers = new CoralRollers();
     // this.elevator = new Elevator();
