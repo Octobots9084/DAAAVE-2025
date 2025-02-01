@@ -11,9 +11,33 @@
           }
         },
         {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.75
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "fakePlaceCoral"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "e_to_lowstation"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.0
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "fakeAlignSource"
           }
         },
         {
@@ -23,9 +47,33 @@
           }
         },
         {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.75
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "fakePlaceCoral"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "d_to_lowstation"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.0
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "fakeAlignSource"
           }
         },
         {
@@ -35,9 +83,33 @@
           }
         },
         {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.75
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "fakePlaceCoral"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "c_to_lowstation"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.0
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "fakeAlignSource"
           }
         },
         {
@@ -47,9 +119,15 @@
           }
         },
         {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.75
+          }
+        },
+        {
           "type": "named",
           "data": {
-            "name": null
+            "name": "fakePlaceCoral"
           }
         }
       ]

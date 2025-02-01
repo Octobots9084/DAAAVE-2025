@@ -1,5 +1,6 @@
 package frc.robot.Commands.complex;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -19,7 +20,7 @@ public class ScoreCoral extends Command {
   public boolean elevatorInPos = false;
   public boolean wristInPosition = false;
   public boolean isAligned = false;
-  private Swerve swerve = Swerve.getInstance();
+  private Swerve swerve;
   private CoralRollers coralRollers = CoralRollers.getInstance();
   private Elevator elevator = Elevator.getInstance();
   private Wrist wrist = Wrist.getInstance();
@@ -27,15 +28,16 @@ public class ScoreCoral extends Command {
   private ReefTargetSide targetSide;
   private ReefTargetOrientation targetOrientation;
 
-  public ScoreCoral(
-      ElevatorStates elevatorState, ReefTargetSide side, ReefTargetOrientation orientation) {
+  public ScoreCoral(ElevatorStates elevatorState, ReefTargetSide side, ReefTargetOrientation orientation) {
     targetElevatorState = elevatorState;
     targetSide = side;
     targetOrientation = orientation;
+    swerve = Swerve.getInstance();
   }
 
   @Override
   public void initialize() {
+    
     if (coralRollers.io.hasCoral()) {
       swerve.setDriveState(DriveState.AlignReef);
       CommandScheduler.getInstance().schedule(new SetTargetReefLevel(targetElevatorState));
@@ -46,6 +48,7 @@ public class ScoreCoral extends Command {
 
   @Override
   public void execute() {
+    SmartDashboard.putBoolean("place L4", true);
     elevatorInPos = elevator.isAtState(targetElevatorState, 0.1 /*TODO - set actual tolerance*/);
     wristInPosition = wrist.isAtState(targetElevatorState, 0.1 /*TODO - set actual tolerance*/);
     isAligned = true; // Need vision code

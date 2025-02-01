@@ -20,8 +20,11 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Commands.fakeAlignSource;
+import frc.robot.Commands.fakePlaceCoral;
 import frc.robot.Commands.complex.AlignSource;
 import frc.robot.Commands.complex.ScoreCoral;
 import frc.robot.States.ReefTargetOrientation;
@@ -90,6 +93,15 @@ public class Swerve extends SubsystemBase {
   public Swerve(SwerveIO io) {
     this.io = io;
     try {
+
+        // NamedCommands.registerCommand("AlignSource", new AlignSource().withTimeout(1));
+        // NamedCommands.registerCommand("ScoreCoral_E_L4", new ScoreCoral(ElevatorStates.LEVEL4, ReefTargetSide.RIGHT, ReefTargetOrientation.EF).withTimeout(0.75));
+        // NamedCommands.registerCommand("ScoreCoral_D_L4", new ScoreCoral(ElevatorStates.LEVEL4, ReefTargetSide.LEFT, ReefTargetOrientation.CD).withTimeout(0.75));
+        // NamedCommands.registerCommand("ScoreCoral_C_L4", new ScoreCoral(ElevatorStates.LEVEL4, ReefTargetSide.RIGHT, ReefTargetOrientation.CD).withTimeout(0.75));
+        // NamedCommands.registerCommand("ScoreCoral_B_L4", new ScoreCoral(ElevatorStates.LEVEL4, ReefTargetSide.RIGHT, ReefTargetOrientation.AB).withTimeout(0.75));
+        NamedCommands.registerCommand("fakeAlignSource", new fakeAlignSource().withTimeout(1));
+        NamedCommands.registerCommand("fakePlaceCoral", new fakePlaceCoral().withTimeout(0.75));
+
       RobotConfig config = RobotConfig.fromGUISettings();
 
       // Configure AutoBuilder
@@ -113,15 +125,6 @@ public class Swerve extends SubsystemBase {
             return false;
           },
           this);
-
-          NamedCommands.registerCommand("AlignSource", new AlignSource());
-          NamedCommands.registerCommand("ScoreCoral_E_L4", new ScoreCoral(ElevatorStates.LEVEL4, reefTargetSide.RIGHT, alignmentOrientation.EF));
-          NamedCommands.registerCommand("ScoreCoral_D_L4", new ScoreCoral(ElevatorStates.LEVEL4, reefTargetSide.LEFT, alignmentOrientation.CD));
-          NamedCommands.registerCommand("ScoreCoral_C_L4", new ScoreCoral(ElevatorStates.LEVEL4, reefTargetSide.RIGHT, alignmentOrientation.CD));
-          NamedCommands.registerCommand("ScoreCoral_B_L4", new ScoreCoral(ElevatorStates.LEVEL4, reefTargetSide.RIGHT, alignmentOrientation.AB));
-
-
-
 
     } catch (Exception e) {
       DriverStation.reportError(
