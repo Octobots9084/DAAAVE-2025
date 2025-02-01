@@ -29,7 +29,7 @@ public class Elevator extends SubsystemBase {
 
   private Elevator(ElevatorIO io) {
     this.io = io;
-    this.io.configurePID(0.2, 0, 0);
+    // this.io.configurePID(0.7, 0, 0);
   }
 
   @Override

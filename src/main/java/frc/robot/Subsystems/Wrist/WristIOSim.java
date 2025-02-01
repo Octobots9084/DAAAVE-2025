@@ -1,5 +1,7 @@
 package frc.robot.Subsystems.Wrist;
 
+import com.revrobotics.spark.ClosedLoopSlot;
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
@@ -7,9 +9,8 @@ import edu.wpi.first.wpilibj.simulation.DCMotorSim;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class WristIOSim implements WristIO {
-  DCMotorSim motorSim =
-      new DCMotorSim(
-          LinearSystemId.createDCMotorSystem(DCMotor.getNeo550(1), 0.025, 1), DCMotor.getNeo550(1));
+  DCMotorSim motorSim = new DCMotorSim(
+      LinearSystemId.createDCMotorSystem(DCMotor.getNeo550(1), 0.025, 1), DCMotor.getNeo550(1));
   PIDController simController = new PIDController(0, 0, 0);
   double targetPosition;
   WristStates state = WristStates.LOW;
@@ -29,11 +30,10 @@ public class WristIOSim implements WristIO {
   }
 
   @Override
-  public void setPosition(double position) {
+  public void setPosition(double position, ClosedLoopSlot slot) {
     SmartDashboard.putNumber("Position", position);
     targetPosition = position;
 
-    
   }
 
   @Override

@@ -10,7 +10,7 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.wpilibj.AnalogInput;
 
 public class CoralRollersIOSystems implements CoralRollersIO {
-  private final SparkMax motor = new SparkMax(14, MotorType.kBrushless);
+  private final SparkMax motor = new SparkMax(13, MotorType.kBrushless);
   private final AnalogInput mouthBeam = new AnalogInput(2);
   public CANrange coralDetector = new CANrange(0);
 
