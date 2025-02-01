@@ -101,4 +101,9 @@ public class ElevatorIOSparkMax implements ElevatorIO {
         .getClosedLoopController()
         .setReference(-rightPosition, ControlType.kPosition, ClosedLoopSlot.kSlot0, -feedForward);
   }
+
+  @Override
+  public double getPosition() {
+    return leftMotor.getEncoder().getPosition();
+  }
 }
