@@ -42,10 +42,10 @@ public class AlignVision extends SubsystemBase {
   private CANrange rightRange;
   private CANrange leftRange;
 
-  private PIDController pidController;
-  private PIDController lidarPIDController;
-  private PIDController cameraDepthPIDController;
-  private PIDController gyroPIDController;
+  private PIDController cameraYPIDController;
+  private PIDController lidarXPIDController;
+  private PIDController cameraXPIDController;
+  private PIDController gyroRotationPIDController;
 
   private PhotonPipelineResult result;
 
@@ -61,11 +61,11 @@ public class AlignVision extends SubsystemBase {
     this.leftRange = new CANrange(10);
     this.rightRange = new CANrange(12);
 
-    this.pidController = new PIDController(2, 0, 0);
-    this.lidarPIDController = new PIDController(2, 0, 0);
-    this.cameraDepthPIDController = new PIDController(1.25, 0, 0);
-    this.gyroPIDController = new PIDController(4, 0, 0);
-    this.gyroPIDController.enableContinuousInput(0, 2 * Math.PI);
+    this.cameraYPIDController = new PIDController(2, 0, 0);
+    this.lidarXPIDController = new PIDController(2, 0, 0);
+    this.cameraXPIDController = new PIDController(1.25, 0, 0);
+    this.gyroRotationPIDController = new PIDController(4, 0, 0);
+    this.gyroRotationPIDController.enableContinuousInput(0, 2 * Math.PI);
 
     this.paramsConfigs = new FovParamsConfigs();
     paramsConfigs.withFOVRangeX(6.75);
@@ -147,7 +147,7 @@ public class AlignVision extends SubsystemBase {
         SmartDashboard.putNumber("RefPoseY", refPosition.getY());
         SmartDashboard.putNumber("RefPoseX", refPosition.getX());
 
-        ySpeed = pidController.calculate(refPosition.getY(), targetDistance);
+        ySpeed = cameraYPIDController.calculate(refPosition.getY(), targetDistance);
         xSpeed = this.calculateXSpeed(aveLidarDist, refPosition);
         SmartDashboard.putNumber("TargetDist", targetDistance);
 
@@ -213,8 +213,8 @@ public class AlignVision extends SubsystemBase {
 
   private double calculateXSpeed(double aveLidarDist, Transform2d refPosition) {
     return this.areBothLidarsValid()
-        ? lidarPIDController.calculate(aveLidarDist, VisionConstants.maxLidarDepthDistance)
-        : cameraDepthPIDController.calculate(
+        ? lidarXPIDController.calculate(aveLidarDist, VisionConstants.maxLidarDepthDistance)
+        : cameraXPIDController.calculate(
             refPosition.getX(), VisionConstants.maxCameraDepthDistance);
   }
 
@@ -226,9 +226,9 @@ public class AlignVision extends SubsystemBase {
     }
 
     return this.areBothLidarsValid()
-        ? -gyroPIDController.calculate(
+        ? -gyroRotationPIDController.calculate(
             Math.asin(diffLidarDist / VisionConstants.lidarTurnAngleBaseline), 0)
-        : gyroPIDController.calculate(swerve.getGyro(), Math.toRadians(turnAngle));
+        : gyroRotationPIDController.calculate(swerve.getGyro(), Math.toRadians(turnAngle));
   }
 
   private boolean isValidAlignTag(int tagID) {
