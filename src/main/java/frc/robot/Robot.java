@@ -149,16 +149,16 @@ public class Robot extends LoggedRobot {
   /** This function is called periodically whilst in simulation. */
   @Override
   public void simulationPeriodic() {
-    SimulatedArena.getInstance().simulationPeriodic();
-    AlgaeRollers.getInstance().updateSim();
-    CoralRollers.getInstance().updateSim();
-    Elevator.getInstance().updateSim();
-    Wrist.getInstance().updateSim();
-    // Publish to telemetry using AdvantageKit
-    Logger.recordOutput(
-        "FieldSimulation/AlgaePositions",
-        SimulatedArena.getInstance().getGamePiecesArrayByType("Algae"));
-    Logger.recordOutput(
-        "FieldSimulation/Coral", SimulatedArena.getInstance().getGamePiecesArrayByType("Coral"));
+    // SimulatedArena.getInstance().simulationPeriodic();
+    // AlgaeRollers.getInstance().updateSim();
+    // CoralRollers.getInstance().updateSim();
+    // Elevator.getInstance().updateSim();
+    // Wrist.getInstance().updateSim();
+    // // Publish to telemetry using AdvantageKit
+    // Logger.recordOutput(
+    //     "FieldSimulation/AlgaePositions",
+    //     SimulatedArena.getInstance().getGamePiecesArrayByType("Algae"));
+    // Logger.recordOutput(
+    //     "FieldSimulation/Coral", SimulatedArena.getInstance().getGamePiecesArrayByType("Coral"));
   }
 }

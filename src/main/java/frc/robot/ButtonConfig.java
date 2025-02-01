@@ -26,14 +26,14 @@ public class ButtonConfig {
                   Swerve.getInstance().zeroGyro();
                 }));
 
-    coDriverLeft.button(1).onTrue(new SetOrientation(0));
-    coDriverLeft.button(2).onTrue(new SetOrientation(1));
+    // coDriverLeft.button(1).onTrue(new SetOrientation(0));
+    // coDriverLeft.button(2).onTrue(new SetOrientation(1));
 
-    coDriverButtons.button(7).onTrue(new ReefLevelSelection(2));
-    coDriverButtons.button(9).onTrue(new ReefLevelSelection(1));
-    coDriverButtons.button(11).onTrue(new ReefLevelSelection(0));
+    // coDriverButtons.button(7).onTrue(new ReefLevelSelection(2));
+    // coDriverButtons.button(9).onTrue(new ReefLevelSelection(1));
+    // coDriverButtons.button(11).onTrue(new ReefLevelSelection(0));
 
-    driverRight.button(1).whileTrue(new ScoreCoral(Elevator.getInstance().getReefTargetLevel(),
-        Swerve.getInstance().getReefTargetSide(), Swerve.getInstance().getReefTargetOrientation()));
+    // driverRight.button(1).whileTrue(new ScoreCoral(Elevator.getInstance().getReefTargetLevel(),
+    //     Swerve.getInstance().getReefTargetSide(), Swerve.getInstance().getReefTargetOrientation()));
   }
 }
