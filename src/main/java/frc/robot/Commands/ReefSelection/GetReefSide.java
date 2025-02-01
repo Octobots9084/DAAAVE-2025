@@ -6,7 +6,7 @@ import frc.robot.ControlMap;
 
 public class GetReefSide {
   public static final CommandJoystick CO_DRIVER_LEFT = ControlMap.CO_DRIVER_LEFT;
-  private int[][] reefPoints = {{-1, 0}, {0, 1}, {1, 1}, {1, -1}, {0, -1}, {-1, -1}};
+  private int[][] reefPoints = {{-1, 1}, {0, 1}, {1, 1}, {1, -1}, {0, -1}, {-1, -1}};
 
   public manager.joystickState joystickPos() {
     double xAxis = CO_DRIVER_LEFT.getRawAxis(0);
