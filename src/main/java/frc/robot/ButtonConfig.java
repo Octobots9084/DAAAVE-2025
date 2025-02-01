@@ -58,7 +58,7 @@ public class ButtonConfig {
             .andThen(new SetElevatorState(ElevatorStates.LEVEL3)));
 
     driverButtons.button(8)
-        .onTrue(new SetWristState(WristStates.VERTICAL, ClosedLoopSlot.kSlot0).andThen(new WaitCommand(1))
+        .onTrue(new SetWristState(WristStates.FOURTYFIVE, ClosedLoopSlot.kSlot0).andThen(new WaitCommand(1))
             .andThen(new SetElevatorState(ElevatorStates.LEVEL4)));
     driverButtons.button(9)
         .onTrue(new SetWristState(WristStates.FOURTYFIVE, ClosedLoopSlot.kSlot0).andThen(new WaitCommand(1))
@@ -66,8 +66,7 @@ public class ButtonConfig {
 
     driverButtons.button(10)
         .onTrue(new SetCoralRollersState(CoralRollersState.OUTPUT)
-            .andThen(new SetWristState(WristStates.BACKOF, ClosedLoopSlot.kSlot1))
-            .andThen(new WaitCommand(0.5))
+            .andThen(new WaitCommand(1))
             .andThen(new SetCoralRollersState(CoralRollersState.STOPPED)));
 
     driverButtons.button(11).onTrue(new SetWristState(WristStates.FOURTYFIVE, ClosedLoopSlot.kSlot0)
