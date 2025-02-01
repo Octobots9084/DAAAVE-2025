@@ -130,8 +130,7 @@ public class RobotContainer {
             () ->
                 MathUtil.applyDeadband(
                     ButtonConfig.driverRight.getRawAxis(0), OperatorConstants.RIGHT_X_DEADBAND));
-    Swerve.getInstance();
-    Swerve.getInstance().setDefaultCommand(closedFieldRel);
+    swerve.setDefaultCommand(closedFieldRel);
     autoChooser = AutoBuilder.buildAutoChooser(); // Default auto will be `Commands.none()`
     SmartDashboard.putData("Auto Mode", autoChooser);
     ButtonConfig buttons = new ButtonConfig();
