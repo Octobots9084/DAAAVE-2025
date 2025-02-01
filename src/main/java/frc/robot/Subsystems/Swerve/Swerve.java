@@ -5,6 +5,7 @@
 package frc.robot.Subsystems.Swerve;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import edu.wpi.first.math.Matrix;
@@ -18,10 +19,15 @@ import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Commands.complex.AlignSource;
+import frc.robot.Commands.complex.ScoreCoral;
 import frc.robot.States.ReefTargetOrientation;
 import frc.robot.States.ReefTargetSide;
+import frc.robot.Subsystems.Elevator.ElevatorStates;
+
 import java.util.function.DoubleSupplier;
 import org.littletonrobotics.junction.Logger;
 
@@ -107,6 +113,15 @@ public class Swerve extends SubsystemBase {
             return false;
           },
           this);
+
+          NamedCommands.registerCommand("AlignSource", new AlignSource());
+          NamedCommands.registerCommand("ScoreCoral_E_L4", new ScoreCoral(ElevatorStates.LEVEL4, reefTargetSide.RIGHT, alignmentOrientation.EF));
+          NamedCommands.registerCommand("ScoreCoral_D_L4", new ScoreCoral(ElevatorStates.LEVEL4, reefTargetSide.LEFT, alignmentOrientation.CD));
+          NamedCommands.registerCommand("ScoreCoral_C_L4", new ScoreCoral(ElevatorStates.LEVEL4, reefTargetSide.RIGHT, alignmentOrientation.CD));
+          NamedCommands.registerCommand("ScoreCoral_B_L4", new ScoreCoral(ElevatorStates.LEVEL4, reefTargetSide.RIGHT, alignmentOrientation.AB));
+
+
+
 
     } catch (Exception e) {
       DriverStation.reportError(
