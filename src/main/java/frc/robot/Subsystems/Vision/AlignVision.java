@@ -169,6 +169,7 @@ public class AlignVision extends SubsystemBase {
       xSpeed = 0;
       turnSpeed = 0;
     }
+    SmartDashboard.putNumber("rot", refPosition.getRotation().getDegrees());
 
     return new ChassisSpeeds(-xSpeed, -ySpeed, turnSpeed);
   }
@@ -224,7 +225,6 @@ public class AlignVision extends SubsystemBase {
     if (turnAngle == Integer.MAX_VALUE) {
       return Double.NaN;
     }
-
     return this.areBothLidarsValid()
         ? -gyroRotationPIDController.calculate(
             Math.asin(diffLidarDist / VisionConstants.lidarTurnAngleBaseline), 0)
