@@ -1,5 +1,6 @@
 package frc.robot.Subsystems.Elevator;
 
+import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
@@ -86,9 +87,9 @@ public class ElevatorIOSparkMax implements ElevatorIO {
   public void setPosition(double leftPosition, double rightPosition) {
     leftMotor
         .getClosedLoopController()
-        .setReference(leftPosition, ControlType.kPosition, null, feedForward);
+        .setReference(leftPosition, ControlType.kPosition, ClosedLoopSlot.kSlot0, feedForward);
     rightMotor
         .getClosedLoopController()
-        .setReference(rightPosition, ControlType.kPosition, null, feedForward);
+        .setReference(rightPosition, ControlType.kPosition, ClosedLoopSlot.kSlot0, feedForward);
   }
 }

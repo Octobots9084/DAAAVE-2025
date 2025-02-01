@@ -16,12 +16,18 @@ import frc.robot.Commands.Wrist.WristManual;
 import frc.robot.Commands.swerve.drivebase.TeleopDrive;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.Subsystems.AlgaeRollers.AlgaeRollers;
+import frc.robot.Subsystems.AlgaeRollers.AlgaeRollersIOSim;
 import frc.robot.Subsystems.CoralRollers.CoralRollers;
+import frc.robot.Subsystems.CoralRollers.CoralRollersIOSim;
 import frc.robot.Subsystems.Elevator.Elevator;
 import frc.robot.Subsystems.Swerve.Swerve;
 import frc.robot.Subsystems.Swerve.SwerveIO;
 import frc.robot.Subsystems.Swerve.SwerveIOSystem;
 import frc.robot.Subsystems.Wrist.Wrist;
+import frc.robot.Subsystems.Wrist.WristIO;
+import frc.robot.Subsystems.Wrist.WristIOSim;
+import frc.robot.Subsystems.Wrist.WristIOSparkMax;
+import org.ironmaple.simulation.SimulatedArena;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -41,9 +47,9 @@ public class RobotContainer {
   private Swerve swerve;
 
   private AlgaeRollersManual algaeRollersManual;
-  private CoralRollersManual coralRollersManuel;
-  private ElevatorManual elevatorManel;
-  private WristManual wristManuel;
+  private CoralRollersManual coralRollersManual;
+  private ElevatorManual elevatorManual;
+  private WristManual wristManual;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -66,11 +72,16 @@ public class RobotContainer {
         break;
 
       case SIM:
-        // AlgaeRollers.setInstance(new AlgaeRollersIOSim());
-        // algaeRollers = AlgaeRollers.getInstance();
+        Swerve.setInstance(new SwerveIOSystem());
+        swerve = Swerve.getInstance();
 
-        // CoralRollers.setInstance(new CoralRollersIOSim());
-        // coralRollers = CoralRollers.getInstance();
+        AlgaeRollers.setInstance(
+            new AlgaeRollersIOSim(swerve.getIo().getSwerveDrive().getMapleSimDrive().get()));
+        algaeRollers = AlgaeRollers.getInstance();
+
+        CoralRollers.setInstance(
+            new CoralRollersIOSim(swerve.getIo().getSwerveDrive().getMapleSimDrive().get()));
+        coralRollers = CoralRollers.getInstance();
 
         // Elevator.setInstance(new ElevatorIOSim());
         // elevator = Elevator.getInstance();
@@ -78,8 +89,7 @@ public class RobotContainer {
         // Wrist.setInstance(new WristIOSim());
         // wrist = Wrist.getInstance();
 
-        Swerve.setInstance(new SwerveIOSystem());
-        swerve = Swerve.getInstance();
+        SimulatedArena.getInstance().resetFieldForAuto();
         break;
 
       case REPLAY:
@@ -126,9 +136,9 @@ public class RobotContainer {
     // this.wrist = new Wrist();
 
     // this.algaeRollersManual = new AlgaeRollersManual();
-    // this.coralRollersManuel = new CoralRollersManual();
+    // this.coralRollersManual = new CoralRollersManual();
     // this.elevatorManel = new ElevatorManual();
-    // this.wristManuel = new WristManual();
+    // this.wristManual = new WristManual();
   }
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.

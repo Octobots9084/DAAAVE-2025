@@ -50,10 +50,8 @@ public class TeleopDrive extends Command {
                     vY.getAsDouble() * swerveInstance.getIo().getMaxSpeed(),
                     omega.getAsDouble() * swerveInstance.getIo().getMaxTurnSpeed()));
         break;
-      case AlignReefLeft:
-        // swerveInstance.driveRobotRelative(alignInstance.getAlignChassisSpeeds());
-      case AlignReefRight:
-        break;
+      case AlignReef:
+        swerveInstance.driveRobotRelative(alignInstance.getAlignChassisSpeeds());
       case AlignProcessor:
         break;
       case AlignSource:
