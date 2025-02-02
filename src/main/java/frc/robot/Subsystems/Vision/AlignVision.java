@@ -5,8 +5,10 @@ import com.ctre.phoenix6.configs.FovParamsConfigs;
 import com.ctre.phoenix6.hardware.CANrange;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
+import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N4;
@@ -22,6 +24,7 @@ import frc.robot.States.ReefTargetOrientation;
 import frc.robot.States.ReefTargetSide;
 import frc.robot.Subsystems.Swerve.Swerve;
 import org.photonvision.targeting.PhotonPipelineResult;
+import org.photonvision.targeting.PhotonTrackedTarget;
 
 public class AlignVision extends SubsystemBase {
 
@@ -53,6 +56,7 @@ public class AlignVision extends SubsystemBase {
   private static ReefTargetOrientation selectedReefOrientation = null;
   private static ReefTargetSide selectedPoleSide = null;
   private static ReefTargetLevel selectedLevel = null;
+  private PhotonTrackedTarget bestTarget = new PhotonTrackedTarget();
 
   public AlignVision() {
     this.swerve = Swerve.getInstance();
@@ -61,11 +65,10 @@ public class AlignVision extends SubsystemBase {
     this.leftRange = new CANrange(10);
     this.rightRange = new CANrange(12);
 
+    this.cameraXPIDController = new PIDController(1.25, 0, 0);
     this.cameraYPIDController = new PIDController(2, 0, 0);
     this.lidarXPIDController = new PIDController(2, 0, 0);
-    this.cameraXPIDController = new PIDController(1.25, 0, 0);
-    this.gyroRotationPIDController = new PIDController(4, 0, 0);
-    this.gyroRotationPIDController.enableContinuousInput(0, 2 * Math.PI);
+    this.gyroRotationPIDController = new PIDController(0.3, 0, 0);
 
     this.paramsConfigs = new FovParamsConfigs();
     paramsConfigs.withFOVRangeX(6.75);
@@ -79,29 +82,27 @@ public class AlignVision extends SubsystemBase {
     leftRange.getConfigurator().apply(configuration);
   }
 
-  private Transform2d getReferenceRobotPosition() {
+  private Pose3d getReferenceRobotPosition() {
     // Transform Tag Coordinates to Camera Coordinates from photonvision.
-    Matrix<N4, N4> transformTagToCamera;
+    Transform3d transformTagToCamera;
 
     if (result != null
         && result.getBestTarget() != null
         && this.isValidAlignTag(result.getBestTarget().getFiducialId())) {
       // Position of the AprilTag in Robot Coordinates.
-      Matrix<N4, N1> referenceRobotPosition = null;
+      Pose3d referenceRobotPosition;
 
       // Get transformation matrix from photonvision
-      transformTagToCamera = result.getBestTarget().getBestCameraToTarget().toMatrix();
+      bestTarget = result.getBestTarget();
+      transformTagToCamera = bestTarget.getBestCameraToTarget(); // might need to invert
 
       // Transform Tag Position into Robot Coordinates
-      referenceRobotPosition = VisionConstants.transformFrontLeftToRobot.times(
-          transformTagToCamera.times(VisionConstants.referenceTagPosition));
-      return new Transform2d(
-          referenceRobotPosition.getData()[0],
-          referenceRobotPosition.getData()[1],
-          new Rotation2d(referenceRobotPosition.getData()[2]));
+      referenceRobotPosition = VisionConstants.referenceTagPosition.transformBy(transformTagToCamera)
+          .transformBy(VisionConstants.transformFrontLeftToRobot);
+      return referenceRobotPosition;
 
     } else {
-      return Transform2d.kZero;
+      return Pose3d.kZero;
     }
   }
 
@@ -118,7 +119,7 @@ public class AlignVision extends SubsystemBase {
         ? calcOrientationOffset(selectedReefOrientation, selectedPoleSide, selectedLevel)
         : 0;
 
-    Transform2d refPosition = this.getReferenceRobotPosition();
+    Pose3d refPosition = this.getReferenceRobotPosition();
     AlignOffset currentOffset = state == AlignState.Reef ? AlignOffset.values()[currentOffsetIndex] : null;
 
     SmartDashboard.putBoolean("is both lidar", areBothLidarsValid());
@@ -136,9 +137,9 @@ public class AlignVision extends SubsystemBase {
 
         if (state == AlignState.Reef) {
           if (selectedPoleSide == ReefTargetSide.LEFT) {
-            targetDistance += VisionConstants.distanceToPole;
-          } else if (selectedPoleSide == ReefTargetSide.RIGHT) {
             targetDistance -= VisionConstants.distanceToPole;
+          } else if (selectedPoleSide == ReefTargetSide.RIGHT) {
+            targetDistance += VisionConstants.distanceToPole;
           }
         } else {
           targetDistance = 0;
@@ -151,7 +152,7 @@ public class AlignVision extends SubsystemBase {
         xSpeed = this.calculateXSpeed(aveLidarDist, refPosition);
         SmartDashboard.putNumber("TargetDist", targetDistance);
 
-        turnSpeed = this.calculateTurnSpeed(diffLidarDist, state);
+        turnSpeed = this.calculateTurnSpeed(diffLidarDist, refPosition, state);
 
         if (Double.isNaN(turnSpeed)) {
           ySpeed = 0;
@@ -164,14 +165,15 @@ public class AlignVision extends SubsystemBase {
         xSpeed = 0;
         turnSpeed = 0;
       }
+      SmartDashboard.putNumber("rot", bestTarget.getYaw());
+
     } catch (Exception e) {
       ySpeed = 0;
       xSpeed = 0;
       turnSpeed = 0;
     }
-    SmartDashboard.putNumber("rot", refPosition.getRotation().getDegrees());
 
-    return new ChassisSpeeds(-xSpeed, -ySpeed, turnSpeed);
+    return new ChassisSpeeds(0, 0, turnSpeed);
   }
 
   private int calcOrientationOffset(
@@ -219,16 +221,18 @@ public class AlignVision extends SubsystemBase {
             refPosition.getX(), VisionConstants.maxCameraDepthDistance);
   }
 
-  private double calculateTurnSpeed(double diffLidarDist, AlignState state) {
+  private double calculateTurnSpeed(
+      double diffLidarDist, Transform2d refPosition, AlignState state) {
     int turnAngle = handleTurnAngle(state);
 
     if (turnAngle == Integer.MAX_VALUE) {
       return Double.NaN;
     }
-    return this.areBothLidarsValid()
-        ? -gyroRotationPIDController.calculate(
-            Math.asin(diffLidarDist / VisionConstants.lidarTurnAngleBaseline), 0)
-        : gyroRotationPIDController.calculate(swerve.getGyro(), Math.toRadians(turnAngle));
+    // return this.areBothLidarsValid()
+    //     ? -gyroRotationPIDController.calculate(
+    //         Math.asin(diffLidarDist / VisionConstants.lidarTurnAngleBaseline), 0)
+    //     : gyroRotationPIDController.calculate(swerve.getGyro(), Math.toRadians(turnAngle));
+    return gyroRotationPIDController.calculate(bestTarget.getYaw(), 0);
   }
 
   private boolean isValidAlignTag(int tagID) {

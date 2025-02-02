@@ -19,6 +19,7 @@ import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.Nat;
 import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.numbers.N1;
@@ -72,18 +73,16 @@ public final class Constants {
 
     // Transform Camera Coordinates to Robot Coordinates. Based on camera mounting
     // position.
-    public static final Matrix<N4, N4> transformFrontLeftToRobot =
-        new Transform3d(0.1524, 0.3556, 0, new Rotation3d(0, 0, Math.toRadians(-28))).toMatrix();
+    public static final Transform3d transformFrontLeftToRobot = new Transform3d(0.2667, 0.279305, 0,
+        new Rotation3d(0, 0, Math.toRadians(-45)));
 
-    public static final Transform3d camOneTransform =
-        new Transform3d(0, 0, 0, new Rotation3d(0, 0, Math.toRadians(0)));
+    public static final Transform3d camOneTransform = new Transform3d(0, 0, 0, new Rotation3d(0, 0, Math.toRadians(0)));
 
-    public static final Transform3d triceratopsTransform =
-        new Transform3d(0, 0.5379, 0, new Rotation3d(0, 0, Math.toRadians(0)));
+    public static final Transform3d triceratopsTransform = new Transform3d(0, 0.5379, 0,
+        new Rotation3d(0, 0, Math.toRadians(0)));
 
     // Position of the AprilTag in Tag Coordinates.
-    public static final Matrix<N4, N1> referenceTagPosition =
-        new Matrix<>(Nat.N4(), Nat.N1(), new double[] {0, 0, 0, 1});
+    public static final Pose3d referenceTagPosition = Pose3d.kZero;
 
     // Constant Distance from Tag to Pole (6in in meters)
     public static final double distanceToPole = 0.164;
@@ -97,13 +96,12 @@ public final class Constants {
     // Lidar Turn Angle Baseline (Might Be Radians)
     public static final double lidarTurnAngleBaseline = 0.605;
 
-    // List of tags that can be used for alignment (Remove 4)
-    public static final List<Integer> validAlignTags =
-        List.of(1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 16, 17, 18, 19, 20, 21, 22);
+    // List of tags that can be used for alignment
+    public static final List<Integer> validAlignTags = List.of(1, 2, 3, 6, 7, 8, 9, 10, 11, 12, 13, 16, 17, 18, 19, 20,
+        21, 22);
 
     // The layout of the AprilTags on the field
-    public static final AprilTagFieldLayout kTagLayout =
-        AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
+    public static final AprilTagFieldLayout kTagLayout = AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
 
     // The standard deviations of our vision estimated poses, which affect
     // correction rate
