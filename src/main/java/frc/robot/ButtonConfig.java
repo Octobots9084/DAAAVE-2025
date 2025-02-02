@@ -24,7 +24,7 @@ public class ButtonConfig {
   public void initTeleop() {
 
     driverButtons
-        .button(4)
+        .button(6)
         .onTrue(
             new InstantCommand(
                 () -> {

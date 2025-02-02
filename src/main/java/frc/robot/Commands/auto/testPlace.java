@@ -31,4 +31,10 @@ public class testPlace extends Command {
         Swerve.getInstance().driveRobotRelative(AlignVision.getInstance().getAlignChassisSpeeds(AlignState.Reef));
 
     }
+
+    @Override
+    public boolean isFinished() {
+
+        return AlignVision.getInstance().isAligned();
+    }
 }
