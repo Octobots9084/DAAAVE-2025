@@ -2,13 +2,10 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
-import frc.robot.Commands.CoralRollers.SetCoralRollersState;
 import frc.robot.Commands.complex.AlignReef;
-import frc.robot.Commands.complex.AlignSource;
 import frc.robot.States.ReefTargetLevel;
 import frc.robot.States.ReefTargetOrientation;
 import frc.robot.States.ReefTargetSide;
-import frc.robot.Subsystems.CoralRollers.CoralRollersState;
 import frc.robot.Subsystems.Swerve.Swerve;
 import frc.robot.Subsystems.Vision.AlignVision;
 
@@ -29,15 +26,15 @@ public class ButtonConfig {
                 () -> {
                   Swerve.getInstance().zeroGyro();
                 }));
-    // reef align
+    // // reef align
     driverButtons.button(2).whileTrue(new AlignReef());
     driverButtons
         .button(4)
         .onTrue(
             new InstantCommand(
                 () -> {
-                  AlignVision.setReefOrientation(ReefTargetOrientation.IJ);
-                  AlignVision.setPoleSide(ReefTargetSide.LEFT);
+                  AlignVision.setReefOrientation(ReefTargetOrientation.KL);
+                  AlignVision.setPoleSide(ReefTargetSide.RIGHT);
                   AlignVision.setPoleLevel(ReefTargetLevel.L1);
                 }));
     driverButtons
@@ -45,24 +42,25 @@ public class ButtonConfig {
         .onTrue(
             new InstantCommand(
                 () -> {
-                  AlignVision.setReefOrientation(ReefTargetOrientation.IJ);
-                  AlignVision.setPoleSide(ReefTargetSide.RIGHT);
+                  AlignVision.setReefOrientation(ReefTargetOrientation.KL);
+                  AlignVision.setPoleSide(ReefTargetSide.LEFT);
                   AlignVision.setPoleLevel(ReefTargetLevel.L1);
                 }));
 
-    // source align
-    driverButtons.button(1).whileTrue(new AlignSource());
+    // // source align
+    // driverButtons.button(1).whileTrue(new AlignSource());
 
     // climb(no commands yet)
     // driverButtons
-    //     .button(16)
-    //     .onTrue(); (change for switch)
+    // .button(16)
+    // .onTrue(); (change for switch)
 
     // processor align? (4)
     // driverButtons.button(4).whileTrue(new AlignSource());
 
-    driverButtons
-        .button(-1)
-        .whileTrue(new AlignReef().andThen(new SetCoralRollersState(CoralRollersState.REJECTING)));
+    // driverButtons
+    // .button(-1)
+    // .whileTrue(new AlignReef().andThen(new
+    // SetCoralRollersState(CoralRollersState.REJECTING)));
   }
 }

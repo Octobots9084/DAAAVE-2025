@@ -16,11 +16,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.Subsystems.AlgaeRollers.AlgaeRollers;
-import frc.robot.Subsystems.CoralRollers.CoralRollers;
-import frc.robot.Subsystems.Elevator.Elevator;
-import frc.robot.Subsystems.Wrist.Wrist;
-import org.ironmaple.simulation.SimulatedArena;
+import frc.robot.Subsystems.Vision.AlignVision;
 import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
@@ -94,6 +90,8 @@ public class Robot extends LoggedRobot {
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
+    SmartDashboard.putNumber("LeftLidar", AlignVision.getInstance().getLeftLidarDistance());
+    SmartDashboard.putNumber("RightLidar", AlignVision.getInstance().getRightLidarDistance());
   }
 
   /** This function is called once when the robot is disabled. */
@@ -146,16 +144,17 @@ public class Robot extends LoggedRobot {
   /** This function is called periodically whilst in simulation. */
   @Override
   public void simulationPeriodic() {
-    SimulatedArena.getInstance().simulationPeriodic();
-    AlgaeRollers.getInstance().updateSim();
-    CoralRollers.getInstance().updateSim();
-    Elevator.getInstance().updateSim();
-    Wrist.getInstance().updateSim();
-    // Publish to telemetry using AdvantageKit
-    Logger.recordOutput(
-        "FieldSimulation/AlgaePositions",
-        SimulatedArena.getInstance().getGamePiecesArrayByType("Algae"));
-    Logger.recordOutput(
-        "FieldSimulation/Coral", SimulatedArena.getInstance().getGamePiecesArrayByType("Coral"));
+    // SimulatedArena.getInstance().simulationPeriodic();
+    // AlgaeRollers.getInstance().updateSim();
+    // CoralRollers.getInstance().updateSim();
+    // Elevator.getInstance().updateSim();
+    // Wrist.getInstance().updateSim();
+    // // Publish to telemetry using AdvantageKit
+    // Logger.recordOutput(
+    // "FieldSimulation/AlgaePositions",
+    // SimulatedArena.getInstance().getGamePiecesArrayByType("Algae"));
+    // Logger.recordOutput(
+    // "FieldSimulation/Coral",
+    // SimulatedArena.getInstance().getGamePiecesArrayByType("Coral"));
   }
 }

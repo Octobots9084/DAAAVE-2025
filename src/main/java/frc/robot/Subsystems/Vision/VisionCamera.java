@@ -103,7 +103,7 @@ public class VisionCamera implements Runnable {
   }
 
   public PhotonPipelineResult grabLatestResult() {
-    return atomicPhotonResult.getAndSet(null);
+    return atomicPhotonResult.get();
   }
 
   /**
