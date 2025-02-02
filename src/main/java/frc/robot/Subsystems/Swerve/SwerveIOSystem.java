@@ -21,7 +21,7 @@ import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
 
 public class SwerveIOSystem implements SwerveIO {
   private SwerveDrive swerveDrive;
-  File swerveJsonDirectory = new File(Filesystem.getDeployDirectory(), "swerve");
+  File swerveJsonDirectory = new File(Filesystem.getDeployDirectory(), "practiceBot");
   double maximumSpeed = 10;
   double maxTurnSpeed = 5;
   private Field2d field = new Field2d();
@@ -132,7 +132,7 @@ public class SwerveIOSystem implements SwerveIO {
   }
 
   // public SwerveModuleState[] getModuleDesiredStates() {
-  //   return swerveDrive.getDesiredStates();
+  // return swerveDrive.getDesiredStates();
   // }
 
   @Override

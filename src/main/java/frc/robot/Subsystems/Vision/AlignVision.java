@@ -3,15 +3,11 @@ package frc.robot.Subsystems.Vision;
 import com.ctre.phoenix6.configs.CANrangeConfiguration;
 import com.ctre.phoenix6.configs.FovParamsConfigs;
 import com.ctre.phoenix6.hardware.CANrange;
-import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose3d;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.math.numbers.N1;
-import edu.wpi.first.math.numbers.N4;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -49,6 +45,7 @@ public class AlignVision extends SubsystemBase {
   private PIDController lidarXPIDController;
   private PIDController cameraXPIDController;
   private PIDController gyroRotationPIDController;
+  private PIDController lidarRotationPIDController;
 
   private PhotonPipelineResult result;
 
@@ -65,10 +62,12 @@ public class AlignVision extends SubsystemBase {
     this.leftRange = new CANrange(10);
     this.rightRange = new CANrange(12);
 
-    this.cameraXPIDController = new PIDController(1.25, 0, 0);
-    this.cameraYPIDController = new PIDController(2, 0, 0);
-    this.lidarXPIDController = new PIDController(2, 0, 0);
-    this.gyroRotationPIDController = new PIDController(0.3, 0, 0);
+    this.cameraXPIDController = new PIDController(4, 0, 0);
+    this.cameraYPIDController = new PIDController(1, 0, 0);
+    this.lidarXPIDController = new PIDController(4, 0, 0);
+    this.gyroRotationPIDController = new PIDController(0.2, 0, 0);
+    this.gyroRotationPIDController.enableContinuousInput(0, 2 * Math.PI);
+    this.lidarRotationPIDController = new PIDController(30, 0, 0);
 
     this.paramsConfigs = new FovParamsConfigs();
     paramsConfigs.withFOVRangeX(6.75);
@@ -78,6 +77,7 @@ public class AlignVision extends SubsystemBase {
 
     this.configuration = new CANrangeConfiguration();
     configuration.withFovParams(paramsConfigs);
+    configuration.ProximityParams.ProximityThreshold = 1;
     rightRange.getConfigurator().apply(configuration);
     leftRange.getConfigurator().apply(configuration);
   }
@@ -97,8 +97,10 @@ public class AlignVision extends SubsystemBase {
       transformTagToCamera = bestTarget.getBestCameraToTarget(); // might need to invert
 
       // Transform Tag Position into Robot Coordinates
-      referenceRobotPosition = VisionConstants.referenceTagPosition.transformBy(transformTagToCamera)
-          .transformBy(VisionConstants.transformFrontLeftToRobot);
+      referenceRobotPosition =
+          VisionConstants.referenceTagPosition
+              .transformBy(transformTagToCamera)
+              .transformBy(VisionConstants.transformFrontLeftToRobot);
       return referenceRobotPosition;
 
     } else {
@@ -115,12 +117,14 @@ public class AlignVision extends SubsystemBase {
     double aveLidarDist = (this.getRightLidarDistance() + this.getLeftLidarDistance()) / 2;
     double diffLidarDist = this.getRightLidarDistance() - this.getLeftLidarDistance();
 
-    int currentOffsetIndex = state == AlignState.Reef
-        ? calcOrientationOffset(selectedReefOrientation, selectedPoleSide, selectedLevel)
-        : 0;
+    int currentOffsetIndex =
+        state == AlignState.Reef
+            ? calcOrientationOffset(selectedReefOrientation, selectedPoleSide, selectedLevel)
+            : 0;
 
     Pose3d refPosition = this.getReferenceRobotPosition();
-    AlignOffset currentOffset = state == AlignState.Reef ? AlignOffset.values()[currentOffsetIndex] : null;
+    AlignOffset currentOffset =
+        state == AlignState.Reef ? AlignOffset.values()[currentOffsetIndex] : null;
 
     SmartDashboard.putBoolean("is both lidar", areBothLidarsValid());
 
@@ -148,7 +152,7 @@ public class AlignVision extends SubsystemBase {
         SmartDashboard.putNumber("RefPoseY", refPosition.getY());
         SmartDashboard.putNumber("RefPoseX", refPosition.getX());
 
-        ySpeed = cameraYPIDController.calculate(refPosition.getY(), targetDistance);
+        ySpeed = -cameraYPIDController.calculate(refPosition.getY(), targetDistance);
         xSpeed = this.calculateXSpeed(aveLidarDist, refPosition);
         SmartDashboard.putNumber("TargetDist", targetDistance);
 
@@ -173,7 +177,7 @@ public class AlignVision extends SubsystemBase {
       turnSpeed = 0;
     }
 
-    return new ChassisSpeeds(0, 0, turnSpeed);
+    return new ChassisSpeeds(xSpeed, ySpeed, turnSpeed);
   }
 
   private int calcOrientationOffset(
@@ -215,24 +219,27 @@ public class AlignVision extends SubsystemBase {
   }
 
   private double calculateXSpeed(double aveLidarDist, Pose3d refPosition) {
-    return this.areBothLidarsValid()
-        ? lidarXPIDController.calculate(aveLidarDist, VisionConstants.maxLidarDepthDistance)
-        : cameraXPIDController.calculate(
-            refPosition.getX(), VisionConstants.maxCameraDepthDistance);
+    SmartDashboard.putNumber("avg lidar dist", aveLidarDist);
+    SmartDashboard.putNumber("camerax", refPosition.getX());
+    double xSpeed =
+        this.areBothLidarsValid()
+            ? -lidarXPIDController.calculate(aveLidarDist, VisionConstants.maxLidarDepthDistance)
+            : -cameraXPIDController.calculate(
+                refPosition.getX(), VisionConstants.maxCameraDepthDistance);
+
+    SmartDashboard.putNumber("xspeed", xSpeed);
+    return xSpeed;
   }
 
-  private double calculateTurnSpeed(
-      double diffLidarDist, Pose3d refPosition, AlignState state) {
-    int turnAngle = handleTurnAngle(state);
+  private double calculateTurnSpeed(double diffLidarDist, Pose3d refPosition, AlignState state) {
+    turnAngle = handleTurnAngle(state);
 
     if (turnAngle == Integer.MAX_VALUE) {
       return Double.NaN;
     }
-    // return this.areBothLidarsValid()
-    //     ? -gyroRotationPIDController.calculate(
-    //         Math.asin(diffLidarDist / VisionConstants.lidarTurnAngleBaseline), 0)
-    //     : gyroRotationPIDController.calculate(swerve.getGyro(), Math.toRadians(turnAngle));
-    return gyroRotationPIDController.calculate(bestTarget.getYaw(), 0);
+    return this.areBothLidarsValid()
+        ? -lidarRotationPIDController.calculate(diffLidarDist, 0)
+        : -gyroRotationPIDController.calculate(swerve.getGyro(), Math.toRadians(turnAngle));
   }
 
   private boolean isValidAlignTag(int tagID) {
