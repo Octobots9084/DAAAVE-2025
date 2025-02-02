@@ -7,6 +7,7 @@ package frc.robot.Commands.swerve.drivebase;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.States.AlignState;
 import frc.robot.Subsystems.Swerve.Swerve;
 import frc.robot.Subsystems.Vision.AlignVision;
 
@@ -53,7 +54,7 @@ public class TeleopDrive extends Command {
                     omega.getAsDouble() * swerveInstance.getIo().getMaxTurnSpeed()));
         break;
       case AlignReef:
-        swerveInstance.driveRobotRelative(alignInstance.getAlignChassisSpeeds());
+        swerveInstance.driveRobotRelative(alignInstance.getAlignChassisSpeeds(AlignState.Reef));
       case AlignProcessor:
         break;
       case AlignSource:

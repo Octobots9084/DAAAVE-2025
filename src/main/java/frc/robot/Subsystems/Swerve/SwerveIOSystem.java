@@ -21,17 +21,16 @@ import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
 
 public class SwerveIOSystem implements SwerveIO {
   private SwerveDrive swerveDrive;
-  File swerveJsonDirectory = new File(Filesystem.getDeployDirectory(), "swerve");
-  double maximumSpeed = 12;
-  double maxTurnSpeed = 8;
+  File swerveJsonDirectory = new File(Filesystem.getDeployDirectory(), "practiceBot");
+  double maximumSpeed = 10;
+  double maxTurnSpeed = 5;
   private Field2d field = new Field2d();
 
   public SwerveIOSystem() {
     SwerveDriveTelemetry.verbosity = TelemetryVerbosity.HIGH;
     try {
-      swerveDrive =
-          new SwerveParser(swerveJsonDirectory)
-              .createSwerveDrive(maximumSpeed, new Pose2d(3.1, 4, new Rotation2d(0)));
+      swerveDrive = new SwerveParser(swerveJsonDirectory)
+          .createSwerveDrive(maximumSpeed, new Pose2d(3.1, 4, new Rotation2d(0)));
       swerveDrive.setHeadingCorrection(
           false); // Heading correction should only be used while controlling the robot via
       // angle.
@@ -132,7 +131,7 @@ public class SwerveIOSystem implements SwerveIO {
   }
 
   // public SwerveModuleState[] getModuleDesiredStates() {
-  //   return swerveDrive.getDesiredStates();
+  // return swerveDrive.getDesiredStates();
   // }
 
   @Override

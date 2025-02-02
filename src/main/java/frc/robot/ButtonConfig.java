@@ -7,6 +7,7 @@ import frc.robot.Commands.ReefSelection.SetOrientation;
 import frc.robot.Commands.complex.ScoreCoral;
 import frc.robot.Subsystems.Elevator.Elevator;
 import frc.robot.Subsystems.Swerve.Swerve;
+import frc.robot.Subsystems.Vision.AlignVision;
 
 public class ButtonConfig {
   static CommandJoystick driverLeft = ControlMap.DRIVER_LEFT;
@@ -25,15 +26,41 @@ public class ButtonConfig {
                 () -> {
                   Swerve.getInstance().zeroGyro();
                 }));
+    // // reef align
+    driverButtons.button(2).whileTrue(new AlignReef());
+    driverButtons
+        .button(4)
+        .onTrue(
+            new InstantCommand(
+                () -> {
+                  AlignVision.setReefOrientation(ReefTargetOrientation.KL);
+                  AlignVision.setPoleSide(ReefTargetSide.RIGHT);
+                  AlignVision.setPoleLevel(ReefTargetLevel.L1);
+                }));
+    driverButtons
+        .button(3)
+        .onTrue(
+            new InstantCommand(
+                () -> {
+                  AlignVision.setReefOrientation(ReefTargetOrientation.KL);
+                  AlignVision.setPoleSide(ReefTargetSide.LEFT);
+                  AlignVision.setPoleLevel(ReefTargetLevel.L1);
+                }));
 
-    // coDriverLeft.button(1).onTrue(new SetOrientation(0));
-    // coDriverLeft.button(2).onTrue(new SetOrientation(1));
+    // // source align
+    // driverButtons.button(1).whileTrue(new AlignSource());
 
-    // coDriverButtons.button(7).onTrue(new ReefLevelSelection(2));
-    // coDriverButtons.button(9).onTrue(new ReefLevelSelection(1));
-    // coDriverButtons.button(11).onTrue(new ReefLevelSelection(0));
+    // climb(no commands yet)
+    // driverButtons
+    // .button(16)
+    // .onTrue(); (change for switch)
 
-    // driverRight.button(1).whileTrue(new ScoreCoral(Elevator.getInstance().getReefTargetLevel(),
-    //     Swerve.getInstance().getReefTargetSide(), Swerve.getInstance().getReefTargetOrientation()));
+    // processor align? (4)
+    // driverButtons.button(4).whileTrue(new AlignSource());
+
+    // driverButtons
+    // .button(-1)
+    // .whileTrue(new AlignReef().andThen(new
+    // SetCoralRollersState(CoralRollersState.REJECTING)));
   }
 }
