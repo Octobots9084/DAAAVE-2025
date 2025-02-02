@@ -28,15 +28,15 @@ public class ButtonConfig {
                 }));
     // // reef align
     driverButtons.button(2).whileTrue(new AlignReef());
-    // driverButtons
-    // .button(4)
-    // .onTrue(
-    // new InstantCommand(
-    // () -> {
-    // AlignVision.setReefOrientation(ReefTargetOrientation.IJ);
-    // AlignVision.setPoleSide(ReefTargetSide.LEFT);
-    // AlignVision.setPoleLevel(ReefTargetLevel.L1);
-    // }));
+    driverButtons
+        .button(4)
+        .onTrue(
+            new InstantCommand(
+                () -> {
+                  AlignVision.setReefOrientation(ReefTargetOrientation.KL);
+                  AlignVision.setPoleSide(ReefTargetSide.RIGHT);
+                  AlignVision.setPoleLevel(ReefTargetLevel.L1);
+                }));
     driverButtons
         .button(3)
         .onTrue(

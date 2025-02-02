@@ -63,7 +63,7 @@ public class AlignVision extends SubsystemBase {
     this.rightRange = new CANrange(12);
 
     this.cameraXPIDController = new PIDController(4, 0, 0);
-    this.cameraYPIDController = new PIDController(1, 0, 0);
+    this.cameraYPIDController = new PIDController(4, 0, 0);
     this.lidarXPIDController = new PIDController(4, 0, 0);
     this.gyroRotationPIDController = new PIDController(0.2, 0, 0);
     this.gyroRotationPIDController.enableContinuousInput(0, 2 * Math.PI);
@@ -82,6 +82,48 @@ public class AlignVision extends SubsystemBase {
     leftRange.getConfigurator().apply(configuration);
   }
 
+  // private Pose3d getReferenceRobotPosition() {
+
+  // // Transform Tag Coordinates to Camera Coordinates from photonvision.
+  // Matrix<N4, N4> transformTagToCamera;
+
+  // if (result != null) {
+  // if (result.getBestTarget() != null
+  // && this.isValidAlignTag(result.getBestTarget().getFiducialId())) {
+  // // Position of the AprilTag in Robot Coordinates.
+  // Matrix<N4, N1> referenceRobotPosition = null;
+
+  // // Get transformation matrix from photonvision
+  // transformTagToCamera =
+  // result.getBestTarget().getBestCameraToTarget().toMatrix();
+
+  // // referenceTagPosition = new Matrix<>(Nat.N4(), Nat.N1(), new
+  // double[]{0.381,
+  // // 0.1524, 0,
+  // // 1});
+
+  // // Transform Tag Position into Robot Coordinates
+  // referenceRobotPosition =
+  // VisionConstants.transformFrontLeftToRobot
+  // .toMatrix()
+  // .times(
+  // transformTagToCamera.times(
+  // new Matrix<>(Nat.N4(), Nat.N1(), new double[] {0, 0, 0, 1})));
+
+  // return new Pose3d(
+  // new Translation3d(
+  // referenceRobotPosition.getData()[0], referenceRobotPosition.getData()[1], 0),
+  // new Rotation3d());
+
+  // } else {
+  // return Pose3d.kZero;
+  // }
+
+  // } else {
+  // return Pose3d.kZero;
+  // }
+  // }
+
   private Pose3d getReferenceRobotPosition() {
     // Transform Tag Coordinates to Camera Coordinates from photonvision.
     Transform3d transformTagToCamera;
@@ -99,8 +141,8 @@ public class AlignVision extends SubsystemBase {
       // Transform Tag Position into Robot Coordinates
       referenceRobotPosition =
           VisionConstants.referenceTagPosition
-              .transformBy(transformTagToCamera)
-              .transformBy(VisionConstants.transformFrontLeftToRobot);
+              .transformBy(transformTagToCamera.inverse())
+              .transformBy(VisionConstants.transformFrontLeftToRobot.inverse());
       return referenceRobotPosition;
 
     } else {
@@ -141,9 +183,9 @@ public class AlignVision extends SubsystemBase {
 
         if (state == AlignState.Reef) {
           if (selectedPoleSide == ReefTargetSide.LEFT) {
-            targetDistance -= VisionConstants.distanceToPole;
-          } else if (selectedPoleSide == ReefTargetSide.RIGHT) {
             targetDistance += VisionConstants.distanceToPole;
+          } else if (selectedPoleSide == ReefTargetSide.RIGHT) {
+            targetDistance -= VisionConstants.distanceToPole;
           }
         } else {
           targetDistance = 0;
@@ -152,7 +194,7 @@ public class AlignVision extends SubsystemBase {
         SmartDashboard.putNumber("RefPoseY", refPosition.getY());
         SmartDashboard.putNumber("RefPoseX", refPosition.getX());
 
-        ySpeed = -cameraYPIDController.calculate(refPosition.getY(), targetDistance);
+        ySpeed = cameraYPIDController.calculate(-refPosition.getY(), targetDistance);
         xSpeed = this.calculateXSpeed(aveLidarDist, refPosition);
         SmartDashboard.putNumber("TargetDist", targetDistance);
 
