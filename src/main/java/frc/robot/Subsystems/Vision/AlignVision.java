@@ -214,7 +214,7 @@ public class AlignVision extends SubsystemBase {
     }
   }
 
-  private double calculateXSpeed(double aveLidarDist, Transform2d refPosition) {
+  private double calculateXSpeed(double aveLidarDist, Pose3d refPosition) {
     return this.areBothLidarsValid()
         ? lidarXPIDController.calculate(aveLidarDist, VisionConstants.maxLidarDepthDistance)
         : cameraXPIDController.calculate(
@@ -222,7 +222,7 @@ public class AlignVision extends SubsystemBase {
   }
 
   private double calculateTurnSpeed(
-      double diffLidarDist, Transform2d refPosition, AlignState state) {
+      double diffLidarDist, Pose3d refPosition, AlignState state) {
     int turnAngle = handleTurnAngle(state);
 
     if (turnAngle == Integer.MAX_VALUE) {
