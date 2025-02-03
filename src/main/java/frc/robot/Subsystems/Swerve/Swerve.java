@@ -5,6 +5,7 @@
 package frc.robot.Subsystems.Swerve;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import edu.wpi.first.math.Matrix;
@@ -18,14 +19,25 @@ import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Commands.fakeAlignSource;
+import frc.robot.Commands.fakePlaceCoral;
+import frc.robot.Commands.auto.testPlace;
+import frc.robot.Commands.complex.AlignSource;
+import frc.robot.Commands.complex.ScoreCoral;
 import frc.robot.States.ReefTargetOrientation;
 import frc.robot.States.ReefTargetSide;
+import frc.robot.Subsystems.Elevator.ElevatorStates;
+
 import java.util.function.DoubleSupplier;
 import org.littletonrobotics.junction.Logger;
 
-/** Basic simulation of a swerve subsystem with the methods needed by PathPlanner */
+/**
+ * Basic simulation of a swerve subsystem with the methods needed by PathPlanner
+ */
 public class Swerve extends SubsystemBase {
   SwerveIO io;
   private final SwerveIOInputsAutoLogged inputs = new SwerveIOInputsAutoLogged();
@@ -84,6 +96,25 @@ public class Swerve extends SubsystemBase {
   public Swerve(SwerveIO io) {
     this.io = io;
     try {
+
+      // NamedCommands.registerCommand("AlignSource", new
+      // AlignSource().withTimeout(1));
+      // NamedCommands.registerCommand("ScoreCoral_E_L4", new
+      // ScoreCoral(ElevatorStates.LEVEL4, ReefTargetSide.RIGHT,
+      // ReefTargetOrientation.EF).withTimeout(0.75));
+      // NamedCommands.registerCommand("ScoreCoral_D_L4", new
+      // ScoreCoral(ElevatorStates.LEVEL4, ReefTargetSide.LEFT,
+      // ReefTargetOrientation.CD).withTimeout(0.75));
+      // NamedCommands.registerCommand("ScoreCoral_C_L4", new
+      // ScoreCoral(ElevatorStates.LEVEL4, ReefTargetSide.RIGHT,
+      // ReefTargetOrientation.CD).withTimeout(0.75));
+      // NamedCommands.registerCommand("ScoreCoral_B_L4", new
+      // ScoreCoral(ElevatorStates.LEVEL4, ReefTargetSide.RIGHT,
+      // ReefTargetOrientation.AB).withTimeout(0.75));
+      NamedCommands.registerCommand("fakeAlignSource", new fakeAlignSource().withTimeout(1));
+      NamedCommands.registerCommand("fakePlaceCoral", new fakePlaceCoral().withTimeout(0.75));
+      NamedCommands.registerCommand("testPlace", new testPlace());
+
       RobotConfig config = RobotConfig.fromGUISettings();
 
       // Configure AutoBuilder
@@ -96,7 +127,8 @@ public class Swerve extends SubsystemBase {
               Constants.Swerve.translationConstants, Constants.Swerve.rotationConstants),
           config,
           () -> {
-            // Boolean supplier that controls when the path will be mirrored for the red alliance
+            // Boolean supplier that controls when the path will be mirrored for the red
+            // alliance
             // This will flip the path being followed to the red side of the field.
             // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
 
@@ -175,12 +207,13 @@ public class Swerve extends SubsystemBase {
   }
 
   /**
-   * Command to drive the robot using translative values and heading as a setpoint.
+   * Command to drive the robot using translative values and heading as a
+   * setpoint.
    *
    * @param translationX Translation in the X direction.
    * @param translationY Translation in the Y direction.
-   * @param headingX Heading X to calculate angle of the joystick.
-   * @param headingY Heading Y to calculate angle of the joystick.
+   * @param headingX     Heading X to calculate angle of the joystick.
+   * @param headingY     Heading Y to calculate angle of the joystick.
    * @return Drive command.
    */
   public Command driveCommand(
@@ -200,10 +233,11 @@ public class Swerve extends SubsystemBase {
   }
 
   /**
-   * Command to drive the robot using translative values and heading as angular velocity.
+   * Command to drive the robot using translative values and heading as angular
+   * velocity.
    *
-   * @param translationX Translation in the X direction.
-   * @param translationY Translation in the Y direction.
+   * @param translationX     Translation in the X direction.
+   * @param translationY     Translation in the Y direction.
    * @param angularRotationX Rotation of the robot to set
    * @return Drive command.
    */

@@ -19,6 +19,7 @@ public interface SwerveIO {
     public ChassisSpeeds targetSpeeds = new ChassisSpeeds();
     public SwerveModuleState[] swerveModuleStates;
     public SwerveModuleState[] swerveModuleDesiredStates;
+    public double gyroAngleRadians;
   }
 
   /** Updates the set of loggable inputs. */
