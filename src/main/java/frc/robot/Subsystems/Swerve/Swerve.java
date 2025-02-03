@@ -28,6 +28,7 @@ import frc.robot.Commands.fakePlaceCoral;
 import frc.robot.Commands.auto.testPlace;
 import frc.robot.Commands.complex.AlignSource;
 import frc.robot.Commands.complex.ScoreCoral;
+import frc.robot.States.ReefTargetLevel;
 import frc.robot.States.ReefTargetOrientation;
 import frc.robot.States.ReefTargetSide;
 import frc.robot.Subsystems.Elevator.ElevatorStates;
@@ -111,9 +112,13 @@ public class Swerve extends SubsystemBase {
       // NamedCommands.registerCommand("ScoreCoral_B_L4", new
       // ScoreCoral(ElevatorStates.LEVEL4, ReefTargetSide.RIGHT,
       // ReefTargetOrientation.AB).withTimeout(0.75));
-      NamedCommands.registerCommand("fakeAlignSource", new fakeAlignSource().withTimeout(1));
+
+      NamedCommands.registerCommand("fakeAlignSource", new fakeAlignSource().withTimeout(0.0000001));
       NamedCommands.registerCommand("fakePlaceCoral", new fakePlaceCoral().withTimeout(0.75));
-      NamedCommands.registerCommand("testPlace", new testPlace());
+
+      NamedCommands.registerCommand("placeEF", new testPlace(ReefTargetLevel.L1, ReefTargetSide.LEFT, ReefTargetOrientation.EF));
+      NamedCommands.registerCommand("placeAB", new testPlace(ReefTargetLevel.L1, ReefTargetSide.LEFT, ReefTargetOrientation.AB));
+
 
       RobotConfig config = RobotConfig.fromGUISettings();
 

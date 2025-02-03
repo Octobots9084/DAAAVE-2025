@@ -13,17 +13,21 @@ import frc.robot.Subsystems.Swerve.Swerve.DriveState;
 import frc.robot.Subsystems.Vision.AlignVision;
 
 public class testPlace extends Command {
-    public testPlace() {
-
+    ReefTargetLevel targetLevel;
+    ReefTargetSide targetSide;
+    ReefTargetOrientation targetOrientation;
+    public testPlace(ReefTargetLevel targetLevel, ReefTargetSide targetSide, ReefTargetOrientation targetOrientation) {
+        this.targetLevel = targetLevel;
+        this.targetSide = targetSide;
+        this.targetOrientation = targetOrientation;
     }
 
     @Override
     public void initialize() {
         SmartDashboard.putString("PLACRE", "PLACE");
-        Swerve.getInstance().setDriveState(DriveState.AlignReef);
-        AlignVision.setPoleLevel(ReefTargetLevel.L1);
-        AlignVision.setPoleSide(ReefTargetSide.LEFT);
-        AlignVision.setReefOrientation(ReefTargetOrientation.KL);
+        AlignVision.setPoleLevel(targetLevel);
+        AlignVision.setPoleSide(targetSide);
+        AlignVision.setReefOrientation(targetOrientation);
     }
 
     @Override
@@ -34,7 +38,9 @@ public class testPlace extends Command {
 
     @Override
     public boolean isFinished() {
-
+        SmartDashboard.putBoolean("is aligned", AlignVision.getInstance().isAligned());
         return AlignVision.getInstance().isAligned();
     }
+
+    
 }

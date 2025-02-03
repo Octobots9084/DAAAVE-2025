@@ -248,7 +248,7 @@ public class AlignVision extends SubsystemBase {
         case IJ:
           return -120;
         case KL:
-          return 60;
+          return -60;
         default:
           return Integer.MAX_VALUE;
       }

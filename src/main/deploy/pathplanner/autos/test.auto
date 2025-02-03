@@ -1,0 +1,49 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "initial_to_e"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "placeEF"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "e_to_lowstation_broken"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "fakeAlignSource"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "lowstation_to_a"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "placeAB"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": "28pt",
+  "choreoAuto": false
+}
