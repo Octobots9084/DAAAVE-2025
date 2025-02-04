@@ -53,7 +53,8 @@ public class ButtonConfig {
     coDriverButtons.button(7).onTrue(new ReefLevelSelection(2));
     coDriverButtons.button(9).onTrue(new ReefLevelSelection(1));
     coDriverButtons.button(11).onTrue(new ReefLevelSelection(0));
-
+    driverButtons.button(5).onTrue(new SetCoralRollersState(CoralRollersState.INTAKING));
+    driverButtons.button(6).onTrue(new SetCoralRollersState(CoralRollersState.OUTPUT));
     driverButtons.button(7)
         .onTrue(new SetWristState(WristStates.FOURTYFIVE, ClosedLoopSlot.kSlot0).andThen(new WaitCommand(1))
             .andThen(new SetElevatorState(ElevatorStates.LEVEL3)));
