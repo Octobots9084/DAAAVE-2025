@@ -2,8 +2,6 @@ package frc.robot.Subsystems.Wrist;
 
 import org.littletonrobotics.junction.AutoLog;
 
-import com.revrobotics.spark.ClosedLoopSlot;
-
 public interface WristIO {
   @AutoLog
   public static class WristIOInputs {
@@ -15,8 +13,7 @@ public interface WristIO {
   }
 
   /** Updates the set of loggable inputs. */
-  public default void updateInputs(WristIOInputs inputs) {
-  }
+  public default void updateInputs(WristIOInputs inputs) {}
 
   public default void setPosition(double position, ClosedLoopSlot slot) {
   }

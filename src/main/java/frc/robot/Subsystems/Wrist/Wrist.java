@@ -5,8 +5,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Subsystems.Elevator.ElevatorStates;
 import org.littletonrobotics.junction.Logger;
 
-import com.revrobotics.spark.ClosedLoopSlot;
-
 public class Wrist extends SubsystemBase {
   private final WristIO io;
   private final WristIOInputsAutoLogged inputs = new WristIOInputsAutoLogged();
@@ -18,6 +16,14 @@ public class Wrist extends SubsystemBase {
       throw new IllegalStateException("Wrist instance not set");
     }
     return instance;
+  }
+
+  public void setOffset(double offset){
+    io.setOffset(offset);
+  }
+
+  public SparkMax getWristMotor(){
+    return io.getWristMotor();
   }
 
   public static Wrist setInstance(WristIO io) {

@@ -18,18 +18,14 @@ public class AlignReef extends Command {
   public void initialize() {
     swerve.setDriveState(DriveState.AlignReef);
 
-    // CommandScheduler.getInstance().schedule(new PrepReefPlacement(elevatorState,
-    // wristState));
+    // CommandScheduler.getInstance().schedule(new PrepReefPlacement(elevatorState, wristState));
   }
 
   @Override
   public boolean isFinished() {
-    if (((swerve.getReefTargetSide() == ReefTargetSide.RIGHT) && swerve.isAlignedToCoralRight)
-        || ((swerve.getReefTargetSide() == ReefTargetSide.LEFT) && swerve.isAlignedToCoralLeft)) {
-      return true;
-    }
+    CommandScheduler.getInstance().schedule(new SetCoralRollersState(CoralRollersState.OUTPUT));
+
     // check if the coral has left robot
-    // if true return true
-    return false;
+    return !CoralRollers.getInstance().hasCoral();
   }
 }
