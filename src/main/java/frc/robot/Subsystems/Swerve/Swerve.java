@@ -113,11 +113,10 @@ public class Swerve extends SubsystemBase {
       // ScoreCoral(ElevatorStates.LEVEL4, ReefTargetSide.RIGHT,
       // ReefTargetOrientation.AB).withTimeout(0.75));
 
-      NamedCommands.registerCommand("fakeAlignSource", new fakeAlignSource().withTimeout(0.0000001));
-      NamedCommands.registerCommand("fakePlaceCoral", new fakePlaceCoral().withTimeout(0.75));
-
-      NamedCommands.registerCommand("placeEF", new testPlace(ReefTargetLevel.L1, ReefTargetSide.LEFT, ReefTargetOrientation.EF));
       NamedCommands.registerCommand("placeAB", new testPlace(ReefTargetLevel.L1, ReefTargetSide.LEFT, ReefTargetOrientation.AB));
+      NamedCommands.registerCommand("placeCD", new testPlace(ReefTargetLevel.L1, ReefTargetSide.LEFT, ReefTargetOrientation.CD));
+      NamedCommands.registerCommand("placeEF", new testPlace(ReefTargetLevel.L1, ReefTargetSide.LEFT, ReefTargetOrientation.EF));
+
 
 
       RobotConfig config = RobotConfig.fromGUISettings();

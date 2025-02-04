@@ -13,61 +13,13 @@
         {
           "type": "named",
           "data": {
-            "name": "testPlace"
+            "name": "placeEF"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "e_to_lowstation"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 1.0
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "fakeAlignSource"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "lowstation_to_d"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.75
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "fakePlaceCoral"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "d_to_lowstation"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 1.0
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "fakeAlignSource"
+            "pathName": "e_to_lowstation_skid"
           }
         },
         {
@@ -77,15 +29,9 @@
           }
         },
         {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.75
-          }
-        },
-        {
           "type": "named",
           "data": {
-            "name": "fakePlaceCoral"
+            "name": "placeCD"
           }
         },
         {
@@ -95,33 +41,33 @@
           }
         },
         {
-          "type": "wait",
+          "type": "path",
           "data": {
-            "waitTime": 1.0
+            "pathName": "lowstation_to_c"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "fakeAlignSource"
+            "name": "placeCD"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "lowstation_to_b"
+            "pathName": "c_to_lowstation"
           }
         },
         {
-          "type": "wait",
+          "type": "path",
           "data": {
-            "waitTime": 0.75
+            "pathName": "lowstation_to_a"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "fakePlaceCoral"
+            "name": "placeAB"
           }
         }
       ]

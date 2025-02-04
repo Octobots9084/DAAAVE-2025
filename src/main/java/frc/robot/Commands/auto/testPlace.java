@@ -2,6 +2,7 @@ package frc.robot.Commands.auto;
 
 import java.nio.file.attribute.PosixFilePermission;
 
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.States.AlignState;
@@ -40,6 +41,11 @@ public class testPlace extends Command {
     public boolean isFinished() {
         SmartDashboard.putBoolean("is aligned", AlignVision.getInstance().isAligned());
         return AlignVision.getInstance().isAligned();
+    }
+
+    @Override
+    public void end(boolean interrupted) {
+        Swerve.getInstance().driveRobotRelative(new ChassisSpeeds());
     }
 
     

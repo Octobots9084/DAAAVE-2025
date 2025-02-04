@@ -88,7 +88,7 @@ public final class Constants {
     public static final double distanceToPole = 0.164;
 
     // Max Depth Distance of Lidar from Tag (Meters)
-    public static final double maxLidarDepthDistance = 0.2;
+    public static final double maxLidarDepthDistance = 0.4;
 
     // Max Depth Distance of Camera from Tag (Meters)
     public static final double maxCameraDepthDistance = 0.5;

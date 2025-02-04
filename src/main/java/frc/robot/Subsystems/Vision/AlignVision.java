@@ -72,7 +72,7 @@ public class AlignVision extends SubsystemBase {
     this.cameraXPIDController = new PIDController(4, 0, 0);
     this.cameraYPIDController = new PIDController(4, 0, 0);
     this.lidarXPIDController = new PIDController(4, 0, 0);
-    this.gyroRotationPIDController = new PIDController(0.2, 0, 0);
+    this.gyroRotationPIDController = new PIDController(0.4, 0, 0);
     this.gyroRotationPIDController.enableContinuousInput(0, 2 * Math.PI);
     this.lidarRotationPIDController = new PIDController(10, 0, 0);
 
@@ -199,7 +199,7 @@ public class AlignVision extends SubsystemBase {
         SmartDashboard.putNumber("RefPoseX", refPosition.getX());
 
         ySpeed = cameraYPIDController.calculate(-refPosition.getY(), targetDistance);
-        yInTolerance = MathUtil.isNear(-refPosition.getY(), targetDistance, 0.05);
+        yInTolerance = MathUtil.isNear(-refPosition.getY(), targetDistance, 0.03);
         xSpeed = this.calculateXSpeed(aveLidarDist, refPosition);
         SmartDashboard.putNumber("TargetDist", targetDistance);
 
@@ -269,11 +269,11 @@ public class AlignVision extends SubsystemBase {
     SmartDashboard.putNumber("avg lidar dist", aveLidarDist);
     SmartDashboard.putNumber("camerax", refPosition.getX());
     if (this.areBothLidarsValid()) {
-      xInTolerance = MathUtil.isNear(aveLidarDist, VisionConstants.maxLidarDepthDistance, 0.05);
+      xInTolerance = MathUtil.isNear(aveLidarDist, VisionConstants.maxLidarDepthDistance, 0.03);
 
       return -lidarXPIDController.calculate(aveLidarDist, VisionConstants.maxLidarDepthDistance);
     } else {
-      xInTolerance = MathUtil.isNear(refPosition.getX(), VisionConstants.maxCameraDepthDistance, 0.05);
+      xInTolerance = MathUtil.isNear(refPosition.getX(), VisionConstants.maxCameraDepthDistance, 0.03);
 
       return -cameraXPIDController.calculate(
           refPosition.getX(), VisionConstants.maxCameraDepthDistance);
@@ -291,7 +291,7 @@ public class AlignVision extends SubsystemBase {
 
       return -lidarRotationPIDController.calculate(diffLidarDist, 0);
     } else {
-      rotInTolerance = MathUtil.isNear(swerve.getGyro(), Math.toRadians(turnAngle), 0.1);
+      rotInTolerance = MathUtil.isNear(swerve.getGyro(), Math.toRadians(turnAngle), 0.05);
 
       return -gyroRotationPIDController.calculate(swerve.getGyro(), Math.toRadians(turnAngle));
     }
