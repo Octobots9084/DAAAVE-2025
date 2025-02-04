@@ -2,6 +2,9 @@ package frc.robot.Subsystems.Wrist;
 
 import org.littletonrobotics.junction.AutoLog;
 
+import com.revrobotics.spark.ClosedLoopSlot;
+import com.revrobotics.spark.SparkMax;
+
 public interface WristIO {
   @AutoLog
   public static class WristIOInputs {
@@ -19,6 +22,12 @@ public interface WristIO {
   }
 
   public default void updateSim() {
+  }
+
+  public default void setOffset(double offset){}
+
+  public default SparkMax getWristMotor(){
+    return null;
   }
 
   /** Set velocity PID constants. */
