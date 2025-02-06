@@ -1,8 +1,9 @@
 {
   "conversionFactors": {
     "NOTE - gearRatio needs to be 10 for simulation": true,
+    "NOTE - gearRatio needs to be 1 for real life, Lauren": true,
     "angle": {
-      "gearRatio": 10,
+      "gearRatio": 1,
       "factor": 0
     },
     "drive": {

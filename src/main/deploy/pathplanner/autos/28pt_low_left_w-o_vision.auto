@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "initial_to_g"
+            "pathName": "initial_to_e"
           }
         },
         {
@@ -19,7 +19,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "g_to_lowstation"
+            "pathName": "e_to_lowstation_skid"
           }
         },
         {
@@ -43,13 +43,37 @@
         {
           "type": "path",
           "data": {
-            "pathName": "lowstation_to_b"
+            "pathName": "lowstation_to_c"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "c_to_lowstation"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "lowstation_to_a"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.0
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "21pt",
+  "folder": "28pt",
   "choreoAuto": false
 }
