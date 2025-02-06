@@ -1,33 +1,19 @@
 package frc.robot;
 
-import org.littletonrobotics.junction.Logger;
 
 import com.revrobotics.spark.ClosedLoopSlot;
 
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import frc.robot.Commands.AlgaeRollers.SetAlgaeRollersState;
-import frc.robot.Commands.CoralRollers.SetCoralRollersState;
 import frc.robot.Commands.Elevator.SetElevatorState;
 import frc.robot.Commands.ReefSelection.SetOrientation;
-import frc.robot.Commands.ReefSelection.SetTargetReefLevel;
 import frc.robot.Commands.Wrist.SetWristState;
-import frc.robot.Commands.Wrist.SetWristState;
-import frc.robot.Commands.complex.AlignReef;
-import frc.robot.Commands.complex.AlignSource;
-import frc.robot.Commands.complex.ScoreCoral;
 import frc.robot.Subsystems.AlgaeRollers.AlgaeRollersStates;
-import frc.robot.Subsystems.CoralRollers.CoralRollersState;
-import frc.robot.Subsystems.CoralRollers.CoralRollersState;
-import frc.robot.Subsystems.Elevator.Elevator;
-import frc.robot.Subsystems.Elevator.ElevatorStates;
 import frc.robot.Subsystems.Elevator.ElevatorStates;
 import frc.robot.Subsystems.Swerve.Swerve;
 import frc.robot.Subsystems.Wrist.WristStates;
-import frc.robot.Subsystems.Wrist.WristStates;
-import frc.robot.Subsystems.Vision.AlignVision;
 
 public class ButtonConfig {
   static CommandJoystick driverLeft = ControlMap.DRIVER_LEFT;

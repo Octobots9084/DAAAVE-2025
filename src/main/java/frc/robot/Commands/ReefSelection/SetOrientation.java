@@ -2,7 +2,6 @@ package frc.robot.Commands.ReefSelection;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.States;
-import frc.robot.States.ReefTargetSide;
 import frc.robot.Subsystems.Swerve.Swerve;
 
 public class SetOrientation extends InstantCommand {
