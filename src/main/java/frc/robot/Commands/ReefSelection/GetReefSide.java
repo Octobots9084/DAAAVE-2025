@@ -3,12 +3,15 @@ package frc.robot.Commands.ReefSelection;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import frc.robot.ControlMap;
+import frc.robot.States;
+import frc.robot.Subsystems.Swerve.Swerve;
 
 public class GetReefSide {
   public static final CommandJoystick CO_DRIVER_LEFT = ControlMap.CO_DRIVER_LEFT;
   private int[][] reefPoints = {{-1, 1}, {0, 1}, {1, 1}, {1, -1}, {0, -1}, {-1, -1}};
 
-  public manager.joystickState joystickPos() {
+  @SuppressWarnings("static-access")
+  public States.ReefTargetOrientation joystickPos() {
     double xAxis = CO_DRIVER_LEFT.getRawAxis(0);
     double yAxis = -CO_DRIVER_LEFT.getRawAxis(1);
 
@@ -29,8 +32,8 @@ public class GetReefSide {
     xAxis = MathUtil.applyDeadband(xAxis, 0.05);
     yAxis = MathUtil.applyDeadband(yAxis, 0.05);
     if (xAxis == 0 && yAxis == 0) {
-      return manager.joystickState.NONE;
+      return States.ReefTargetOrientation.NONE;
     }
-    return manager.joystickState.values()[sidePos];
+    return Swerve.getInstance().getReefTargetOrientation().values()[sidePos];
   }
 }

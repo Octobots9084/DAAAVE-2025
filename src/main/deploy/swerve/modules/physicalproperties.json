@@ -6,8 +6,8 @@
       "factor": 0
     },
     "drive": {
-      "gearRatio": 3.636,
-      "diameter": 2.9,
+      "gearRatio": 5.8181,
+      "diameter": 3,
       "factor": 0
     }
   },
@@ -16,8 +16,8 @@
     "angle": 40
   },
   "rampRate": {
-    "drive": 0.25,
-    "angle": 0.25
+    "drive": 0.05,
+    "angle": 0.05
   },
   "wheelGripCoefficientOfFriction": 1,
   "optimalVoltage": 10

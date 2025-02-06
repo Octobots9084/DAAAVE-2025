@@ -16,4 +16,5 @@ public final class BuildConstants {
   public static final int DIRTY = 1;
 
   private BuildConstants(){}
+  private BuildConstants(){}
 }
