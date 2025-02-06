@@ -36,7 +36,8 @@ public class ButtonConfig {
 
     coDriverLeft.button(1).onTrue(new SetOrientation(0));
     coDriverLeft.button(2).onTrue(new SetOrientation(1));
-
+    driverButtons.button(5).onTrue(new SetCoralRollersState(CoralRollersState.INTAKING));
+    driverButtons.button(6).onTrue(new SetCoralRollersState(CoralRollersState.OUTPUT));
     driverButtons.button(7)
         .onTrue(new SetWristState(WristStates.FOURTYFIVE, ClosedLoopSlot.kSlot0).andThen(new WaitCommand(1))
             .andThen(new SetElevatorState(ElevatorStates.LEVEL3)));

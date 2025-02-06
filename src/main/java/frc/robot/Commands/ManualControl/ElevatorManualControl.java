@@ -1,4 +1,8 @@
+<<<<<<<< HEAD:src/main/java/frc/robot/Commands/ManuelControl/ElevatorManualControl.java
+package frc.robot.Commands.ManuelControl;
+========
 package frc.robot.Commands.ManualControl;
+>>>>>>>> 71370f51d0b63cac85c5adb7eccd609aa61d12a3:src/main/java/frc/robot/Commands/ManualControl/ElevatorManualControl.java
 
 import java.util.function.DoubleSupplier;
 import edu.wpi.first.wpilibj2.command.Command;

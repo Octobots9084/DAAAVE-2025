@@ -1,6 +1,7 @@
 package frc.robot.Subsystems.Elevator;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import org.littletonrobotics.junction.Logger;
 
@@ -8,6 +9,10 @@ public class Elevator extends SubsystemBase {
   private final ElevatorIO io;
   private final ElevatorIOInputsAutoLogged inputs = new ElevatorIOInputsAutoLogged();
   private ElevatorStates targetLevel = ElevatorStates.LOW;
+
+  //TODO add actual input chanel
+  public DigitalInput toplimitSwitch = new DigitalInput(0);
+  public DigitalInput bottomlimitSwitch = new DigitalInput(1);
 
   private static Elevator instance;
 
@@ -38,6 +43,14 @@ public class Elevator extends SubsystemBase {
 
   @Override
   public void periodic() {
+    if (bottomlimitSwitch.get()) {
+      // We are going up and top limit is tripped so stop
+      if (io.getPosition() < 0){
+        io.setPosition(0 ,0);
+        io.getLeftMotor().getAlternateEncoder().setPosition(0);
+      }
+        
+    }
     io.updateInputs(inputs);
     Logger.processInputs("Elevator", inputs);
   }
@@ -46,6 +59,10 @@ public class Elevator extends SubsystemBase {
     io.setPosition(state.position, state.position);
     targetLevel = state;
     Logger.recordOutput("Elevator/State", state);
+  }
+
+  public ElevatorStates getState() {
+    return targetLevel;
   }
 
   public void manuelSetTargetPosistion(double position) {
