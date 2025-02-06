@@ -22,6 +22,10 @@ public class Elevator extends SubsystemBase {
     return targetLevel;
   }
 
+  public double getPosition() {
+    return this.io.getPosition();
+  }
+
   public static Elevator setInstance(ElevatorIO io) {
     instance = new Elevator(io);
     return instance;
@@ -29,7 +33,7 @@ public class Elevator extends SubsystemBase {
 
   private Elevator(ElevatorIO io) {
     this.io = io;
-    this.io.configurePID(0.2, 0, 0);
+    // this.io.configurePID(0.7, 0, 0);
   }
 
   @Override
@@ -42,6 +46,10 @@ public class Elevator extends SubsystemBase {
     io.setPosition(state.position, state.position);
     targetLevel = state;
     Logger.recordOutput("Elevator/State", state);
+  }
+
+  public void manuelSetTargetPosistion(double position) {
+    io.setPosition(position, position);
   }
 
   public boolean isAtState(ElevatorStates state, double tolerance) {

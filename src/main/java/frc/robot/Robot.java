@@ -16,11 +16,10 @@ package frc.robot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.Subsystems.AlgaeRollers.AlgaeRollers;
-import frc.robot.Subsystems.CoralRollers.CoralRollers;
-import frc.robot.Subsystems.Elevator.Elevator;
-import frc.robot.Subsystems.Wrist.Wrist;
-import org.ironmaple.simulation.SimulatedArena;
+import frc.robot.Commands.ReefSelection.ShowSelection;
+import frc.robot.Subsystems.Swerve.Swerve;
+import frc.robot.Subsystems.Swerve.Swerve.DriveState;
+import frc.robot.Subsystems.Vision.AlignVision;
 import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
@@ -29,9 +28,12 @@ import org.littletonrobotics.junction.wpilog.WPILOGReader;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 
 /**
- * The VM is configured to automatically run this class, and to call the functions corresponding to
- * each mode, as described in the TimedRobot documentation. If you change the name of this class or
- * the package after creating this project, you must also update the build.gradle file in the
+ * The VM is configured to automatically run this class, and to call the
+ * functions corresponding to
+ * each mode, as described in the TimedRobot documentation. If you change the
+ * name of this class or
+ * the package after creating this project, you must also update the
+ * build.gradle file in the
  * project.
  */
 public class Robot extends LoggedRobot {
@@ -94,17 +96,24 @@ public class Robot extends LoggedRobot {
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
+    SmartDashboard.putNumber("LeftLidar", AlignVision.getInstance().getLeftLidarDistance());
+    SmartDashboard.putNumber("RightLidar", AlignVision.getInstance().getRightLidarDistance());
   }
 
   /** This function is called once when the robot is disabled. */
   @Override
-  public void disabledInit() {}
+  public void disabledInit() {
+  }
 
   /** This function is called periodically when disabled. */
   @Override
-  public void disabledPeriodic() {}
+  public void disabledPeriodic() {
+  }
 
-  /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
+  /**
+   * This autonomous runs the autonomous command selected by your
+   * {@link RobotContainer} class.
+   */
   @Override
   public void autonomousInit() {
     m_autonomousCommand = robotContainer.getAutonomousCommand();
@@ -117,7 +126,8 @@ public class Robot extends LoggedRobot {
 
   /** This function is called periodically during autonomous. */
   @Override
-  public void autonomousPeriodic() {}
+  public void autonomousPeriodic() {
+  }
 
   /** This function is called once when teleop is enabled. */
   @Override
@@ -125,37 +135,46 @@ public class Robot extends LoggedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
+
+    Swerve.getInstance().setDriveState(DriveState.Manual);
+
   }
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+    ShowSelection.displayReefSelection();
+  }
 
   /** This function is called once when test mode is enabled. */
   @Override
-  public void testInit() {}
+  public void testInit() {
+  }
 
   /** This function is called periodically during test mode. */
   @Override
-  public void testPeriodic() {}
+  public void testPeriodic() {
+  }
 
   /** This function is called once when the robot is first started up. */
   @Override
-  public void simulationInit() {}
+  public void simulationInit() {
+  }
 
   /** This function is called periodically whilst in simulation. */
   @Override
   public void simulationPeriodic() {
-    SimulatedArena.getInstance().simulationPeriodic();
-    AlgaeRollers.getInstance().updateSim();
-    CoralRollers.getInstance().updateSim();
-    Elevator.getInstance().updateSim();
-    Wrist.getInstance().updateSim();
-    // Publish to telemetry using AdvantageKit
-    Logger.recordOutput(
-        "FieldSimulation/AlgaePositions",
-        SimulatedArena.getInstance().getGamePiecesArrayByType("Algae"));
-    Logger.recordOutput(
-        "FieldSimulation/Coral", SimulatedArena.getInstance().getGamePiecesArrayByType("Coral"));
+    // SimulatedArena.getInstance().simulationPeriodic();
+    // AlgaeRollers.getInstance().updateSim();
+    // CoralRollers.getInstance().updateSim();
+    // Elevator.getInstance().updateSim();
+    // Wrist.getInstance().updateSim();
+    // // Publish to telemetry using AdvantageKit
+    // Logger.recordOutput(
+    // "FieldSimulation/AlgaePositions",
+    // SimulatedArena.getInstance().getGamePiecesArrayByType("Algae"));
+    // Logger.recordOutput(
+    // "FieldSimulation/Coral",
+    // SimulatedArena.getInstance().getGamePiecesArrayByType("Coral"));
   }
 }

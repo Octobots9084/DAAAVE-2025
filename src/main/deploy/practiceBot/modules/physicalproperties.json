@@ -1,0 +1,24 @@
+{
+  "conversionFactors": {
+    "NOTE - gearRatio needs to be 10 for simulation": true,
+    "angle": {
+      "gearRatio": 1,
+      "factor": 0
+    },
+    "drive": {
+      "gearRatio": 3.636,
+      "diameter": 2.75,
+      "factor": 0
+    }
+  },
+  "currentLimit": {
+    "drive": 60,
+    "angle": 40
+  },
+  "rampRate": {
+    "drive": 0.25,
+    "angle": 0.25
+  },
+  "wheelGripCoefficientOfFriction": 1,
+  "optimalVoltage": 10
+}
