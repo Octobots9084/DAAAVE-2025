@@ -22,7 +22,8 @@ public class States {
     EF,
     GH,
     IJ,
-    KL
+    KL,
+    NONE
   }
 
   public enum AlignOffset {

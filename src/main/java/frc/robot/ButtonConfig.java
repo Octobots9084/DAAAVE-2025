@@ -8,17 +8,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
-import frc.robot.Constants.OperatorConstants;
-import frc.robot.Commands.AlgaeRollers.SetAlgaeRollersState;
-import frc.robot.Commands.complex.CancelAllCommands;
 import frc.robot.Commands.CoralRollers.SetCoralRollersState;
 import frc.robot.Commands.Elevator.SetElevatorState;
-import frc.robot.Commands.CoralRollers.SetCoralRollersState;
-import frc.robot.Commands.Elevator.SetElevatorState;
-import frc.robot.States.ReefTargetLevel;
-import frc.robot.States.ReefTargetOrientation;
-import frc.robot.States.ReefTargetSide;
-import frc.robot.Commands.ReefSelection.ReefLevelSelection;
 import frc.robot.Commands.ReefSelection.SetOrientation;
 import frc.robot.Commands.ReefSelection.SetTargetReefLevel;
 import frc.robot.Commands.Wrist.SetWristState;
@@ -56,16 +47,8 @@ public class ButtonConfig {
                 }));
     // reef align
 
-    // source align
-    driverButtons.button(1).whileTrue(new AlignSource());
-
-    // climb(no commands yet)
-    // driverButtons
-    //     .button(16)
-    //     .onTrue(); (change for switch)
-
-    // processor align? (4)
-    driverButtons.button(4).whileTrue(new AlignSource());
+    coDriverLeft.button(1).onTrue(new SetOrientation(0));
+    coDriverLeft.button(2).onTrue(new SetOrientation(1));
 
     driverButtons.button(7)
         .onTrue(new SetWristState(WristStates.FOURTYFIVE, ClosedLoopSlot.kSlot0).andThen(new WaitCommand(1))

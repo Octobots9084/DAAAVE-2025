@@ -1,8 +1,11 @@
 package frc.robot.Commands.ReefSelection;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Subsystems.Elevator.*;
 
 public class ShowSelection {
+  private static Elevator elevator = Elevator.getInstance();
+  @SuppressWarnings("static-access")
   public static void displayReefSelection() {
     int reefState = manager.joystick.joystickPos().ordinal();
     if (reefState == 6) {
@@ -20,8 +23,13 @@ public class ShowSelection {
       }
     }
 
-    for (int i = 0; i < manager.getLevels().length; i++) {
-      SmartDashboard.putBoolean("L" + (i + 1), manager.getLevelPos(i));
+    for (int i = 1; i < 5; i++) {
+    SmartDashboard.putBoolean("L" + i, elevator.getReefTargetLevel() == ElevatorStates.values()[i]);
     }
+
+    SmartDashboard.putString("Yellow","🟨🟨🟨🟨🟨");
+    SmartDashboard.putString("REd","🟥🟥🟥🟥🟥");
+    SmartDashboard.putString("green", "🟩🟩🟩🟩🟩");
+
   }
 }
