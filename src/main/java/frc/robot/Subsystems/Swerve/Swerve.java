@@ -19,18 +19,13 @@ import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Commands.fakeAlignSource;
 import frc.robot.Commands.fakePlaceCoral;
 import frc.robot.Commands.auto.testPlace;
-import frc.robot.Commands.complex.AlignSource;
-import frc.robot.Commands.complex.ScoreCoral;
 import frc.robot.States.ReefTargetOrientation;
 import frc.robot.States.ReefTargetSide;
-import frc.robot.Subsystems.Elevator.ElevatorStates;
 
 import java.util.function.DoubleSupplier;
 import org.littletonrobotics.junction.Logger;
