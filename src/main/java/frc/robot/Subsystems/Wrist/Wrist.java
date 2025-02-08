@@ -28,7 +28,7 @@ public class Wrist extends SubsystemBase {
     io.setOffset(offset);
   }
 
-  public SparkMax getWristMotor(){
+  public SparkMax getWristMotor() {
     return io.getWristMotor();
   }
 

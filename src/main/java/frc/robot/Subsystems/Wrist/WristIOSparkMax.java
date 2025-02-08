@@ -50,7 +50,7 @@ public class WristIOSparkMax implements WristIO {
   }
 
   @Override
-  public SparkMax getWristMotor(){
+  public SparkMax getWristMotor() {
     return wristMotor;
   }
 
