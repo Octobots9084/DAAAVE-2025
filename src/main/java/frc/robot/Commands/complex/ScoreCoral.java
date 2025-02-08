@@ -14,6 +14,7 @@ import frc.robot.Subsystems.Elevator.Elevator;
 import frc.robot.Subsystems.Elevator.ElevatorStates;
 import frc.robot.Subsystems.Swerve.Swerve;
 import frc.robot.Subsystems.Swerve.Swerve.DriveState;
+import frc.robot.Subsystems.Vision.AlignVision;
 import frc.robot.Subsystems.Wrist.Wrist;
 
 public class ScoreCoral extends Command {
@@ -27,6 +28,7 @@ public class ScoreCoral extends Command {
   private ElevatorStates targetElevatorState;
   private ReefTargetSide targetSide;
   private ReefTargetOrientation targetOrientation;
+  private AlignVision alignVision = AlignVision.getInstance();
 
   public ScoreCoral(ElevatorStates elevatorState, ReefTargetSide side, ReefTargetOrientation orientation) {
     targetElevatorState = elevatorState;
@@ -37,8 +39,8 @@ public class ScoreCoral extends Command {
 
   @Override
   public void initialize() {
-    
-    if (coralRollers.io.hasCoral()) {
+
+    if (coralRollers.clawFrontSensorTriggered()) {
       swerve.setDriveState(DriveState.AlignReef);
       CommandScheduler.getInstance().schedule(new SetTargetReefLevel(targetElevatorState));
       CommandScheduler.getInstance().schedule(new SetTargetReefSide(targetSide));
@@ -49,9 +51,9 @@ public class ScoreCoral extends Command {
   @Override
   public void execute() {
     SmartDashboard.putBoolean("place L4", true);
-    elevatorInPos = elevator.isAtState(targetElevatorState, 0.1 /*TODO - set actual tolerance*/);
-    wristInPosition = wrist.isAtState(targetElevatorState, 0.1 /*TODO - set actual tolerance*/);
-    isAligned = true; // Need vision code
+    elevatorInPos = elevator.isAtState(targetElevatorState, 0.1 /* TODO - set actual tolerance */);
+    wristInPosition = wrist.isAtState(targetElevatorState, 0.1 /* TODO - set actual tolerance */);
+    isAligned = alignVision.isAligned(); // Need vision code
 
     if (elevatorInPos
         && wristInPosition
@@ -63,7 +65,8 @@ public class ScoreCoral extends Command {
 
   @Override
   public boolean isFinished() {
-    if (coralRollers.io.hasCoral() == false) return true;
+    if (!coralRollers.clawFrontSensorTriggered())
+      return true;
     return false;
   }
 
@@ -71,8 +74,9 @@ public class ScoreCoral extends Command {
   public void end(boolean interrupted) {
     swerve.setDriveState(DriveState.Manual);
     if (!interrupted) // when coral has been scored send elevator back down after 0.1 seconds
-    CommandScheduler.getInstance()
+      CommandScheduler.getInstance()
           .schedule(new WaitCommand(0.1).andThen(new SetElevatorState(ElevatorStates.INTAKE)));
   }
-  // new AlignReef().andThen(new SetCoralRollersState(CoralRollersState.REJECTING))
+  // new AlignReef().andThen(new
+  // SetCoralRollersState(CoralRollersState.REJECTING))
 }

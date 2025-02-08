@@ -15,12 +15,16 @@ import frc.robot.Commands.AlgaeRollers.AlgaeRollersManual;
 import frc.robot.Commands.CoralRollers.CoralRollersManual;
 import frc.robot.Commands.Elevator.ElevatorManual;
 import frc.robot.Commands.Wrist.WristManual;
+import frc.robot.Commands.complex.AutoCollectCoral;
+import frc.robot.Commands.complex.CollectCoral;
 import frc.robot.Commands.swerve.drivebase.TeleopDrive;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.Subsystems.AlgaeRollers.AlgaeRollers;
 import frc.robot.Subsystems.AlgaeRollers.AlgaeRollersIOSim;
 import frc.robot.Subsystems.CoralRollers.CoralRollers;
+import frc.robot.Subsystems.CoralRollers.CoralRollersIO;
 import frc.robot.Subsystems.CoralRollers.CoralRollersIOSim;
+import frc.robot.Subsystems.CoralRollers.CoralRollersIOSystems;
 import frc.robot.Subsystems.Elevator.Elevator;
 import frc.robot.Subsystems.Swerve.Swerve;
 import frc.robot.Subsystems.Swerve.SwerveIO;
@@ -74,8 +78,8 @@ public class RobotContainer {
         // AlgaeRollers.setInstance(new AlgaeRollersIOSystems());
         // algaeRollers = AlgaeRollers.getInstance();
 
-        // CoralRollers.setInstance(new CoralRollersIOSystems());
-        // coralRollers = CoralRollers.getInstance();
+        CoralRollers.setInstance(new CoralRollersIOSystems());
+        coralRollers = CoralRollers.getInstance();
 
         // Elevator.setInstance(new ElevatorIOSparkMax());
         // elevator = Elevator.getInstance();
@@ -96,10 +100,9 @@ public class RobotContainer {
         // AlgaeRollersIOSim(swerve.getIo().getSwerveDrive().getMapleSimDrive().get()));
         // algaeRollers = AlgaeRollers.getInstance();
 
-        // CoralRollers.setInstance(
-        // new
-        // CoralRollersIOSim(swerve.getIo().getSwerveDrive().getMapleSimDrive().get()));
-        // coralRollers = CoralRollers.getInstance();
+        CoralRollers.setInstance(
+            new CoralRollersIOSim(swerve.getIo().getSwerveDrive().getMapleSimDrive().get()));
+        coralRollers = CoralRollers.getInstance();
 
         // Elevator.setInstance(new ElevatorIOSim());
         // elevator = Elevator.getInstance();
@@ -114,8 +117,9 @@ public class RobotContainer {
         // AlgaeRollers.setInstance(new AlgaeRollersIO() {});
         // algaeRollers = AlgaeRollers.getInstance();
 
-        // CoralRollers.setInstance(new CoralRollersIO() {});
-        // coralRollers = CoralRollers.getInstance();
+        CoralRollers.setInstance(new CoralRollersIO() {
+        });
+        coralRollers = CoralRollers.getInstance();
 
         // Elevator.setInstance(new ElevatorIO() {});
         // elevator = Elevator.getInstance();
@@ -146,11 +150,7 @@ public class RobotContainer {
     ButtonConfig buttons = new ButtonConfig();
     buttons.initTeleop();
 
-    // this.algaeRollers = new AlgaeRollers();
-    // this.coralRollers = new CoralRollers();
-    // this.elevator = new Elevator();
-    // this.wrist = new Wrist();
-
+    CoralRollers.getInstance().setDefaultCommand(new AutoCollectCoral());
     // this.algaeRollersManual = new AlgaeRollersManual();
     // this.coralRollersManual = new CoralRollersManual();
     // this.elevatorManel = new ElevatorManual();

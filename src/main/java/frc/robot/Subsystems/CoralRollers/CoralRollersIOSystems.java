@@ -12,7 +12,8 @@ import edu.wpi.first.wpilibj.AnalogInput;
 public class CoralRollersIOSystems implements CoralRollersIO {
   private final SparkMax motor = new SparkMax(14, MotorType.kBrushless);
   private final AnalogInput mouthBeam = new AnalogInput(2);
-  public CANrange coralDetector = new CANrange(0);
+  public CANrange clawFrontSensor = new CANrange(0);
+  public CANrange clawBackSensor = new CANrange(0);
 
   private SparkMaxConfig config;
 
@@ -33,8 +34,6 @@ public class CoralRollersIOSystems implements CoralRollersIO {
     inputs.appliedVolts = motor.getAppliedOutput() * motor.getBusVoltage();
     inputs.currentAmps = motor.getOutputCurrent();
     // TODO change 100
-    inputs.coralInChute = mouthBeam.getValue() > 100;
-    inputs.hasCoral = hasCoral();
   }
 
   @Override
@@ -47,11 +46,15 @@ public class CoralRollersIOSystems implements CoralRollersIO {
   }
 
   // TODO - Actually change these values
-  public boolean isIntaking() {
+  public boolean coralInChute() {
     return this.mouthBeam.getValue() > 100;
   }
 
-  public boolean hasCoral() {
-    return coralDetector.getDistance().getValueAsDouble() < 0.05;
+  public boolean clawFrontSensorTriggered() {
+    return clawFrontSensor.getDistance().getValueAsDouble() < 0.05;
+  }
+
+  public boolean clawBackSensorTriggered() {
+    return clawBackSensor.getDistance().getValueAsDouble() < 0.05;
   }
 }
