@@ -62,10 +62,12 @@ public class ElevatorIOSparkMax implements ElevatorIO {
     rightMotor.getEncoder().setPosition(0);
   }
 
+  @Override
   public SparkMax getLeftMotor() {
     return leftMotor;
   }
-
+  
+  @Override
   public SparkMax getRightMotor() {
     return rightMotor;
   }
@@ -93,6 +95,13 @@ public class ElevatorIOSparkMax implements ElevatorIO {
 
   @Override
   public void setPosition(double leftPosition, double rightPosition) {
+    if (leftPosition < 0){
+      leftPosition = 0;
+    }
+    if (rightPosition < 0){
+      rightPosition = 0;
+    }
+    
     SmartDashboard.putNumber("position", rightPosition);
     leftMotor
         .getClosedLoopController()

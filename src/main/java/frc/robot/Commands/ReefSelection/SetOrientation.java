@@ -1,9 +1,12 @@
 package frc.robot.Commands.ReefSelection;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import frc.robot.States;
+import frc.robot.Subsystems.Swerve.Swerve;
 
 public class SetOrientation extends InstantCommand {
   private int side;
+  private Swerve swerve = Swerve.getInstance();
 
   public SetOrientation(int side) {
     this.side = side;
@@ -11,9 +14,9 @@ public class SetOrientation extends InstantCommand {
 
   @Override
   public void initialize() {
-    manager.joystickState reefState = manager.joystick.joystickPos();
+    States.ReefTargetOrientation reefState = swerve.getReefTargetOrientation();
     int reefStatePos = reefState.ordinal();
-    if (reefState != manager.joystickState.NONE) {
+    if (reefState != States.ReefTargetOrientation.NONE) {
       manager.LastButtonPos[0] = reefStatePos;
       // replaces the terrible switching at last moment code
       if (manager.LastButtonPos[0] > 2) {
@@ -23,6 +26,9 @@ public class SetOrientation extends InstantCommand {
       }
       manager.clearReef();
       manager.setReef(manager.LastButtonPos[0], manager.LastButtonPos[1], true);
+
+      swerve.setReefTargetSide(States.ReefTargetSide.values()[manager.LastButtonPos[1]]);
+      swerve.setReefTargetOrientation(States.ReefTargetOrientation.values()[manager.LastButtonPos[0]]);
     }
   }
 }

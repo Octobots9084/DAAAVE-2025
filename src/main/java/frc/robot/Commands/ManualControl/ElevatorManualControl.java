@@ -1,17 +1,12 @@
-package frc.robot.Commands.ManuelControll;
+<<<<<<<< HEAD:src/main/java/frc/robot/Commands/ManuelControl/ElevatorManualControl.java
+package frc.robot.Commands.ManuelControl;
+========
+package frc.robot.Commands.ManualControl;
+>>>>>>>> 71370f51d0b63cac85c5adb7eccd609aa61d12a3:src/main/java/frc/robot/Commands/ManualControl/ElevatorManualControl.java
 
 import java.util.function.DoubleSupplier;
-
-import javax.lang.model.util.ElementScanner14;
-
-import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.ButtonConfig;
-import frc.robot.Constants.OperatorConstants;
-import frc.robot.Commands.CoralRollers.SetCoralRollersState;
-import frc.robot.Subsystems.CoralRollers.CoralRollersState;
 import frc.robot.Subsystems.Elevator.Elevator;
-import frc.robot.Subsystems.Elevator.ElevatorStates;
 
 public class ElevatorManualControl extends Command{
     DoubleSupplier vY;
