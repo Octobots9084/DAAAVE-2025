@@ -3,7 +3,7 @@
   "imu": {
     "type": "canandgyro",
     "id": 20,
-    "canbus": "KrakensBus"
+    "canbus": "null"
   },
   "invertedIMU": false,
   "modules": [

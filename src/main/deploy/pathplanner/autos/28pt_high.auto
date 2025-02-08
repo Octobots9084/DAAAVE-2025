@@ -7,19 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "initial_to_i"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "i_to_topstation"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "topstation_to_j"
+            "pathName": "initial_to_j"
           }
         },
         {
@@ -45,11 +33,23 @@
           "data": {
             "pathName": "topstation_to_l"
           }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "l_to_topstation"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "topstation_to_a"
+          }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "28pt",
+  "folder": null,
   "choreoAuto": false
 }

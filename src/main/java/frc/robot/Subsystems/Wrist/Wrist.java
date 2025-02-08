@@ -13,6 +13,9 @@ public class Wrist extends SubsystemBase {
   private final WristIOInputsAutoLogged inputs = new WristIOInputsAutoLogged();
   private WristStates targetState = WristStates.VERTICAL;
   private static Wrist instance;
+  public final double MaxAngle = 0.668;
+  public final double MinAngle = 0;
+  public final double UnderCrossbarAngle = 0.261;
 
   public static Wrist getInstance() {
     if (instance == null) {
@@ -25,7 +28,7 @@ public class Wrist extends SubsystemBase {
     io.setOffset(offset);
   }
 
-  public SparkMax getWristMotor(){
+  public SparkMax getWristMotor() {
     return io.getWristMotor();
   }
 
@@ -38,9 +41,14 @@ public class Wrist extends SubsystemBase {
     this.io = io;
     io.configurePID(5, 0, 0);
   }
+  public double getPosition()
+  {
+    return this.io.getPosition();
+  }
 
   @Override
   public void periodic() {
+
     io.updateInputs(inputs);
     Logger.processInputs("Wrist", inputs);
   }
@@ -100,6 +108,12 @@ public class Wrist extends SubsystemBase {
     targetState = wriststate;
     io.setPosition(wriststate.wristPosition, slot);
     Logger.recordOutput("Wrist/State", wriststate);
+  }
+
+  public boolean IsInsideRobot() {
+    double wristPosition = this.getWristMotor().getAbsoluteEncoder().getPosition();
+
+    return (wristPosition < this.UnderCrossbarAngle);
   }
 
   public void updateSim() {

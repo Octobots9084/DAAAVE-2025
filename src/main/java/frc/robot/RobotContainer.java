@@ -22,12 +22,18 @@ import frc.robot.Subsystems.AlgaeRollers.AlgaeRollers;
 import frc.robot.Subsystems.AlgaeRollers.AlgaeRollersIOSim;
 import frc.robot.Subsystems.CoralRollers.CoralRollers;
 import frc.robot.Subsystems.CoralRollers.CoralRollersIOSim;
+import frc.robot.Subsystems.CoralRollers.CoralRollersIOSystems;
 import frc.robot.Subsystems.Elevator.Elevator;
+import frc.robot.Subsystems.Elevator.ElevatorIOSim;
+import frc.robot.Subsystems.Elevator.ElevatorIOSparkMax;
 import frc.robot.Subsystems.Swerve.Swerve;
 import frc.robot.Subsystems.Swerve.SwerveIO;
 import frc.robot.Subsystems.Swerve.SwerveIOSystem;
 import frc.robot.Subsystems.Vision.VisionSubsystem;
 import frc.robot.Subsystems.Wrist.Wrist;
+import frc.robot.Subsystems.Wrist.WristIOSim;
+import frc.robot.Subsystems.Wrist.WristIOSparkMax;
+
 import java.util.Optional;
 import org.ironmaple.simulation.SimulatedArena;
 
@@ -75,14 +81,14 @@ public class RobotContainer {
         // AlgaeRollers.setInstance(new AlgaeRollersIOSystems());
         // algaeRollers = AlgaeRollers.getInstance();
 
-        // CoralRollers.setInstance(new CoralRollersIOSystems());
-        // coralRollers = CoralRollers.getInstance();
+        CoralRollers.setInstance(new CoralRollersIOSystems());
+        coralRollers = CoralRollers.getInstance();
 
-        // Elevator.setInstance(new ElevatorIOSparkMax());
-        // elevator = Elevator.getInstance();
+        Elevator.setInstance(new ElevatorIOSparkMax());
+        elevator = Elevator.getInstance();
 
-        // Wrist.setInstance(new WristIOSparkMax());
-        // wrist = Wrist.getInstance();
+        Wrist.setInstance(new WristIOSparkMax());
+        wrist = Wrist.getInstance();
 
         Swerve.setInstance(new SwerveIOSystem());
         swerve = Swerve.getInstance();
@@ -92,21 +98,21 @@ public class RobotContainer {
         Swerve.setInstance(new SwerveIOSystem());
         swerve = Swerve.getInstance();
 
-        // AlgaeRollers.setInstance(
-        // new
-        // AlgaeRollersIOSim(swerve.getIo().getSwerveDrive().getMapleSimDrive().get()));
-        // algaeRollers = AlgaeRollers.getInstance();
+        AlgaeRollers.setInstance(
+        new
+        AlgaeRollersIOSim(swerve.getIo().getSwerveDrive().getMapleSimDrive().get()));
+        algaeRollers = AlgaeRollers.getInstance();
 
-        // CoralRollers.setInstance(
-        // new
-        // CoralRollersIOSim(swerve.getIo().getSwerveDrive().getMapleSimDrive().get()));
-        // coralRollers = CoralRollers.getInstance();
+        CoralRollers.setInstance(
+        new
+        CoralRollersIOSim(swerve.getIo().getSwerveDrive().getMapleSimDrive().get()));
+        coralRollers = CoralRollers.getInstance();
 
-        // Elevator.setInstance(new ElevatorIOSim());
-        // elevator = Elevator.getInstance();
+        Elevator.setInstance(new ElevatorIOSim());
+        elevator = Elevator.getInstance();
 
-        // Wrist.setInstance(new WristIOSim());
-        // wrist = Wrist.getInstance();
+        Wrist.setInstance(new WristIOSim());
+        wrist = Wrist.getInstance();
 
         SimulatedArena.getInstance().resetFieldForAuto();
         break;
@@ -132,21 +138,18 @@ public class RobotContainer {
         break;
     }
 
-    TeleopDrive closedFieldRel = new TeleopDrive(
-        () -> MathUtil.applyDeadband(
-            -ButtonConfig.driverLeft.getRawAxis(1), OperatorConstants.LEFT_Y_DEADBAND),
-        () -> MathUtil.applyDeadband(
-            -ButtonConfig.driverLeft.getRawAxis(0), OperatorConstants.LEFT_X_DEADBAND),
-        () -> MathUtil.applyDeadband(
-            -ButtonConfig.driverRight.getRawAxis(0), OperatorConstants.RIGHT_X_DEADBAND));
-    Swerve.getInstance();
-    Swerve.getInstance().setDefaultCommand(closedFieldRel);
-    
-    
-    ElevatorManualControl elevatorManualControl = new ElevatorManualControl(() ->
-    MathUtil.applyDeadband(
-        -ButtonConfig.driverRight.getRawAxis(1), OperatorConstants.LEFT_Y_DEADBAND));
-    Elevator.getInstance().setDefaultCommand(elevatorManualControl);
+    TeleopDrive closedFieldRel =
+        new TeleopDrive(
+            () ->
+                MathUtil.applyDeadband(
+                    -ButtonConfig.driverLeft.getRawAxis(1), OperatorConstants.LEFT_Y_DEADBAND),
+            () ->
+                MathUtil.applyDeadband(
+                    -ButtonConfig.driverLeft.getRawAxis(0), OperatorConstants.LEFT_X_DEADBAND),
+            () ->
+                MathUtil.applyDeadband(
+                    ButtonConfig.driverRight.getRawAxis(0), OperatorConstants.RIGHT_X_DEADBAND));
+    swerve.setDefaultCommand(closedFieldRel);
 
 
     autoChooser = AutoBuilder.buildAutoChooser(); // Default auto will be `Commands.none()`
@@ -154,15 +157,6 @@ public class RobotContainer {
     VisionSubsystem.getInstance();
     ButtonConfig buttons = new ButtonConfig();
     buttons.initTeleop();
-    // this.algaeRollers = new AlgaeRollers();
-    // this.coralRollers = new CoralRollers();
-    // this.elevator = new Elevator();
-    // this.wrist = new Wrist();
-
-    // this.algaeRollersManual = new AlgaeRollersManual();
-    // this.coralRollersManual = new CoralRollersManual();
-    // this.elevatorManel = new ElevatorManual();
-    // this.wristManual = new WristManual();
   }
 
   /**

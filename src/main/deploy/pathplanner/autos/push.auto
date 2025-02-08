@@ -7,37 +7,31 @@
         {
           "type": "path",
           "data": {
-            "pathName": "initial_to_g"
+            "pathName": "back"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "g_to_lowstation"
+            "pathName": "side"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "lowstation_to_f"
+            "pathName": "push"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "f_to_lowstation"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "lowstation_to_d"
+            "pathName": "around"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "21pt",
+  "folder": null,
   "choreoAuto": false
 }

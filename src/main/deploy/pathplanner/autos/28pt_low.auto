@@ -7,37 +7,25 @@
         {
           "type": "path",
           "data": {
-            "pathName": "initial_to_g"
+            "pathName": "initial_to_e"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "g_to_lowstation"
+            "pathName": "e_to_lowstation"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "lowstation_to_c"
+            "pathName": "lowstation_to_d"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "c_to_lowstation"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "lowstation_to_c"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "c_to_lowstation"
+            "pathName": "d_to_lowstation"
           }
         },
         {
@@ -55,13 +43,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "lowstation_to_c"
+            "pathName": "lowstation_to_b"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "stack",
+  "folder": null,
   "choreoAuto": false
 }

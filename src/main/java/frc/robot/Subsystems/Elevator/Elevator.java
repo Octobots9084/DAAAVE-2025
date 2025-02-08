@@ -1,13 +1,22 @@
 package frc.robot.Subsystems.Elevator;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Subsystems.Wrist.Wrist;
+
 import org.littletonrobotics.junction.Logger;
 
 public class Elevator extends SubsystemBase {
   private final ElevatorIO io;
   private final ElevatorIOInputsAutoLogged inputs = new ElevatorIOInputsAutoLogged();
+  private final double TOP_CROSSBAR_POS = 68.692;
+  private final double BOT_CROSSBAR_POS = 47.666;
   private ElevatorStates targetLevel = ElevatorStates.LOW;
+
+  //TODO add actual input chanel
+  public DigitalInput toplimitSwitch = new DigitalInput(0);
+  public DigitalInput bottomlimitSwitch = new DigitalInput(1);
 
   private static Elevator instance;
 
@@ -38,17 +47,40 @@ public class Elevator extends SubsystemBase {
 
   @Override
   public void periodic() {
+    double currentPosition = this.inputs.leftPositionRotations;
+    
+    if(((targetLevel.position > this.BOT_CROSSBAR_POS && currentPosition < this.BOT_CROSSBAR_POS) ||
+    (targetLevel.position < this.TOP_CROSSBAR_POS && currentPosition > this.TOP_CROSSBAR_POS))
+    && Wrist.getInstance().IsInsideRobot()) {
+      io.setPosition(currentPosition, currentPosition);
+    }
+
+    if(bottomlimitSwitch.get()) {
+      // We are going up and top limit is tripped so stop
+      if (currentPosition < 0){
+        io.setPosition(0 ,0);
+        io.getLeftMotor().getAlternateEncoder().setPosition(0);
+      }  
+    }
     io.updateInputs(inputs);
     Logger.processInputs("Elevator", inputs);
   }
 
   public void setState(ElevatorStates state) {
+    if(state.position < 0)
+      state.position = 0;
     io.setPosition(state.position, state.position);
     targetLevel = state;
     Logger.recordOutput("Elevator/State", state);
   }
 
-  public void manuelSetTargetPosistion(double position) {
+  public ElevatorStates getState() {
+    return targetLevel;
+  }
+
+  public void manualSetTargetPosistion(double position) {
+    if(position < 0)
+      position = 0;
     io.setPosition(position, position);
   }
 

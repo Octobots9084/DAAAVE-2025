@@ -1,6 +1,5 @@
 package frc.robot.Subsystems.CoralRollers;
 
-import static edu.wpi.first.units.Units.Degrees;
 import static edu.wpi.first.units.Units.Meters;
 import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.Radians;
@@ -14,11 +13,8 @@ import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.wpilibj.simulation.AnalogInputSim;
 import edu.wpi.first.wpilibj.simulation.DCMotorSim;
-import frc.robot.States.ReefTargetLevel;
 import frc.robot.Subsystems.Elevator.Elevator;
-import frc.robot.Subsystems.Elevator.ElevatorStates;
 import frc.robot.Subsystems.Wrist.Wrist;
-import frc.robot.Subsystems.Wrist.WristStates;
 
 // import org.dyn4j.geometry.Rectangle;
 import org.ironmaple.simulation.IntakeSimulation;

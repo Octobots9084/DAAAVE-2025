@@ -20,7 +20,7 @@ public class CoralRollersIOSystems implements CoralRollersIO {
     config = new SparkMaxConfig();
     config.inverted(false);
     config.idleMode(IdleMode.kBrake);
-    config.smartCurrentLimit(30, 60);
+    config.smartCurrentLimit(30, 10);
     motor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     motor.setPeriodicFrameTimeout(30);
     motor.setCANTimeout(30);
@@ -35,6 +35,8 @@ public class CoralRollersIOSystems implements CoralRollersIO {
     // TODO change 100
     inputs.coralInChute = mouthBeam.getValue() > 100;
     inputs.hasCoral = hasCoral();
+
+    inputs.coralMeasureDist = coralDetector.getDistance().getValueAsDouble();
   }
 
   @Override
