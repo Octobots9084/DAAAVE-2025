@@ -37,7 +37,7 @@ public class WristIOSparkMax implements WristIO {
   }
 
   public void updateInputs(WristIOInputs inputs) {
-    inputs.wristPositionRotations = wristMotor.getEncoder().getPosition()+offset;
+    inputs.wristPositionRotations = wristMotor.getAbsoluteEncoder().getPosition();
     inputs.wristVelocityRPM = wristMotor.getEncoder().getVelocity();
     inputs.wristAppliedVolts = wristMotor.getAppliedOutput() * wristMotor.getBusVoltage();
     inputs.wristCurrentAmps = wristMotor.getOutputCurrent();

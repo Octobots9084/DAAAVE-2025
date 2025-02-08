@@ -10,10 +10,11 @@ import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.Commands.AlgaeRollers.SetAlgaeRollersState;
 import frc.robot.Commands.complex.CancelAllCommands;
-import frc.robot.Commands.CoralRollers.SetCoralRollersState;
 import frc.robot.Commands.Elevator.SetElevatorState;
 import frc.robot.Commands.ManualControl.ElevatorManualControl;
 import frc.robot.Commands.ManualControl.WristManualControl;
+import frc.robot.Commands.CoralRollers.LoadCoral;
+import frc.robot.Commands.CoralRollers.OutputCoral;
 import frc.robot.Commands.CoralRollers.SetCoralRollersState;
 import frc.robot.Commands.Elevator.SetElevatorState;
 import frc.robot.Commands.ReefSelection.SetOrientation;
@@ -74,5 +75,14 @@ public class ButtonConfig {
     driverButtons.button(8).onTrue(new SetElevatorState(ElevatorStates.LEVEL2));
     driverButtons.button(9).onTrue(new SetElevatorState(ElevatorStates.LEVEL3));
     driverButtons.button(10).onTrue(new SetElevatorState(ElevatorStates.LEVEL4));
+
+    coDriverButtons.button(5).onTrue(new SetAlgaeRollersState(AlgaeRollersStates.OUTPUT));
+    coDriverButtons.button(6).onTrue(new SetAlgaeRollersState(AlgaeRollersStates.INTAKE));
+    coDriverButtons.button(7).onTrue(new SetElevatorState(ElevatorStates.LEVEL1));
+    coDriverButtons.button(8).onTrue(new SetElevatorState(ElevatorStates.LEVEL2));
+    coDriverButtons.button(9).onTrue(new SetElevatorState(ElevatorStates.LEVEL3));
+    coDriverButtons.button(10).onTrue(new SetElevatorState(ElevatorStates.LEVEL4));
+    coDriverButtons.button(4).whileTrue(new LoadCoral());
+    coDriverButtons.button(1).whileTrue(new OutputCoral());
   }
 }
