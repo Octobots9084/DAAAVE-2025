@@ -11,6 +11,7 @@ public interface WristIO {
     public double wristPositionRotations = 0.0;
     public double wristVelocityRPM = 0.0;
     public double wristAppliedVolts = 0.0;
+    public double wristBusVoltage = 0.0;
     public double wristCurrentAmps = 0.0;
     public double wristTemperature = 0.0;
   }

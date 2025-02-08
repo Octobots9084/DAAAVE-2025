@@ -19,7 +19,7 @@ import frc.robot.Subsystems.Wrist.WristStates;
 
 public class WristManualControl extends Command{
     DoubleSupplier vX;
-    double height = -1;
+    double height = Wrist.getInstance().getPosition();
     public WristManualControl(DoubleSupplier vX) {
         this.vX = vX;
         this.addRequirements(Wrist.getInstance());
@@ -29,14 +29,20 @@ public class WristManualControl extends Command{
     public void execute(){
         if (vX.getAsDouble() != 0)
         {
-            if(height == -1)
-                height = Wrist.getInstance().getPosition() + vX.getAsDouble();
-            else
-                height += vX.getAsDouble()/200;
+            height = Wrist.getInstance().getPosition();
+            double newHeight = height + vX.getAsDouble()/10;
+
+            if(newHeight < 0) {
+                newHeight = 0;
+            }
+            else if(newHeight > 1) {
+                newHeight = 1;
+            }
+
             WristStates state = WristStates.MANUAL;
-            state.wristPosition = height;
+            state.wristPosition = newHeight;
             //TODO set position correctly (most likely the inital set point is off)
-            //Wrist.getInstance().setState(state,ClosedLoopSlot.kSlot0); 
+            Wrist.getInstance().setState(state,ClosedLoopSlot.kSlot0); 
         }
         
         
