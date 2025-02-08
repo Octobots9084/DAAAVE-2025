@@ -3,6 +3,7 @@ package frc.robot.Subsystems.Elevator;
 public enum ElevatorStates {
   // TODO edit these to the actual positions
   LOW(0), // all in terms of "arbitrary encoder units"
+  MANUAL(50),
   LEVEL1(0),
   LEVEL2(27.5),
   LEVEL3(24.5 * 3),

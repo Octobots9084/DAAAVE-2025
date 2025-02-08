@@ -21,6 +21,10 @@ public interface WristIO {
   public default void setPosition(double position, ClosedLoopSlot slot) {
   }
 
+  public default double getPosition() {
+    return 0;
+  }
+
   public default void updateSim() {
   }
 

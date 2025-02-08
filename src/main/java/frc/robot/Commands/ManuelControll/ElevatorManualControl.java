@@ -29,7 +29,9 @@ public class ElevatorManualControl extends Command{
                 height = Elevator.getInstance().getPosition() + vY.getAsDouble();
             else
                 height += vY.getAsDouble();
-            Elevator.getInstance().manuelSetTargetPosistion(height);
+            ElevatorStates state = ElevatorStates.MANUAL;
+            state.position = height;
+            Elevator.getInstance().setState(state);
         }
         
         

@@ -57,4 +57,8 @@ public class WristIOSparkMax implements WristIO {
         .setReference(position, ControlType.kPosition, slot,
             0.7 * Math.cos((position - 0.441) * 2 * Math.PI));
   }
+  @Override
+  public double getPosition() {
+    return wristMotor.getEncoder().getPosition();
+  }
 }

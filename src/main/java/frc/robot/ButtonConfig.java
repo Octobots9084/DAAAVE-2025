@@ -2,6 +2,7 @@ package frc.robot;
 
 import com.revrobotics.spark.ClosedLoopSlot;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
@@ -10,6 +11,8 @@ import frc.robot.Commands.AlgaeRollers.SetAlgaeRollersState;
 import frc.robot.Commands.complex.CancelAllCommands;
 import frc.robot.Commands.CoralRollers.SetCoralRollersState;
 import frc.robot.Commands.Elevator.SetElevatorState;
+import frc.robot.Commands.ManuelControll.ElevatorManualControl;
+import frc.robot.Commands.ManuelControll.WristManualControl;
 import frc.robot.Commands.CoralRollers.SetCoralRollersState;
 import frc.robot.Commands.Elevator.SetElevatorState;
 import frc.robot.Commands.ReefSelection.ReefLevelSelection;
@@ -31,10 +34,10 @@ import frc.robot.Subsystems.Wrist.WristStates;
 public class ButtonConfig {
   static CommandJoystick driverLeft = ControlMap.DRIVER_LEFT;
   static CommandJoystick driverRight = ControlMap.DRIVER_RIGHT;
-  CommandJoystick driverButtons = ControlMap.DRIVER_BUTTONS;
-  CommandJoystick coDriverLeft = ControlMap.CO_DRIVER_LEFT;
-  CommandJoystick coDriverRight = ControlMap.CO_DRIVER_RIGHT;
-  CommandJoystick coDriverButtons = ControlMap.CO_DRIVER_BUTTONS;
+  static CommandJoystick driverButtons = ControlMap.DRIVER_BUTTONS;
+  static CommandJoystick coDriverLeft = ControlMap.CO_DRIVER_LEFT;
+  static CommandJoystick coDriverRight = ControlMap.CO_DRIVER_RIGHT;
+  static CommandJoystick coDriverButtons = ControlMap.CO_DRIVER_BUTTONS;
 
   public void initTeleop() {
 
@@ -53,6 +56,17 @@ public class ButtonConfig {
     coDriverButtons.button(7).onTrue(new ReefLevelSelection(2));
     coDriverButtons.button(9).onTrue(new ReefLevelSelection(1));
     coDriverButtons.button(11).onTrue(new ReefLevelSelection(0));
+
+    driverButtons.button(5).onTrue(new SetCoralRollersState(CoralRollersState.INTAKING));
+    driverButtons.button(6).onTrue(new SetCoralRollersState(CoralRollersState.OUTPUT));
+    
+    coDriverButtons.button(13).whileTrue(new ElevatorManualControl(() ->
+    MathUtil.applyDeadband(
+        -ButtonConfig.coDriverRight.getRawAxis(1), OperatorConstants.LEFT_Y_DEADBAND)));
+
+    coDriverButtons.button(13).whileTrue(new WristManualControl(() ->
+    MathUtil.applyDeadband(
+        -ButtonConfig.coDriverLeft.getRawAxis(0), OperatorConstants.LEFT_X_DEADBAND)));
 
     driverButtons.button(7)
         .onTrue(new SetWristState(WristStates.FOURTYFIVE, ClosedLoopSlot.kSlot0).andThen(new WaitCommand(1))

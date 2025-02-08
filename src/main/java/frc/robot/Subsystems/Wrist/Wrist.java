@@ -29,6 +29,10 @@ public class Wrist extends SubsystemBase {
     this.io = io;
     io.configurePID(5, 0, 0);
   }
+  public double getPosition()
+  {
+    return this.io.getPosition();
+  }
 
   @Override
   public void periodic() {
