@@ -26,14 +26,14 @@ public class ElevatorIOSparkMax implements ElevatorIO {
   public ElevatorIOSparkMax() {
     leftConfig = new SparkMaxConfig();
     leftConfig.inverted(false);
-    leftConfig.idleMode(IdleMode.kBrake);
+    leftConfig.idleMode(IdleMode.kCoast);
     leftConfig.signals.primaryEncoderPositionAlwaysOn(true);
     leftConfig.signals.primaryEncoderPositionPeriodMs(10);
     leftConfig.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder);
     leftConfig.closedLoop.maxMotion.allowedClosedLoopError(0);
     leftConfig.closedLoop.positionWrappingEnabled(false);
     leftConfig.voltageCompensation(10);
-    leftConfig.smartCurrentLimit(50, 50);
+    leftConfig.smartCurrentLimit(50, 10);
     leftConfig.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder).pid(0.05, 0.000, 0);
     leftConfig.closedLoop.iZone(5);
     leftMotor.configure(leftConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
@@ -44,14 +44,14 @@ public class ElevatorIOSparkMax implements ElevatorIO {
 
     rightConfig = new SparkMaxConfig();
     rightConfig.inverted(false);
-    rightConfig.idleMode(IdleMode.kBrake);
+    rightConfig.idleMode(IdleMode.kCoast);
     rightConfig.signals.primaryEncoderPositionAlwaysOn(true);
     rightConfig.signals.primaryEncoderPositionPeriodMs(10);
     rightConfig.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder);
     rightConfig.closedLoop.maxMotion.allowedClosedLoopError(0);
     rightConfig.closedLoop.positionWrappingEnabled(false);
     rightConfig.voltageCompensation(11);
-    rightConfig.smartCurrentLimit(50, 50);
+    rightConfig.smartCurrentLimit(50, 10);
     rightConfig.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder).pid(0.05, 0.000, 0);
     rightConfig.closedLoop.iZone(5);
     rightMotor.configure(

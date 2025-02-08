@@ -20,12 +20,16 @@ import frc.robot.Commands.swerve.drivebase.TeleopDrive;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.Subsystems.AlgaeRollers.AlgaeRollers;
 import frc.robot.Subsystems.CoralRollers.CoralRollers;
+import frc.robot.Subsystems.CoralRollers.CoralRollersIOSystems;
 import frc.robot.Subsystems.Elevator.Elevator;
+import frc.robot.Subsystems.Elevator.ElevatorIOSparkMax;
 import frc.robot.Subsystems.Swerve.Swerve;
 import frc.robot.Subsystems.Swerve.SwerveIO;
 import frc.robot.Subsystems.Swerve.SwerveIOSystem;
 import frc.robot.Subsystems.Vision.VisionSubsystem;
 import frc.robot.Subsystems.Wrist.Wrist;
+import frc.robot.Subsystems.Wrist.WristIOSparkMax;
+
 import java.util.Optional;
 import org.ironmaple.simulation.SimulatedArena;
 
@@ -73,14 +77,14 @@ public class RobotContainer {
         // AlgaeRollers.setInstance(new AlgaeRollersIOSystems());
         // algaeRollers = AlgaeRollers.getInstance();
 
-        // CoralRollers.setInstance(new CoralRollersIOSystems());
-        // coralRollers = CoralRollers.getInstance();
+        CoralRollers.setInstance(new CoralRollersIOSystems());
+        coralRollers = CoralRollers.getInstance();
 
-        // Elevator.setInstance(new ElevatorIOSparkMax());
-        // elevator = Elevator.getInstance();
+        Elevator.setInstance(new ElevatorIOSparkMax());
+        elevator = Elevator.getInstance();
 
-        // Wrist.setInstance(new WristIOSparkMax());
-        // wrist = Wrist.getInstance();
+        Wrist.setInstance(new WristIOSparkMax());
+        wrist = Wrist.getInstance();
 
         Swerve.setInstance(new SwerveIOSystem());
         swerve = Swerve.getInstance();
@@ -146,7 +150,7 @@ public class RobotContainer {
     
     ElevatorManualControl elevatorManualControl = new ElevatorManualControl(() ->
     MathUtil.applyDeadband(
-        -ButtonConfig.driverRight.getRawAxis(1), OperatorConstants.LEFT_Y_DEADBAND));
+        -ButtonConfig.coDriverRight.getRawAxis(1), OperatorConstants.LEFT_Y_DEADBAND));
     Elevator.getInstance().setDefaultCommand(elevatorManualControl);
 
 

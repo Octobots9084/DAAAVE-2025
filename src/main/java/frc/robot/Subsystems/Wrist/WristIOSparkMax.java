@@ -15,7 +15,7 @@ import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 
 public class WristIOSparkMax implements WristIO {
   // TODO - motor id to be changed
-  private final SparkMax wristMotor = new SparkMax(17, MotorType.kBrushless);
+  private final SparkMax wristMotor = new SparkMax(12, MotorType.kBrushless);
   private double offset = 0;
   // private double feedForward = 0;
 
@@ -24,11 +24,11 @@ public class WristIOSparkMax implements WristIO {
   public WristIOSparkMax() {
     config = new SparkMaxConfig();
     config.inverted(true);
-    config.idleMode(IdleMode.kBrake);
-    config.voltageCompensation(10);
-    config.smartCurrentLimit(60, 60);
-    config.closedLoop.feedbackSensor(FeedbackSensor.kAbsoluteEncoder).pid(2, 0, 0);
-    config.closedLoop.pid(0.5, 0, 0, ClosedLoopSlot.kSlot1);
+    config.idleMode(IdleMode.kCoast);
+    config.voltageCompensation(0);
+    config.smartCurrentLimit(60, 3);
+    config.closedLoop.feedbackSensor(FeedbackSensor.kAbsoluteEncoder).pid(0.02, 0, 0);
+    config.closedLoop.pid(0.05, 0, 0, ClosedLoopSlot.kSlot1);
 
     wristMotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     wristMotor.setPeriodicFrameTimeout(30);
