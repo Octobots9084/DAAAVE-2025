@@ -39,8 +39,8 @@ public class Wrist extends SubsystemBase {
 
   public Wrist(WristIO io) {
     this.io = io;
-    io.configurePID(5, 0, 0);
   }
+  
   public double getPosition()
   {
     return this.io.getPosition();
@@ -57,6 +57,7 @@ public class Wrist extends SubsystemBase {
     io.setPosition(state.wristPosition, slot);
     targetState = state;
     Logger.recordOutput("Wrist/State", state);
+    Logger.recordOutput("Wrist/CommandedPosition", state.wristPosition);
   }
 
   public WristStates getState() {

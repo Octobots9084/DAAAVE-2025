@@ -27,8 +27,8 @@ public class WristIOSparkMax implements WristIO {
     config.idleMode(IdleMode.kCoast);
     config.voltageCompensation(0);
     config.smartCurrentLimit(60, 3);
-    config.closedLoop.feedbackSensor(FeedbackSensor.kAbsoluteEncoder).pid(0.02, 0, 0);
-    config.closedLoop.pid(0.05, 0, 0, ClosedLoopSlot.kSlot1);
+    config.closedLoop.feedbackSensor(FeedbackSensor.kAbsoluteEncoder);
+    config.closedLoop.pid(1, 0, 0, ClosedLoopSlot.kSlot0);
 
     wristMotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     wristMotor.setPeriodicFrameTimeout(30);
@@ -39,7 +39,8 @@ public class WristIOSparkMax implements WristIO {
   public void updateInputs(WristIOInputs inputs) {
     inputs.wristPositionRotations = wristMotor.getAbsoluteEncoder().getPosition();
     inputs.wristVelocityRPM = wristMotor.getEncoder().getVelocity();
-    inputs.wristAppliedVolts = wristMotor.getAppliedOutput() * wristMotor.getBusVoltage();
+    inputs.wristAppliedVolts = wristMotor.getAppliedOutput();
+    inputs.wristBusVoltage = wristMotor.getBusVoltage();
     inputs.wristCurrentAmps = wristMotor.getOutputCurrent();
   }
 
@@ -61,13 +62,13 @@ public class WristIOSparkMax implements WristIO {
 
   @Override
   public void setPosition(double position, ClosedLoopSlot slot) {
-    SmartDashboard.putNumber("wristpos", Math.cos((position - 0.441) * 2 * Math.PI));
+    SmartDashboard.putNumber("commandedWristPosition", position);
     wristMotor
         .getClosedLoopController()
         .setReference(position+offset, ControlType.kPosition, ClosedLoopSlot.kSlot0, 0);
   }
   @Override
   public double getPosition() {
-    return wristMotor.getEncoder().getPosition();
+    return wristMotor.getAbsoluteEncoder().getPosition();
   }
 }

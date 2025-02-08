@@ -48,10 +48,6 @@ public class ButtonConfig {
     coDriverLeft.button(1).onTrue(new SetOrientation(0));
     coDriverLeft.button(2).onTrue(new SetOrientation(1));
 
-    coDriverButtons.button(7).onTrue(new SetTargetReefLevel(ElevatorStates.LEVEL4));
-    coDriverButtons.button(9).onTrue(new SetTargetReefLevel(ElevatorStates.LEVEL3));
-    coDriverButtons.button(11).onTrue(new SetTargetReefLevel(ElevatorStates.LEVEL2));
-
     driverButtons.button(5).onTrue(new SetCoralRollersState(CoralRollersState.INTAKING));
     driverButtons.button(6).onTrue(new SetCoralRollersState(CoralRollersState.OUTPUT));
     
@@ -78,10 +74,10 @@ public class ButtonConfig {
 
     coDriverButtons.button(5).onTrue(new SetAlgaeRollersState(AlgaeRollersStates.OUTPUT));
     coDriverButtons.button(6).onTrue(new SetAlgaeRollersState(AlgaeRollersStates.INTAKE));
-    coDriverButtons.button(7).onTrue(new SetElevatorState(ElevatorStates.LEVEL1));
-    coDriverButtons.button(8).onTrue(new SetElevatorState(ElevatorStates.LEVEL2));
-    coDriverButtons.button(9).onTrue(new SetElevatorState(ElevatorStates.LEVEL3));
-    coDriverButtons.button(10).onTrue(new SetElevatorState(ElevatorStates.LEVEL4));
+    coDriverButtons.button(7).onTrue(new SetWristState(WristStates.FOURTYFIVE, ClosedLoopSlot.kSlot0).andThen(new WaitCommand(1)).andThen(new SetElevatorState(ElevatorStates.LEVEL1)));
+    coDriverButtons.button(8).onTrue(new SetWristState(WristStates.LOW, ClosedLoopSlot.kSlot0).andThen(new WaitCommand(1)).andThen(new SetElevatorState(ElevatorStates.LEVEL2)));
+    coDriverButtons.button(9).onTrue(new SetWristState(WristStates.FOURTYFIVE, ClosedLoopSlot.kSlot0).andThen(new WaitCommand(1)).andThen(new SetElevatorState(ElevatorStates.LEVEL3)));
+    coDriverButtons.button(10).onTrue(new SetWristState(WristStates.VERTICAL, ClosedLoopSlot.kSlot0).andThen(new WaitCommand(1)).andThen(new SetElevatorState(ElevatorStates.LEVEL4)));
     coDriverButtons.button(4).whileTrue(new LoadCoral());
     coDriverButtons.button(1).whileTrue(new OutputCoral());
   }
