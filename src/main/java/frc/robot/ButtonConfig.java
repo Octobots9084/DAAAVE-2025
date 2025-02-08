@@ -32,10 +32,10 @@ import frc.robot.Subsystems.Vision.AlignVision;
 public class ButtonConfig {
   static CommandJoystick driverLeft = ControlMap.DRIVER_LEFT;
   static CommandJoystick driverRight = ControlMap.DRIVER_RIGHT;
-  CommandJoystick driverButtons = ControlMap.DRIVER_BUTTONS;
-  CommandJoystick coDriverLeft = ControlMap.CO_DRIVER_LEFT;
-  CommandJoystick coDriverRight = ControlMap.CO_DRIVER_RIGHT;
-  CommandJoystick coDriverButtons = ControlMap.CO_DRIVER_BUTTONS;
+  static CommandJoystick driverButtons = ControlMap.DRIVER_BUTTONS;
+  static CommandJoystick coDriverLeft = ControlMap.CO_DRIVER_LEFT;
+  static CommandJoystick coDriverRight = ControlMap.CO_DRIVER_RIGHT;
+  static CommandJoystick coDriverButtons = ControlMap.CO_DRIVER_BUTTONS;
 
   public void initTeleop() {
 
@@ -64,5 +64,12 @@ public class ButtonConfig {
     driverButtons.button(8).onTrue(new SetElevatorState(ElevatorStates.LEVEL2));
     driverButtons.button(9).onTrue(new SetElevatorState(ElevatorStates.LEVEL3));
     driverButtons.button(10).onTrue(new SetElevatorState(ElevatorStates.LEVEL4));
+
+    coDriverButtons.button(5).onTrue(new SetAlgaeRollersState(AlgaeRollersStates.OUTPUT));
+    coDriverButtons.button(6).onTrue(new SetAlgaeRollersState(AlgaeRollersStates.INTAKE));
+    coDriverButtons.button(7).onTrue(new SetElevatorState(ElevatorStates.LEVEL1));
+    coDriverButtons.button(8).onTrue(new SetElevatorState(ElevatorStates.LEVEL2));
+    coDriverButtons.button(9).onTrue(new SetElevatorState(ElevatorStates.LEVEL3));
+    coDriverButtons.button(10).onTrue(new SetElevatorState(ElevatorStates.LEVEL4));
   }
 }
