@@ -59,7 +59,7 @@ public class ButtonConfig {
     MathUtil.applyDeadband(
         -ButtonConfig.coDriverRight.getRawAxis(1), OperatorConstants.LEFT_Y_DEADBAND)));
 
-    coDriverButtons.button(13).whileTrue(new WristManualControl(() ->
+    coDriverButtons.button(14).whileTrue(new WristManualControl(() ->
     MathUtil.applyDeadband(
         -ButtonConfig.coDriverLeft.getRawAxis(0), OperatorConstants.LEFT_X_DEADBAND)));
 

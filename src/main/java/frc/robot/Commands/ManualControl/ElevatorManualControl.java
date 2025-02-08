@@ -8,8 +8,9 @@ import frc.robot.Subsystems.Elevator.ElevatorStates;
 
 public class ElevatorManualControl extends Command{
     DoubleSupplier vY;
-    double height = -1;
+    double height;
     public ElevatorManualControl(DoubleSupplier vY) {
+        height = -1;
         this.vY = vY;
         this.addRequirements(Elevator.getInstance());
     }
@@ -24,7 +25,7 @@ public class ElevatorManualControl extends Command{
                 height += vY.getAsDouble()/3;
             ElevatorStates state = ElevatorStates.MANUAL;
             state.position = height;
-            Elevator.getInstance().setState(state);
+            Elevator.getInstance().setState(state); 
         }
         
         
