@@ -7,10 +7,14 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import frc.robot.Commands.AlgaeRollers.SetAlgaeRollersState;
+import frc.robot.Commands.CoralRollers.LoadCoral;
+import frc.robot.Commands.CoralRollers.OutputCoral;
+import frc.robot.Commands.CoralRollers.SetCoralRollersState;
 import frc.robot.Commands.Elevator.SetElevatorState;
 import frc.robot.Commands.ReefSelection.SetOrientation;
 import frc.robot.Commands.Wrist.SetWristState;
 import frc.robot.Subsystems.AlgaeRollers.AlgaeRollersStates;
+import frc.robot.Subsystems.CoralRollers.CoralRollersState;
 import frc.robot.Subsystems.Elevator.ElevatorStates;
 import frc.robot.Subsystems.Swerve.Swerve;
 import frc.robot.Subsystems.Wrist.WristStates;
@@ -57,5 +61,7 @@ public class ButtonConfig {
     coDriverButtons.button(8).onTrue(new SetElevatorState(ElevatorStates.LEVEL2));
     coDriverButtons.button(9).onTrue(new SetElevatorState(ElevatorStates.LEVEL3));
     coDriverButtons.button(10).onTrue(new SetElevatorState(ElevatorStates.LEVEL4));
+    coDriverButtons.button(4).whileTrue(new LoadCoral());
+    coDriverButtons.button(1).whileTrue(new OutputCoral());
   }
 }

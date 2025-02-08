@@ -13,6 +13,7 @@ public interface CoralRollersIO {
     public double currentAmps = 0.0;
     public boolean hasCoral = false;
     public boolean coralInChute = false;
+    public double coralMeasureDist = 0;
   }
 
   public default void updateInputs(CoralRollersIOInputs inputs) {

@@ -10,8 +10,8 @@ import org.littletonrobotics.junction.Logger;
 public class Elevator extends SubsystemBase {
   private final ElevatorIO io;
   private final ElevatorIOInputsAutoLogged inputs = new ElevatorIOInputsAutoLogged();
-  private final double TOP_CROSSBAR_POS = 10;
-  private final double BOT_CROSSBAR_POS = 10;
+  private final double TOP_CROSSBAR_POS = 68.692;
+  private final double BOT_CROSSBAR_POS = 47.666;
   private ElevatorStates targetLevel = ElevatorStates.LOW;
 
   //TODO add actual input chanel

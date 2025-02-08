@@ -13,9 +13,9 @@ public class Wrist extends SubsystemBase {
   private final WristIOInputsAutoLogged inputs = new WristIOInputsAutoLogged();
   private WristStates targetState = WristStates.VERTICAL;
   private static Wrist instance;
-  public final double MaxAngle = 40;
+  public final double MaxAngle = 0.668;
   public final double MinAngle = 0;
-  public final double UnderCrossbarAngle = 10;
+  public final double UnderCrossbarAngle = 0.261;
 
   public static Wrist getInstance() {
     if (instance == null) {

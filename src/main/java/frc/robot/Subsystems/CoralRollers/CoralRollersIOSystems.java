@@ -35,6 +35,8 @@ public class CoralRollersIOSystems implements CoralRollersIO {
     // TODO change 100
     inputs.coralInChute = mouthBeam.getValue() > 100;
     inputs.hasCoral = hasCoral();
+
+    inputs.coralMeasureDist = coralDetector.getDistance().getValueAsDouble();
   }
 
   @Override

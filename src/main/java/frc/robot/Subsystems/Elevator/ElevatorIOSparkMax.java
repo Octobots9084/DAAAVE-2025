@@ -32,7 +32,7 @@ public class ElevatorIOSparkMax implements ElevatorIO {
     leftConfig.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder);
     leftConfig.closedLoop.maxMotion.allowedClosedLoopError(0);
     leftConfig.closedLoop.positionWrappingEnabled(false);
-    leftConfig.voltageCompensation(10);
+    leftConfig.voltageCompensation(5);
     leftConfig.smartCurrentLimit(50, 10);
     leftConfig.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder).pid(0.05, 0.000, 0);
     leftConfig.closedLoop.iZone(5);
@@ -50,7 +50,7 @@ public class ElevatorIOSparkMax implements ElevatorIO {
     rightConfig.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder);
     rightConfig.closedLoop.maxMotion.allowedClosedLoopError(0);
     rightConfig.closedLoop.positionWrappingEnabled(false);
-    rightConfig.voltageCompensation(11);
+    rightConfig.voltageCompensation(5);
     rightConfig.smartCurrentLimit(50, 10);
     rightConfig.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder).pid(0.05, 0.000, 0);
     rightConfig.closedLoop.iZone(5);
@@ -79,7 +79,7 @@ public class ElevatorIOSparkMax implements ElevatorIO {
     inputs.leftAppliedVolts = leftMotor.getAppliedOutput() * leftMotor.getBusVoltage();
     inputs.leftCurrentAmps = leftMotor.getOutputCurrent();
 
-    inputs.rightPositionRotations = rightMotor.getEncoder().getPosition();
+    inputs.rightPositionRotations = -rightMotor.getEncoder().getPosition();
     inputs.rightVelocityRPM = rightMotor.getEncoder().getPosition();
     inputs.rightAppliedVolts = rightMotor.getAppliedOutput() * rightMotor.getBusVoltage();
     inputs.rightCurrentAmps = rightMotor.getOutputCurrent();
