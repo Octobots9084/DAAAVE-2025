@@ -27,6 +27,8 @@ public interface AlignVisionIO {
 
   public boolean getLeftLidarDetect();
 
+  public boolean isAligned();
+
   public static void setReefOrientation(ReefTargetOrientation orientation) {
   }
 
