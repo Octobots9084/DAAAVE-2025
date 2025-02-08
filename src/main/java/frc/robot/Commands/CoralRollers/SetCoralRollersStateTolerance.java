@@ -1,10 +1,10 @@
 package frc.robot.Commands.CoralRollers;
 
-import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.Subsystems.CoralRollers.CoralRollers;
 import frc.robot.Subsystems.CoralRollers.CoralRollersState;
 
-public class SetCoralRollersStateTolerance extends Command {
+public class SetCoralRollersStateTolerance extends InstantCommand {
   private CoralRollersState targetState;
   // private double tolerance;
   private CoralRollers coralRollers = CoralRollers.getInstance();
@@ -19,9 +19,4 @@ public class SetCoralRollersStateTolerance extends Command {
     coralRollers.setState(targetState);
   }
 
-  @Override
-  public boolean isFinished() {
-    return true;
-    // return coralRollers.isAtState(targetState,tolerance);
-  }
 }
