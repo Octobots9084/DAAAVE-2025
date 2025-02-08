@@ -1,18 +1,60 @@
 package frc.robot.Subsystems.CoralRollers;
 
+import static edu.wpi.first.units.Units.Meters;
+import static edu.wpi.first.units.Units.MetersPerSecond;
+import static edu.wpi.first.units.Units.Radians;
+
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.wpilibj.simulation.AnalogInputSim;
 import edu.wpi.first.wpilibj.simulation.DCMotorSim;
+import frc.robot.Subsystems.Elevator.Elevator;
+import frc.robot.Subsystems.Wrist.Wrist;
+
+// import org.dyn4j.geometry.Rectangle;
+import org.ironmaple.simulation.IntakeSimulation;
+import org.ironmaple.simulation.SimulatedArena;
+import org.ironmaple.simulation.drivesims.SwerveDriveSimulation;
+import org.ironmaple.simulation.seasonspecific.reefscape2025.ReefscapeCoralOnFly;
+import org.littletonrobotics.junction.Logger;
 
 public class CoralRollersIOSim implements CoralRollersIO {
   CoralRollersIOSystems sparkMaxes = new CoralRollersIOSystems();
+  CoralRollersState state = CoralRollersState.STOPPED;
+  boolean hasCoralInClaw = false;
   DCMotorSim motorSim =
       new DCMotorSim(
           LinearSystemId.createDCMotorSystem(DCMotor.getNeo550(1), 0.025, 1), DCMotor.getNeo550(1));
   AnalogInputSim rearBeamSim = new AnalogInputSim(2);
   AnalogInputSim mouthBeamSim = new AnalogInputSim(3);
+
+  private final IntakeSimulation intakeSimulation;
+  SwerveDriveSimulation drivetrain;
+
+  public CoralRollersIOSim(SwerveDriveSimulation driveTrain) {
+    this.drivetrain = driveTrain;
+    // Here, create the intake simulation with respect to the intake on your real robot
+    this.intakeSimulation =
+        IntakeSimulation
+            .InTheFrameIntake( // Specify the type of game pieces that the intake can collect
+                "Coral",
+                // Specify the drivetrain to which this intake is attached
+                driveTrain,
+                // Specify width of the intake
+                // TODO - fix width
+                Meters.of(0.5),
+                // The intake is mounted on the back side of the chassis
+                IntakeSimulation.IntakeSide.BACK,
+                // The intake can hold up to 1 note
+                1);
+
+    intakeSimulation.startIntake();
+  }
 
   @Override
   public void updateInputs(CoralRollersIOInputs inputs) {
@@ -25,16 +67,71 @@ public class CoralRollersIOSim implements CoralRollersIO {
   @Override
   public void setVoltage(double volts) {
     motorSim.setInput(MathUtil.clamp(volts, -12.0, 12.0));
+
+    if (volts == CoralRollersState.INTAKING.voltage) {
+        this.state = CoralRollersState.INTAKING;
+    } else if (volts == CoralRollersState.STOPPED.voltage) {
+        this.state = CoralRollersState.STOPPED;
+    } else if (volts == CoralRollersState.OUTPUT.voltage) {
+        this.state = CoralRollersState.OUTPUT;
+    }
   }
 
   @Override
   public void updateSim() {
+    Pose3d[] coralInRobot = {};
     motorSim.update(0.02);
-  }
+    // NOTE - divided by 25 as a placeholder for the actual conversion factor
+    // NOTE - the addition at the end is the base height of the robot
+    double dropHeight = Elevator.getInstance().getReefTargetLevel().position/20 + 0.1;
+    double wristAngle = Wrist.getInstance().getState().wristPosition;
 
-  // TODO - Actually change these values
-  @Override
-  public boolean hasCoral() {
-    return this.rearBeamSim.getVoltage() != 0;
-  }
+    // coral in chute and intaking, so coral moves from chute to claw
+    if (this.coralInChute() && state == CoralRollersState.INTAKING) {
+        intakeSimulation.obtainGamePieceFromIntake();
+        this.hasCoralInClaw = true;
+    }
+
+    if (this.hasCoralInClaw) {
+        coralInRobot = new Pose3d[]{new Pose3d(drivetrain.getSimulatedDriveTrainPose()).plus(new Transform3d(0.35, 0, dropHeight, new Rotation3d(0, wristAngle, 0)))};
+    } else if (this.coralInChute()) {
+        coralInRobot = new Pose3d[]{new Pose3d(drivetrain.getSimulatedDriveTrainPose()).plus(new Transform3d(0, 0, 0.75, new Rotation3d(0, 0.26, 0)))};
+    }
+    Logger.recordOutput("FieldSimulation/CoralInRobot", coralInRobot);
+
+    // coral in claw is released
+    if (this.hasCoral() && state == CoralRollersState.OUTPUT) {
+        this.hasCoralInClaw = false;
+        // removes algae from the algae intake rollers
+
+        SimulatedArena.getInstance()
+            .addGamePieceProjectile(
+                new ReefscapeCoralOnFly(
+                    // Obtain robot position from drive simulation
+                    this.drivetrain.getSimulatedDriveTrainPose().getTranslation(),
+                    // The scoring mechanism is installed at (0.46, 0) (meters) on the robot
+                    new Translation2d(0.35, 0),
+                    // Obtain robot speed from drive simulation
+                    this.drivetrain.getDriveTrainSimulatedChassisSpeedsFieldRelative(),
+                    // Obtain robot facing from drive simulation
+                    this.drivetrain.getSimulatedDriveTrainPose().getRotation(),
+                    // The height at which the coral is ejected
+                    Meters.of(dropHeight),
+                    // The initial speed of the coral
+                    // TODO - use actual speed
+                    MetersPerSecond.of(1),
+                    // The angle of the wrist
+                    Radians.of(-wristAngle)));
+        }
+    }
+
+    @Override
+    public boolean hasCoral() {
+        return this.hasCoralInClaw;
+    }
+
+    @Override
+    public boolean coralInChute() {
+        return this.intakeSimulation.getGamePiecesAmount() != 0;
+    }
 }

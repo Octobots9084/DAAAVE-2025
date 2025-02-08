@@ -7,25 +7,25 @@
         {
           "type": "path",
           "data": {
-            "pathName": "initial_to_f"
+            "pathName": "double_forward"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "f_to_lowstation"
+            "pathName": "double_score"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "lowstation_to_e"
+            "pathName": "double_back"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "e_to_lowstation"
+            "pathName": "double_back_lowstation"
           }
         },
         {
@@ -45,17 +45,11 @@
           "data": {
             "pathName": "lowstation_to_c"
           }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "c_to_lowstation"
-          }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": null,
+  "folder": "push",
   "choreoAuto": false
 }

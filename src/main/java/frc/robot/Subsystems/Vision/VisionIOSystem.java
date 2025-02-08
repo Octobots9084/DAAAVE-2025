@@ -16,17 +16,15 @@ public class VisionIOSystem implements VisionIO {
 
   public Matrix<N3, N1> defatultStdDev = VecBuilder.fill(0.5, 0.5, 99999);
 
-  public final VisionCamera frontLeftCamera =
-      new VisionCamera("CamOne", VisionConstants.camOneTransform);
+  public final VisionCamera frontLeftCamera = new VisionCamera("CamOne", VisionConstants.camOneTransform);
   // public final VisionCamera frontRightCamera = new VisionCamera("Triceratops",
   // VisionConstants.triceratopsTransform);
   // public StdDevs stdDevsCalculation;
-  private final Notifier allNotifier =
-      new Notifier(
-          () -> {
-            frontLeftCamera.run();
-            // frontRightCamera.run();
-          });
+  private final Notifier allNotifier = new Notifier(
+      () -> {
+        frontLeftCamera.run();
+        // frontRightCamera.run();
+      });
 
   public VisionIOSystem() {
     this.swerve = Swerve.getInstance();
@@ -79,7 +77,8 @@ public class VisionIOSystem implements VisionIO {
 
       // SmartDashboard.putNumber("StdDevsRot",
       // stdDevsCalculation.getStandardDeviationRotation());
-      swerve.addVisionReading(pose2d, pose.timestampSeconds, stdDevs);
+
+      // swerve.addVisionReading(pose2d, pose.timestampSeconds, stdDevs);
     }
   }
 }

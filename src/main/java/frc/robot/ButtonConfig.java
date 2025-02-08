@@ -1,21 +1,27 @@
 package frc.robot;
 
+import com.revrobotics.spark.ClosedLoopSlot;
+
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
-import frc.robot.Commands.complex.AlignReef;
-import frc.robot.States.ReefTargetLevel;
-import frc.robot.States.ReefTargetOrientation;
-import frc.robot.States.ReefTargetSide;
+import frc.robot.Commands.AlgaeRollers.SetAlgaeRollersState;
+import frc.robot.Commands.Elevator.SetElevatorState;
+import frc.robot.Commands.ReefSelection.SetOrientation;
+import frc.robot.Commands.Wrist.SetWristState;
+import frc.robot.Subsystems.AlgaeRollers.AlgaeRollersStates;
+import frc.robot.Subsystems.Elevator.ElevatorStates;
 import frc.robot.Subsystems.Swerve.Swerve;
+import frc.robot.Subsystems.Wrist.WristStates;
 import frc.robot.Subsystems.Vision.AlignVisionIO;
 
 public class ButtonConfig {
   static CommandJoystick driverLeft = ControlMap.DRIVER_LEFT;
   static CommandJoystick driverRight = ControlMap.DRIVER_RIGHT;
-  CommandJoystick driverButtons = ControlMap.DRIVER_BUTTONS;
-  CommandJoystick coDriverLeft = ControlMap.CO_DRIVER_LEFT;
-  CommandJoystick coDriverRight = ControlMap.CO_DRIVER_RIGHT;
-  CommandJoystick coDriverButtons = ControlMap.CO_DRIVER_BUTTONS;
+  static CommandJoystick driverButtons = ControlMap.DRIVER_BUTTONS;
+  static CommandJoystick coDriverLeft = ControlMap.CO_DRIVER_LEFT;
+  static CommandJoystick coDriverRight = ControlMap.CO_DRIVER_RIGHT;
+  static CommandJoystick coDriverButtons = ControlMap.CO_DRIVER_BUTTONS;
 
   public void initTeleop() {
 
@@ -26,41 +32,30 @@ public class ButtonConfig {
                 () -> {
                   Swerve.getInstance().zeroGyro();
                 }));
-    // // reef align
-    driverButtons.button(2).whileTrue(new AlignReef());
-    driverButtons
-        .button(4)
-        .onTrue(
-            new InstantCommand(
-                () -> {
-                  AlignVisionIO.setReefOrientation(ReefTargetOrientation.KL);
-                  AlignVisionIO.setPoleSide(ReefTargetSide.RIGHT);
-                  AlignVisionIO.setPoleLevel(ReefTargetLevel.L1);
-                }));
-    driverButtons
-        .button(3)
-        .onTrue(
-            new InstantCommand(
-                () -> {
-                  AlignVisionIO.setReefOrientation(ReefTargetOrientation.KL);
-                  AlignVisionIO.setPoleSide(ReefTargetSide.LEFT);
-                  AlignVisionIO.setPoleLevel(ReefTargetLevel.L1);
-                }));
+    // reef align
 
-    // // source align
-    // driverButtons.button(1).whileTrue(new AlignSource());
+    coDriverLeft.button(1).onTrue(new SetOrientation(0));
+    coDriverLeft.button(2).onTrue(new SetOrientation(1));
+    driverButtons.button(5).onTrue(new SetCoralRollersState(CoralRollersState.INTAKING));
+    driverButtons.button(6).onTrue(new SetCoralRollersState(CoralRollersState.OUTPUT));
+    driverButtons.button(7)
+        .onTrue(new SetWristState(WristStates.FOURTYFIVE, ClosedLoopSlot.kSlot0).andThen(new WaitCommand(1))
+            .andThen(new SetElevatorState(ElevatorStates.LEVEL3)));
 
-    // climb(no commands yet)
-    // driverButtons
-    // .button(16)
-    // .onTrue(); (change for switch)
+    // driverButtons.button(-1).whileTrue(new ScoreCoral()); // TODO - Implement
+    // NOTE - This is just for testing:
+    driverButtons.button(5).onTrue(new SetAlgaeRollersState(AlgaeRollersStates.OUTPUT));
+    driverButtons.button(6).onTrue(new SetAlgaeRollersState(AlgaeRollersStates.INTAKE));
+    driverButtons.button(7).onTrue(new SetElevatorState(ElevatorStates.LEVEL1));
+    driverButtons.button(8).onTrue(new SetElevatorState(ElevatorStates.LEVEL2));
+    driverButtons.button(9).onTrue(new SetElevatorState(ElevatorStates.LEVEL3));
+    driverButtons.button(10).onTrue(new SetElevatorState(ElevatorStates.LEVEL4));
 
-    // processor align? (4)
-    // driverButtons.button(4).whileTrue(new AlignSource());
-
-    // driverButtons
-    // .button(-1)
-    // .whileTrue(new AlignReef().andThen(new
-    // SetCoralRollersState(CoralRollersState.REJECTING)));
+    coDriverButtons.button(5).onTrue(new SetAlgaeRollersState(AlgaeRollersStates.OUTPUT));
+    coDriverButtons.button(6).onTrue(new SetAlgaeRollersState(AlgaeRollersStates.INTAKE));
+    coDriverButtons.button(7).onTrue(new SetElevatorState(ElevatorStates.LEVEL1));
+    coDriverButtons.button(8).onTrue(new SetElevatorState(ElevatorStates.LEVEL2));
+    coDriverButtons.button(9).onTrue(new SetElevatorState(ElevatorStates.LEVEL3));
+    coDriverButtons.button(10).onTrue(new SetElevatorState(ElevatorStates.LEVEL4));
   }
 }

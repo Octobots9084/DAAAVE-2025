@@ -18,4 +18,8 @@ public class AlignVision extends SubsystemBase {
   public AlignVision(AlignVisionIO io) {
     this.io = io;
   }
+
+  public boolean isAligned() {
+    return xInTolerance && yInTolerance && rotInTolerance;
+  }
 }

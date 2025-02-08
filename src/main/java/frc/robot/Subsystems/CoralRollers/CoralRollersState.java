@@ -1,9 +1,9 @@
 package frc.robot.Subsystems.CoralRollers;
 
 public enum CoralRollersState {
-  INTAKING(10),
+  INTAKING(-10),
   STOPPED(0),
-  REJECTING(-10);
+  OUTPUT(10);
 
   public double voltage;
 

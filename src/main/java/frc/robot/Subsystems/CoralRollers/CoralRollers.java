@@ -7,6 +7,7 @@ public class CoralRollers extends SubsystemBase {
   public final CoralRollersIO io;
   private static CoralRollers instance = null;
   private final CoralRollersIOInputsAutoLogged inputs = new CoralRollersIOInputsAutoLogged();
+  private CoralRollersState coralRollersState = CoralRollersState.STOPPED;
 
   public static CoralRollers getInstance() {
     if (instance == null) {
@@ -31,7 +32,12 @@ public class CoralRollers extends SubsystemBase {
   }
 
   public void setState(CoralRollersState state) {
+    coralRollersState = state;
     io.setVoltage(state.voltage);
+  }
+
+  public CoralRollersState getState() {
+    return coralRollersState;
   }
 
   public boolean hasCoral() {

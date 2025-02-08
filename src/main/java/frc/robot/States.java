@@ -5,12 +5,15 @@ public class States {
     L1,
     L2,
     L3,
-    L4
+    L4,
+    BOTTOMALGAE,
+    TOPALGAE
   }
 
   public enum ReefTargetSide {
     LEFT,
-    RIGHT
+    RIGHT,
+    ALGAE//center
   }
 
   public enum ReefTargetOrientation {
@@ -19,7 +22,8 @@ public class States {
     EF,
     GH,
     IJ,
-    KL
+    KL,
+    NONE
   }
 
   public enum AlignOffset {

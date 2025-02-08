@@ -29,16 +29,15 @@ public class SwerveIOSystem implements SwerveIO {
   public SwerveIOSystem() {
     SwerveDriveTelemetry.verbosity = TelemetryVerbosity.HIGH;
     try {
-      swerveDrive =
-          new SwerveParser(swerveJsonDirectory)
-              .createSwerveDrive(maximumSpeed, new Pose2d(2, 2, new Rotation2d(0)));
+      swerveDrive = new SwerveParser(swerveJsonDirectory)
+          .createSwerveDrive(maximumSpeed, new Pose2d(3.1, 4, new Rotation2d(0)));
       swerveDrive.setHeadingCorrection(
           false); // Heading correction should only be used while controlling the robot via
       // angle.
       swerveDrive.setCosineCompensator(
           !SwerveDriveTelemetry.isSimulation); // Disables cosine compensation
       // for simulations since it causes discrepancies not seen in real life.
-      swerveDrive.setAngularVelocityCompensation(true, true, -0.075);
+      swerveDrive.setAngularVelocityCompensation(true, true, -0.07);
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -143,5 +142,6 @@ public class SwerveIOSystem implements SwerveIO {
 
     inputs.swerveModuleStates = this.getModuleStates();
     inputs.swerveModuleDesiredStates = this.getModuleDesiredStates();
+    inputs.gyroAngleRadians = swerveDrive.getGyro().getRotation3d().toRotation2d().getRadians();
   }
 }

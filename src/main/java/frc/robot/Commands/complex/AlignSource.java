@@ -19,9 +19,6 @@ public class AlignSource extends Command {
   @Override
   public boolean isFinished() {
     // if the coral is inside the robot return true
-    if (CoralRollers.getInstance().hasCoral()) {
-      return true;
-    }
-    return false;
+    return CoralRollers.getInstance().hasCoral();
   }
 }
