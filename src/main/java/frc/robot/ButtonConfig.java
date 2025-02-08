@@ -7,7 +7,7 @@ import frc.robot.States.ReefTargetLevel;
 import frc.robot.States.ReefTargetOrientation;
 import frc.robot.States.ReefTargetSide;
 import frc.robot.Subsystems.Swerve.Swerve;
-import frc.robot.Subsystems.Vision.AlignVision;
+import frc.robot.Subsystems.Vision.AlignVisionIO;
 
 public class ButtonConfig {
   static CommandJoystick driverLeft = ControlMap.DRIVER_LEFT;
@@ -33,18 +33,18 @@ public class ButtonConfig {
         .onTrue(
             new InstantCommand(
                 () -> {
-                  AlignVision.setReefOrientation(ReefTargetOrientation.KL);
-                  AlignVision.setPoleSide(ReefTargetSide.RIGHT);
-                  AlignVision.setPoleLevel(ReefTargetLevel.L1);
+                  AlignVisionIO.setReefOrientation(ReefTargetOrientation.KL);
+                  AlignVisionIO.setPoleSide(ReefTargetSide.RIGHT);
+                  AlignVisionIO.setPoleLevel(ReefTargetLevel.L1);
                 }));
     driverButtons
         .button(3)
         .onTrue(
             new InstantCommand(
                 () -> {
-                  AlignVision.setReefOrientation(ReefTargetOrientation.KL);
-                  AlignVision.setPoleSide(ReefTargetSide.LEFT);
-                  AlignVision.setPoleLevel(ReefTargetLevel.L1);
+                  AlignVisionIO.setReefOrientation(ReefTargetOrientation.KL);
+                  AlignVisionIO.setPoleSide(ReefTargetSide.LEFT);
+                  AlignVisionIO.setPoleLevel(ReefTargetLevel.L1);
                 }));
 
     // // source align

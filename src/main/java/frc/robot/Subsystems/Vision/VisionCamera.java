@@ -62,9 +62,9 @@ public class VisionCamera implements Runnable {
     photonEstimator.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);
   }
 
-    public PhotonCamera getCameraObject() {
-        return this.camera;
-    }
+  public PhotonCamera getCameraObject() {
+    return this.camera;
+  }
 
   public Optional<EstimatedRobotPose> getEstimatedGlobalPose() {
     Optional<EstimatedRobotPose> visionEst = Optional.empty();

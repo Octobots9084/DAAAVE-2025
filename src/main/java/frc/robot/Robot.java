@@ -90,8 +90,8 @@ public class Robot extends LoggedRobot {
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
-    SmartDashboard.putNumber("LeftLidar", AlignVision.getInstance().getLeftLidarDistance());
-    SmartDashboard.putNumber("RightLidar", AlignVision.getInstance().getRightLidarDistance());
+    SmartDashboard.putNumber("LeftLidar", AlignVision.getInstance().io.getLeftLidarDistance());
+    SmartDashboard.putNumber("RightLidar", AlignVision.getInstance().io.getRightLidarDistance());
   }
 
   /** This function is called once when the robot is disabled. */
