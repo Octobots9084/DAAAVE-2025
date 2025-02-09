@@ -12,11 +12,11 @@ public class OutputCoral extends Command {
 
   @Override
   public boolean isFinished() {
-    return !CoralRollers.getInstance().HasCoral();
+    return !CoralRollers.getInstance().HasCoral() && !CoralRollers.getInstance().IsIntaking();
   }
 
   @Override
-  public void end (boolean interrupted) {
+  public void end(boolean interrupted) {
     CoralRollers.getInstance().setState(CoralRollersState.STOPPED);
   }
 }

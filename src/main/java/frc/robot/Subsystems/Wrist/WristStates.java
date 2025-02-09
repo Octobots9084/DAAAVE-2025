@@ -2,8 +2,8 @@ package frc.robot.Subsystems.Wrist;
 
 public enum WristStates {
   // TODO edit these to the actual positions
-  LOW( 0.192),
-  MANUAL(0.2), 
+  LOW(0.05),
+  MANUAL(0.2),
   HORIZONTAL(0),
   FOURTYFIVE(0.515),
   VERTICAL(0.437), // maybe?
