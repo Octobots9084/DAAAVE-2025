@@ -24,6 +24,6 @@ public class AlignReef extends Command {
     CommandScheduler.getInstance().schedule(new SetCoralRollersState(CoralRollersState.OUTPUT));
 
     // check if the coral has left robot
-    return !CoralRollers.getInstance().hasCoral();
+    return !CoralRollers.getInstance().HasCoral();
   }
 }

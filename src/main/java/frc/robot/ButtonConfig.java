@@ -75,9 +75,10 @@ public class ButtonConfig {
     coDriverButtons.button(5).onTrue(new SetAlgaeRollersState(AlgaeRollersStates.OUTPUT));
     coDriverButtons.button(6).onTrue(new SetAlgaeRollersState(AlgaeRollersStates.INTAKE));
     coDriverButtons.button(7).onTrue(new SetWristState(WristStates.FOURTYFIVE, ClosedLoopSlot.kSlot0).andThen(new WaitCommand(1)).andThen(new SetElevatorState(ElevatorStates.LEVEL1)));
-    coDriverButtons.button(8).onTrue(new SetWristState(WristStates.LOW, ClosedLoopSlot.kSlot0).andThen(new WaitCommand(1)).andThen(new SetElevatorState(ElevatorStates.LEVEL2)));
+    coDriverButtons.button(8).onTrue(new SetWristState(WristStates.FOURTYFIVE, ClosedLoopSlot.kSlot0).andThen(new WaitCommand(1)).andThen(new SetElevatorState(ElevatorStates.LEVEL2)));
     coDriverButtons.button(9).onTrue(new SetWristState(WristStates.FOURTYFIVE, ClosedLoopSlot.kSlot0).andThen(new WaitCommand(1)).andThen(new SetElevatorState(ElevatorStates.LEVEL3)));
     coDriverButtons.button(10).onTrue(new SetWristState(WristStates.VERTICAL, ClosedLoopSlot.kSlot0).andThen(new WaitCommand(1)).andThen(new SetElevatorState(ElevatorStates.LEVEL4)));
+    coDriverButtons.button(11).onTrue(new SetWristState(WristStates.LOW, ClosedLoopSlot.kSlot0));
     coDriverButtons.button(4).whileTrue(new LoadCoral());
     coDriverButtons.button(1).whileTrue(new OutputCoral());
   }

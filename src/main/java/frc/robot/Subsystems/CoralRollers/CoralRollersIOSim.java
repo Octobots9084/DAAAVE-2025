@@ -61,7 +61,7 @@ public class CoralRollersIOSim implements CoralRollersIO {
     inputs.velocityRPM = motorSim.getAngularVelocityRPM();
     inputs.appliedVolts = motorSim.getInputVoltage();
     inputs.currentAmps = motorSim.getCurrentDrawAmps();
-    inputs.hasCoral = this.hasCoral();
+    inputs.hasCoral = this.HasCoral();
   }
 
   @Override
@@ -87,20 +87,20 @@ public class CoralRollersIOSim implements CoralRollersIO {
     double wristAngle = Wrist.getInstance().getState().wristPosition;
 
     // coral in chute and intaking, so coral moves from chute to claw
-    if (this.coralInChute() && state == CoralRollersState.INTAKING) {
+    if (this.IsIntaking() && state == CoralRollersState.INTAKING) {
         intakeSimulation.obtainGamePieceFromIntake();
         this.hasCoralInClaw = true;
     }
 
     if (this.hasCoralInClaw) {
         coralInRobot = new Pose3d[]{new Pose3d(drivetrain.getSimulatedDriveTrainPose()).plus(new Transform3d(0.35, 0, dropHeight, new Rotation3d(0, wristAngle, 0)))};
-    } else if (this.coralInChute()) {
+    } else if (this.IsIntaking()) {
         coralInRobot = new Pose3d[]{new Pose3d(drivetrain.getSimulatedDriveTrainPose()).plus(new Transform3d(0, 0, 0.75, new Rotation3d(0, 0.26, 0)))};
     }
     Logger.recordOutput("FieldSimulation/CoralInRobot", coralInRobot);
 
     // coral in claw is released
-    if (this.hasCoral() && state == CoralRollersState.OUTPUT) {
+    if (this.HasCoral() && state == CoralRollersState.OUTPUT) {
         this.hasCoralInClaw = false;
         // removes algae from the algae intake rollers
 
@@ -126,12 +126,12 @@ public class CoralRollersIOSim implements CoralRollersIO {
     }
 
     @Override
-    public boolean hasCoral() {
+    public boolean HasCoral() {
         return this.hasCoralInClaw;
     }
 
     @Override
-    public boolean coralInChute() {
+    public boolean IsIntaking() {
         return this.intakeSimulation.getGamePiecesAmount() != 0;
     }
 }

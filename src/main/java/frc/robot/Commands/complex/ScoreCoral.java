@@ -41,7 +41,7 @@ public class ScoreCoral extends Command {
   @Override
   public void initialize() {
     
-    if (coralRollers.io.hasCoral()) {
+    if (coralRollers.io.HasCoral()) {
       swerve.setDriveState(DriveState.AlignReef);
       CommandScheduler.getInstance().schedule(new SetTargetReefLevel(targetElevatorState));
       CommandScheduler.getInstance().schedule(new SetTargetReefSide(targetSide));
@@ -66,7 +66,7 @@ public class ScoreCoral extends Command {
 
   @Override
   public boolean isFinished() {
-    if (coralRollers.io.hasCoral() == false) return true;
+    if (coralRollers.io.HasCoral() == false) return true;
     return false;
   }
 

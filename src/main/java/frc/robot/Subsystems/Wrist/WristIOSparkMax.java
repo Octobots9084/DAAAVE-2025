@@ -9,6 +9,7 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Subsystems.CoralRollers.CoralRollers;
 
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
@@ -23,12 +24,13 @@ public class WristIOSparkMax implements WristIO {
 
   public WristIOSparkMax() {
     config = new SparkMaxConfig();
-    config.inverted(true);
-    config.idleMode(IdleMode.kCoast);
-    config.voltageCompensation(0);
-    config.smartCurrentLimit(60, 3);
-    config.closedLoop.feedbackSensor(FeedbackSensor.kAbsoluteEncoder);
-    config.closedLoop.pid(1, 0, 0, ClosedLoopSlot.kSlot0);
+    config.inverted(false);
+    config.idleMode(IdleMode.kBrake);
+    config.voltageCompensation(3);
+    config.smartCurrentLimit(30, 30);
+    config.closedLoop.feedbackSensor(FeedbackSensor.kAbsoluteEncoder).pid(2, 0.0, 0, ClosedLoopSlot.kSlot0);
+    config.closedLoop.feedbackSensor(FeedbackSensor.kAbsoluteEncoder).pid(2, 0.01, 0, ClosedLoopSlot.kSlot1);
+
 
     wristMotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     wristMotor.setPeriodicFrameTimeout(30);
@@ -63,9 +65,18 @@ public class WristIOSparkMax implements WristIO {
   @Override
   public void setPosition(double position, ClosedLoopSlot slot) {
     SmartDashboard.putNumber("commandedWristPosition", position);
-    wristMotor
-        .getClosedLoopController()
-        .setReference(position+offset, ControlType.kPosition, ClosedLoopSlot.kSlot0, 0);
+    double ffVal = 0.4 * (1 - Math.cos((position - 0.192) * 2 * Math.PI));
+    SmartDashboard.putNumber("wristFeedForward", ffVal);
+
+    if (!CoralRollers.getInstance().io.HasCoral()) {
+        wristMotor
+            .getClosedLoopController()
+            .setReference(position, ControlType.kPosition, ClosedLoopSlot.kSlot1, ffVal);
+    } else {
+        wristMotor
+            .getClosedLoopController()
+            .setReference(position, ControlType.kPosition, ClosedLoopSlot.kSlot0, ffVal);
+    }
   }
   @Override
   public double getPosition() {

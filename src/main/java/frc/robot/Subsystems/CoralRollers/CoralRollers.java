@@ -40,8 +40,8 @@ public class CoralRollers extends SubsystemBase {
     return coralRollersState;
   }
 
-  public boolean hasCoral() {
-    return io.hasCoral();
+  public boolean HasCoral() {
+    return io.HasCoral();
   }
 
   public void updateSim() {

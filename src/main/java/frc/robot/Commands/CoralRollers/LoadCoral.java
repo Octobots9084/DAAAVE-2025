@@ -12,7 +12,7 @@ public class LoadCoral extends Command {
 
   @Override
   public boolean isFinished() {
-    return CoralRollers.getInstance().hasCoral();
+    return CoralRollers.getInstance().HasCoral();
   }
 
   @Override

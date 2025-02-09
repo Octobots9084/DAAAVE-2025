@@ -1,5 +1,7 @@
 package frc.robot.Subsystems.CoralRollers;
 
+import com.ctre.phoenix6.CANBus;
+import com.ctre.phoenix6.configs.CANrangeConfiguration;
 import com.ctre.phoenix6.hardware.CANrange;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
@@ -8,11 +10,14 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.CAN;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class CoralRollersIOSystems implements CoralRollersIO {
   private final SparkMax motor = new SparkMax(13, MotorType.kBrushless);
-  private final AnalogInput mouthBeam = new AnalogInput(2);
-  public CANrange coralDetector = new CANrange(0);
+  private CANrange mouthBeam = new CANrange(21, "KrakensBus");
+  private CANrange coralDetector = new CANrange(22, "KrakensBus");
+  private CANrangeConfiguration configuration = new CANrangeConfiguration();
 
   private SparkMaxConfig config;
 
@@ -25,6 +30,9 @@ public class CoralRollersIOSystems implements CoralRollersIO {
     motor.setPeriodicFrameTimeout(30);
     motor.setCANTimeout(30);
     motor.setCANMaxRetries(5);
+    configuration.ProximityParams.withProximityThreshold(0.2);
+    mouthBeam.getConfigurator().apply(configuration);
+    coralDetector.getConfigurator().apply(configuration);
   }
 
   @Override
@@ -33,8 +41,8 @@ public class CoralRollersIOSystems implements CoralRollersIO {
     inputs.appliedVolts = motor.getAppliedOutput() * motor.getBusVoltage();
     inputs.currentAmps = motor.getOutputCurrent();
     // TODO change 100
-    inputs.coralInChute = mouthBeam.getValue() > 100;
-    inputs.hasCoral = hasCoral();
+    inputs.isIntaking = this.IsIntaking();
+    inputs.hasCoral = this.HasCoral();
 
     inputs.coralMeasureDist = coralDetector.getDistance().getValueAsDouble();
   }
@@ -49,11 +57,17 @@ public class CoralRollersIOSystems implements CoralRollersIO {
   }
 
   // TODO - Actually change these values
-  public boolean isIntaking() {
-    return this.mouthBeam.getValue() > 100;
+  @Override
+  public boolean IsIntaking() {
+    boolean intaking = mouthBeam.getIsDetected().getValue(); 
+    SmartDashboard.putBoolean("IsIntaking", intaking);
+    return intaking;
   }
 
-  public boolean hasCoral() {
-    return coralDetector.getDistance().getValueAsDouble() < 0.05;
+  @Override
+  public boolean HasCoral() {
+    boolean coral = coralDetector.getIsDetected().getValue();
+    SmartDashboard.putBoolean("HasCoral", coral);
+    return coral;
   }
 }
