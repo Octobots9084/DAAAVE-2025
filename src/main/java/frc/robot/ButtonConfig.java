@@ -1,6 +1,5 @@
 package frc.robot;
 
-
 import com.revrobotics.spark.ClosedLoopSlot;
 
 import edu.wpi.first.math.MathUtil;
@@ -27,59 +26,62 @@ import frc.robot.Subsystems.Swerve.Swerve;
 import frc.robot.Subsystems.Wrist.WristStates;
 
 public class ButtonConfig {
-  static CommandJoystick driverLeft = ControlMap.DRIVER_LEFT;
-  static CommandJoystick driverRight = ControlMap.DRIVER_RIGHT;
-  static CommandJoystick driverButtons = ControlMap.DRIVER_BUTTONS;
-  static CommandJoystick coDriverLeft = ControlMap.CO_DRIVER_LEFT;
-  static CommandJoystick coDriverRight = ControlMap.CO_DRIVER_RIGHT;
-  static CommandJoystick coDriverButtons = ControlMap.CO_DRIVER_BUTTONS;
+        static CommandJoystick driverLeft = ControlMap.DRIVER_LEFT;
+        static CommandJoystick driverRight = ControlMap.DRIVER_RIGHT;
+        static CommandJoystick driverButtons = ControlMap.DRIVER_BUTTONS;
+        static CommandJoystick coDriverLeft = ControlMap.CO_DRIVER_LEFT;
+        static CommandJoystick coDriverRight = ControlMap.CO_DRIVER_RIGHT;
+        static CommandJoystick coDriverButtons = ControlMap.CO_DRIVER_BUTTONS;
 
-  public void initTeleop() {
+        public void initTeleop() {
 
-    driverButtons
-        .button(6)
-        .onTrue(
-            new InstantCommand(
-                () -> {
-                  Swerve.getInstance().zeroGyro();
-                }));
-    // reef align
+                driverButtons
+                                .button(6)
+                                .onTrue(
+                                                new InstantCommand(
+                                                                () -> {
+                                                                        Swerve.getInstance().zeroGyro();
+                                                                }));
+                // reef align
 
-    coDriverLeft.button(1).onTrue(new SetOrientation(0));
-    coDriverLeft.button(2).onTrue(new SetOrientation(1));
+                coDriverLeft.button(1).onTrue(new SetOrientation(0));
+                coDriverLeft.button(2).onTrue(new SetOrientation(1));
 
-    driverButtons.button(5).onTrue(new SetCoralRollersState(CoralRollersState.INTAKING));
-    driverButtons.button(6).onTrue(new SetCoralRollersState(CoralRollersState.OUTPUT));
-    
-    coDriverButtons.button(13).whileTrue(new ElevatorManualControl(() ->
-    MathUtil.applyDeadband(
-        -ButtonConfig.coDriverRight.getRawAxis(1), OperatorConstants.LEFT_Y_DEADBAND)));
+                driverButtons.button(5).onTrue(new SetCoralRollersState(CoralRollersState.INTAKING));
+                driverButtons.button(6).onTrue(new SetCoralRollersState(CoralRollersState.OUTPUT));
 
-    coDriverButtons.button(14).whileTrue(new WristManualControl(() ->
-    MathUtil.applyDeadband(
-        -ButtonConfig.coDriverLeft.getRawAxis(0), OperatorConstants.LEFT_X_DEADBAND)));
+                coDriverButtons.button(13).whileTrue(new ElevatorManualControl(() -> MathUtil.applyDeadband(
+                                -ButtonConfig.coDriverRight.getRawAxis(1), OperatorConstants.LEFT_Y_DEADBAND)));
 
-    driverButtons.button(7)
-        .onTrue(new SetWristState(WristStates.FOURTYFIVE, ClosedLoopSlot.kSlot0).andThen(new WaitCommand(1))
-            .andThen(new SetElevatorState(ElevatorStates.LEVEL3)));
+                coDriverButtons.button(14).whileTrue(new WristManualControl(() -> MathUtil.applyDeadband(
+                                -ButtonConfig.coDriverLeft.getRawAxis(0), OperatorConstants.LEFT_X_DEADBAND)));
 
-    // driverButtons.button(-1).whileTrue(new ScoreCoral()); // TODO - Implement
-    // NOTE - This is just for testing:
-    driverButtons.button(5).onTrue(new SetAlgaeRollersState(AlgaeRollersStates.OUTPUT));
-    driverButtons.button(6).onTrue(new SetAlgaeRollersState(AlgaeRollersStates.INTAKE));
-    driverButtons.button(7).onTrue(new SetElevatorState(ElevatorStates.LEVEL1));
-    driverButtons.button(8).onTrue(new SetElevatorState(ElevatorStates.LEVEL2));
-    driverButtons.button(9).onTrue(new SetElevatorState(ElevatorStates.LEVEL3));
-    driverButtons.button(10).onTrue(new SetElevatorState(ElevatorStates.LEVEL4));
+                driverButtons.button(7)
+                                .onTrue(new SetWristState(WristStates.FOURTYFIVE, ClosedLoopSlot.kSlot0)
+                                                .andThen(new WaitCommand(1))
+                                                .andThen(new SetElevatorState(ElevatorStates.LEVEL3)));
 
-    coDriverButtons.button(5).onTrue(new SetAlgaeRollersState(AlgaeRollersStates.OUTPUT));
-    coDriverButtons.button(6).onTrue(new SetAlgaeRollersState(AlgaeRollersStates.INTAKE));
-    coDriverButtons.button(7).onTrue(new SetWristState(WristStates.FOURTYFIVE, ClosedLoopSlot.kSlot0).andThen(new WaitCommand(1)).andThen(new SetElevatorState(ElevatorStates.LEVEL1)));
-    coDriverButtons.button(8).onTrue(new SetWristState(WristStates.FOURTYFIVE, ClosedLoopSlot.kSlot0).andThen(new WaitCommand(1)).andThen(new SetElevatorState(ElevatorStates.LEVEL2)));
-    coDriverButtons.button(9).onTrue(new SetWristState(WristStates.FOURTYFIVE, ClosedLoopSlot.kSlot0).andThen(new WaitCommand(1)).andThen(new SetElevatorState(ElevatorStates.LEVEL3)));
-    coDriverButtons.button(10).onTrue(new SetWristState(WristStates.VERTICAL, ClosedLoopSlot.kSlot0).andThen(new WaitCommand(1)).andThen(new SetElevatorState(ElevatorStates.LEVEL4)));
-    coDriverButtons.button(11).onTrue(new SetWristState(WristStates.LOW, ClosedLoopSlot.kSlot0));
-    coDriverButtons.button(4).whileTrue(new LoadCoral());
-    coDriverButtons.button(1).whileTrue(new OutputCoral());
-  }
+                // driverButtons.button(-1).whileTrue(new ScoreCoral()); // TODO - Implement
+                // NOTE - This is just for testing:
+                driverButtons.button(5).onTrue(new SetAlgaeRollersState(AlgaeRollersStates.OUTPUT));
+                driverButtons.button(6).onTrue(new SetAlgaeRollersState(AlgaeRollersStates.INTAKE));
+                driverButtons.button(7).onTrue(new SetElevatorState(ElevatorStates.LEVEL1));
+                driverButtons.button(8).onTrue(new SetElevatorState(ElevatorStates.LEVEL2));
+                driverButtons.button(9).onTrue(new SetElevatorState(ElevatorStates.LEVEL3));
+                driverButtons.button(10).onTrue(new SetElevatorState(ElevatorStates.LEVEL4));
+
+                coDriverButtons.button(5).onTrue(new SetAlgaeRollersState(AlgaeRollersStates.OUTPUT));
+                coDriverButtons.button(6).onTrue(new SetAlgaeRollersState(AlgaeRollersStates.INTAKE));
+                coDriverButtons.button(7).onTrue(new SetWristState(WristStates.FOURTYFIVE, ClosedLoopSlot.kSlot0)
+                                .andThen(new WaitCommand(1)).andThen(new SetElevatorState(ElevatorStates.LEVEL1)));
+                coDriverButtons.button(8).onTrue(new SetWristState(WristStates.FOURTYFIVE, ClosedLoopSlot.kSlot0)
+                                .andThen(new WaitCommand(1)).andThen(new SetElevatorState(ElevatorStates.LEVEL2)));
+                coDriverButtons.button(9).onTrue(new SetWristState(WristStates.FOURTYFIVE, ClosedLoopSlot.kSlot0)
+                                .andThen(new WaitCommand(1)).andThen(new SetElevatorState(ElevatorStates.LEVEL3)));
+                coDriverButtons.button(10).onTrue(new SetWristState(WristStates.VERTICAL, ClosedLoopSlot.kSlot0)
+                                .andThen(new WaitCommand(1)).andThen(new SetElevatorState(ElevatorStates.LEVEL4)));
+                coDriverButtons.button(11).onTrue(new SetWristState(WristStates.LOW, ClosedLoopSlot.kSlot0));
+                coDriverButtons.button(4).whileTrue(new LoadCoral());
+                coDriverButtons.button(1).whileTrue(new OutputCoral());
+        }
 }

@@ -59,7 +59,7 @@ public class CoralRollersIOSystems implements CoralRollersIO {
   // TODO - Actually change these values
   @Override
   public boolean IsIntaking() {
-    boolean intaking = mouthBeam.getIsDetected().getValue(); 
+    boolean intaking = mouthBeam.getIsDetected().getValue();
     SmartDashboard.putBoolean("IsIntaking", intaking);
     return intaking;
   }

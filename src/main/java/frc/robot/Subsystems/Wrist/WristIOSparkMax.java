@@ -27,10 +27,9 @@ public class WristIOSparkMax implements WristIO {
     config.inverted(false);
     config.idleMode(IdleMode.kBrake);
     config.voltageCompensation(3);
-    config.smartCurrentLimit(30, 30);
-    config.closedLoop.feedbackSensor(FeedbackSensor.kAbsoluteEncoder).pid(2, 0.0, 0, ClosedLoopSlot.kSlot0);
-    config.closedLoop.feedbackSensor(FeedbackSensor.kAbsoluteEncoder).pid(2, 0.01, 0, ClosedLoopSlot.kSlot1);
-
+    config.smartCurrentLimit(40, 40);
+    config.closedLoop.feedbackSensor(FeedbackSensor.kAbsoluteEncoder).pid(1, 0.0, 0, ClosedLoopSlot.kSlot0);
+    config.closedLoop.feedbackSensor(FeedbackSensor.kAbsoluteEncoder).pid(7, 0.000, 0, ClosedLoopSlot.kSlot1);
 
     wristMotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     wristMotor.setPeriodicFrameTimeout(30);
@@ -44,6 +43,8 @@ public class WristIOSparkMax implements WristIO {
     inputs.wristAppliedVolts = wristMotor.getAppliedOutput();
     inputs.wristBusVoltage = wristMotor.getBusVoltage();
     inputs.wristCurrentAmps = wristMotor.getOutputCurrent();
+    // double ffVal = 0.5 * (Math.sin((this.getPosition() - 0.113) * 2 * Math.PI));
+    // SmartDashboard.putNumber("wristFeedForward", ffVal);
   }
 
   @Override
@@ -58,26 +59,27 @@ public class WristIOSparkMax implements WristIO {
   }
 
   @Override
-  public void setOffset(double offset){
+  public void setOffset(double offset) {
     this.offset = offset;
   }
 
   @Override
   public void setPosition(double position, ClosedLoopSlot slot) {
     SmartDashboard.putNumber("commandedWristPosition", position);
-    double ffVal = 0.4 * (1 - Math.cos((position - 0.192) * 2 * Math.PI));
+    double ffVal = 0.8 * (Math.sin((position - 0.113) * 2 * Math.PI));
     SmartDashboard.putNumber("wristFeedForward", ffVal);
 
-    if (!CoralRollers.getInstance().io.HasCoral()) {
-        wristMotor
-            .getClosedLoopController()
-            .setReference(position, ControlType.kPosition, ClosedLoopSlot.kSlot1, ffVal);
+    if (CoralRollers.getInstance().io.HasCoral()) {
+      wristMotor
+          .getClosedLoopController()
+          .setReference(position, ControlType.kPosition, ClosedLoopSlot.kSlot1, ffVal);
     } else {
-        wristMotor
-            .getClosedLoopController()
-            .setReference(position, ControlType.kPosition, ClosedLoopSlot.kSlot0, ffVal);
+      wristMotor
+          .getClosedLoopController()
+          .setReference(position, ControlType.kPosition, ClosedLoopSlot.kSlot0, ffVal);
     }
   }
+
   @Override
   public double getPosition() {
     return wristMotor.getAbsoluteEncoder().getPosition();
