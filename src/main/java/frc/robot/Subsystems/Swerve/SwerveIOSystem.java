@@ -22,8 +22,8 @@ import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
 public class SwerveIOSystem implements SwerveIO {
   private SwerveDrive swerveDrive;
   File swerveJsonDirectory = new File(Filesystem.getDeployDirectory(), "swerve");
-  double maximumSpeed = 10;
-  double maxTurnSpeed = 5;
+  double maximumSpeed = 5;
+  double maxTurnSpeed = 2.5;
   private Field2d field = new Field2d();
 
   public SwerveIOSystem() {
