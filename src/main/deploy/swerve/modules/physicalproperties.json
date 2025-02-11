@@ -1,24 +1,25 @@
 {
-  "conversionFactors": {
-    "NOTE - gearRatio needs to be 10 for simulation": true,
-    "angle": {
-      "gearRatio": 10,
-      "factor": 0
+    "optimalVoltage": 10,
+    "robotMass": 95,
+    "wheelGripCoefficientOfFriction": 1.19,
+    "currentLimit": {
+      "drive": 60,
+      "angle": 40
     },
-    "drive": {
-      "gearRatio": 3.636,
-      "diameter": 2.9,
-      "factor": 0
+    "NOTE - gearRatio needs to be 10 for simulation": true,
+    "conversionFactors": {
+      "angle": {
+        "gearRatio": 25,
+        "factor": 0
+      },
+      "drive": {
+        "diameter": 3,
+        "gearRatio": 5.818,
+        "factor": 0
+      }
+    },
+    "rampRate": {
+      "drive": 0.25,
+      "angle": 0.25
     }
-  },
-  "currentLimit": {
-    "drive": 60,
-    "angle": 40
-  },
-  "rampRate": {
-    "drive": 0.25,
-    "angle": 0.25
-  },
-  "wheelGripCoefficientOfFriction": 1,
-  "optimalVoltage": 10
-}
+  }
