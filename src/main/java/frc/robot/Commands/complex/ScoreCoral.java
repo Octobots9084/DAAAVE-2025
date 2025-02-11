@@ -42,10 +42,10 @@ public class ScoreCoral extends Command {
   public void initialize() {
     
     if (coralRollers.io.HasCoral()) {
-      swerve.setDriveState(DriveState.AlignReef);
-      CommandScheduler.getInstance().schedule(new SetTargetReefLevel(targetElevatorState));
-      CommandScheduler.getInstance().schedule(new SetTargetReefSide(targetSide));
-      CommandScheduler.getInstance().schedule(new SetTargetReefOrientation(targetOrientation));
+        swerve.setDriveState(DriveState.AlignReef);
+        CommandScheduler.getInstance().schedule(new SetTargetReefLevel(targetElevatorState));
+        CommandScheduler.getInstance().schedule(new SetTargetReefSide(targetSide));
+        CommandScheduler.getInstance().schedule(new SetTargetReefOrientation(targetOrientation));
     }
   }
 
@@ -57,25 +57,27 @@ public class ScoreCoral extends Command {
     isAligned = true; // Need vision code
 
     if (elevatorInPos
-        && wristInPosition
-        && isAligned
-        && (coralRollers.getState() != CoralRollersState.OUTPUT))
-      CommandScheduler.getInstance()
-          .schedule(new SetCoralRollersState(CoralRollersState.OUTPUT));
+            && wristInPosition
+            && isAligned
+            && (coralRollers.getState() != CoralRollersState.OUTPUT))
+        CommandScheduler.getInstance()
+            .schedule(new SetCoralRollersState(CoralRollersState.OUTPUT));
   }
 
-  @Override
-  public boolean isFinished() {
-    if (coralRollers.io.HasCoral() == false) return true;
-    return false;
-  }
+    @Override
+    public boolean isFinished() {
+        if (coralRollers.io.IsIntaking() == false)
+            return true;
+        return false;
+    }
 
-  @Override
-  public void end(boolean interrupted) {
-    swerve.setDriveState(DriveState.Manual);
-    if (!interrupted) // when coral has been scored send elevator back down after 0.1 seconds
-    CommandScheduler.getInstance()
-          .schedule(new WaitCommand(0.1).andThen(new SetElevatorState(ElevatorStates.INTAKE)));
-  }
+    @Override
+    public void end(boolean interrupted) {
+        CommandScheduler.getInstance()
+            .schedule(new SetCoralRollersState(CoralRollersState.STOPPED));
+        //swerve.setDriveState(DriveState.Manual);
+        CommandScheduler.getInstance()
+              .schedule(new PrepIntake(false));
+    }
   // new AlignReef().andThen(new SetCoralRollersState(CoralRollersState.REJECTING))
 }
