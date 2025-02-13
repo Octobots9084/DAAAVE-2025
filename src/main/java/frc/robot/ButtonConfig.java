@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.Commands.AlgaeRollers.SetAlgaeRollersState;
 import frc.robot.Commands.complex.CancelAllCommands;
+import frc.robot.Commands.complex.ScoreCoral;
 import frc.robot.Commands.Elevator.SetElevatorState;
 import frc.robot.Commands.ManualControl.ElevatorManualControl;
 import frc.robot.Commands.ManualControl.WristManualControl;
@@ -19,6 +20,7 @@ import frc.robot.Commands.CoralRollers.SetCoralRollersState;
 import frc.robot.Commands.Elevator.SetElevatorState;
 import frc.robot.Commands.ReefSelection.SetOrientation;
 import frc.robot.Commands.ReefSelection.SetTargetReefLevel;
+import frc.robot.Commands.Wrist.PrepCoral;
 import frc.robot.Commands.Wrist.SetWristState;
 import frc.robot.Subsystems.AlgaeRollers.AlgaeRollersStates;
 import frc.robot.Subsystems.CoralRollers.CoralRollersState;
@@ -62,7 +64,7 @@ public class ButtonConfig {
                                                 .andThen(new WaitCommand(1))
                                                 .andThen((new SetElevatorState(ElevatorStates.LEVEL3)).withTimeout(0)));//TODO: set MAX time until timeout x2 also new WaitCommand is 1 sec.. maybe less?
 
-                // driverButtons.button(-1).whileTrue(new ScoreCoral()); // TODO - Implement
+                driverButtons.button(-1).whileTrue(new ScoreCoral(null, null, null).beforeStarting((new PrepCoral()).withTimeout(0))); // TODO - change button number, add parameters, set MAX time until timeout
                 // NOTE - This is just for testing:
                 driverButtons.button(5).onTrue(new SetAlgaeRollersState(AlgaeRollersStates.OUTPUT));
                 driverButtons.button(6).onTrue(new SetAlgaeRollersState(AlgaeRollersStates.INTAKE));
@@ -82,7 +84,7 @@ public class ButtonConfig {
                 coDriverButtons.button(10).onTrue((new SetWristState(WristStates.VERTICAL, ClosedLoopSlot.kSlot0).withTimeout(0))
                                 .andThen(new WaitCommand(1)).andThen((new SetElevatorState(ElevatorStates.LEVEL4)).withTimeout(0)));
                 coDriverButtons.button(11).onTrue((new SetWristState(WristStates.LOW, ClosedLoopSlot.kSlot0)).withTimeout(0));//TODO: set max time until timeout
-                coDriverButtons.button(4).whileTrue(new LoadCoral());
+                coDriverButtons.button(4).whileTrue(new LoadCoral().andThen((new PrepCoral()).withTimeout(0))); //TODO: set max time until timeout
                 coDriverButtons.button(1).whileTrue(new OutputCoral());
 
                 //driverButtons.button(-1).onTrue((new SetWristState(WristStates.FOURTYFIVE, ClosedLoopSlot.kSlot0)).withTimeout(1));//test withTimeout(can delete)

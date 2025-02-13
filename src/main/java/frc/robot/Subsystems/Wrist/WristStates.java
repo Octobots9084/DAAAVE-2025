@@ -9,7 +9,8 @@ public enum WristStates {
   FOURTYFIVE(0.515),
   VERTICAL(0.437), // maybe?
   BACKOF(0.2),
-  CLIMB(0);
+  CLIMB(0),
+  PREP(0.64);
 
   public double wristPosition;
 
