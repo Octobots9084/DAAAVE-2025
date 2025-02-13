@@ -28,7 +28,11 @@ public class Elevator extends SubsystemBase {
     return instance;
   }
 
-  public ElevatorStates getReefTargetLevel() {
+  public void setTargetState(ElevatorStates state){
+    targetLevel = state;
+  }
+
+  public ElevatorStates getReefTargetLevel(){
     return targetLevel;
   }
 

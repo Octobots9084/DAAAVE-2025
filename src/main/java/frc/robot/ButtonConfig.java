@@ -1,7 +1,6 @@
 package frc.robot;
 
 import com.revrobotics.spark.ClosedLoopSlot;
-
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -9,7 +8,6 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.Commands.AlgaeRollers.SetAlgaeRollersState;
-import frc.robot.Commands.complex.CancelAllCommands;
 import frc.robot.Commands.complex.PrepIntake;
 import frc.robot.Commands.complex.ScoreCoral;
 import frc.robot.Commands.Elevator.SetElevatorState;
@@ -18,9 +16,8 @@ import frc.robot.Commands.ManualControl.WristManualControl;
 import frc.robot.Commands.CoralRollers.LoadCoral;
 import frc.robot.Commands.CoralRollers.OutputCoral;
 import frc.robot.Commands.CoralRollers.SetCoralRollersState;
-import frc.robot.Commands.Elevator.SetElevatorState;
+import frc.robot.Commands.ReefSelection.ReefLevelSelection;
 import frc.robot.Commands.ReefSelection.SetOrientation;
-import frc.robot.Commands.ReefSelection.SetTargetReefLevel;
 import frc.robot.Commands.Wrist.PrepCoral;
 import frc.robot.Commands.Wrist.SetWristState;
 import frc.robot.Subsystems.AlgaeRollers.AlgaeRollersStates;
@@ -38,27 +35,29 @@ public class ButtonConfig {
         static CommandJoystick coDriverButtons = ControlMap.CO_DRIVER_BUTTONS;
 
         public void initTeleop() {
+            
+            driverButtons.button(6).onTrue(new InstantCommand(() -> {Swerve.getInstance().zeroGyro();}));
+            // reef align
+            
+            //reef selection
+            coDriverRight.button(1).onTrue(new SetOrientation(0));
+            coDriverRight.button(2).onTrue(new SetOrientation(1));
 
-                driverButtons
-                                .button(6)
-                                .onTrue(
-                                                new InstantCommand(
-                                                                () -> {
-                                                                        Swerve.getInstance().zeroGyro();
-                                                                }));
-                // reef align
+            //level selection
+            coDriverButtons.button(10).onTrue(new ReefLevelSelection(4));
+            coDriverButtons.button(12).onTrue(new ReefLevelSelection(3));
+            coDriverButtons.button(14).onTrue(new ReefLevelSelection(2));
+            coDriverButtons.button(16).onTrue(new ReefLevelSelection(1));
 
-                coDriverLeft.button(1).onTrue(new SetOrientation(0));
-                coDriverLeft.button(2).onTrue(new SetOrientation(1));
 
-                driverButtons.button(5).onTrue(new SetCoralRollersState(CoralRollersState.INTAKING));
-                driverButtons.button(6).onTrue(new SetCoralRollersState(CoralRollersState.OUTPUT));
+            // driverButtons.button(5).onTrue(new SetCoralRollersState(CoralRollersState.INTAKING));
+            // driverButtons.button(6).onTrue(new SetCoralRollersState(CoralRollersState.OUTPUT));
 
-                coDriverButtons.button(13).whileTrue(new ElevatorManualControl(() -> MathUtil.applyDeadband(
-                                -ButtonConfig.coDriverRight.getRawAxis(1), OperatorConstants.LEFT_Y_DEADBAND)));
+            // coDriverButtons.button(13).whileTrue(new ElevatorManualControl(() -> MathUtil.applyDeadband(
+            //     -ButtonConfig.coDriverRight.getRawAxis(1), OperatorConstants.LEFT_Y_DEADBAND)));
 
-                coDriverButtons.button(14).whileTrue(new WristManualControl(() -> MathUtil.applyDeadband(
-                                -ButtonConfig.coDriverLeft.getRawAxis(0), OperatorConstants.LEFT_X_DEADBAND)));
+            // coDriverButtons.button(14).whileTrue(new WristManualControl(() -> MathUtil.applyDeadband(
+            //     -ButtonConfig.coDriverLeft.getRawAxis(0), OperatorConstants.LEFT_X_DEADBAND)));
 
                 driverButtons.button(7)
                                 .onTrue((new SetWristState(WristStates.FOURTYFIVE, ClosedLoopSlot.kSlot0).withTimeout(0))

@@ -8,9 +8,6 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Commands.CoralRollers.SetCoralRollersState;
 import frc.robot.Commands.Elevator.SetElevatorState;
-import frc.robot.Commands.ReefSelection.SetTargetReefLevel;
-import frc.robot.Commands.ReefSelection.SetTargetReefOrientation;
-import frc.robot.Commands.ReefSelection.SetTargetReefSide;
 import frc.robot.States.ReefTargetOrientation;
 import frc.robot.States.ReefTargetSide;
 import frc.robot.Subsystems.CoralRollers.CoralRollers;
@@ -45,9 +42,7 @@ public class ScoreCoral extends Command {
   public void initialize() {
     
     if (coralRollers.io.HasCoral()) {
-        swerve.setDriveState(DriveState.AlignReef);
-        CommandScheduler.getInstance().schedule(new SetTargetReefSide(targetSide));
-        CommandScheduler.getInstance().schedule(new SetTargetReefOrientation(targetOrientation));
+      swerve.setDriveState(DriveState.AlignReef);
     }
   }
 

@@ -24,12 +24,7 @@ public class ShowSelection {
     }
 
     for (int i = 1; i < 5; i++) {
-    SmartDashboard.putBoolean("L" + i, elevator.getReefTargetLevel() == ElevatorStates.values()[i]);
+    SmartDashboard.putBoolean("L" + i, elevator.getState() == ElevatorStates.values()[i]);
     }
-
-    SmartDashboard.putString("Yellow","🟨🟨🟨🟨🟨");
-    SmartDashboard.putString("REd","🟥🟥🟥🟥🟥");
-    SmartDashboard.putString("green", "🟩🟩🟩🟩🟩");
-
   }
 }

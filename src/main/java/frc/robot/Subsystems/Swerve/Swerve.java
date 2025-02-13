@@ -57,7 +57,7 @@ public class Swerve extends SubsystemBase {
   public boolean isAlignedToProcessor;
   public boolean isAlignedCenterReef; // TODO check if the algae removal needs to be centered on the reef
   private ReefTargetSide targetSide;
-  private ReefTargetOrientation targetOrientation;
+  private ReefTargetOrientation targetOrientation = ReefTargetOrientation.AB;
 
   public static Swerve getInstance() {
     if (INSTANCE == null) {
