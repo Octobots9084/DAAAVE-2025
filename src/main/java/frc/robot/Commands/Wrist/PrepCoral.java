@@ -10,7 +10,7 @@ public class PrepCoral extends Command {
 
   @Override
   public void initialize() {
-    Wrist.getInstance().setState(WristStates.PREP, ClosedLoopSlot.kSlot0); //TODO: change slot
+    Wrist.getInstance().setState(WristStates.PREP, ClosedLoopSlot.kSlot0);
   }
 
   @Override

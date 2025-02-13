@@ -1,5 +1,7 @@
 package frc.robot.Commands.complex;
 
+import com.revrobotics.spark.ClosedLoopSlot;
+
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -18,9 +20,10 @@ import frc.robot.Subsystems.Elevator.ElevatorStates;
 import frc.robot.Subsystems.Swerve.Swerve;
 import frc.robot.Subsystems.Swerve.Swerve.DriveState;
 import frc.robot.Subsystems.Wrist.Wrist;
+import frc.robot.Subsystems.Wrist.WristStates;
 
 public class ScoreCoral extends Command {
-  public boolean elevatorInPos = false;
+  public boolean elevatorInPosition = false;
   public boolean wristInPosition = false;
   public boolean isAligned = false;
   private Swerve swerve;
@@ -43,7 +46,6 @@ public class ScoreCoral extends Command {
     
     if (coralRollers.io.HasCoral()) {
         swerve.setDriveState(DriveState.AlignReef);
-        CommandScheduler.getInstance().schedule(new SetTargetReefLevel(targetElevatorState));
         CommandScheduler.getInstance().schedule(new SetTargetReefSide(targetSide));
         CommandScheduler.getInstance().schedule(new SetTargetReefOrientation(targetOrientation));
     }
@@ -52,11 +54,21 @@ public class ScoreCoral extends Command {
   @Override
   public void execute() {
     SmartDashboard.putBoolean("place L4", true);
-    elevatorInPos = elevator.isAtState(targetElevatorState, 0.1 /*TODO - set actual tolerance*/);
+    elevatorInPosition = elevator.isAtState(targetElevatorState, 0.1 /*TODO - set actual tolerance*/);
     wristInPosition = wrist.isAtState(targetElevatorState, 0.1 /*TODO - set actual tolerance*/);
-    isAligned = true; // Need vision code
+    isAligned = true; //TODO Need vision code
 
-    if (elevatorInPos
+    if (isAligned && !elevatorInPosition) {
+      Elevator.getInstance().setState(targetElevatorState);
+    }
+
+    //wristState1 is to stop it from constantly setting 
+    if (isAligned && !wristInPosition) {
+      Wrist.getInstance().setState(targetElevatorState, ClosedLoopSlot.kSlot0);//TODO do slot (remove? make actual slot? idk)
+    }
+    
+    
+    if (elevatorInPosition
             && wristInPosition
             && isAligned
             && (coralRollers.getState() != CoralRollersState.OUTPUT))
@@ -73,11 +85,7 @@ public class ScoreCoral extends Command {
 
     @Override
     public void end(boolean interrupted) {
-        CommandScheduler.getInstance()
-            .schedule(new SetCoralRollersState(CoralRollersState.STOPPED));
-        //swerve.setDriveState(DriveState.Manual);
-        CommandScheduler.getInstance()
-              .schedule(new PrepIntake(false));
+        Swerve.getInstance().setDriveState(DriveState.Manual);        
     }
   // new AlignReef().andThen(new SetCoralRollersState(CoralRollersState.REJECTING))
 }
