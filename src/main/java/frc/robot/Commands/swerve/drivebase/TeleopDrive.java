@@ -19,7 +19,7 @@ public class TeleopDrive extends Command {
   private final DoubleSupplier vY;
   private final DoubleSupplier omega;
   private static Swerve swerveInstance = Swerve.getInstance();
-  // private static AlignVision alignInstance = AlignVision.getInstance();
+  private static AlignVision alignInstance = AlignVision.getInstance();
 
   /**
    * Creates a new ExampleCommand.
@@ -55,7 +55,7 @@ public class TeleopDrive extends Command {
         break;
       case AlignReef:
         SmartDashboard.putString("AlignReef", "AllignReef");
-        // swerveInstance.driveRobotRelative(alignInstance.getAlignChassisSpeeds(AlignState.Reef));
+        swerveInstance.driveRobotRelative(alignInstance.getAlignChassisSpeeds(AlignState.Reef));
       case AlignProcessor:
         break;
       case AlignSource:

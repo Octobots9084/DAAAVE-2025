@@ -163,13 +163,14 @@ public class AlignVision extends SubsystemBase {
     double turnSpeed = 0;
     double targetDistance = 0;
     double aveLidarDist = (this.getRightLidarDistance() + this.getLeftLidarDistance()) / 2;
-    double diffLidarDist = this.getRightLidarDistance() - this.getLeftLidarDistance() + 0.01;
+    double diffLidarDist = this.getRightLidarDistance() - this.getLeftLidarDistance() - 0.01;
 
     int currentOffsetIndex = state == AlignState.Reef
         ? calcOrientationOffset(selectedReefOrientation, selectedPoleSide, selectedLevel)
         : 0;
 
     Pose3d refPosition = this.getReferenceRobotPosition();
+    SmartDashboard.putString("Refpos", refPosition.toString());
     AlignOffset currentOffset = state == AlignState.Reef ? AlignOffset.values()[currentOffsetIndex] : null;
 
     SmartDashboard.putBoolean("is both lidar", areBothLidarsValid());

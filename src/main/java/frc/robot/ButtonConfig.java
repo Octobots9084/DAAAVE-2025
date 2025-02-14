@@ -7,7 +7,11 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.States.ReefTargetLevel;
+import frc.robot.States.ReefTargetOrientation;
+import frc.robot.States.ReefTargetSide;
 import frc.robot.Commands.AlgaeRollers.SetAlgaeRollersState;
+import frc.robot.Commands.complex.Intake;
 import frc.robot.Commands.complex.PrepReefPlacement;
 import frc.robot.Commands.complex.ScoreCoral;
 import frc.robot.Commands.complex.collectCoral.WaitForCoralDetected;
@@ -27,6 +31,8 @@ import frc.robot.Subsystems.CoralRollers.CoralRollersState;
 import frc.robot.Subsystems.Elevator.Elevator;
 import frc.robot.Subsystems.Elevator.ElevatorStates;
 import frc.robot.Subsystems.Swerve.Swerve;
+import frc.robot.Subsystems.Swerve.Swerve.DriveState;
+import frc.robot.Subsystems.Vision.AlignVision;
 import frc.robot.Subsystems.Wrist.WristStates;
 
 public class ButtonConfig {
@@ -38,11 +44,14 @@ public class ButtonConfig {
         static CommandJoystick coDriverButtons = ControlMap.CO_DRIVER_BUTTONS;
 
         public void initTeleop() {
+                AlignVision.setPoleLevel(ReefTargetLevel.L2);
+                AlignVision.setPoleSide(ReefTargetSide.LEFT);
+
+                AlignVision.setReefOrientation(ReefTargetOrientation.AB);
 
                 driverButtons.button(6).onTrue(new InstantCommand(() -> {
                         Swerve.getInstance().zeroGyro();
                 }));
-                // reef align
 
                 // reef selection
                 coDriverRight.button(1).onTrue(new SetOrientation(0));
@@ -54,26 +63,22 @@ public class ButtonConfig {
                 coDriverButtons.button(12).onTrue(new ReefLevelSelection(2));
                 coDriverButtons.button(7).onTrue(new ReefLevelSelection(1));
 
+                // reef align
+                driverButtons.button(1).whileTrue(new InstantCommand(() -> {
+                        Swerve.getInstance().setDriveState(DriveState.AlignReef);
+                }));
+                driverButtons.button(1).onFalse(new InstantCommand(() -> {
+                        Swerve.getInstance().setDriveState(DriveState.Manual);
+                }));
+                driverButtons.button(2)
+                                .onTrue(new InstantCommand(() -> {
+                                        CoralRollers.getInstance().setState(CoralRollersState.OUTPUT);
+                                }).andThen(new WaitCommand(0.5)).andThen(new InstantCommand(() -> {
+                                        CoralRollers.getInstance().setState(CoralRollersState.STOPPED);
+                                })));
                 driverButtons.button(4)
                                 .onTrue(new PrepReefPlacement());
-                coDriverButtons.button(1).onTrue(new InstantCommand(() -> {
-                        CoralRollers.getInstance().setState(CoralRollersState.INTAKING);
-                }).andThen(new WaitForCoralDetected()).andThen(new WaitCommand(0.1)).andThen(new InstantCommand(() -> {
-                        CoralRollers.getInstance().setState(CoralRollersState.STOPPED);
-                })));
-                coDriverButtons.button(2).whileTrue(new InstantCommand(() -> {
-                        CoralRollers.getInstance().setState(CoralRollersState.OUTPUT);
-                }));
-                coDriverButtons.button(3).whileTrue(new InstantCommand(() -> {
-                        CoralRollers.getInstance().setState(CoralRollersState.STOPPED);
-                }));
+                driverButtons.button(5).onTrue(new Intake());
 
-                coDriverButtons.button(4).whileTrue(new InstantCommand(() -> {
-                        CoralRollers.getInstance().setState(CoralRollersState.LEVEL1);
-                }));
-
-                // driverButtons.button(-1).onTrue((new SetWristState(WristStates.FOURTYFIVE,
-                // ClosedLoopSlot.kSlot0)).withTimeout(1));//test withTimeout(can delete)
-                // 13 TOTAL todos for setting actual value above
         }
 }
