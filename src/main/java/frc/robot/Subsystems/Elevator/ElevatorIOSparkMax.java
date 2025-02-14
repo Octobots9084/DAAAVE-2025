@@ -32,8 +32,8 @@ public class ElevatorIOSparkMax implements ElevatorIO {
     leftConfig.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder);
     leftConfig.closedLoop.maxMotion.allowedClosedLoopError(0);
     leftConfig.closedLoop.positionWrappingEnabled(false);
-    leftConfig.voltageCompensation(5);
-    leftConfig.smartCurrentLimit(50, 10);
+    leftConfig.voltageCompensation(10);
+    leftConfig.smartCurrentLimit(50, 50);
     leftConfig.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder).pid(0.05, 0.000, 0);
     leftConfig.closedLoop.iZone(5);
     leftMotor.configure(leftConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
@@ -50,8 +50,8 @@ public class ElevatorIOSparkMax implements ElevatorIO {
     rightConfig.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder);
     rightConfig.closedLoop.maxMotion.allowedClosedLoopError(0);
     rightConfig.closedLoop.positionWrappingEnabled(false);
-    rightConfig.voltageCompensation(5);
-    rightConfig.smartCurrentLimit(50, 10);
+    rightConfig.voltageCompensation(10);
+    rightConfig.smartCurrentLimit(50, 50);
     rightConfig.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder).pid(0.05, 0.000, 0);
     rightConfig.closedLoop.iZone(5);
     rightMotor.configure(
@@ -66,7 +66,7 @@ public class ElevatorIOSparkMax implements ElevatorIO {
   public SparkMax getLeftMotor() {
     return leftMotor;
   }
-  
+
   @Override
   public SparkMax getRightMotor() {
     return rightMotor;
@@ -95,13 +95,13 @@ public class ElevatorIOSparkMax implements ElevatorIO {
 
   @Override
   public void setPosition(double leftPosition, double rightPosition) {
-    if (leftPosition < 0){
+    if (leftPosition < 0) {
       leftPosition = 0;
     }
-    if (rightPosition < 0){
+    if (rightPosition < 0) {
       rightPosition = 0;
     }
-    
+
     SmartDashboard.putNumber("position", rightPosition);
     leftMotor
         .getClosedLoopController()

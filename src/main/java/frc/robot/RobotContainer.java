@@ -99,13 +99,11 @@ public class RobotContainer {
         swerve = Swerve.getInstance();
 
         AlgaeRollers.setInstance(
-        new
-        AlgaeRollersIOSim(swerve.getIo().getSwerveDrive().getMapleSimDrive().get()));
+            new AlgaeRollersIOSim(swerve.getIo().getSwerveDrive().getMapleSimDrive().get()));
         algaeRollers = AlgaeRollers.getInstance();
 
         CoralRollers.setInstance(
-        new
-        CoralRollersIOSim(swerve.getIo().getSwerveDrive().getMapleSimDrive().get()));
+            new CoralRollersIOSim(swerve.getIo().getSwerveDrive().getMapleSimDrive().get()));
         coralRollers = CoralRollers.getInstance();
 
         Elevator.setInstance(new ElevatorIOSim());
@@ -138,23 +136,18 @@ public class RobotContainer {
         break;
     }
 
-    TeleopDrive closedFieldRel =
-        new TeleopDrive(
-            () ->
-                MathUtil.applyDeadband(
-                    -ButtonConfig.driverLeft.getRawAxis(1), OperatorConstants.LEFT_Y_DEADBAND),
-            () ->
-                MathUtil.applyDeadband(
-                    -ButtonConfig.driverLeft.getRawAxis(0), OperatorConstants.LEFT_X_DEADBAND),
-            () ->
-                MathUtil.applyDeadband(
-                    ButtonConfig.driverRight.getRawAxis(0), OperatorConstants.RIGHT_X_DEADBAND));
+    TeleopDrive closedFieldRel = new TeleopDrive(
+        () -> MathUtil.applyDeadband(
+            -ButtonConfig.driverLeft.getRawAxis(1), OperatorConstants.LEFT_Y_DEADBAND),
+        () -> MathUtil.applyDeadband(
+            -ButtonConfig.driverLeft.getRawAxis(0), OperatorConstants.LEFT_X_DEADBAND),
+        () -> MathUtil.applyDeadband(
+            ButtonConfig.driverRight.getRawAxis(0), OperatorConstants.RIGHT_X_DEADBAND));
     swerve.setDefaultCommand(closedFieldRel);
-
 
     autoChooser = AutoBuilder.buildAutoChooser(); // Default auto will be `Commands.none()`
     SmartDashboard.putData("Auto Mode", autoChooser);
-    VisionSubsystem.getInstance();
+    // VisionSubsystem.getInstance();
     ButtonConfig buttons = new ButtonConfig();
     buttons.initTeleop();
   }

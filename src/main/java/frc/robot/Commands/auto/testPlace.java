@@ -28,13 +28,13 @@ public class testPlace extends Command {
 
     @Override
     public void execute() {
-        Swerve.getInstance().driveRobotRelative(AlignVision.getInstance().getAlignChassisSpeeds(AlignState.Reef));
+        // Swerve.getInstance().driveRobotRelative(AlignVision.getInstance().getAlignChassisSpeeds(AlignState.Reef));
 
     }
 
     @Override
     public boolean isFinished() {
-
-        return AlignVision.getInstance().isAligned();
+        return false;
+        // return AlignVision.getInstance().isAligned();
     }
 }

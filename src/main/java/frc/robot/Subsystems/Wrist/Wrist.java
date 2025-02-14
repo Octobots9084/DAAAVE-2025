@@ -8,6 +8,7 @@ import org.littletonrobotics.junction.Logger;
 import com.fasterxml.jackson.annotation.JsonCreator.Mode;
 import com.google.flatbuffers.Constants;
 import com.revrobotics.spark.ClosedLoopSlot;
+import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.SparkMax;
 
 public class Wrist extends SubsystemBase {
@@ -26,11 +27,11 @@ public class Wrist extends SubsystemBase {
     return instance;
   }
 
-  public void setOffset(double offset){
+  public void setOffset(double offset) {
     io.setOffset(offset);
   }
 
-  public SparkMax getWristMotor() {
+  public SparkFlex getWristMotor() {
     return io.getWristMotor();
   }
 
@@ -42,9 +43,8 @@ public class Wrist extends SubsystemBase {
   public Wrist(WristIO io) {
     this.io = io;
   }
-  
-  public double getPosition()
-  {
+
+  public double getPosition() {
     return this.io.getPosition();
   }
 
@@ -76,13 +76,13 @@ public class Wrist extends SubsystemBase {
     if (state == ElevatorStates.LOW)
       wriststate = WristStates.LOW;
     else if (state == ElevatorStates.LEVEL1)
-      wriststate = WristStates.VERTICAL;
+      wriststate = WristStates.L1;
     else if (state == ElevatorStates.LEVEL2)
-      wriststate = WristStates.FOURTYFIVE;
+      wriststate = WristStates.L2;
     else if (state == ElevatorStates.LEVEL3)
-      wriststate = WristStates.FOURTYFIVE;
+      wriststate = WristStates.L3;
     else if (state == ElevatorStates.LEVEL4)
-      wriststate = WristStates.HORIZONTAL;
+      wriststate = WristStates.L4;
     else if (state == ElevatorStates.INTAKE)
       wriststate = WristStates.VERTICAL;
 
@@ -98,13 +98,13 @@ public class Wrist extends SubsystemBase {
     if (state == ElevatorStates.LOW)
       wriststate = WristStates.LOW;
     else if (state == ElevatorStates.LEVEL1)
-      wriststate = WristStates.VERTICAL;
+      wriststate = WristStates.L1;
     else if (state == ElevatorStates.LEVEL2)
-      wriststate = WristStates.FOURTYFIVE;
+      wriststate = WristStates.L2;
     else if (state == ElevatorStates.LEVEL3)
-      wriststate = WristStates.FOURTYFIVE;
+      wriststate = WristStates.L3;
     else if (state == ElevatorStates.LEVEL4)
-      wriststate = WristStates.HORIZONTAL;
+      wriststate = WristStates.L4;
     else if (state == ElevatorStates.INTAKE)
       wriststate = WristStates.VERTICAL;
 

@@ -6,6 +6,7 @@ import com.ctre.phoenix6.hardware.CANrange;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
@@ -14,7 +15,7 @@ import edu.wpi.first.wpilibj.CAN;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class CoralRollersIOSystems implements CoralRollersIO {
-  private final SparkMax motor = new SparkMax(13, MotorType.kBrushless);
+  private final SparkFlex motor = new SparkFlex(13, MotorType.kBrushless);
   private CANrange mouthBeam = new CANrange(21, "KrakensBus");
   private CANrange coralDetector = new CANrange(22, "KrakensBus");
   private CANrangeConfiguration configuration = new CANrangeConfiguration();
@@ -66,7 +67,7 @@ public class CoralRollersIOSystems implements CoralRollersIO {
 
   @Override
   public boolean HasCoral() {
-    boolean coral = coralDetector.getIsDetected().getValue();
+    boolean coral = coralDetector.getDistance().getValueAsDouble() < 0.1;
     SmartDashboard.putBoolean("HasCoral", coral);
     return coral;
   }

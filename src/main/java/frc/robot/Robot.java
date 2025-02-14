@@ -102,8 +102,10 @@ public class Robot extends LoggedRobot {
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
-    SmartDashboard.putNumber("LeftLidar", AlignVision.getInstance().getLeftLidarDistance());
-    SmartDashboard.putNumber("RightLidar", AlignVision.getInstance().getRightLidarDistance());
+    // SmartDashboard.putNumber("LeftLidar",
+    // AlignVision.getInstance().getLeftLidarDistance());
+    // SmartDashboard.putNumber("RightLidar",
+    // AlignVision.getInstance().getRightLidarDistance());
   }
 
   /** This function is called once when the robot is disabled. */
@@ -177,10 +179,10 @@ public class Robot extends LoggedRobot {
     Wrist.getInstance().updateSim();
     // Publish to telemetry using AdvantageKit
     Logger.recordOutput(
-    "FieldSimulation/AlgaePositions",
-    SimulatedArena.getInstance().getGamePiecesArrayByType("Algae"));
+        "FieldSimulation/AlgaePositions",
+        SimulatedArena.getInstance().getGamePiecesArrayByType("Algae"));
     Logger.recordOutput(
-    "FieldSimulation/Coral",
-    SimulatedArena.getInstance().getGamePiecesArrayByType("Coral"));
+        "FieldSimulation/Coral",
+        SimulatedArena.getInstance().getGamePiecesArrayByType("Coral"));
   }
 }

@@ -15,7 +15,7 @@ public class Elevator extends SubsystemBase {
   private ElevatorStates targetLevel = ElevatorStates.LOW;
   public ElevatorStates driverDesiredElevatorStates;
 
-  //TODO add actual input chanel
+  // TODO add actual input chanel
   public DigitalInput toplimitSwitch = new DigitalInput(0);
   public DigitalInput bottomlimitSwitch = new DigitalInput(1);
 
@@ -28,11 +28,11 @@ public class Elevator extends SubsystemBase {
     return instance;
   }
 
-  public void setTargetState(ElevatorStates state){
+  public void setTargetState(ElevatorStates state) {
     targetLevel = state;
   }
 
-  public ElevatorStates getReefTargetLevel(){
+  public ElevatorStates getReefTargetLevel() {
     return targetLevel;
   }
 
@@ -53,26 +53,25 @@ public class Elevator extends SubsystemBase {
   @Override
   public void periodic() {
     double currentPosition = this.inputs.leftPositionRotations;
-    
-    if(((targetLevel.position > this.BOT_CROSSBAR_POS && currentPosition < this.BOT_CROSSBAR_POS) ||
-    (targetLevel.position < this.TOP_CROSSBAR_POS && currentPosition > this.TOP_CROSSBAR_POS))
-    && Wrist.getInstance().IsInsideRobot()) {
+
+    if (((targetLevel.position > this.BOT_CROSSBAR_POS && currentPosition < this.BOT_CROSSBAR_POS) ||
+        (targetLevel.position < this.TOP_CROSSBAR_POS && currentPosition > this.TOP_CROSSBAR_POS))
+        && Wrist.getInstance().IsInsideRobot()) {
       io.setPosition(currentPosition, currentPosition);
     }
 
-    if(bottomlimitSwitch.get()) {
+    if (bottomlimitSwitch.get()) {
       // We are going up and top limit is tripped so stop
-      if (currentPosition < 0){
-        io.setPosition(0 ,0);
-        io.getLeftMotor().getAlternateEncoder().setPosition(0);
-      }  
+      if (currentPosition < 0) {
+        io.setPosition(0, 0);
+      }
     }
     io.updateInputs(inputs);
     Logger.processInputs("Elevator", inputs);
   }
 
   public void setState(ElevatorStates state) {
-    if(state.position < 0)
+    if (state.position < 0)
       state.position = 0;
     io.setPosition(state.position, state.position);
     targetLevel = state;
@@ -84,7 +83,7 @@ public class Elevator extends SubsystemBase {
   }
 
   public void manualSetTargetPosistion(double position) {
-    if(position < 0)
+    if (position < 0)
       position = 0;
     io.setPosition(position, position);
   }
