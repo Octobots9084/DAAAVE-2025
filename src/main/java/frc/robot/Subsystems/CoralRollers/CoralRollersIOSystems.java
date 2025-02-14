@@ -3,6 +3,7 @@ package frc.robot.Subsystems.CoralRollers;
 import com.ctre.phoenix6.CANBus;
 import com.ctre.phoenix6.configs.CANrangeConfiguration;
 import com.ctre.phoenix6.hardware.CANrange;
+import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
@@ -16,8 +17,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class CoralRollersIOSystems implements CoralRollersIO {
   private final SparkFlex motor = new SparkFlex(13, MotorType.kBrushless);
-  private CANrange mouthBeam = new CANrange(21, "KrakensBus");
-  private CANrange coralDetector = new CANrange(22, "KrakensBus");
+  private CANrange clawBackSensor = new CANrange(21, "KrakensBus");
+  private CANrange clawFrontSensor = new CANrange(22, "KrakensBus");
   private CANrangeConfiguration configuration = new CANrangeConfiguration();
 
   private SparkMaxConfig config;
@@ -32,8 +33,8 @@ public class CoralRollersIOSystems implements CoralRollersIO {
     motor.setCANTimeout(30);
     motor.setCANMaxRetries(5);
     configuration.ProximityParams.withProximityThreshold(0.2);
-    mouthBeam.getConfigurator().apply(configuration);
-    coralDetector.getConfigurator().apply(configuration);
+    clawBackSensor.getConfigurator().apply(configuration);
+    clawFrontSensor.getConfigurator().apply(configuration);
   }
 
   @Override
@@ -45,12 +46,18 @@ public class CoralRollersIOSystems implements CoralRollersIO {
     inputs.isIntaking = this.IsIntaking();
     inputs.hasCoral = this.HasCoral();
 
-    inputs.coralMeasureDist = coralDetector.getDistance().getValueAsDouble();
+    inputs.coralMeasureDist = clawFrontSensor.getDistance().getValueAsDouble();
   }
 
   @Override
   public void setVoltage(double voltage) {
     motor.setVoltage(voltage);
+  }
+
+  @Override
+  public void rotateBy(double movement) {
+    // TODO - make a PID controller
+    motor.getClosedLoopController().setReference(motor.getAbsoluteEncoder().getPosition() + movement, ControlType.kPosition);
   }
 
   public void getVoltage(double voltage) {
@@ -60,15 +67,25 @@ public class CoralRollersIOSystems implements CoralRollersIO {
   // TODO - Actually change these values
   @Override
   public boolean IsIntaking() {
-    boolean intaking = mouthBeam.getIsDetected().getValue();
+    boolean intaking = clawBackSensor.getIsDetected().getValue();
     SmartDashboard.putBoolean("IsIntaking", intaking);
     return intaking;
   }
 
   @Override
   public boolean HasCoral() {
-    boolean coral = coralDetector.getDistance().getValueAsDouble() < 0.1;
+    boolean coral = clawFrontSensor.getDistance().getValueAsDouble() < 0.1;
     SmartDashboard.putBoolean("HasCoral", coral);
     return coral;
+  }
+
+  @Override
+  public boolean clawFrontSensorTriggered() {
+    return clawFrontSensor.getDistance().getValueAsDouble() < 0.05;
+  }
+
+  @Override
+  public boolean clawBackSensorTriggered() {
+    return clawBackSensor.getDistance().getValueAsDouble() < 0.05;
   }
 }

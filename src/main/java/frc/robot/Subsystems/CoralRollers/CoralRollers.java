@@ -48,6 +48,18 @@ public class CoralRollers extends SubsystemBase {
     return io.IsIntaking();
   }
 
+  public boolean clawFrontSensorTriggered() {
+    return io.clawFrontSensorTriggered();
+  }
+
+  public boolean clawBackSensorTriggered() {
+    return io.clawBackSensorTriggered();
+  }
+
+  public void rotateBy(double movement) {
+    io.rotateBy(movement);
+  }
+
   public void updateSim() {
     io.updateSim();
   }

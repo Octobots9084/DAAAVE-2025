@@ -22,10 +22,24 @@ public interface CoralRollersIO {
   }
 
   // coral is in the claw
-  public boolean HasCoral();
+  public default boolean HasCoral() {
+    return false;
+  };
 
   // coral is in the intake funnel area (NOT the claw)
-  public boolean IsIntaking();
+  public default boolean IsIntaking() {
+    return false;
+  };
+
+  public default boolean clawFrontSensorTriggered() {
+    return false;
+  }
+
+  public default boolean clawBackSensorTriggered() {
+    return false;
+  }
+
+  public default void rotateBy(double movement) {}
 
   public default void updateSim() {
   };
