@@ -57,7 +57,8 @@ public class CoralRollersIOSystems implements CoralRollersIO {
   @Override
   public void rotateBy(double movement) {
     // TODO - make a PID controller
-    motor.getClosedLoopController().setReference(motor.getAbsoluteEncoder().getPosition() + movement, ControlType.kPosition);
+    motor.getClosedLoopController().setReference(motor.getAbsoluteEncoder().getPosition() + movement,
+        ControlType.kPosition);
   }
 
   public void getVoltage(double voltage) {
@@ -81,11 +82,11 @@ public class CoralRollersIOSystems implements CoralRollersIO {
 
   @Override
   public boolean clawFrontSensorTriggered() {
-    return clawFrontSensor.getDistance().getValueAsDouble() < 0.05;
+    return clawFrontSensor.getDistance().getValueAsDouble() < 0.1;
   }
 
   @Override
   public boolean clawBackSensorTriggered() {
-    return clawBackSensor.getDistance().getValueAsDouble() < 0.05;
+    return clawBackSensor.getDistance().getValueAsDouble() < 0.1;
   }
 }

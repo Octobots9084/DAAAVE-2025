@@ -199,10 +199,10 @@ public class ButtonConfig {
                                 .whileTrue(new LoadCoral().beforeStarting(new SetElevatorState(ElevatorStates.LOW))
                                                 .andThen((new PrepCoral()).withTimeout(0))); // TODO: set max time until
                                                                                              // timeout
-                coDriverButtons.button(1).whileTrue(new InstantCommand(() -> {
-                    CoralRollers.getInstance().setState(CoralRollersState.INTAKING);
-                }).andThen(new WaitForCoralDetected()).andThen(new WaitCommand(0.5)).andThen(new InstantCommand(() -> {
-                    CoralRollers.getInstance().setState(CoralRollersState.STOPPED);
+                coDriverButtons.button(1).onTrue(new InstantCommand(() -> {
+                        CoralRollers.getInstance().setState(CoralRollersState.INTAKING);
+                }).andThen(new WaitForCoralDetected()).andThen(new WaitCommand(0.1)).andThen(new InstantCommand(() -> {
+                        CoralRollers.getInstance().setState(CoralRollersState.STOPPED);
                 })));
                 coDriverButtons.button(2).whileTrue(new InstantCommand(() -> {
                         CoralRollers.getInstance().setState(CoralRollersState.OUTPUT);

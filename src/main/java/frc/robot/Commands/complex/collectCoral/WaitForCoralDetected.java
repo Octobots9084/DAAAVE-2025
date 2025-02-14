@@ -17,7 +17,7 @@ public class WaitForCoralDetected extends Command {
     }
 
     public boolean isFinished() {
-        return (coralRollers.clawFrontSensorTriggered() && elevator.getReefTargetLevel() == ElevatorStates.LOW
+        return (coralRollers.clawFrontSensorTriggered()
                 && coralRollers.clawBackSensorTriggered());
     }
 
