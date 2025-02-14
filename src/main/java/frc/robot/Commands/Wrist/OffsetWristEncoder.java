@@ -8,7 +8,7 @@ public class OffsetWristEncoder extends Command{
     double encoderPosition;
     @Override
     public void execute(){
-        encoderPosition = Wrist.getInstance().getWristMotor().getEncoder().getPosition();
-        Wrist.getInstance().setOffset(encoderPosition-WristStates.VERTICAL.wristPosition);
+        // encoderPosition = Wrist.getInstance().getWristMotor().getEncoder().getPosition();
+        // Wrist.getInstance().setOffset(encoderPosition-WristStates.VERTICAL.wristPosition);
     }
 }

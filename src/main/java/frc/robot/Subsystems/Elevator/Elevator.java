@@ -2,6 +2,7 @@ package frc.robot.Subsystems.Elevator;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Subsystems.Wrist.Wrist;
 
@@ -32,10 +33,6 @@ public class Elevator extends SubsystemBase {
     targetLevel = state;
   }
 
-  public ElevatorStates getReefTargetLevel() {
-    return targetLevel;
-  }
-
   public double getPosition() {
     return this.io.getPosition();
   }
@@ -52,20 +49,22 @@ public class Elevator extends SubsystemBase {
 
   @Override
   public void periodic() {
-    double currentPosition = this.inputs.leftPositionRotations;
+    // double currentPosition = this.inputs.leftPositionRotations;
 
-    if (((targetLevel.position > this.BOT_CROSSBAR_POS && currentPosition < this.BOT_CROSSBAR_POS) ||
-        (targetLevel.position < this.TOP_CROSSBAR_POS && currentPosition > this.TOP_CROSSBAR_POS))
-        && Wrist.getInstance().IsInsideRobot()) {
-      io.setPosition(currentPosition, currentPosition);
-    }
+    // if (((targetLevel.position > this.BOT_CROSSBAR_POS && currentPosition <
+    // this.BOT_CROSSBAR_POS) ||
+    // (targetLevel.position < this.TOP_CROSSBAR_POS && currentPosition >
+    // this.TOP_CROSSBAR_POS))
+    // && Wrist.getInstance().IsInsideRobot()) {
+    // io.setPosition(currentPosition, currentPosition);
+    // }
 
-    if (bottomlimitSwitch.get()) {
-      // We are going up and top limit is tripped so stop
-      if (currentPosition < 0) {
-        io.setPosition(0, 0);
-      }
-    }
+    // if (bottomlimitSwitch.get()) {
+    // // We are going up and top limit is tripped so stop
+    // if (currentPosition < 0) {
+    // io.setPosition(0, 0);
+    // }
+    // }
     io.updateInputs(inputs);
     Logger.processInputs("Elevator", inputs);
   }
@@ -78,7 +77,8 @@ public class Elevator extends SubsystemBase {
     Logger.recordOutput("Elevator/State", state);
   }
 
-  public ElevatorStates getState() {
+  public ElevatorStates getTargetState() {
+
     return targetLevel;
   }
 

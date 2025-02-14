@@ -5,6 +5,7 @@ import frc.robot.Subsystems.Elevator.*;
 
 public class ShowSelection {
   private static Elevator elevator = Elevator.getInstance();
+
   @SuppressWarnings("static-access")
   public static void displayReefSelection() {
     int reefState = manager.joystick.joystickPos().ordinal();
@@ -24,7 +25,7 @@ public class ShowSelection {
     }
 
     for (int i = 1; i < 5; i++) {
-    SmartDashboard.putBoolean("L" + i, elevator.getState() == ElevatorStates.values()[i]);
+      SmartDashboard.putBoolean("L" + i, elevator.getTargetState() == ElevatorStates.values()[i]);
     }
   }
 }

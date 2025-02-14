@@ -142,7 +142,7 @@ public class RobotContainer {
         () -> MathUtil.applyDeadband(
             -ButtonConfig.driverLeft.getRawAxis(0), OperatorConstants.LEFT_X_DEADBAND),
         () -> MathUtil.applyDeadband(
-            ButtonConfig.driverRight.getRawAxis(0), OperatorConstants.RIGHT_X_DEADBAND));
+            -ButtonConfig.driverRight.getRawAxis(0), OperatorConstants.RIGHT_X_DEADBAND));
     swerve.setDefaultCommand(closedFieldRel);
 
     autoChooser = AutoBuilder.buildAutoChooser(); // Default auto will be `Commands.none()`
