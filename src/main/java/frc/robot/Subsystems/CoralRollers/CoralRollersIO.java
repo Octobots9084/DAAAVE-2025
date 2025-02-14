@@ -4,7 +4,6 @@ import com.ctre.phoenix6.hardware.CANrange;
 import org.littletonrobotics.junction.AutoLog;
 
 public interface CoralRollersIO {
-  CANrange coralDetector = new CANrange(0);
 
   @AutoLog
   public static class CoralRollersIOInputs {
@@ -19,7 +18,8 @@ public interface CoralRollersIO {
   public default void updateInputs(CoralRollersIOInputs inputs) {
   }
 
-  public default void setVoltage(double Position) {}
+  public default void setVoltage(double Position) {
+  }
 
   // coral is in the claw
   public boolean HasCoral();
@@ -27,6 +27,6 @@ public interface CoralRollersIO {
   // coral is in the intake funnel area (NOT the claw)
   public boolean IsIntaking();
 
-  public default void updateSim() {}
-  ;
+  public default void updateSim() {
+  };
 }

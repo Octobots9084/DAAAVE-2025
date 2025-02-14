@@ -66,8 +66,8 @@ public class AlignVision extends SubsystemBase {
     this.swerve = Swerve.getInstance();
     this.vision = VisionSubsystem.getInstance();
 
-    this.leftRange = new CANrange(10);
-    this.rightRange = new CANrange(12);
+    this.leftRange = new CANrange(13, "KrakensBus");
+    this.rightRange = new CANrange(14, "KrakensBus");
 
     this.cameraXPIDController = new PIDController(4, 0, 0);
     this.cameraYPIDController = new PIDController(4, 0, 0);
