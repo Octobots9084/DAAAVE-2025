@@ -14,7 +14,7 @@ import frc.robot.Commands.AlgaeRollers.SetAlgaeRollersState;
 import frc.robot.Commands.complex.Intake;
 import frc.robot.Commands.complex.PrepReefPlacement;
 import frc.robot.Commands.complex.ScoreCoral;
-import frc.robot.Commands.complex.collectCoral.WaitForCoralDetected;
+import frc.robot.Commands.complex.collectcoral.WaitForCoralDetected;
 import frc.robot.Commands.Elevator.SetElevatorState;
 import frc.robot.Commands.Elevator.SetElevatorStateTolerance;
 import frc.robot.Commands.ManualControl.WristManualControl;
