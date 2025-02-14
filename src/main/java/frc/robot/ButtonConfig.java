@@ -10,6 +10,7 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.Commands.AlgaeRollers.SetAlgaeRollersState;
 import frc.robot.Commands.complex.PrepIntake;
 import frc.robot.Commands.complex.ScoreCoral;
+import frc.robot.Commands.complex.collectCoral.WaitForCoralDetected;
 import frc.robot.Commands.Elevator.SetElevatorState;
 import frc.robot.Commands.Elevator.SetElevatorStateTolerance;
 import frc.robot.Commands.ManualControl.ElevatorManualControl;
@@ -199,8 +200,10 @@ public class ButtonConfig {
                                                 .andThen((new PrepCoral()).withTimeout(0))); // TODO: set max time until
                                                                                              // timeout
                 coDriverButtons.button(1).whileTrue(new InstantCommand(() -> {
-                        CoralRollers.getInstance().setState(CoralRollersState.INTAKING);
-                }));
+                    CoralRollers.getInstance().setState(CoralRollersState.INTAKING);
+                }).andThen(new WaitForCoralDetected()).andThen(new WaitCommand(0.5)).andThen(new InstantCommand(() -> {
+                    CoralRollers.getInstance().setState(CoralRollersState.STOPPED);
+                })));
                 coDriverButtons.button(2).whileTrue(new InstantCommand(() -> {
                         CoralRollers.getInstance().setState(CoralRollersState.OUTPUT);
                 }));
