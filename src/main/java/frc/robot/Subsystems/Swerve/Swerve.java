@@ -8,6 +8,7 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+import com.pathplanner.lib.events.EventTrigger;
 import com.revrobotics.spark.ClosedLoopSlot;
 
 import edu.wpi.first.math.Matrix;
@@ -120,7 +121,7 @@ public class Swerve extends SubsystemBase {
       NamedCommands.registerCommand("placeEF",
           new testPlace(ReefTargetLevel.L1, ReefTargetSide.LEFT, ReefTargetOrientation.EF));
       NamedCommands.registerCommand("InitalWristPos", new SetWristState(WristStates.PREP, ClosedLoopSlot.kSlot0));
-
+      new EventTrigger("PrepWristPosition").onTrue(new SetWristState(WristStates.PREP, ClosedLoopSlot.kSlot0));
       RobotConfig config = RobotConfig.fromGUISettings();
 
       // Configure AutoBuilder
