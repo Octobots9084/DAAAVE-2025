@@ -208,6 +208,10 @@ public class ButtonConfig {
                         CoralRollers.getInstance().setState(CoralRollersState.STOPPED);
                 }));
 
+                coDriverButtons.button(4).whileTrue(new InstantCommand(() -> {
+                        CoralRollers.getInstance().setState(CoralRollersState.LEVEL1);
+                }));
+
                 // driverButtons.button(-1).onTrue((new SetWristState(WristStates.FOURTYFIVE,
                 // ClosedLoopSlot.kSlot0)).withTimeout(1));//test withTimeout(can delete)
                 // 13 TOTAL todos for setting actual value above
