@@ -12,6 +12,7 @@ import frc.robot.States.ReefTargetOrientation;
 import frc.robot.States.ReefTargetSide;
 import frc.robot.Commands.AlgaeRollers.SetAlgaeRollersState;
 import frc.robot.Commands.complex.Intake;
+import frc.robot.Commands.complex.PlaceCoral;
 import frc.robot.Commands.complex.PrepReefPlacement;
 import frc.robot.Commands.complex.ScoreCoral;
 import frc.robot.Commands.complex.collectCoral.WaitForCoralDetected;
@@ -71,11 +72,7 @@ public class ButtonConfig {
                         Swerve.getInstance().setDriveState(DriveState.Manual);
                 }));
                 driverButtons.button(2)
-                                .onTrue(new InstantCommand(() -> {
-                                        CoralRollers.getInstance().setState(CoralRollersState.OUTPUT);
-                                }).andThen(new WaitCommand(0.5)).andThen(new InstantCommand(() -> {
-                                        CoralRollers.getInstance().setState(CoralRollersState.STOPPED);
-                                })));
+                                .onTrue(new PlaceCoral());
                 driverButtons.button(4)
                                 .onTrue(new PrepReefPlacement());
                 driverButtons.button(5).onTrue(new Intake());

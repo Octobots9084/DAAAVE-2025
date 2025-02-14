@@ -8,6 +8,8 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+import com.revrobotics.spark.ClosedLoopSlot;
+
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -23,10 +25,12 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Commands.fakeAlignSource;
 import frc.robot.Commands.fakePlaceCoral;
+import frc.robot.Commands.Wrist.SetWristState;
 import frc.robot.Commands.auto.testPlace;
 import frc.robot.States.ReefTargetLevel;
 import frc.robot.States.ReefTargetOrientation;
 import frc.robot.States.ReefTargetSide;
+import frc.robot.Subsystems.Wrist.WristStates;
 
 import java.util.function.DoubleSupplier;
 import org.littletonrobotics.junction.Logger;
@@ -109,11 +113,13 @@ public class Swerve extends SubsystemBase {
       // ScoreCoral(ElevatorStates.LEVEL4, ReefTargetSide.RIGHT,
       // ReefTargetOrientation.AB).withTimeout(0.75));
 
-      NamedCommands.registerCommand("placeAB", new testPlace(ReefTargetLevel.L1, ReefTargetSide.LEFT, ReefTargetOrientation.AB));
-      NamedCommands.registerCommand("placeCD", new testPlace(ReefTargetLevel.L1, ReefTargetSide.LEFT, ReefTargetOrientation.CD));
-      NamedCommands.registerCommand("placeEF", new testPlace(ReefTargetLevel.L1, ReefTargetSide.LEFT, ReefTargetOrientation.EF));
-
-
+      NamedCommands.registerCommand("placeAB",
+          new testPlace(ReefTargetLevel.L1, ReefTargetSide.LEFT, ReefTargetOrientation.AB));
+      NamedCommands.registerCommand("placeCD",
+          new testPlace(ReefTargetLevel.L1, ReefTargetSide.LEFT, ReefTargetOrientation.CD));
+      NamedCommands.registerCommand("placeEF",
+          new testPlace(ReefTargetLevel.L1, ReefTargetSide.LEFT, ReefTargetOrientation.EF));
+      NamedCommands.registerCommand("InitalWristPos", new SetWristState(WristStates.PREP, ClosedLoopSlot.kSlot0));
 
       RobotConfig config = RobotConfig.fromGUISettings();
 

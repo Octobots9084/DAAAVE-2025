@@ -23,7 +23,7 @@ public class Intake extends SequentialCommandGroup {
                         0.05,
                         ClosedLoopSlot.kSlot0),
                 new SetElevatorStateTolerance(ElevatorStates.INTAKE, 1.5),
-                new SetWristStateTolerance(WristStates.INTAKE, 0.001, ClosedLoopSlot.kSlot0),
+                new SetWristStateTolerance(WristStates.INTAKE, 0.05, ClosedLoopSlot.kSlot0),
                 new InstantCommand(() -> {
                     CoralRollers.getInstance().setState(CoralRollersState.INTAKING);
                 }),

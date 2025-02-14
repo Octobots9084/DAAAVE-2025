@@ -37,7 +37,7 @@ public class SwerveIOSystem implements SwerveIO {
       swerveDrive.setCosineCompensator(
           !SwerveDriveTelemetry.isSimulation); // Disables cosine compensation
       // for simulations since it causes discrepancies not seen in real life.
-      swerveDrive.setAngularVelocityCompensation(true, true, -0.07);
+      swerveDrive.setAngularVelocityCompensation(true, true, 0.07);
     } catch (IOException e) {
       e.printStackTrace();
     }
