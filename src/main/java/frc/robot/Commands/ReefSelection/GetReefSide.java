@@ -3,14 +3,18 @@ package frc.robot.Commands.ReefSelection;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import frc.robot.ControlMap;
+import frc.robot.States;
+import frc.robot.Subsystems.Swerve.Swerve;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class GetReefSide {
-  public static final CommandJoystick CO_DRIVER_LEFT = ControlMap.CO_DRIVER_LEFT;
-  private int[][] reefPoints = {{-1, 0}, {0, 1}, {1, 1}, {1, -1}, {0, -1}, {-1, -1}};
+  public static final CommandJoystick Right = ControlMap.CO_DRIVER_RIGHT;
+  private double[][] reefPoints = {{-0.2, 0.3}, {0, 0.475}, {0.3, 0.3}, {0.27, -0.1}, {0, -0.3}, {-0.1, -0.1}};
 
-  public manager.joystickState joystickPos() {
-    double xAxis = CO_DRIVER_LEFT.getRawAxis(0);
-    double yAxis = -CO_DRIVER_LEFT.getRawAxis(1);
+  @SuppressWarnings("static-access")
+  public States.ReefTargetOrientation joystickPos() {
+    double xAxis = Right.getRawAxis(0);
+    double yAxis = -Right.getRawAxis(1);
 
     double minDist = 5;
     int sidePos = 0;
@@ -26,11 +30,13 @@ public class GetReefSide {
       }
     }
 
-    xAxis = MathUtil.applyDeadband(xAxis, 0.05);
-    yAxis = MathUtil.applyDeadband(yAxis, 0.05);
+    xAxis = MathUtil.applyDeadband(xAxis, 0.075);
+    yAxis = MathUtil.applyDeadband(yAxis, 0.075);
     if (xAxis == 0 && yAxis == 0) {
-      return manager.joystickState.NONE;
+      return States.ReefTargetOrientation.NONE;
     }
-    return manager.joystickState.values()[sidePos];
+    SmartDashboard.putNumber("this is a thing and if it works I will be very very sad*-1",sidePos);
+    return Swerve.getInstance().getReefTargetOrientation().values()[sidePos];
+
   }
 }

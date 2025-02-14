@@ -29,28 +29,24 @@ public class VisionIOSim implements VisionIO {
   VisionSystemSim visionSim = new VisionSystemSim("main");
   TargetModel targetModel = TargetModel.kAprilTag36h11;
   SimCameraProperties cameraProp = new SimCameraProperties();
-  AprilTagFieldLayout tagLayout =
-      AprilTagFieldLayout.loadFromResource(AprilTagFields.kDefaultField.m_resourceFile);
+  AprilTagFieldLayout tagLayout = AprilTagFieldLayout.loadFromResource(AprilTagFields.kDefaultField.m_resourceFile);
 
   public Matrix<N3, N1> defatultStdDev = VecBuilder.fill(0.5, 0.5, 99999);
 
-  public final VisionCamera frontLeftCamera =
-      new VisionCamera("CamOne", VisionConstants.camOneTransform);
+  public final VisionCamera frontLeftCamera = new VisionCamera("Rex", VisionConstants.frontLeftTransform);
   // public final VisionCamera frontRightCamera = new VisionCamera("Triceratops",
   // VisionConstants.triceratopsTransform);
   // public StdDevs stdDevsCalculation;
 
   // The simulation of this camera. Its values used in real robot code will be
   // updated.
-  PhotonCameraSim cameraSim =
-      null; // new PhotonCameraSim(frontLeftCamera.getCameraObject(), cameraProp);
+  PhotonCameraSim cameraSim = null; // new PhotonCameraSim(frontLeftCamera.getCameraObject(), cameraProp);
 
-  private final Notifier allNotifier =
-      new Notifier(
-          () -> {
-            frontLeftCamera.run();
-            // frontRightCamera.run();
-          });
+  private final Notifier allNotifier = new Notifier(
+      () -> {
+        frontLeftCamera.run();
+        // frontRightCamera.run();
+      });
 
   public VisionIOSim() throws IOException {
     this.swerve = Swerve.getInstance();

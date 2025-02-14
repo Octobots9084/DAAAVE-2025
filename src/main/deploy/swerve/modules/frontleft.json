@@ -1,6 +1,6 @@
 {
   "drive": {
-    "type": "krakenx60foc",
+    "type": "talonfx",
     "id": 5,
     "canbus": "KrakensBus"
   },

@@ -5,17 +5,34 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Subsystems.Elevator.ElevatorStates;
 import org.littletonrobotics.junction.Logger;
 
+import com.fasterxml.jackson.annotation.JsonCreator.Mode;
+import com.google.flatbuffers.Constants;
+import com.revrobotics.spark.ClosedLoopSlot;
+import com.revrobotics.spark.SparkFlex;
+import com.revrobotics.spark.SparkMax;
+
 public class Wrist extends SubsystemBase {
   private final WristIO io;
   private final WristIOInputsAutoLogged inputs = new WristIOInputsAutoLogged();
-  private WristStates targetState = WristStates.VERTICAL;
+  private WristStates targetState;
   private static Wrist instance;
+  public final double MaxAngle = 0.668;
+  public final double MinAngle = 0;
+  public final double UnderCrossbarAngle = 0.261;
 
   public static Wrist getInstance() {
     if (instance == null) {
       throw new IllegalStateException("Wrist instance not set");
     }
     return instance;
+  }
+
+  public void setOffset(double offset) {
+    io.setOffset(offset);
+  }
+
+  public SparkFlex getWristMotor() {
+    return io.getWristMotor();
   }
 
   public static Wrist setInstance(WristIO io) {
@@ -25,19 +42,24 @@ public class Wrist extends SubsystemBase {
 
   public Wrist(WristIO io) {
     this.io = io;
-    io.configurePID(8, 0, 0);
+  }
+
+  public double getPosition() {
+    return this.io.getPosition();
   }
 
   @Override
   public void periodic() {
+
     io.updateInputs(inputs);
     Logger.processInputs("Wrist", inputs);
   }
 
-  public void setState(WristStates state) {
-    io.setPosition(state.wristPosition);
+  public void setState(WristStates state, ClosedLoopSlot slot) {
+    io.setPosition(state.wristPosition, slot);
     targetState = state;
     Logger.recordOutput("Wrist/State", state);
+    Logger.recordOutput("Wrist/CommandedPosition", state.wristPosition);
   }
 
   public WristStates getState() {
@@ -49,33 +71,48 @@ public class Wrist extends SubsystemBase {
   }
 
   public boolean isAtState(ElevatorStates state, double tolerance) {
-    WristStates wriststate = WristStates.LOW;
+    WristStates wriststate = WristStates.PREP;
     // TODO add the actual WristStates and elevatorStates
-    if (state == ElevatorStates.LOW) wriststate = WristStates.LOW;
-    else if (state == ElevatorStates.LEVEL1) wriststate = WristStates.VERTICAL;
-    else if (state == ElevatorStates.LEVEL2) wriststate = WristStates.FOURTYFIVE;
-    else if (state == ElevatorStates.LEVEL3) wriststate = WristStates.FOURTYFIVE;
-    else if (state == ElevatorStates.LEVEL4) wriststate = WristStates.HORIZONTAL;
-    else if (state == ElevatorStates.INTAKE) wriststate = WristStates.VERTICAL;
+    if (state == ElevatorStates.LEVEL1)
+      wriststate = WristStates.L1;
+    else if (state == ElevatorStates.LEVEL2)
+      wriststate = WristStates.L2;
+    else if (state == ElevatorStates.LEVEL3)
+      wriststate = WristStates.L3;
+    else if (state == ElevatorStates.LEVEL4)
+      wriststate = WristStates.L4;
+    else if (state == ElevatorStates.INTAKE)
+      wriststate = WristStates.INTAKE;
 
     return MathUtil.isNear(this.inputs.wristPositionRotations, wriststate.wristPosition, tolerance);
   }
 
-  // overloads the setstate method to allow converting between wrist and elevator state as they
+  // overloads the setstate method to allow converting between wrist and elevator
+  // state as they
   // should be corrilateds
-  public void setState(ElevatorStates state) {
-    WristStates wriststate = WristStates.LOW;
+  public void setState(ElevatorStates state, ClosedLoopSlot slot) {
+    WristStates wriststate = WristStates.PREP;
     // TODO add the actual WristStates and elevatorStates
-    if (state == ElevatorStates.LOW) wriststate = WristStates.LOW;
-    else if (state == ElevatorStates.LEVEL1) wriststate = WristStates.VERTICAL;
-    else if (state == ElevatorStates.LEVEL2) wriststate = WristStates.FOURTYFIVE;
-    else if (state == ElevatorStates.LEVEL3) wriststate = WristStates.FOURTYFIVE;
-    else if (state == ElevatorStates.LEVEL4) wriststate = WristStates.HORIZONTAL;
-    else if (state == ElevatorStates.INTAKE) wriststate = WristStates.VERTICAL;
+    if (state == ElevatorStates.LEVEL1)
+      wriststate = WristStates.L1;
+    else if (state == ElevatorStates.LEVEL2)
+      wriststate = WristStates.L2;
+    else if (state == ElevatorStates.LEVEL3)
+      wriststate = WristStates.L3;
+    else if (state == ElevatorStates.LEVEL4)
+      wriststate = WristStates.L4;
+    else if (state == ElevatorStates.INTAKE)
+      wriststate = WristStates.INTAKE;
 
     targetState = wriststate;
-    io.setPosition(wriststate.wristPosition);
+    io.setPosition(wriststate.wristPosition, slot);
     Logger.recordOutput("Wrist/State", wriststate);
+  }
+
+  public boolean IsInsideRobot() {
+    double wristPosition = this.getWristMotor().getAbsoluteEncoder().getPosition();
+
+    return (wristPosition < this.UnderCrossbarAngle);
   }
 
   public void updateSim() {

@@ -73,10 +73,10 @@ public final class Constants {
 
     // Transform Camera Coordinates to Robot Coordinates. Based on camera mounting
     // position.
-    public static final Transform3d transformFrontLeftToRobot = new Transform3d(0.2667, 0.279305, 0,
-        new Rotation3d(0, 0, Math.toRadians(-45)));
+    public static final Transform3d transformFrontLeftToRobot = new Transform3d(0.13, 0.37, 0,
+        new Rotation3d(0, 0, Math.toRadians(-30)));
 
-    public static final Transform3d camOneTransform = new Transform3d(0, 0, 0, new Rotation3d(0, 0, Math.toRadians(0)));
+    public static Transform3d frontLeftTransform = new Transform3d(0, 0, 0, new Rotation3d(0, 0, Math.toRadians(0)));
 
     public static final Transform3d triceratopsTransform = new Transform3d(0, 0.5379, 0,
         new Rotation3d(0, 0, Math.toRadians(0)));
@@ -88,7 +88,7 @@ public final class Constants {
     public static final double distanceToPole = 0.164;
 
     // Max Depth Distance of Lidar from Tag (Meters)
-    public static final double maxLidarDepthDistance = 0.4;
+    public static final double maxLidarDepthDistance = 0.15;
 
     // Max Depth Distance of Camera from Tag (Meters)
     public static final double maxCameraDepthDistance = 0.5;
@@ -108,5 +108,6 @@ public final class Constants {
     // (Fake values. Experiment and determine estimation noise on an actual robot.)
     public static final Matrix<N3, N1> kSingleTagStdDevs = VecBuilder.fill(0.2, 0.2, 0.2);
     public static final Matrix<N3, N1> kMultiTagStdDevs = VecBuilder.fill(0.2, 0.2, 0.2);
+
   }
 }

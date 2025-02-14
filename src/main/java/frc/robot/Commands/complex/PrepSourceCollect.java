@@ -1,5 +1,7 @@
 package frc.robot.Commands.complex;
 
+import com.revrobotics.spark.ClosedLoopSlot;
+
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Commands.CoralRollers.SetCoralRollersState;
 import frc.robot.Commands.Elevator.SetElevatorState;
@@ -12,7 +14,7 @@ public class PrepSourceCollect extends SequentialCommandGroup {
   public PrepSourceCollect() {
     addCommands(
         new SetElevatorState(ElevatorStates.LOW),
-        new SetWristState(WristStates.HORIZONTAL),
+        new SetWristState(WristStates.INTAKE, ClosedLoopSlot.kSlot0),
         new SetCoralRollersState(CoralRollersState.INTAKING));
   }
 }

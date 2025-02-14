@@ -2,6 +2,9 @@ package frc.robot.Subsystems.Elevator;
 
 import org.littletonrobotics.junction.AutoLog;
 
+import com.fasterxml.jackson.databind.ser.std.StdKeySerializers.Default;
+import com.revrobotics.spark.SparkMax;
+
 public interface ElevatorIO {
   @AutoLog
   public static class ElevatorIOInputs {
@@ -22,8 +25,17 @@ public interface ElevatorIO {
   public default void updateInputs(ElevatorIOInputs inputs) {}
 
   public default void setPosition(double leftPosition, double rightPosition) {}
+  
+  public default double getPosition() {return 0;}
 
   public default void updateSim() {}
   /** Set velocity PID constants. */
   public default void configurePID(double kP, double kI, double kD) {}
+
+  public default SparkMax getRightMotor() {
+    return null;
+  }
+  public default SparkMax getLeftMotor() {
+    return null;
+  }
 }

@@ -40,6 +40,14 @@ public class CoralRollers extends SubsystemBase {
     return coralRollersState;
   }
 
+  public boolean HasCoral() {
+    return io.HasCoral();
+  }
+
+  public boolean IsIntaking() {
+    return io.IsIntaking();
+  }
+
   public boolean clawFrontSensorTriggered() {
     return io.clawFrontSensorTriggered();
   }
@@ -48,8 +56,8 @@ public class CoralRollers extends SubsystemBase {
     return io.clawBackSensorTriggered();
   }
 
-  public boolean chuteSensorTriggered() {
-    return io.chuteSensorTriggered();
+  public void rotateBy(double movement) {
+    io.rotateBy(movement);
   }
 
   public void updateSim() {

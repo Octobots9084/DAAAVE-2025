@@ -126,6 +126,7 @@ public class SwerveIOSystem implements SwerveIO {
     swerveDrive.addVisionMeasurement(robotPose, timestamp, visionMeasurementStdDevs);
   }
 
+  @Override
   public SwerveDrive getSwerveDrive() {
     return swerveDrive;
   }

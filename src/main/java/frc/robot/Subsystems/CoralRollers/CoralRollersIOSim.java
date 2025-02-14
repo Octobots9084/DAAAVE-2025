@@ -1,6 +1,5 @@
 package frc.robot.Subsystems.CoralRollers;
 
-import static edu.wpi.first.units.Units.Degrees;
 import static edu.wpi.first.units.Units.Meters;
 import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.Radians;
@@ -14,11 +13,8 @@ import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.wpilibj.simulation.AnalogInputSim;
 import edu.wpi.first.wpilibj.simulation.DCMotorSim;
-import frc.robot.States.ReefTargetLevel;
 import frc.robot.Subsystems.Elevator.Elevator;
-import frc.robot.Subsystems.Elevator.ElevatorStates;
 import frc.robot.Subsystems.Wrist.Wrist;
-import frc.robot.Subsystems.Wrist.WristStates;
 
 // import org.dyn4j.geometry.Rectangle;
 import org.ironmaple.simulation.IntakeSimulation;
@@ -64,6 +60,7 @@ public class CoralRollersIOSim implements CoralRollersIO {
         inputs.velocityRPM = motorSim.getAngularVelocityRPM();
         inputs.appliedVolts = motorSim.getInputVoltage();
         inputs.currentAmps = motorSim.getCurrentDrawAmps();
+        inputs.hasCoral = this.HasCoral();
     }
 
     @Override
@@ -85,11 +82,11 @@ public class CoralRollersIOSim implements CoralRollersIO {
         motorSim.update(0.02);
         // NOTE - divided by 25 as a placeholder for the actual conversion factor
         // NOTE - the addition at the end is the base height of the robot
-        double dropHeight = Elevator.getInstance().getReefTargetLevel().position / 20 + 0.1;
+        double dropHeight = Elevator.getInstance().getTargetState().position / 20 + 0.1;
         double wristAngle = Wrist.getInstance().getState().wristPosition;
 
         // coral in chute and intaking, so coral moves from chute to claw
-        if (this.chuteSensorTriggered() && state == CoralRollersState.INTAKING) {
+        if (this.IsIntaking() && state == CoralRollersState.INTAKING) {
             intakeSimulation.obtainGamePieceFromIntake();
             this.hasCoralInClaw = true;
         }
@@ -97,14 +94,14 @@ public class CoralRollersIOSim implements CoralRollersIO {
         if (this.hasCoralInClaw) {
             coralInRobot = new Pose3d[] { new Pose3d(drivetrain.getSimulatedDriveTrainPose())
                     .plus(new Transform3d(0.35, 0, dropHeight, new Rotation3d(0, wristAngle, 0))) };
-        } else if (this.chuteSensorTriggered()) {
+        } else if (this.IsIntaking()) {
             coralInRobot = new Pose3d[] { new Pose3d(drivetrain.getSimulatedDriveTrainPose())
                     .plus(new Transform3d(0, 0, 0.75, new Rotation3d(0, 0.26, 0))) };
         }
         Logger.recordOutput("FieldSimulation/CoralInRobot", coralInRobot);
 
         // coral in claw is released
-        if (this.clawFrontSensorTriggered() && state == CoralRollersState.OUTPUT) {
+        if (this.HasCoral() && state == CoralRollersState.OUTPUT) {
             this.hasCoralInClaw = false;
             // removes algae from the algae intake rollers
 
@@ -130,17 +127,12 @@ public class CoralRollersIOSim implements CoralRollersIO {
     }
 
     @Override
-    public boolean clawFrontSensorTriggered() {
+    public boolean HasCoral() {
         return this.hasCoralInClaw;
     }
 
     @Override
-    public boolean clawBackSensorTriggered() {
-        return this.hasCoralInClaw;
-    }
-
-    @Override
-    public boolean chuteSensorTriggered() {
+    public boolean IsIntaking() {
         return this.intakeSimulation.getGamePiecesAmount() != 0;
     }
 }

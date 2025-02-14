@@ -4,6 +4,11 @@
       "visible": true
     }
   },
+  "Keyboard 1 Settings": {
+    "window": {
+      "visible": true
+    }
+  },
   "Keyboard 2 Settings": {
     "window": {
       "visible": true
@@ -39,6 +44,9 @@
         -1,
         -1,
         -1,
+        -1,
+        -1,
+        -1,
         -1
       ],
       "povConfig": [
@@ -67,12 +75,21 @@
         }
       ],
       "axisCount": 2,
-      "buttonCount": 4,
+      "buttonCount": 13,
       "buttonKeys": [
         77,
         44,
         46,
-        47
+        47,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1
       ],
       "povCount": 0
     },
@@ -88,9 +105,9 @@
         }
       ],
       "axisCount": 2,
-      "buttonCount": 10,
+      "buttonCount": 13,
       "buttonKeys": [
-        49,
+        -1,
         50,
         51,
         52,
@@ -99,6 +116,9 @@
         55,
         56,
         57,
+        -1,
+        -1,
+        -1,
         48
       ],
       "povCount": 0
@@ -112,6 +132,11 @@
   "robotJoysticks": [
     {
       "guid": "Keyboard0"
+    },
+    {},
+    {},
+    {
+      "guid": "030000008e060000ab00000000000000"
     },
     {
       "guid": "Keyboard1"
