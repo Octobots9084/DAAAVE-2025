@@ -1,4 +1,4 @@
-package frc.robot.Commands.complex.collectcoral;
+package frc.robot.Commands.complex.collectCoral;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
