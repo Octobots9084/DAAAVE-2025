@@ -75,6 +75,12 @@
           "data": {
             "name": "placeAB"
           }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "a_to_lowstation"
+          }
         }
       ]
     }
