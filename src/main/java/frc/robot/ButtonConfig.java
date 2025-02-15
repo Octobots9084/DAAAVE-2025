@@ -45,7 +45,7 @@ public class ButtonConfig {
         static CommandJoystick coDriverButtons = ControlMap.CO_DRIVER_BUTTONS;
 
         public void initTeleop() {
-                AlignVision.setPoleLevel(ReefTargetLevel.L2);
+                AlignVision.setPoleLevel(ElevatorStates.LEVEL1);
                 AlignVision.setPoleSide(ReefTargetSide.LEFT);
 
                 AlignVision.setReefOrientation(ReefTargetOrientation.AB);

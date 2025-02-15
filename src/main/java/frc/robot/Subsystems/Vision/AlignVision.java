@@ -20,6 +20,7 @@ import frc.robot.States.ReefTargetLevel;
 import frc.robot.States.ReefTargetOrientation;
 // import frc.robot.States.ReefTargetOrientation;
 import frc.robot.States.ReefTargetSide;
+import frc.robot.Subsystems.Elevator.ElevatorStates;
 import frc.robot.Subsystems.Swerve.Swerve;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
@@ -54,7 +55,7 @@ public class AlignVision extends SubsystemBase {
   private double turnAngle;
   private static ReefTargetOrientation selectedReefOrientation = null;
   private static ReefTargetSide selectedPoleSide = null;
-  private static ReefTargetLevel selectedLevel = null;
+  private static ElevatorStates selectedLevel = null;
   private PhotonTrackedTarget bestTarget = new PhotonTrackedTarget();
 
   boolean xInTolerance = false;
@@ -188,9 +189,9 @@ public class AlignVision extends SubsystemBase {
 
         if (state == AlignState.Reef) {
           if (selectedPoleSide == ReefTargetSide.LEFT) {
-            targetDistance += VisionConstants.distanceToPole;
-          } else if (selectedPoleSide == ReefTargetSide.RIGHT) {
             targetDistance -= VisionConstants.distanceToPole;
+          } else if (selectedPoleSide == ReefTargetSide.RIGHT) {
+            targetDistance += VisionConstants.distanceToPole;
           }
         } else {
           targetDistance = 0;
@@ -229,9 +230,9 @@ public class AlignVision extends SubsystemBase {
   }
 
   private int calcOrientationOffset(
-      ReefTargetOrientation orientation, ReefTargetSide side, ReefTargetLevel level) {
+      ReefTargetOrientation orientation, ReefTargetSide side, ElevatorStates level) {
 
-    return (6 * orientation.ordinal()) + (3 * side.ordinal()) + level.ordinal();
+    return (6 * orientation.ordinal()) + (3 * side.ordinal()) + level.ordinal() - 1;
   }
 
   private int handleTurnAngle(AlignState state) {
@@ -333,7 +334,7 @@ public class AlignVision extends SubsystemBase {
     selectedPoleSide = side;
   }
 
-  public static void setPoleLevel(ReefTargetLevel level) {
+  public static void setPoleLevel(ElevatorStates level) {
     SmartDashboard.putString("level", level.name());
     selectedLevel = level;
   }

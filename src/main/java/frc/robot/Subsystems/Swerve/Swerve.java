@@ -33,6 +33,7 @@ import frc.robot.States.ReefTargetLevel;
 import frc.robot.States.ReefTargetOrientation;
 import frc.robot.States.ReefTargetSide;
 import frc.robot.Subsystems.Elevator.ElevatorStates;
+import frc.robot.Subsystems.Vision.AlignVision;
 import frc.robot.Subsystems.Wrist.WristStates;
 
 import java.util.function.DoubleSupplier;
@@ -81,11 +82,13 @@ public class Swerve extends SubsystemBase {
 
   public void setReefTargetSide(ReefTargetSide side) {
     targetSide = side;
+    AlignVision.setPoleSide(side);
     Logger.recordOutput("Reef Allignment Target Side", targetSide);
   }
 
   public void setReefTargetOrientation(ReefTargetOrientation orientation) {
     targetOrientation = orientation;
+    AlignVision.setReefOrientation(orientation);
     Logger.recordOutput("Reef Allignment Target Position", targetOrientation);
   }
 
@@ -117,11 +120,11 @@ public class Swerve extends SubsystemBase {
       // ReefTargetOrientation.AB).withTimeout(0.75));
 
       NamedCommands.registerCommand("placeAB",
-          new testPlace(ReefTargetLevel.L1, ReefTargetSide.LEFT, ReefTargetOrientation.AB));
+          new testPlace(ElevatorStates.LEVEL4, ReefTargetSide.LEFT, ReefTargetOrientation.AB));
       NamedCommands.registerCommand("placeCD",
-          new testPlace(ReefTargetLevel.L1, ReefTargetSide.LEFT, ReefTargetOrientation.CD));
+          new testPlace(ElevatorStates.LEVEL4, ReefTargetSide.LEFT, ReefTargetOrientation.CD));
       NamedCommands.registerCommand("placeEF",
-          new testPlace(ReefTargetLevel.L1, ReefTargetSide.LEFT, ReefTargetOrientation.EF));
+          new testPlace(ElevatorStates.LEVEL4, ReefTargetSide.LEFT, ReefTargetOrientation.EF));
       NamedCommands.registerCommand("InitalWristPos", new SetWristState(WristStates.PREP, ClosedLoopSlot.kSlot0));
       new EventTrigger("PrepWristPosition").onTrue(new SetWristState(WristStates.PREP, ClosedLoopSlot.kSlot0));
       new EventTrigger("BringUpElevator").onTrue(new SetElevatorState(ElevatorStates.LEVEL4));

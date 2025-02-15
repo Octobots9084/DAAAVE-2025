@@ -25,11 +25,11 @@ import frc.robot.Subsystems.Vision.AlignVision;
 import frc.robot.Subsystems.Wrist.Wrist;
 
 public class testPlace extends Command {
-    ReefTargetLevel targetLevel;
+    ElevatorStates targetLevel;
     ReefTargetSide targetSide;
     ReefTargetOrientation targetOrientation;
 
-    public testPlace(ReefTargetLevel targetLevel, ReefTargetSide targetSide, ReefTargetOrientation targetOrientation) {
+    public testPlace(ElevatorStates targetLevel, ReefTargetSide targetSide, ReefTargetOrientation targetOrientation) {
         this.targetLevel = targetLevel;
         this.targetSide = targetSide;
         this.targetOrientation = targetOrientation;
