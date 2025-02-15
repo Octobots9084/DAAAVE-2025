@@ -73,13 +73,17 @@ public final class Constants {
 
     // Transform Camera Coordinates to Robot Coordinates. Based on camera mounting
     // position.
-    public static final Transform3d transformFrontLeftToRobot = new Transform3d(0.13, 0.37, 0,
+    public static final Transform3d transformFrontLeftToRobot = new Transform3d(0.13, 0.33, 0.2921,
         new Rotation3d(0, 0, Math.toRadians(-30)));
 
-    public static Transform3d frontLeftTransform = new Transform3d(0, 0, 0, new Rotation3d(0, 0, Math.toRadians(0)));
+    public static final Transform3d transformFrontRightToRobot = new Transform3d(0.13, -0.33, 0.2921,
+        new Rotation3d(0, 0, Math.toRadians(30)));
 
-    public static final Transform3d triceratopsTransform = new Transform3d(0, 0.5379, 0,
-        new Rotation3d(0, 0, Math.toRadians(0)));
+    public static final Transform3d transformMiddleRightToRobot = new Transform3d(0.13, -0.2794, 0.4318,
+        new Rotation3d(0, 0, Math.toRadians(-90)));
+
+    public static final Transform3d transformMiddleLeftToRobot = new Transform3d(0.13, 0.2794, 0.4318,
+        new Rotation3d(0, 0, Math.toRadians(90)));
 
     // Position of the AprilTag in Tag Coordinates.
     public static final Pose3d referenceTagPosition = Pose3d.kZero;

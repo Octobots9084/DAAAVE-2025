@@ -16,14 +16,21 @@ public class VisionIOSystem implements VisionIO {
 
   public Matrix<N3, N1> defatultStdDev = VecBuilder.fill(0.5, 0.5, 99999);
 
-  public final VisionCamera frontLeftCamera = new VisionCamera("Rex", VisionConstants.frontLeftTransform);
-  // public final VisionCamera frontRightCamera = new VisionCamera("Triceratops",
-  // VisionConstants.triceratopsTransform);
-  // public StdDevs stdDevsCalculation;
+  public final VisionCamera frontLeftCamera = new VisionCamera("Rex", VisionConstants.transformFrontLeftToRobot);
+  public final VisionCamera frontRightCamera = new VisionCamera("Tyrannosaurus",
+      VisionConstants.transformFrontRightToRobot);
+  public final VisionCamera middleRightCamera = new VisionCamera("Oviraptor",
+      VisionConstants.transformMiddleRightToRobot);
+  public final VisionCamera middleLeftCamera = new VisionCamera("Bronotsaurus",
+      VisionConstants.transformMiddleLeftToRobot);
+
+  public StdDevs stdDevsCalculation;
   private final Notifier allNotifier = new Notifier(
       () -> {
         frontLeftCamera.run();
-        // frontRightCamera.run();
+        frontRightCamera.run();
+        middleRightCamera.run();
+        middleLeftCamera.run();
       });
 
   public VisionIOSystem() {
@@ -41,23 +48,31 @@ public class VisionIOSystem implements VisionIO {
   @Override
   public void updateInputs(VisionIOInputs inputs) {
     inputs.frontLeftConnected = frontLeftCamera.isConnected();
-    // inputs.frontRightConnected = frontRightCamera.isConnected();
+    inputs.frontRightConnected = frontRightCamera.isConnected();
+    inputs.middleLeftConnected = middleLeftCamera.isConnected();
+    inputs.middleRightConnected = middleRightCamera.isConnected();
 
     inputs.frontLeftResult = frontLeftCamera.grabLatestResult();
-    // inputs.frontRightResult = frontRightCamera.grabLatestResult();
-
+    inputs.frontRightResult = frontRightCamera.grabLatestResult();
+    inputs.middleLeftResult = middleLeftCamera.grabLatestResult();
+    inputs.middleRightResult = middleRightCamera.grabLatestResult();
   }
 
   public void updatePose() {
     EstimatedRobotPose frontLeftPose = frontLeftCamera.grabLatestEstimatedPose();
-    // EstimatedRobotPose frontRightPose =
-    // frontRightCamera.grabLatestEstimatedPose();
+    EstimatedRobotPose frontRightPose = frontRightCamera.grabLatestEstimatedPose();
+    EstimatedRobotPose middleLeftPose = middleLeftCamera.grabLatestEstimatedPose();
+    EstimatedRobotPose middleRightPose = middleRightCamera.grabLatestEstimatedPose();
 
     Matrix<N3, N1> frontLeftStdDevs = frontLeftCamera.grabLatestStdDev();
-    // Matrix<N3, N1> frontRightStdDevs = frontRightCamera.grabLatestStdDev();
+    Matrix<N3, N1> frontRightStdDevs = frontRightCamera.grabLatestStdDev();
+    Matrix<N3, N1> middleLeftStdDevs = middleLeftCamera.grabLatestStdDev();
+    Matrix<N3, N1> middleRightStdDevs = middleRightCamera.grabLatestStdDev();
 
     addVisionReading(frontLeftPose, frontLeftStdDevs);
-    // addVisionReading(frontRightPose, frontRightStdDevs);
+    addVisionReading(frontRightPose, frontRightStdDevs);
+    addVisionReading(middleLeftPose, middleLeftStdDevs);
+    addVisionReading(middleRightPose, middleRightStdDevs);
   }
 
   public VisionCamera getFrontLeftCamera() {
@@ -68,17 +83,17 @@ public class VisionIOSystem implements VisionIO {
   public void addVisionReading(EstimatedRobotPose pose, Matrix<N3, N1> stdDevs) {
     if (pose != null && stdDevs != null) {
       Pose2d pose2d = pose.estimatedPose.toPose2d();
-      // stdDevsCalculation.update(pose2d.getX(), pose2d.getY(),
-      // pose2d.getRotation().getRadians());
+      stdDevsCalculation.update(pose2d.getX(), pose2d.getY(),
+          pose2d.getRotation().getRadians());
       // SmartDashboard.putNumber("StdDevsX",
-      // stdDevsCalculation.getStandardDeviationX());
+      //     stdDevsCalculation.getStandardDeviationX());
       // SmartDashboard.putNumber("StdDevsY",
-      // stdDevsCalculation.getStandardDeviationY());
+      //     stdDevsCalculation.getStandardDeviationY());
 
       // SmartDashboard.putNumber("StdDevsRot",
-      // stdDevsCalculation.getStandardDeviationRotation());
+      //     stdDevsCalculation.getStandardDeviationRotation());
 
-      // swerve.addVisionReading(pose2d, pose.timestampSeconds, stdDevs);
+      swerve.addVisionReading(pose2d, pose.timestampSeconds, stdDevs);
     }
   }
 }
