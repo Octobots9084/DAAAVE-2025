@@ -8,20 +8,20 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.423096590909091,
-        "y": 1.4872301136363637
+        "x": 2.5773565573770494,
+        "y": 1.4776127049180332
       },
       "isLocked": false,
       "linkedName": "lowstation"
     },
     {
       "anchor": {
-        "x": 3.3504545454545456,
-        "y": 2.4744176136363625
+        "x": 3.6202868852459016,
+        "y": 2.5924692622950816
       },
       "prevControl": {
-        "x": 2.7421875,
-        "y": 1.8162926136363637
+        "x": 2.9369877049180326,
+        "y": 1.9331454918032782
       },
       "nextControl": null,
       "isLocked": false,
@@ -37,11 +37,17 @@
       "waypointRelativePos": 0.20256583389601296,
       "endWaypointRelativePos": null,
       "command": null
+    },
+    {
+      "name": "BringUpElevator",
+      "waypointRelativePos": 0.6860229574611783,
+      "endWaypointRelativePos": null,
+      "command": null
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 5.0,
-    "maxAcceleration": 5.0,
+    "maxVelocity": 8.0,
+    "maxAcceleration": 7.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 10.0,

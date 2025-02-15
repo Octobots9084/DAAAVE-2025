@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 5.55030737704918,
-        "y": 2.736321721311475
+        "x": 5.4903688524590155,
+        "y": 2.8921618852459017
       },
       "prevControl": {
-        "x": 6.113729508196721,
-        "y": 2.6883709016393436
+        "x": 6.053790983606556,
+        "y": 2.84421106557377
       },
       "nextControl": null,
       "isLocked": false,
@@ -31,10 +31,17 @@
   "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "BringUpElevator",
+      "waypointRelativePos": 0.7940580688723768,
+      "endWaypointRelativePos": null,
+      "command": null
+    }
+  ],
   "globalConstraints": {
-    "maxVelocity": 5.0,
-    "maxAcceleration": 5.0,
+    "maxVelocity": 8.0,
+    "maxAcceleration": 7.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 10.0,

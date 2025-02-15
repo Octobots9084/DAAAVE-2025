@@ -26,11 +26,13 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Commands.fakeAlignSource;
 import frc.robot.Commands.fakePlaceCoral;
+import frc.robot.Commands.Elevator.SetElevatorState;
 import frc.robot.Commands.Wrist.SetWristState;
 import frc.robot.Commands.auto.testPlace;
 import frc.robot.States.ReefTargetLevel;
 import frc.robot.States.ReefTargetOrientation;
 import frc.robot.States.ReefTargetSide;
+import frc.robot.Subsystems.Elevator.ElevatorStates;
 import frc.robot.Subsystems.Wrist.WristStates;
 
 import java.util.function.DoubleSupplier;
@@ -122,6 +124,8 @@ public class Swerve extends SubsystemBase {
           new testPlace(ReefTargetLevel.L1, ReefTargetSide.LEFT, ReefTargetOrientation.EF));
       NamedCommands.registerCommand("InitalWristPos", new SetWristState(WristStates.PREP, ClosedLoopSlot.kSlot0));
       new EventTrigger("PrepWristPosition").onTrue(new SetWristState(WristStates.PREP, ClosedLoopSlot.kSlot0));
+      new EventTrigger("BringUpElevator").onTrue(new SetElevatorState(ElevatorStates.LEVEL4));
+
       RobotConfig config = RobotConfig.fromGUISettings();
 
       // Configure AutoBuilder
