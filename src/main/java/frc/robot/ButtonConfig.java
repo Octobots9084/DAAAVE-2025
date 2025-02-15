@@ -59,10 +59,10 @@ public class ButtonConfig {
                 coDriverRight.button(2).onTrue(new SetOrientation(1));
 
                 // level selection
-                coDriverButtons.button(8).onTrue(new ReefLevelSelection(4));
-                coDriverButtons.button(10).onTrue(new ReefLevelSelection(3));
-                coDriverButtons.button(12).onTrue(new ReefLevelSelection(2));
-                coDriverButtons.button(7).onTrue(new ReefLevelSelection(1));
+                coDriverButtons.button(10).onTrue(new ReefLevelSelection(4));
+                coDriverButtons.button(12).onTrue(new ReefLevelSelection(3));
+                coDriverButtons.button(14).onTrue(new ReefLevelSelection(2));
+                coDriverButtons.button(16).onTrue(new ReefLevelSelection(1));
 
                 // reef align
                 driverButtons.button(1).whileTrue(new InstantCommand(() -> {
