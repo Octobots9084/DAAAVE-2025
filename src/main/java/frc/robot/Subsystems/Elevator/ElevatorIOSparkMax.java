@@ -33,7 +33,7 @@ public class ElevatorIOSparkMax implements ElevatorIO {
     leftConfig.closedLoop.maxMotion.allowedClosedLoopError(0);
     leftConfig.closedLoop.positionWrappingEnabled(false);
     leftConfig.voltageCompensation(10);
-    leftConfig.smartCurrentLimit(50, 50);
+    leftConfig.smartCurrentLimit(40, 40);
     leftConfig.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder).pid(0.1, 0.000, 0);
     leftConfig.closedLoop.iZone(5);
     leftMotor.configure(leftConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
@@ -51,7 +51,7 @@ public class ElevatorIOSparkMax implements ElevatorIO {
     rightConfig.closedLoop.maxMotion.allowedClosedLoopError(0);
     rightConfig.closedLoop.positionWrappingEnabled(false);
     rightConfig.voltageCompensation(10);
-    rightConfig.smartCurrentLimit(50, 50);
+    rightConfig.smartCurrentLimit(40, 40);
     rightConfig.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder).pid(0.1, 0.000, 0);
     rightConfig.closedLoop.iZone(5);
     rightMotor.configure(

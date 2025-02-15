@@ -33,6 +33,7 @@ import frc.robot.Subsystems.Elevator.ElevatorIOSparkMax;
 import frc.robot.Subsystems.Swerve.Swerve;
 import frc.robot.Subsystems.Swerve.SwerveIO;
 import frc.robot.Subsystems.Swerve.SwerveIOSystem;
+import frc.robot.Subsystems.Vision.VisionIOSystem;
 import frc.robot.Subsystems.Vision.VisionSubsystem;
 import frc.robot.Subsystems.Wrist.Wrist;
 import frc.robot.Subsystems.Wrist.WristIOSim;
@@ -60,6 +61,7 @@ public class RobotContainer {
   private Elevator elevator;
   private Wrist wrist;
   private Swerve swerve;
+  private VisionSubsystem vision;
 
   private AlgaeRollersManual algaeRollersManual;
   private CoralRollersManual coralRollersManual;
@@ -96,6 +98,9 @@ public class RobotContainer {
 
         Swerve.setInstance(new SwerveIOSystem());
         swerve = Swerve.getInstance();
+
+        VisionSubsystem.setInstance(new VisionIOSystem());
+        vision = VisionSubsystem.getInstance();
         break;
 
       case SIM:

@@ -159,6 +159,8 @@ public class AlignVision extends SubsystemBase {
 
   public ChassisSpeeds getAlignChassisSpeeds(AlignState state) {
     result = vision.inputs.frontLeftResult;
+    SmartDashboard.putString("Align Result", result.toString());
+
     double ySpeed = 0;
     double xSpeed = 0;
     double turnSpeed = 0;
