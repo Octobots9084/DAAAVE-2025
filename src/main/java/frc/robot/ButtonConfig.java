@@ -74,13 +74,6 @@ public class ButtonConfig {
                 }));
                 driverButtons.button(2)
                                 .onTrue(new PlaceCoral());
-
-                driverButtons.button(3)
-                                .onTrue(new InstantCommand(() -> {
-                                        CoralRollers.getInstance().setState(CoralRollersState.LEVEL1);
-                                }).andThen(new WaitCommand(0.5)).andThen(new InstantCommand(() -> {
-                                        CoralRollers.getInstance().setState(CoralRollersState.STOPPED);
-                                })));
                 driverButtons.button(4)
                                 .onTrue(new PrepReefPlacement());
                 driverButtons.button(5).onTrue(new Intake());

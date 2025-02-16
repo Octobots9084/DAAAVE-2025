@@ -110,6 +110,6 @@ public class ElevatorIOSparkMax implements ElevatorIO {
 
     @Override
     public double getPosition() {
-        return (leftMotor.getEncoder().getPosition() + rightMotor.getEncoder().getPosition()) / 2.0;
+        return (leftMotor.getEncoder().getPosition() - rightMotor.getEncoder().getPosition()) / 2.0;
     }
 }
