@@ -21,7 +21,7 @@ public class VisionIOSystem implements VisionIO {
       VisionConstants.transformFrontRightToRobot);
   public final VisionCamera middleRightCamera = new VisionCamera("Oviraptor",
       VisionConstants.transformMiddleRightToRobot);
-  public final VisionCamera middleLeftCamera = new VisionCamera("Bronotsaurus",
+  public final VisionCamera middleLeftCamera = new VisionCamera("Brontosaurus",
       VisionConstants.transformMiddleLeftToRobot);
 
   public StdDevs stdDevsCalculation;

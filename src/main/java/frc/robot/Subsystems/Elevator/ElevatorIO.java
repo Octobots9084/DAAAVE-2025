@@ -24,7 +24,7 @@ public interface ElevatorIO {
   /** Updates the set of loggable inputs. */
   public default void updateInputs(ElevatorIOInputs inputs) {}
 
-  public default void setPosition(double leftPosition, double rightPosition) {}
+  public default void setPosition(double position) {}
   
   public default double getPosition() {return 0;}
 

@@ -49,8 +49,14 @@ public class Elevator extends SubsystemBase {
     // this.io.configurePID(0.7, 0, 0);
   }
 
+  public ElevatorIO getElevatorIo() {
+    return io;
+  }
+
   @Override
   public void periodic() {
+    
+    
     // double currentPosition = this.inputs.leftPositionRotations;
 
     // if (((targetLevel.position > this.BOT_CROSSBAR_POS && currentPosition <
@@ -74,7 +80,7 @@ public class Elevator extends SubsystemBase {
   public void setState(ElevatorStates state) {
     if (state.position < 0)
       state.position = 0;
-    io.setPosition(state.position, state.position);
+    // io.setPosition(state.position);
     targetLevel = state;
     Logger.recordOutput("Elevator/State", state);
   }
@@ -87,7 +93,7 @@ public class Elevator extends SubsystemBase {
   public void manualSetTargetPosistion(double position) {
     if (position < 0)
       position = 0;
-    io.setPosition(position, position);
+    io.setPosition(position);
   }
 
   public boolean isAtState(ElevatorStates state, double tolerance) {

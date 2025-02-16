@@ -32,8 +32,8 @@ public class ElevatorIOSim implements ElevatorIO {
   }
 
   @Override
-  public void setPosition(double leftPosition, double rightPosition) {
-    targetPosition = leftPosition;
+  public void setPosition(double position) {
+    targetPosition = position;
   }
 
   @Override
