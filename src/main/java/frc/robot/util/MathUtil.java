@@ -89,4 +89,11 @@ public class MathUtil {
     final double sign = Math.signum(a);
     return sign * Math.pow(Math.abs(a), b);
   }
+
+  public static double[] applyVectorScalingSquare(double x, double y, double maxSpeed) {
+    double angle = Math.atan2(y, x);
+    double maxDist = (0.375 + ((Math.asin(Math.sin(2*(angle + 0.785398163397) + 1.57079632679))) / (Math.sin(2*(angle + 0.785398163397) + 1.57079632679)*1.57079632679)));
+    double scaleRatio = maxSpeed * Math.sqrt(x*x + y*y) / maxDist;
+    return new double[]{x*scaleRatio, y*scaleRatio};
+  }
 }
