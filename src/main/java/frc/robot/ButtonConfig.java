@@ -11,6 +11,7 @@ import frc.robot.States.ReefTargetLevel;
 import frc.robot.States.ReefTargetOrientation;
 import frc.robot.States.ReefTargetSide;
 import frc.robot.Commands.AlgaeRollers.SetAlgaeRollersState;
+import frc.robot.Commands.complex.CancelAllCommands;
 import frc.robot.Commands.complex.Intake;
 import frc.robot.Commands.complex.PlaceCoral;
 import frc.robot.Commands.complex.PrepReefPlacement;
@@ -73,9 +74,17 @@ public class ButtonConfig {
                 }));
                 driverButtons.button(2)
                                 .onTrue(new PlaceCoral());
+
+                driverButtons.button(3)
+                                .onTrue(new InstantCommand(() -> {
+                                        CoralRollers.getInstance().setState(CoralRollersState.LEVEL1);
+                                }).andThen(new WaitCommand(0.5)).andThen(new InstantCommand(() -> {
+                                        CoralRollers.getInstance().setState(CoralRollersState.STOPPED);
+                                })));
                 driverButtons.button(4)
                                 .onTrue(new PrepReefPlacement());
                 driverButtons.button(5).onTrue(new Intake());
+                driverButtons.button(10).onTrue(new CancelAllCommands());
 
         }
 }

@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Subsystems.Elevator.Elevator;
+import frc.robot.Subsystems.Elevator.ElevatorStates;
 
 import java.io.File;
 import java.io.IOException;
@@ -35,11 +36,17 @@ public class SwerveIOSystem implements SwerveIO {
   double maximumSpeed = 12;
   double maxTurnSpeed = 5;
   private Field2d field = new Field2d();
-  SlewRateLimiter xFilterL4 = new SlewRateLimiter(3);
-  SlewRateLimiter yFilterL4 = new SlewRateLimiter(3);
+  SlewRateLimiter xFilterL4FieldRelative = new SlewRateLimiter(3);
+  SlewRateLimiter yFilterL4FieldRelative = new SlewRateLimiter(3);
 
-  SlewRateLimiter xFilterL3 = new SlewRateLimiter(6);
-  SlewRateLimiter yFilterL3 = new SlewRateLimiter(6);
+  SlewRateLimiter xFilterL3FieldRelative = new SlewRateLimiter(6);
+  SlewRateLimiter yFilterL3FieldRelative = new SlewRateLimiter(6);
+
+  SlewRateLimiter xFilterL4RobotRelative = new SlewRateLimiter(3);
+  SlewRateLimiter yFilterL4RobotRelative = new SlewRateLimiter(3);
+
+  SlewRateLimiter xFilterL3RobotRelative = new SlewRateLimiter(6);
+  SlewRateLimiter yFilterL3RobotRelative = new SlewRateLimiter(6);
 
   public SwerveIOSystem() {
     SwerveDriveTelemetry.verbosity = TelemetryVerbosity.HIGH;
@@ -97,42 +104,34 @@ public class SwerveIOSystem implements SwerveIO {
   }
 
   public void driveRobotRelative(ChassisSpeeds robotRelativeSpeeds) {
-    List<Matter> matter = new ArrayList<Matter>();
-    matter.add(new Matter(new Translation3d(0.1, 0, Elevator.getInstance().getPosition() * 0.01262), 20));
-
-    ChassisSpeeds fieldRelativeSpeeds = ChassisSpeeds.fromRobotRelativeSpeeds(robotRelativeSpeeds,
-        swerveDrive.getYaw());
-    Translation2d newTranslation2d = SwerveMath.limitVelocity(
-        new Translation2d(fieldRelativeSpeeds.vxMetersPerSecond, fieldRelativeSpeeds.vyMetersPerSecond),
-        swerveDrive.getFieldVelocity(), swerveDrive.getPose(), 0.02, 50, matter, swerveDrive.swerveDriveConfiguration);
-
-    ChassisSpeeds newVelocityFieldRelative = new ChassisSpeeds(newTranslation2d.getX(), newTranslation2d.getY(),
-        fieldRelativeSpeeds.omegaRadiansPerSecond);
-    ChassisSpeeds newVelocity = ChassisSpeeds.fromFieldRelativeSpeeds(newVelocityFieldRelative, swerveDrive.getYaw());
-
-    swerveDrive.drive(newVelocity);
+    if (Elevator.getInstance().getTargetState() == ElevatorStates.LEVEL4) {
+      robotRelativeSpeeds = new ChassisSpeeds(
+          xFilterL4RobotRelative.calculate(robotRelativeSpeeds.vxMetersPerSecond),
+          yFilterL4RobotRelative.calculate(robotRelativeSpeeds.vyMetersPerSecond),
+          robotRelativeSpeeds.omegaRadiansPerSecond);
+    } else if (Elevator.getInstance().getTargetState() == ElevatorStates.LEVEL3) {
+      robotRelativeSpeeds = new ChassisSpeeds(
+          xFilterL3RobotRelative.calculate(robotRelativeSpeeds.vxMetersPerSecond),
+          yFilterL3RobotRelative.calculate(robotRelativeSpeeds.vyMetersPerSecond),
+          robotRelativeSpeeds.omegaRadiansPerSecond);
+    }
+    swerveDrive.drive(robotRelativeSpeeds);
   }
 
   public void driveFieldRelative(ChassisSpeeds fieldRelativeSpeeds) {
-    // - (Elevator.getInstance().getPosition() / 150.0) * 0.5);
-    ChassisSpeeds limitedFieldRelativeSpeeds = new ChassisSpeeds(
-        xFilterL4.calculate(fieldRelativeSpeeds.vxMetersPerSecond),
-        yFilterL4.calculate(fieldRelativeSpeeds.vyMetersPerSecond),
-        fieldRelativeSpeeds.omegaRadiansPerSecond);
+    if (Elevator.getInstance().getTargetState() == ElevatorStates.LEVEL4) {
+      fieldRelativeSpeeds = new ChassisSpeeds(
+          xFilterL4FieldRelative.calculate(fieldRelativeSpeeds.vxMetersPerSecond),
+          yFilterL4FieldRelative.calculate(fieldRelativeSpeeds.vyMetersPerSecond),
+          fieldRelativeSpeeds.omegaRadiansPerSecond);
+    } else if (Elevator.getInstance().getTargetState() == ElevatorStates.LEVEL3) {
+      fieldRelativeSpeeds = new ChassisSpeeds(
+          xFilterL3FieldRelative.calculate(fieldRelativeSpeeds.vxMetersPerSecond),
+          yFilterL3FieldRelative.calculate(fieldRelativeSpeeds.vyMetersPerSecond),
+          fieldRelativeSpeeds.omegaRadiansPerSecond);
+    }
 
-    swerveDrive.driveFieldOriented(limitedFieldRelativeSpeeds);
-  }
-
-  public void driveRobotRelative(
-      Translation2d translation, double rotation, boolean fieldRelative, boolean isOpenLoop) {
-    List<Matter> matter = new ArrayList<Matter>();
-    matter.add(new Matter(new Translation3d(0.1, 0, Elevator.getInstance().getPosition() * 0.01262), 20));
-
-    Translation2d newTranslation2d = SwerveMath.limitVelocity(
-        translation,
-        swerveDrive.getFieldVelocity(), swerveDrive.getPose(), 0.02, 50, matter, swerveDrive.swerveDriveConfiguration);
-
-    swerveDrive.drive(newTranslation2d, rotation, fieldRelative, isOpenLoop);
+    swerveDrive.driveFieldOriented(fieldRelativeSpeeds);
   }
 
   public SwerveModuleState[] getModuleStates() {
@@ -164,7 +163,8 @@ public class SwerveIOSystem implements SwerveIO {
 
   public void addVisionReading(
       Pose2d robotPose, double timestamp, Matrix<N3, N1> visionMeasurementStdDevs) {
-    swerveDrive.addVisionMeasurement(robotPose, timestamp, visionMeasurementStdDevs);
+    swerveDrive.addVisionMeasurement(new Pose2d(robotPose.getX(), robotPose.getY(), new Rotation2d(this.getGyro())),
+        timestamp, visionMeasurementStdDevs);
   }
 
   @Override
