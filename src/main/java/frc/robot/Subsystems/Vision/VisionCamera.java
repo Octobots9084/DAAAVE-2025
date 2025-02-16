@@ -44,21 +44,17 @@ public class VisionCamera implements Runnable {
   private final PhotonCamera camera;
   private final PhotonPoseEstimator photonEstimator;
   private Matrix<N3, N1> curStdDevs;
-  private final AtomicReference<EstimatedRobotPose> atomicEstimatedRobotPose =
-      new AtomicReference<EstimatedRobotPose>();
-  private final AtomicReference<Matrix<N3, N1>> atomicStdDev =
-      new AtomicReference<Matrix<N3, N1>>();
-  private final AtomicReference<PhotonPipelineResult> atomicPhotonResult =
-      new AtomicReference<PhotonPipelineResult>();
+  private final AtomicReference<EstimatedRobotPose> atomicEstimatedRobotPose = new AtomicReference<EstimatedRobotPose>();
+  private final AtomicReference<Matrix<N3, N1>> atomicStdDev = new AtomicReference<Matrix<N3, N1>>();
+  private final AtomicReference<PhotonPipelineResult> atomicPhotonResult = new AtomicReference<PhotonPipelineResult>();
 
   private PhotonPipelineResult latestResult;
 
   public VisionCamera(String photonCameraName, Transform3d robotToCamera) {
     camera = new PhotonCamera(photonCameraName);
 
-    photonEstimator =
-        new PhotonPoseEstimator(
-            VisionConstants.kTagLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, robotToCamera);
+    photonEstimator = new PhotonPoseEstimator(
+        VisionConstants.kTagLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, robotToCamera);
     photonEstimator.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);
   }
 
@@ -103,11 +99,13 @@ public class VisionCamera implements Runnable {
   }
 
   /**
-   * Calculates new standard deviations This algorithm is a heuristic that creates dynamic standard
-   * deviations based on number of tags, estimation strategy, and distance from the tags.
+   * Calculates new standard deviations This algorithm is a heuristic that creates
+   * dynamic standard
+   * deviations based on number of tags, estimation strategy, and distance from
+   * the tags.
    *
    * @param estimatedPose The estimated pose to guess standard deviations for.
-   * @param targets All targets in this camera frame
+   * @param targets       All targets in this camera frame
    */
   private void updateEstimationStdDevs(
       Optional<EstimatedRobotPose> estimatedPose, List<PhotonTrackedTarget> targets) {
@@ -125,14 +123,14 @@ public class VisionCamera implements Runnable {
       // average-distance metric
       for (var tgt : targets) {
         var tagPose = photonEstimator.getFieldTags().getTagPose(tgt.getFiducialId());
-        if (tagPose.isEmpty()) continue;
+        if (tagPose.isEmpty())
+          continue;
         numTags++;
-        avgDist +=
-            tagPose
-                .get()
-                .toPose2d()
-                .getTranslation()
-                .getDistance(estimatedPose.get().estimatedPose.toPose2d().getTranslation());
+        avgDist += tagPose
+            .get()
+            .toPose2d()
+            .getTranslation()
+            .getDistance(estimatedPose.get().estimatedPose.toPose2d().getTranslation());
       }
 
       if (numTags == 0) {
@@ -142,11 +140,13 @@ public class VisionCamera implements Runnable {
         // One or more tags visible, run the full heuristic.
         avgDist /= numTags;
         // Decrease std devs if multiple targets are visible
-        if (numTags > 1) estStdDevs = VisionConstants.kMultiTagStdDevs;
+        if (numTags > 1)
+          estStdDevs = VisionConstants.kMultiTagStdDevs;
         // Increase std devs based on (average) distance
         if (numTags == 1 && avgDist > 4)
           estStdDevs = VecBuilder.fill(Double.MAX_VALUE, Double.MAX_VALUE, Double.MAX_VALUE);
-        else estStdDevs = estStdDevs.times(1 + (avgDist * avgDist / 30));
+        else
+          estStdDevs = estStdDevs.times(1 + (avgDist * avgDist / 30));
         curStdDevs = estStdDevs;
       }
     }
@@ -159,10 +159,15 @@ public class VisionCamera implements Runnable {
   /**
    * Returns the latest standard deviations of the estimated pose from {@link
    * #getEstimatedGlobalPose()}, for use with {@link
-   * edu.wpi.first.math.estimator.SwerveDrivePoseEstimator SwerveDrivePoseEstimator}. This should
+   * edu.wpi.first.math.estimator.SwerveDrivePoseEstimator
+   * SwerveDrivePoseEstimator}. This should
    * only be used when there are targets visible.
    */
   public Matrix<N3, N1> getEstimationStdDevs() {
     return curStdDevs;
+  }
+
+  public PhotonCamera getCamera() {
+    return camera;
   }
 }

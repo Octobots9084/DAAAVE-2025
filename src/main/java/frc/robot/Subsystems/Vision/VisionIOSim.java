@@ -29,7 +29,7 @@ public class VisionIOSim implements VisionIO {
   VisionSystemSim visionSim = new VisionSystemSim("main");
   TargetModel targetModel = TargetModel.kAprilTag36h11;
   SimCameraProperties cameraProp = new SimCameraProperties();
-  AprilTagFieldLayout tagLayout = AprilTagFieldLayout.loadFromResource(AprilTagFields.kDefaultField.m_resourceFile);
+  AprilTagFieldLayout tagLayout;
 
   public Matrix<N3, N1> defatultStdDev = VecBuilder.fill(0.5, 0.5, 99999);
 
@@ -40,7 +40,7 @@ public class VisionIOSim implements VisionIO {
 
   // The simulation of this camera. Its values used in real robot code will be
   // updated.
-  PhotonCameraSim cameraSim = null; // new PhotonCameraSim(frontLeftCamera.getCameraObject(), cameraProp);
+  PhotonCameraSim cameraSim = new PhotonCameraSim(frontLeftCamera.getCamera(), cameraProp);
 
   private final Notifier allNotifier = new Notifier(
       () -> {
@@ -48,7 +48,12 @@ public class VisionIOSim implements VisionIO {
         // frontRightCamera.run();
       });
 
-  public VisionIOSim() throws IOException {
+  public VisionIOSim() {
+    try {
+      tagLayout = AprilTagFieldLayout.loadFromResource(AprilTagFields.kDefaultField.m_resourceFile);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
     this.swerve = Swerve.getInstance();
 
     visionSim.addAprilTags(tagLayout);

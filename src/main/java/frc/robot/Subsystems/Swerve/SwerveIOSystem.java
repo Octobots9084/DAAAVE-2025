@@ -1,9 +1,11 @@
 package frc.robot.Subsystems.Swerve;
 
 import edu.wpi.first.math.Matrix;
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
@@ -12,9 +14,17 @@ import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Subsystems.Elevator.Elevator;
+
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 import swervelib.SwerveDrive;
+import swervelib.math.Matter;
+import swervelib.math.SwerveMath;
+import swervelib.parser.SwerveDriveConfiguration;
 import swervelib.parser.SwerveParser;
 import swervelib.telemetry.SwerveDriveTelemetry;
 import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
@@ -25,6 +35,11 @@ public class SwerveIOSystem implements SwerveIO {
   double maximumSpeed = 12;
   double maxTurnSpeed = 5;
   private Field2d field = new Field2d();
+  SlewRateLimiter xFilterL4 = new SlewRateLimiter(3);
+  SlewRateLimiter yFilterL4 = new SlewRateLimiter(3);
+
+  SlewRateLimiter xFilterL3 = new SlewRateLimiter(6);
+  SlewRateLimiter yFilterL3 = new SlewRateLimiter(6);
 
   public SwerveIOSystem() {
     SwerveDriveTelemetry.verbosity = TelemetryVerbosity.HIGH;
@@ -82,16 +97,42 @@ public class SwerveIOSystem implements SwerveIO {
   }
 
   public void driveRobotRelative(ChassisSpeeds robotRelativeSpeeds) {
-    swerveDrive.drive(robotRelativeSpeeds);
+    List<Matter> matter = new ArrayList<Matter>();
+    matter.add(new Matter(new Translation3d(0.1, 0, Elevator.getInstance().getPosition() * 0.01262), 20));
+
+    ChassisSpeeds fieldRelativeSpeeds = ChassisSpeeds.fromRobotRelativeSpeeds(robotRelativeSpeeds,
+        swerveDrive.getYaw());
+    Translation2d newTranslation2d = SwerveMath.limitVelocity(
+        new Translation2d(fieldRelativeSpeeds.vxMetersPerSecond, fieldRelativeSpeeds.vyMetersPerSecond),
+        swerveDrive.getFieldVelocity(), swerveDrive.getPose(), 0.02, 50, matter, swerveDrive.swerveDriveConfiguration);
+
+    ChassisSpeeds newVelocityFieldRelative = new ChassisSpeeds(newTranslation2d.getX(), newTranslation2d.getY(),
+        fieldRelativeSpeeds.omegaRadiansPerSecond);
+    ChassisSpeeds newVelocity = ChassisSpeeds.fromFieldRelativeSpeeds(newVelocityFieldRelative, swerveDrive.getYaw());
+
+    swerveDrive.drive(newVelocity);
   }
 
   public void driveFieldRelative(ChassisSpeeds fieldRelativeSpeeds) {
-    swerveDrive.driveFieldOriented(fieldRelativeSpeeds);
+    // - (Elevator.getInstance().getPosition() / 150.0) * 0.5);
+    ChassisSpeeds limitedFieldRelativeSpeeds = new ChassisSpeeds(
+        xFilterL4.calculate(fieldRelativeSpeeds.vxMetersPerSecond),
+        yFilterL4.calculate(fieldRelativeSpeeds.vyMetersPerSecond),
+        fieldRelativeSpeeds.omegaRadiansPerSecond);
+
+    swerveDrive.driveFieldOriented(limitedFieldRelativeSpeeds);
   }
 
   public void driveRobotRelative(
       Translation2d translation, double rotation, boolean fieldRelative, boolean isOpenLoop) {
-    swerveDrive.drive(translation, rotation, fieldRelative, isOpenLoop);
+    List<Matter> matter = new ArrayList<Matter>();
+    matter.add(new Matter(new Translation3d(0.1, 0, Elevator.getInstance().getPosition() * 0.01262), 20));
+
+    Translation2d newTranslation2d = SwerveMath.limitVelocity(
+        translation,
+        swerveDrive.getFieldVelocity(), swerveDrive.getPose(), 0.02, 50, matter, swerveDrive.swerveDriveConfiguration);
+
+    swerveDrive.drive(newTranslation2d, rotation, fieldRelative, isOpenLoop);
   }
 
   public SwerveModuleState[] getModuleStates() {

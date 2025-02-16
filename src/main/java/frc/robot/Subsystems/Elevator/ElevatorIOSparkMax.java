@@ -56,7 +56,7 @@ public class ElevatorIOSparkMax implements ElevatorIO {
         rightConfig.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder).pid(0.1, 0.000, 0);
         rightConfig.closedLoop.iZone(5);
         rightMotor.configure(
-            rightConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+                rightConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         rightMotor.setPeriodicFrameTimeout(30);
         rightMotor.setCANTimeout(30);
         rightMotor.setCANMaxRetries(5);
@@ -101,15 +101,15 @@ public class ElevatorIOSparkMax implements ElevatorIO {
         }
         SmartDashboard.putNumber("setPoint", position);
         leftMotor
-            .getClosedLoopController()
-            .setReference(position, ControlType.kPosition, ClosedLoopSlot.kSlot0, feedForward);
+                .getClosedLoopController()
+                .setReference(position, ControlType.kPosition, ClosedLoopSlot.kSlot0, feedForward);
         rightMotor
-            .getClosedLoopController()
-            .setReference(-position, ControlType.kPosition, ClosedLoopSlot.kSlot0, -feedForward);
+                .getClosedLoopController()
+                .setReference(-position, ControlType.kPosition, ClosedLoopSlot.kSlot0, -feedForward);
     }
 
     @Override
     public double getPosition() {
-        return leftMotor.getEncoder().getPosition();
+        return (leftMotor.getEncoder().getPosition() + rightMotor.getEncoder().getPosition()) / 2.0;
     }
 }
