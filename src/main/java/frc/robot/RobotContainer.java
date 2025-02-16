@@ -28,14 +28,17 @@ import frc.robot.Subsystems.CoralRollers.CoralRollersIOSim;
 import frc.robot.Subsystems.CoralRollers.CoralRollersIOSystems;
 import frc.robot.Subsystems.CoralRollers.CoralRollersIOSystems;
 import frc.robot.Subsystems.Elevator.Elevator;
+import frc.robot.Subsystems.Elevator.ElevatorIO;
 import frc.robot.Subsystems.Elevator.ElevatorIOSim;
 import frc.robot.Subsystems.Elevator.ElevatorIOSparkMax;
 import frc.robot.Subsystems.Swerve.Swerve;
 import frc.robot.Subsystems.Swerve.SwerveIO;
 import frc.robot.Subsystems.Swerve.SwerveIOSystem;
+import frc.robot.Subsystems.Vision.VisionIOSim;
 import frc.robot.Subsystems.Vision.VisionIOSystem;
 import frc.robot.Subsystems.Vision.VisionSubsystem;
 import frc.robot.Subsystems.Wrist.Wrist;
+import frc.robot.Subsystems.Wrist.WristIO;
 import frc.robot.Subsystems.Wrist.WristIOSim;
 import frc.robot.Subsystems.Wrist.WristIOSparkMax;
 
@@ -121,6 +124,9 @@ public class RobotContainer {
         Wrist.setInstance(new WristIOSim());
         wrist = Wrist.getInstance();
 
+        VisionSubsystem.setInstance(new VisionIOSim());
+        vision = VisionSubsystem.getInstance();
+
         SimulatedArena.getInstance().resetFieldForAuto();
         break;
 
@@ -132,11 +138,13 @@ public class RobotContainer {
         });
         coralRollers = CoralRollers.getInstance();
 
-        // Elevator.setInstance(new ElevatorIO() {});
-        // elevator = Elevator.getInstance();
+        Elevator.setInstance(new ElevatorIO() {
+        });
+        elevator = Elevator.getInstance();
 
-        // Wrist.setInstance(new WristIO() {});
-        // wrist = Wrist.getInstance();
+        Wrist.setInstance(new WristIO() {
+        });
+        wrist = Wrist.getInstance();
 
         Swerve.setInstance(new SwerveIO() {
         });

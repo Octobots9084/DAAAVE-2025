@@ -24,14 +24,15 @@ public class SetElevatorStateTolerance extends Command {
     public SetElevatorStateTolerance(ElevatorStates targetState, double tolerance) {
         this.targetState = targetState;
         this.tolerance = tolerance;
-        this.elevatorProfile = new TrapezoidProfile(new TrapezoidProfile.Constraints(72, 50));
-        this.elevatorCurrentPoint = new TrapezoidProfile.State(elevator.getPosition(), 0);
+        this.elevatorProfile = new TrapezoidProfile(new TrapezoidProfile.Constraints(100, 100));
         SmartDashboard.putNumber("Elevator Current Position", elevator.getPosition());
         this.elevatorGoal = new TrapezoidProfile.State(targetState.position, 0);
     }
 
     @Override
     public void initialize() {
+        this.elevatorCurrentPoint = new TrapezoidProfile.State(elevator.getPosition(), 0);
+
         elevator.setState(targetState);
     }
 

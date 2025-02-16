@@ -38,7 +38,7 @@ public class VisionIOSystem implements VisionIO {
 
     allNotifier.setName("runAll");
     allNotifier.startPeriodic(0.02);
-    // stdDevsCalculation = new StdDevs();
+    stdDevsCalculation = new StdDevs();
   }
 
   public void closeNotifiers() {
@@ -86,12 +86,12 @@ public class VisionIOSystem implements VisionIO {
       stdDevsCalculation.update(pose2d.getX(), pose2d.getY(),
           pose2d.getRotation().getRadians());
       // SmartDashboard.putNumber("StdDevsX",
-      //     stdDevsCalculation.getStandardDeviationX());
+      // stdDevsCalculation.getStandardDeviationX());
       // SmartDashboard.putNumber("StdDevsY",
-      //     stdDevsCalculation.getStandardDeviationY());
+      // stdDevsCalculation.getStandardDeviationY());
 
       // SmartDashboard.putNumber("StdDevsRot",
-      //     stdDevsCalculation.getStandardDeviationRotation());
+      // stdDevsCalculation.getStandardDeviationRotation());
 
       swerve.addVisionReading(pose2d, pose.timestampSeconds, stdDevs);
     }
