@@ -12,6 +12,7 @@ import frc.robot.Subsystems.Swerve.Swerve;
 import frc.robot.Subsystems.Vision.AlignVision;
 
 import java.util.function.DoubleSupplier;
+import frc.robot.util.MathUtil;
 
 /** An example command that uses an example subsystem. */
 public class TeleopDrive extends Command {
@@ -46,11 +47,12 @@ public class TeleopDrive extends Command {
     switch (swerveInstance.getDriveState()) {
       case Manual:
         SmartDashboard.putString("the code works!!", "nope sorry");
+        double[] speeds = MathUtil.applyVectorScalingSquare(vX.getAsDouble(), vY.getAsDouble(), swerveInstance.getIo().getMaxSpeed()); 
         Swerve.getInstance()
             .driveFieldRelative(
                 new ChassisSpeeds(
-                    vX.getAsDouble() * swerveInstance.getIo().getMaxSpeed(),
-                    vY.getAsDouble() * swerveInstance.getIo().getMaxSpeed(),
+                    speeds[0],
+                    speeds[1],
                     omega.getAsDouble() * swerveInstance.getIo().getMaxTurnSpeed()));
         break;
       case AlignReef:
