@@ -19,11 +19,11 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Commands.ReefSelection.ShowSelection;
 import frc.robot.Subsystems.AlgaeRollers.AlgaeRollers;
 import frc.robot.Subsystems.CoralRollers.CoralRollers;
-import frc.robot.Subsystems.Elevator.Elevator;
+import frc.robot.Subsystems.Elevator.*;
 import frc.robot.Subsystems.Swerve.Swerve;
 import frc.robot.Subsystems.Swerve.Swerve.DriveState;
 import frc.robot.Subsystems.Vision.AlignVision;
-import frc.robot.Subsystems.Wrist.Wrist;
+import frc.robot.Subsystems.Wrist.*;
 
 import org.ironmaple.simulation.SimulatedArena;
 import org.littletonrobotics.junction.LogFileUtil;
@@ -32,6 +32,8 @@ import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.NT4Publisher;
 import org.littletonrobotics.junction.wpilog.WPILOGReader;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
+
+import com.revrobotics.spark.ClosedLoopSlot;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -111,6 +113,9 @@ public class Robot extends LoggedRobot {
   /** This function is called once when the robot is disabled. */
   @Override
   public void disabledInit() {
+    Elevator.getInstance().setTargetState(ElevatorStates.LEVEL1);
+    Elevator.getInstance().setState(ElevatorStates.LEVEL1);
+    Wrist.getInstance().setState(ElevatorStates.LEVEL1,ClosedLoopSlot.kSlot0);
   }
 
   /** This function is called periodically when disabled. */

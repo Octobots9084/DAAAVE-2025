@@ -30,7 +30,8 @@ public interface VisionIO {
     public PhotonPipelineResult backMiddleResult = null;
   }
 
-  public default void updateInputs(VisionIOInputs inputs) {}
+  public default void updateInputs(VisionIOInputs inputs) {
+  }
 
   public void updatePose();
 

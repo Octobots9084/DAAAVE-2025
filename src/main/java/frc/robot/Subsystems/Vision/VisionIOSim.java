@@ -33,7 +33,7 @@ public class VisionIOSim implements VisionIO {
 
   public Matrix<N3, N1> defatultStdDev = VecBuilder.fill(0.5, 0.5, 99999);
 
-  public final VisionCamera frontLeftCamera = new VisionCamera("Rex", VisionConstants.frontLeftTransform);
+  public final VisionCamera frontLeftCamera = new VisionCamera("Rex", VisionConstants.transformFrontLeftToRobot);
   // public final VisionCamera frontRightCamera = new VisionCamera("Triceratops",
   // VisionConstants.triceratopsTransform);
   // public StdDevs stdDevsCalculation;

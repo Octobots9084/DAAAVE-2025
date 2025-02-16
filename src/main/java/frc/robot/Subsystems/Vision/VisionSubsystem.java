@@ -2,20 +2,25 @@ package frc.robot.Subsystems.Vision;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.VisionConstants;
+
 import org.littletonrobotics.junction.Logger;
 
 public class VisionSubsystem extends SubsystemBase {
   VisionIO io;
   VisionIOInputsAutoLogged inputs = new VisionIOInputsAutoLogged();
 
-  public static VisionSubsystem INSTANCE;
+  public static VisionSubsystem instance;
 
   public static VisionSubsystem getInstance() {
-    if (INSTANCE == null) {
-      INSTANCE = new VisionSubsystem(new VisionIOSystem());
+    if (instance == null) {
+      throw new IllegalStateException("Vision instance not set");
     }
+    return instance;
+  }
 
-    return INSTANCE;
+  public static VisionSubsystem setInstance(VisionIO io) {
+    instance = new VisionSubsystem(io);
+    return instance;
   }
 
   public VisionSubsystem(VisionIO io) {
