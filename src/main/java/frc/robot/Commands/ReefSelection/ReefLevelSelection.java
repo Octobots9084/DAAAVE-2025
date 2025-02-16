@@ -15,6 +15,6 @@ public class ReefLevelSelection extends InstantCommand {
 
   @Override
   public void initialize() {
-    Elevator.getInstance().setTargetState(ElevatorStates.values()[level]);
+    manager.level = ElevatorStates.values()[level];
   }
 }
