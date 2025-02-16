@@ -7,8 +7,10 @@ import com.ctre.phoenix6.hardware.CANrange;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -50,9 +52,10 @@ public class AlignVision extends SubsystemBase {
   private PIDController gyroRotationPIDController;
   private PIDController lidarRotationPIDController;
 
-  private PhotonPipelineResult result;
-
+  private PhotonPipelineResult finalResult;
+  private int finalTagID;
   private double turnAngle;
+
   private static ReefTargetOrientation selectedReefOrientation = null;
   private static ReefTargetSide selectedPoleSide = null;
   private static ElevatorStates selectedLevel = null;
@@ -136,14 +139,14 @@ public class AlignVision extends SubsystemBase {
     // Transform Tag Coordinates to Camera Coordinates from photonvision.
     Transform3d transformTagToCamera;
 
-    if (result != null
-        && result.getBestTarget() != null
-        && this.isValidAlignTag(result.getBestTarget().getFiducialId())) {
+    if (finalResult != null
+        && finalResult.getBestTarget() != null
+        && this.isValidAlignTag(finalResult.getBestTarget().getFiducialId())) {
       // Position of the AprilTag in Robot Coordinates.
       Pose3d referenceRobotPosition;
 
       // Get transformation matrix from photonvision
-      bestTarget = result.getBestTarget();
+      bestTarget = finalResult.getBestTarget();
       transformTagToCamera = bestTarget.getBestCameraToTarget(); // might need to invert
 
       // Transform Tag Position into Robot Coordinates
@@ -158,8 +161,37 @@ public class AlignVision extends SubsystemBase {
   }
 
   public ChassisSpeeds getAlignChassisSpeeds(AlignState state) {
-    result = vision.inputs.frontLeftResult;
-    SmartDashboard.putString("Align Result", result.toString());
+    turnAngle = handleTurnAngle(state);
+
+    PhotonPipelineResult rightCamResult = vision.inputs.frontRightResult;
+    PhotonPipelineResult leftCamResult = vision.inputs.frontLeftResult;
+    Transform3d rightBestTarget = new Transform3d(Double.MAX_VALUE, Double.MAX_VALUE, Double.MAX_VALUE,
+        new Rotation3d());
+    Transform3d leftBestTarget = new Transform3d(Double.MAX_VALUE, Double.MAX_VALUE, Double.MAX_VALUE,
+        new Rotation3d());
+    // double right
+
+    if (rightCamResult != null && rightCamResult.hasTargets()
+        && rightCamResult.getBestTarget().getFiducialId() == finalTagID) {
+      rightBestTarget = rightCamResult.getBestTarget().getBestCameraToTarget();
+    }
+
+    if (leftCamResult != null && leftCamResult.hasTargets()
+        && leftCamResult.getBestTarget().getFiducialId() == finalTagID) {
+      leftBestTarget = leftCamResult.getBestTarget().getBestCameraToTarget();
+    }
+
+    if (rightBestTarget.getTranslation().getDistance(Translation3d.kZero) > leftBestTarget.getTranslation()
+        .getDistance(Translation3d.kZero)) {
+      finalResult = leftCamResult;
+    } else if (rightBestTarget.getTranslation().getDistance(Translation3d.kZero) < leftBestTarget.getTranslation()
+        .getDistance(Translation3d.kZero)) {
+      finalResult = rightCamResult;
+    } else {
+      finalResult = rightCamResult;
+    }
+
+    // SmartDashboard.putString("Align Result", result.toString());
 
     double ySpeed = 0;
     double xSpeed = 0;
@@ -207,7 +239,7 @@ public class AlignVision extends SubsystemBase {
         xSpeed = this.calculateXSpeed(aveLidarDist, refPosition);
         SmartDashboard.putNumber("TargetDist", targetDistance);
 
-        turnSpeed = this.calculateTurnSpeed(diffLidarDist, refPosition, state);
+        turnSpeed = this.calculateTurnSpeed(diffLidarDist, refPosition);
 
         if (Double.isNaN(turnSpeed)) {
           ySpeed = 0;
@@ -242,6 +274,11 @@ public class AlignVision extends SubsystemBase {
     if (state == AlignState.Reef) {
       switch (selectedReefOrientation) {
         case AB:
+          if (Constants.isBlueAlliance) {
+            finalTagID = 10;
+          } else {
+            finalTagID = 10;
+          }
           return 0;
         case CD:
           return 60;
@@ -284,9 +321,7 @@ public class AlignVision extends SubsystemBase {
     }
   }
 
-  private double calculateTurnSpeed(double diffLidarDist, Pose3d refPosition, AlignState state) {
-    turnAngle = handleTurnAngle(state);
-
+  private double calculateTurnSpeed(double diffLidarDist, Pose3d refPosition) {
     if (turnAngle == Integer.MAX_VALUE) {
       return Double.NaN;
     }
