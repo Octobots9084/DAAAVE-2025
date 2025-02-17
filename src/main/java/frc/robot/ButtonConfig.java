@@ -16,6 +16,7 @@ import frc.robot.Commands.complex.Intake;
 import frc.robot.Commands.complex.PlaceCoral;
 import frc.robot.Commands.complex.PrepReefPlacement;
 import frc.robot.Commands.complex.ScoreCoral;
+import frc.robot.Commands.complex.LetTheChuteBeFree;
 import frc.robot.Commands.complex.collectCoral.WaitForCoralDetected;
 import frc.robot.Commands.Elevator.SetElevatorState;
 import frc.robot.Commands.Elevator.SetElevatorStateTolerance;
@@ -78,6 +79,9 @@ public class ButtonConfig {
                                 .onTrue(new PrepReefPlacement());
                 driverButtons.button(5).onTrue(new Intake());
                 driverButtons.button(10).onTrue(new CancelAllCommands());
+
+                //TODO change button to actual button for dropping the chute
+                driverButtons.button(9).onTrue(new LetTheChuteBeFree());
 
         }
 }
