@@ -128,7 +128,7 @@ public class Swerve extends SubsystemBase {
           new testPlace(ElevatorStates.LEVEL4, ReefTargetSide.LEFT, ReefTargetOrientation.EF));
       NamedCommands.registerCommand("InitalWristPos", new SetWristState(WristStates.PREP, ClosedLoopSlot.kSlot0));
       new EventTrigger("PrepWristPosition").onTrue(new SetWristState(WristStates.PREP, ClosedLoopSlot.kSlot0));
-      new EventTrigger("BringUpElevator").onTrue(new SetElevatorStateTolerance(ElevatorStates.LEVEL4, 5));
+      new EventTrigger("BringUpElevator").onTrue(new SetElevatorState(ElevatorStates.LEVEL4));
 
       RobotConfig config = RobotConfig.fromGUISettings();
 
