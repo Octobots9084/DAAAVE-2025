@@ -55,8 +55,7 @@ public class Elevator extends SubsystemBase {
 
   @Override
   public void periodic() {
-    
-    
+
     // double currentPosition = this.inputs.leftPositionRotations;
 
     // if (((targetLevel.position > this.BOT_CROSSBAR_POS && currentPosition <

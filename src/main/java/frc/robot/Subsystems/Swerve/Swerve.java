@@ -27,6 +27,7 @@ import frc.robot.Constants;
 import frc.robot.Commands.fakeAlignSource;
 import frc.robot.Commands.fakePlaceCoral;
 import frc.robot.Commands.Elevator.SetElevatorState;
+import frc.robot.Commands.Elevator.SetElevatorStateTolerance;
 import frc.robot.Commands.Wrist.SetWristState;
 import frc.robot.Commands.auto.testPlace;
 import frc.robot.States.ReefTargetLevel;
@@ -127,7 +128,7 @@ public class Swerve extends SubsystemBase {
           new testPlace(ElevatorStates.LEVEL4, ReefTargetSide.LEFT, ReefTargetOrientation.EF));
       NamedCommands.registerCommand("InitalWristPos", new SetWristState(WristStates.PREP, ClosedLoopSlot.kSlot0));
       new EventTrigger("PrepWristPosition").onTrue(new SetWristState(WristStates.PREP, ClosedLoopSlot.kSlot0));
-      new EventTrigger("BringUpElevator").onTrue(new SetElevatorState(ElevatorStates.LEVEL4));
+      new EventTrigger("BringUpElevator").onTrue(new SetElevatorStateTolerance(ElevatorStates.LEVEL4, 5));
 
       RobotConfig config = RobotConfig.fromGUISettings();
 
