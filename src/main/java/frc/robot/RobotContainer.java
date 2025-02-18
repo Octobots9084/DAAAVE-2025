@@ -22,6 +22,9 @@ import frc.robot.Commands.swerve.drivebase.TeleopDrive;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.Subsystems.AlgaeRollers.AlgaeRollers;
 import frc.robot.Subsystems.AlgaeRollers.AlgaeRollersIOSim;
+import frc.robot.Subsystems.Climb.Climb;
+import frc.robot.Subsystems.Climb.ClimbIO;
+import frc.robot.Subsystems.Climb.ClimbIOSystems;
 import frc.robot.Subsystems.CoralRollers.CoralRollers;
 import frc.robot.Subsystems.CoralRollers.CoralRollersIO;
 import frc.robot.Subsystems.CoralRollers.CoralRollersIOSim;
@@ -65,6 +68,7 @@ public class RobotContainer {
   private Wrist wrist;
   private Swerve swerve;
   private VisionSubsystem vision;
+  private Climb climb;
 
   private AlgaeRollersManual algaeRollersManual;
   private CoralRollersManual coralRollersManual;
@@ -104,6 +108,9 @@ public class RobotContainer {
 
         VisionSubsystem.setInstance(new VisionIOSystem());
         vision = VisionSubsystem.getInstance();
+
+        Climb.setInstance(new ClimbIOSystems());
+        climb = Climb.getInstance();
         break;
 
       case SIM:
@@ -133,7 +140,9 @@ public class RobotContainer {
       case REPLAY:
         // AlgaeRollers.setInstance(new AlgaeRollersIO() {});
         // algaeRollers = AlgaeRollers.getInstance();
-
+        Climb.setInstance(new ClimbIO() {
+        });
+        climb = Climb.getInstance();
         CoralRollers.setInstance(new CoralRollersIO() {
         });
         coralRollers = CoralRollers.getInstance();

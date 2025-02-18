@@ -22,14 +22,12 @@ public class ClimbIOSystems implements ClimbIO {
         config = new SparkMaxConfig();
         config.inverted(false);
         config.idleMode(IdleMode.kBrake);
-        config.voltageCompensation(3);
-        config.smartCurrentLimit(60, 60);
         config.signals.primaryEncoderPositionAlwaysOn(true);
         config.signals.primaryEncoderPositionPeriodMs(10);
-        config.voltageCompensation(0);
-        config.smartCurrentLimit(30, 10);
+        config.voltageCompensation(10);
+        config.smartCurrentLimit(60, 60);
 
-        config.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder).pid(0, 0.0, 0, ClosedLoopSlot.kSlot0);
+        config.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder).pid(0.05, 0.0, 0, ClosedLoopSlot.kSlot0);
 
         motor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         motor.setPeriodicFrameTimeout(30);
@@ -39,7 +37,7 @@ public class ClimbIOSystems implements ClimbIO {
 
     @Override
     public void updateInputs(ClimbIOInputs inputs) {
-        inputs.positionRotations = motor.getAbsoluteEncoder().getPosition();
+        inputs.positionRotations = motor.getEncoder().getPosition();
         inputs.velocityRPM = motor.getEncoder().getVelocity();
         inputs.appliedVolts = motor.getAppliedOutput();
         inputs.busVoltage = motor.getBusVoltage();
@@ -57,6 +55,16 @@ public class ClimbIOSystems implements ClimbIO {
         motor
                 .getClosedLoopController()
                 .setReference(newPosition, ControlType.kPosition, ClosedLoopSlot.kSlot0, feedForward);
+    }
+
+    @Override
+    public void zeroEncoder() {
+        motor.getEncoder().setPosition(0);
+    }
+
+    @Override
+    public void setVoltage(double voltage) {
+        motor.setVoltage(voltage);
     }
 
 }

@@ -104,12 +104,12 @@ public class SwerveIOSystem implements SwerveIO {
   }
 
   public void driveRobotRelative(ChassisSpeeds robotRelativeSpeeds) {
-    if (Elevator.getInstance().isAtState(ElevatorStates.LEVEL4, 15)) {
+    if (Elevator.getInstance().isAtState(ElevatorStates.LEVEL4, 5)) {
       robotRelativeSpeeds = new ChassisSpeeds(
           xFilterL4RobotRelative.calculate(robotRelativeSpeeds.vxMetersPerSecond),
           yFilterL4RobotRelative.calculate(robotRelativeSpeeds.vyMetersPerSecond),
           robotRelativeSpeeds.omegaRadiansPerSecond);
-    } else if (Elevator.getInstance().isAtState(ElevatorStates.LEVEL3, 15)) {
+    } else if (Elevator.getInstance().isAtState(ElevatorStates.LEVEL3, 5)) {
       robotRelativeSpeeds = new ChassisSpeeds(
           xFilterL3RobotRelative.calculate(robotRelativeSpeeds.vxMetersPerSecond),
           yFilterL3RobotRelative.calculate(robotRelativeSpeeds.vyMetersPerSecond),
@@ -119,12 +119,12 @@ public class SwerveIOSystem implements SwerveIO {
   }
 
   public void driveFieldRelative(ChassisSpeeds fieldRelativeSpeeds) {
-    if (Elevator.getInstance().isAtState(ElevatorStates.LEVEL4, 15)) {
+    if (Elevator.getInstance().isAtState(ElevatorStates.LEVEL4, 5)) {
       fieldRelativeSpeeds = new ChassisSpeeds(
           xFilterL4FieldRelative.calculate(fieldRelativeSpeeds.vxMetersPerSecond),
           yFilterL4FieldRelative.calculate(fieldRelativeSpeeds.vyMetersPerSecond),
           fieldRelativeSpeeds.omegaRadiansPerSecond);
-    } else if (Elevator.getInstance().isAtState(ElevatorStates.LEVEL4, 15)) {
+    } else if (Elevator.getInstance().isAtState(ElevatorStates.LEVEL4, 5)) {
       fieldRelativeSpeeds = new ChassisSpeeds(
           xFilterL3FieldRelative.calculate(fieldRelativeSpeeds.vxMetersPerSecond),
           yFilterL3FieldRelative.calculate(fieldRelativeSpeeds.vyMetersPerSecond),
