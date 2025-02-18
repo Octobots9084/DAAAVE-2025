@@ -11,7 +11,7 @@ public enum ElevatorStates {
     // all in terms of "arbitrary encoder units"
     MANUAL(50 / 3.0),
     BOTTOMALGAE(0), // TODO: make it below algae bottom so we can go up from there and push off
-                    // algae
+    // algae
     TOPALGAE(0); // TOTO: make it the tall algae bottom
     // TODO: decide if when removing algae we go bottom -> L4/L3 etc or bottom ->
     // enum top

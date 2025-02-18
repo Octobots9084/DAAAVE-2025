@@ -29,354 +29,365 @@ import org.photonvision.targeting.PhotonTrackedTarget;
 
 public class AlignVision extends SubsystemBase {
 
-  private static AlignVision INSTANCE;
+    private static AlignVision INSTANCE;
 
-  public static AlignVision getInstance() {
-    if (INSTANCE == null) {
-      INSTANCE = new AlignVision();
-    }
-    return INSTANCE;
-  }
-
-  private Swerve swerve;
-  private VisionSubsystem vision;
-
-  private CANrangeConfiguration configuration;
-  private FovParamsConfigs paramsConfigs;
-  private CANrange rightRange;
-  private CANrange leftRange;
-
-  private PIDController cameraYPIDController;
-  private PIDController lidarXPIDController;
-  private PIDController cameraXPIDController;
-  private PIDController gyroRotationPIDController;
-  private PIDController lidarRotationPIDController;
-
-  private PhotonPipelineResult finalResult;
-  private int finalTagID;
-  private double turnAngle;
-
-  private static ReefTargetOrientation selectedReefOrientation = null;
-  private static ReefTargetSide selectedPoleSide = null;
-  private static ElevatorStates selectedLevel = null;
-  private PhotonTrackedTarget bestTarget = new PhotonTrackedTarget();
-
-  boolean xInTolerance = false;
-  boolean yInTolerance = false;
-  boolean rotInTolerance = false;
-
-  public AlignVision() {
-
-    this.swerve = Swerve.getInstance();
-    this.vision = VisionSubsystem.getInstance();
-
-    this.leftRange = new CANrange(13, "KrakensBus");
-    this.rightRange = new CANrange(14, "KrakensBus");
-
-    this.cameraXPIDController = new PIDController(4, 0, 0);
-    this.cameraYPIDController = new PIDController(4, 0, 0);
-    this.lidarXPIDController = new PIDController(4, 0, 0);
-    this.gyroRotationPIDController = new PIDController(0.4, 0, 0);
-    this.gyroRotationPIDController.enableContinuousInput(0, 2 * Math.PI);
-    this.lidarRotationPIDController = new PIDController(10, 0, 0);
-
-    this.paramsConfigs = new FovParamsConfigs();
-    paramsConfigs.withFOVRangeX(6.75);
-    paramsConfigs.withFOVRangeY(6.75);
-    paramsConfigs.withFOVCenterX(6.75);
-    paramsConfigs.withFOVCenterY(6.75);
-
-    this.configuration = new CANrangeConfiguration();
-    configuration.withFovParams(paramsConfigs);
-    configuration.ProximityParams.ProximityThreshold = 1;
-    rightRange.getConfigurator().apply(configuration);
-    leftRange.getConfigurator().apply(configuration);
-  }
-
-  // private Pose3d getReferenceRobotPosition() {
-
-  // // Transform Tag Coordinates to Camera Coordinates from photonvision.
-  // Matrix<N4, N4> transformTagToCamera;
-
-  // if (result != null) {
-  // if (result.getBestTarget() != null
-  // && this.isValidAlignTag(result.getBestTarget().getFiducialId())) {
-  // // Position of the AprilTag in Robot Coordinates.
-  // Matrix<N4, N1> referenceRobotPosition = null;
-
-  // // Get transformation matrix from photonvision
-  // transformTagToCamera =
-  // result.getBestTarget().getBestCameraToTarget().toMatrix();
-
-  // // referenceTagPosition = new Matrix<>(Nat.N4(), Nat.N1(), new
-  // double[]{0.381,
-  // // 0.1524, 0,
-  // // 1});
-
-  // // Transform Tag Position into Robot Coordinates
-  // referenceRobotPosition =
-  // VisionConstants.transformFrontLeftToRobot
-  // .toMatrix()
-  // .times(
-  // transformTagToCamera.times(
-  // new Matrix<>(Nat.N4(), Nat.N1(), new double[] {0, 0, 0, 1})));
-
-  // return new Pose3d(
-  // new Translation3d(
-  // referenceRobotPosition.getData()[0], referenceRobotPosition.getData()[1], 0),
-  // new Rotation3d());
-
-  // } else {
-  // return Pose3d.kZero;
-  // }
-
-  // } else {
-  // return Pose3d.kZero;
-  // }
-  // }
-
-  private Pose3d getReferenceRobotPosition() {
-    // Transform Tag Coordinates to Camera Coordinates from photonvision.
-    Transform3d transformTagToCamera;
-
-    if (finalResult != null
-        && finalResult.getBestTarget() != null
-        && this.isValidAlignTag(finalResult.getBestTarget().getFiducialId())) {
-      // Position of the AprilTag in Robot Coordinates.
-      Pose3d referenceRobotPosition;
-
-      // Get transformation matrix from photonvision
-      bestTarget = finalResult.getBestTarget();
-      transformTagToCamera = bestTarget.getBestCameraToTarget(); // might need to invert
-
-      // Transform Tag Position into Robot Coordinates
-      referenceRobotPosition = VisionConstants.referenceTagPosition
-          .transformBy(transformTagToCamera.inverse())
-          .transformBy(VisionConstants.transformFrontLeftToRobot.inverse());
-      return referenceRobotPosition;
-
-    } else {
-      return Pose3d.kZero;
-    }
-  }
-
-  public ChassisSpeeds getAlignChassisSpeeds(AlignState state) {
-    turnAngle = handleTurnAngle(state);
-
-    PhotonPipelineResult rightCamResult = vision.inputs.frontRightResult;
-    PhotonPipelineResult leftCamResult = vision.inputs.frontLeftResult;
-    Transform3d rightBestTarget = new Transform3d(Double.MAX_VALUE, Double.MAX_VALUE, Double.MAX_VALUE,
-        new Rotation3d());
-    Transform3d leftBestTarget = new Transform3d(Double.MAX_VALUE, Double.MAX_VALUE, Double.MAX_VALUE,
-        new Rotation3d());
-    // double right
-
-    if (rightCamResult != null && rightCamResult.hasTargets()
-        && rightCamResult.getBestTarget().getFiducialId() == finalTagID) {
-      rightBestTarget = rightCamResult.getBestTarget().getBestCameraToTarget();
-    }
-
-    if (leftCamResult != null && leftCamResult.hasTargets()
-        && leftCamResult.getBestTarget().getFiducialId() == finalTagID) {
-      leftBestTarget = leftCamResult.getBestTarget().getBestCameraToTarget();
-    }
-
-    if (rightBestTarget.getTranslation().getDistance(Translation3d.kZero) > leftBestTarget.getTranslation()
-        .getDistance(Translation3d.kZero)) {
-      finalResult = leftCamResult;
-    } else if (rightBestTarget.getTranslation().getDistance(Translation3d.kZero) < leftBestTarget.getTranslation()
-        .getDistance(Translation3d.kZero)) {
-      finalResult = rightCamResult;
-    } else {
-      finalResult = rightCamResult;
-    }
-
-    // SmartDashboard.putString("Align Result", result.toString());
-
-    double ySpeed = 0;
-    double xSpeed = 0;
-    double turnSpeed = 0;
-    double targetDistance = 0;
-    double aveLidarDist = (this.getRightLidarDistance() + this.getLeftLidarDistance()) / 2;
-    double diffLidarDist = this.getRightLidarDistance() - this.getLeftLidarDistance() - 0.01;
-
-    int currentOffsetIndex = state == AlignState.Reef
-        ? calcOrientationOffset(selectedReefOrientation, selectedPoleSide, selectedLevel)
-        : 0;
-
-    Pose3d refPosition = this.getReferenceRobotPosition();
-    SmartDashboard.putString("Refpos", refPosition.toString());
-    AlignOffset currentOffset = state == AlignState.Reef ? AlignOffset.values()[currentOffsetIndex] : null;
-
-    SmartDashboard.putBoolean("is both lidar", areBothLidarsValid());
-
-    try {
-      if (refPosition.getX() != Transform2d.kZero.getX()
-          && refPosition.getY() != Transform2d.kZero.getY()
-          && !Double.isNaN(turnAngle)) {
-
-        if (Constants.isBlueAlliance && currentOffset != null) {
-          targetDistance += currentOffset.getBlueOffsetValue();
-        } else if (!Constants.isBlueAlliance && currentOffset != null) {
-          targetDistance += currentOffset.getRedOffsetValue();
+    public static AlignVision getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new AlignVision();
         }
+        return INSTANCE;
+    }
 
-        if (state == AlignState.Reef) {
-          if (selectedPoleSide == ReefTargetSide.LEFT) {
-            targetDistance -= VisionConstants.distanceToPole;
-          } else if (selectedPoleSide == ReefTargetSide.RIGHT) {
-            targetDistance += VisionConstants.distanceToPole;
-          }
+    private Swerve swerve;
+    private VisionSubsystem vision;
+
+    private CANrangeConfiguration configuration;
+    private FovParamsConfigs paramsConfigs;
+    private CANrange rightRange;
+    private CANrange leftRange;
+
+    private PIDController cameraYPIDController;
+    private PIDController lidarXPIDController;
+    private PIDController cameraXPIDController;
+    private PIDController gyroRotationPIDController;
+    private PIDController lidarRotationPIDController;
+
+    private PhotonPipelineResult finalResult;
+    private int finalTagID;
+    private double turnAngle;
+
+    private static ReefTargetOrientation selectedReefOrientation = null;
+    private static ReefTargetSide selectedPoleSide = null;
+    private static ElevatorStates selectedLevel = null;
+    private PhotonTrackedTarget bestTarget = new PhotonTrackedTarget();
+
+    boolean xInTolerance = false;
+    boolean yInTolerance = false;
+    boolean rotInTolerance = false;
+
+    public AlignVision() {
+
+        this.swerve = Swerve.getInstance();
+        this.vision = VisionSubsystem.getInstance();
+
+        this.leftRange = new CANrange(13, "KrakensBus");
+        this.rightRange = new CANrange(14, "KrakensBus");
+
+        this.cameraXPIDController = new PIDController(4, 0, 0);
+        this.cameraYPIDController = new PIDController(4, 0, 0);
+        this.lidarXPIDController = new PIDController(4, 0, 0);
+        this.gyroRotationPIDController = new PIDController(0.4, 0, 0);
+        this.gyroRotationPIDController.enableContinuousInput(0, 2 * Math.PI);
+        this.lidarRotationPIDController = new PIDController(10, 0, 0);
+
+        this.paramsConfigs = new FovParamsConfigs();
+        paramsConfigs.withFOVRangeX(6.75);
+        paramsConfigs.withFOVRangeY(6.75);
+        paramsConfigs.withFOVCenterX(6.75);
+        paramsConfigs.withFOVCenterY(6.75);
+
+        this.configuration = new CANrangeConfiguration();
+        configuration.withFovParams(paramsConfigs);
+        configuration.ProximityParams.ProximityThreshold = 1;
+        rightRange.getConfigurator().apply(configuration);
+        leftRange.getConfigurator().apply(configuration);
+    }
+
+    // private Pose3d getReferenceRobotPosition() {
+
+    // // Transform Tag Coordinates to Camera Coordinates from photonvision.
+    // Matrix<N4, N4> transformTagToCamera;
+
+    // if (result != null) {
+    // if (result.getBestTarget() != null
+    // && this.isValidAlignTag(result.getBestTarget().getFiducialId())) {
+    // // Position of the AprilTag in Robot Coordinates.
+    // Matrix<N4, N1> referenceRobotPosition = null;
+
+    // // Get transformation matrix from photonvision
+    // transformTagToCamera =
+    // result.getBestTarget().getBestCameraToTarget().toMatrix();
+
+    // // referenceTagPosition = new Matrix<>(Nat.N4(), Nat.N1(), new
+    // double[]{0.381,
+    // // 0.1524, 0,
+    // // 1});
+
+    // // Transform Tag Position into Robot Coordinates
+    // referenceRobotPosition =
+    // VisionConstants.transformFrontLeftToRobot
+    // .toMatrix()
+    // .times(
+    // transformTagToCamera.times(
+    // new Matrix<>(Nat.N4(), Nat.N1(), new double[] {0, 0, 0, 1})));
+
+    // return new Pose3d(
+    // new Translation3d(
+    // referenceRobotPosition.getData()[0], referenceRobotPosition.getData()[1], 0),
+    // new Rotation3d());
+
+    // } else {
+    // return Pose3d.kZero;
+    // }
+
+    // } else {
+    // return Pose3d.kZero;
+    // }
+    // }
+
+    private PhotonPipelineResult getBestResult(AlignState state) {
+        PhotonPipelineResult rightCamResult = vision.inputs.frontRightResult;
+        PhotonPipelineResult leftCamResult = vision.inputs.frontLeftResult;
+
+        Transform3d rightBestTarget = new Transform3d(Double.MAX_VALUE, Double.MAX_VALUE,
+                Double.MAX_VALUE, new Rotation3d());
+        Transform3d leftBestTarget = new Transform3d(Double.MAX_VALUE, Double.MAX_VALUE,
+                Double.MAX_VALUE, new Rotation3d());
+
+        if (state == AlignState.Reef || state == AlignState.Processor) {
+            if (rightCamResult != null && rightCamResult.hasTargets()
+                    && rightCamResult.getBestTarget().getFiducialId() == finalTagID) {
+                rightBestTarget = rightCamResult.getBestTarget().getBestCameraToTarget();
+            }
+
+            if (leftCamResult != null && leftCamResult.hasTargets()
+                    && leftCamResult.getBestTarget().getFiducialId() == finalTagID) {
+                leftBestTarget = leftCamResult.getBestTarget().getBestCameraToTarget();
+            }
+
+            if (rightBestTarget.getTranslation().getDistance(Translation3d.kZero) > leftBestTarget
+                    .getTranslation().getDistance(Translation3d.kZero)) {
+                return leftCamResult;
+            } else if (rightBestTarget.getTranslation()
+                    .getDistance(Translation3d.kZero) < leftBestTarget.getTranslation()
+                            .getDistance(Translation3d.kZero)) {
+                return rightCamResult;
+            } else {
+                return null;
+            }
         } else {
-          targetDistance = 0;
+            // Change when back camera is added
+            return rightCamResult;
+        }
+    }
+
+    private Pose3d getReferenceRobotPosition(PhotonPipelineResult result) {
+        // Transform Tag Coordinates to Camera Coordinates from photonvision.
+        Transform3d transformTagToCamera;
+
+        if (result != null && result.getBestTarget() != null
+                && this.isValidAlignTag(result.getBestTarget().getFiducialId())) {
+            // Position of the AprilTag in Robot Coordinates.
+            Pose3d referenceRobotPosition;
+
+            // Get transformation matrix from photonvision
+            bestTarget = result.getBestTarget();
+            transformTagToCamera = bestTarget.getBestCameraToTarget();
+
+            // Transform Tag Position into Robot Coordinates
+            referenceRobotPosition =
+                    VisionConstants.referenceTagPosition.transformBy(transformTagToCamera.inverse())
+                            .transformBy(VisionConstants.transformFrontLeftToRobot.inverse());
+            return referenceRobotPosition;
+
+        } else {
+            return Pose3d.kZero;
+        }
+    }
+
+    public ChassisSpeeds getAlignChassisSpeeds(AlignState state) {
+        turnAngle = handleTurnAngle(state);
+        finalResult = getBestResult(state);
+
+        double ySpeed = 0;
+        double xSpeed = 0;
+        double turnSpeed = 0;
+        double targetDistance = 0;
+        double aveLidarDist = (this.getRightLidarDistance() + this.getLeftLidarDistance()) / 2;
+        double diffLidarDist = this.getRightLidarDistance() - this.getLeftLidarDistance() - 0.01;
+
+        int currentOffsetIndex = state == AlignState.Reef
+                ? calcOrientationOffset(selectedReefOrientation, selectedPoleSide, selectedLevel)
+                : 0;
+
+        Pose3d refPosition = this.getReferenceRobotPosition(finalResult);
+        SmartDashboard.putString("Refpos", refPosition.toString());
+        AlignOffset currentOffset =
+                state == AlignState.Reef ? AlignOffset.values()[currentOffsetIndex] : null;
+
+        SmartDashboard.putBoolean("is both lidar", areBothLidarsValid());
+
+        try {
+            if (refPosition.getX() != Transform2d.kZero.getX()
+                    && refPosition.getY() != Transform2d.kZero.getY() && !Double.isNaN(turnAngle)) {
+
+                if (Constants.isBlueAlliance && currentOffset != null) {
+                    targetDistance += currentOffset.getBlueOffsetValue();
+                } else if (!Constants.isBlueAlliance && currentOffset != null) {
+                    targetDistance += currentOffset.getRedOffsetValue();
+                }
+
+                if (state == AlignState.Reef) {
+                    if (selectedPoleSide == ReefTargetSide.LEFT) {
+                        targetDistance -= VisionConstants.distanceToPole;
+                    } else if (selectedPoleSide == ReefTargetSide.RIGHT) {
+                        targetDistance += VisionConstants.distanceToPole;
+                    }
+                } else {
+                    targetDistance = 0;
+                }
+
+                SmartDashboard.putNumber("RefPoseY", refPosition.getY());
+                SmartDashboard.putNumber("RefPoseX", refPosition.getX());
+
+                ySpeed = cameraYPIDController.calculate(-refPosition.getY(), targetDistance);
+                yInTolerance = MathUtil.isNear(-refPosition.getY(), targetDistance, 0.03);
+                xSpeed = this.calculateXSpeed(aveLidarDist, refPosition);
+                SmartDashboard.putNumber("TargetDist", targetDistance);
+
+                turnSpeed = this.calculateTurnSpeed(diffLidarDist, refPosition);
+
+                if (Double.isNaN(turnSpeed)) {
+                    ySpeed = 0;
+                    xSpeed = 0;
+                    turnSpeed = 0;
+                }
+
+            } else {
+                ySpeed = 0;
+                xSpeed = 0;
+                turnSpeed = 0;
+            }
+            SmartDashboard.putNumber("rot", bestTarget.getYaw());
+
+        } catch (Exception e) {
+            ySpeed = 0;
+            xSpeed = 0;
+            turnSpeed = 0;
         }
 
-        SmartDashboard.putNumber("RefPoseY", refPosition.getY());
-        SmartDashboard.putNumber("RefPoseX", refPosition.getX());
+        return new ChassisSpeeds(xSpeed, ySpeed, turnSpeed);
+    }
 
-        ySpeed = cameraYPIDController.calculate(-refPosition.getY(), targetDistance);
-        yInTolerance = MathUtil.isNear(-refPosition.getY(), targetDistance, 0.03);
-        xSpeed = this.calculateXSpeed(aveLidarDist, refPosition);
-        SmartDashboard.putNumber("TargetDist", targetDistance);
+    private int calcOrientationOffset(ReefTargetOrientation orientation, ReefTargetSide side,
+            ElevatorStates level) {
 
-        turnSpeed = this.calculateTurnSpeed(diffLidarDist, refPosition);
+        return (6 * orientation.ordinal()) + (3 * side.ordinal()) + level.ordinal() - 1;
+    }
 
-        if (Double.isNaN(turnSpeed)) {
-          ySpeed = 0;
-          xSpeed = 0;
-          turnSpeed = 0;
+    private int handleTurnAngle(AlignState state) {
+        // Different orientations of the reef (Degrees)
+        if (state == AlignState.Reef) {
+            switch (selectedReefOrientation) {
+                case AB:
+                    finalTagID = Constants.isBlueAlliance ? 18 : 7;
+                    return 0;
+                case CD:
+                    finalTagID = Constants.isBlueAlliance ? 17 : 8;
+                    return 60;
+                case EF:
+                    finalTagID = Constants.isBlueAlliance ? 22 : 9;
+                    return 120;
+                case GH:
+                    finalTagID = Constants.isBlueAlliance ? 21 : 10;
+                    return 180;
+                case IJ:
+                    finalTagID = Constants.isBlueAlliance ? 20 : 11;
+                    return -120;
+                case KL:
+                    finalTagID = Constants.isBlueAlliance ? 19 : 6;
+                    return -60;
+                default:
+                    return Integer.MAX_VALUE;
+            }
+        } else if (state == AlignState.Processor) {
+            return -90;
+        } else if (state == AlignState.Source
+                && (this.isValidAlignTag(1) || this.isValidAlignTag(13))) {
+            return 135;
+        } else if (state == AlignState.Source
+                && (this.isValidAlignTag(2) || this.isValidAlignTag(12))) {
+            return -135;
+        } else {
+            return Integer.MAX_VALUE;
+        }
+    }
+
+    private double calculateXSpeed(double aveLidarDist, Pose3d refPosition) {
+        SmartDashboard.putNumber("avg lidar dist", aveLidarDist);
+        SmartDashboard.putNumber("camerax", refPosition.getX());
+        if (this.areBothLidarsValid()) {
+            xInTolerance =
+                    MathUtil.isNear(aveLidarDist, VisionConstants.maxLidarDepthDistance, 0.03);
+
+            return -lidarXPIDController.calculate(aveLidarDist,
+                    VisionConstants.maxLidarDepthDistance);
+        } else {
+            xInTolerance = MathUtil.isNear(refPosition.getX(),
+                    VisionConstants.maxCameraDepthDistance, 0.03);
+
+            return -cameraXPIDController.calculate(refPosition.getX(),
+                    VisionConstants.maxCameraDepthDistance);
+        }
+    }
+
+    private double calculateTurnSpeed(double diffLidarDist, Pose3d refPosition) {
+        if (turnAngle == Integer.MAX_VALUE) {
+            return Double.NaN;
+        }
+        if (this.areBothLidarsValid()) {
+            rotInTolerance = MathUtil.isNear(diffLidarDist, 0, 0.01);
+
+            return -lidarRotationPIDController.calculate(diffLidarDist, 0);
+        } else {
+            rotInTolerance = MathUtil.isNear(swerve.getGyro(), Math.toRadians(turnAngle), 0.05);
+
+            return -gyroRotationPIDController.calculate(swerve.getGyro(),
+                    Math.toRadians(turnAngle));
         }
 
-      } else {
-        ySpeed = 0;
-        xSpeed = 0;
-        turnSpeed = 0;
-      }
-      SmartDashboard.putNumber("rot", bestTarget.getYaw());
-
-    } catch (Exception e) {
-      ySpeed = 0;
-      xSpeed = 0;
-      turnSpeed = 0;
     }
 
-    return new ChassisSpeeds(xSpeed, ySpeed, turnSpeed);
-  }
-
-  private int calcOrientationOffset(
-      ReefTargetOrientation orientation, ReefTargetSide side, ElevatorStates level) {
-
-    return (6 * orientation.ordinal()) + (3 * side.ordinal()) + level.ordinal() - 1;
-  }
-
-  private int handleTurnAngle(AlignState state) {
-    // Different orientations of the reef (Degrees)
-    if (state == AlignState.Reef) {
-      switch (selectedReefOrientation) {
-        case AB:
-          if (Constants.isBlueAlliance) {
-            finalTagID = 10;
-          } else {
-            finalTagID = 10;
-          }
-          return 0;
-        case CD:
-          return 60;
-        case EF:
-          return 120;
-        case GH:
-          return 180;
-        case IJ:
-          return -120;
-        case KL:
-          return -60;
-        default:
-          return Integer.MAX_VALUE;
-      }
-    } else if (state == AlignState.Processor) {
-      return -90;
-    } else if (state == AlignState.Source
-        && (this.isValidAlignTag(1) || this.isValidAlignTag(13))) {
-      return 135;
-    } else if (state == AlignState.Source
-        && (this.isValidAlignTag(2) || this.isValidAlignTag(12))) {
-      return -135;
-    } else {
-      return Integer.MAX_VALUE;
-    }
-  }
-
-  private double calculateXSpeed(double aveLidarDist, Pose3d refPosition) {
-    SmartDashboard.putNumber("avg lidar dist", aveLidarDist);
-    SmartDashboard.putNumber("camerax", refPosition.getX());
-    if (this.areBothLidarsValid()) {
-      xInTolerance = MathUtil.isNear(aveLidarDist, VisionConstants.maxLidarDepthDistance, 0.03);
-
-      return -lidarXPIDController.calculate(aveLidarDist, VisionConstants.maxLidarDepthDistance);
-    } else {
-      xInTolerance = MathUtil.isNear(refPosition.getX(), VisionConstants.maxCameraDepthDistance, 0.03);
-
-      return -cameraXPIDController.calculate(
-          refPosition.getX(), VisionConstants.maxCameraDepthDistance);
-    }
-  }
-
-  private double calculateTurnSpeed(double diffLidarDist, Pose3d refPosition) {
-    if (turnAngle == Integer.MAX_VALUE) {
-      return Double.NaN;
-    }
-    if (this.areBothLidarsValid()) {
-      rotInTolerance = MathUtil.isNear(diffLidarDist, 0, 0.01);
-
-      return -lidarRotationPIDController.calculate(diffLidarDist, 0);
-    } else {
-      rotInTolerance = MathUtil.isNear(swerve.getGyro(), Math.toRadians(turnAngle), 0.05);
-
-      return -gyroRotationPIDController.calculate(swerve.getGyro(), Math.toRadians(turnAngle));
+    private boolean isValidAlignTag(int tagID) {
+        return VisionConstants.validAlignTags.contains(tagID);
     }
 
-  }
+    public double getRightLidarDistance() {
+        return rightRange.getDistance().getValueAsDouble();
+    }
 
-  private boolean isValidAlignTag(int tagID) {
-    return VisionConstants.validAlignTags.contains(tagID);
-  }
+    public double getLeftLidarDistance() {
+        return leftRange.getDistance().getValueAsDouble();
+    }
 
-  public double getRightLidarDistance() {
-    return rightRange.getDistance().getValueAsDouble();
-  }
+    public boolean areBothLidarsValid() {
+        return getRightLidarDetect() && getLeftLidarDetect();
+    }
 
-  public double getLeftLidarDistance() {
-    return leftRange.getDistance().getValueAsDouble();
-  }
+    public boolean getRightLidarDetect() {
+        return rightRange.getIsDetected().getValue();
+    }
 
-  public boolean areBothLidarsValid() {
-    return getRightLidarDetect() && getLeftLidarDetect();
-  }
+    public boolean getLeftLidarDetect() {
+        return leftRange.getIsDetected().getValue();
+    }
 
-  public boolean getRightLidarDetect() {
-    return rightRange.getIsDetected().getValue();
-  }
+    public static void setReefOrientation(ReefTargetOrientation orientation) {
+        SmartDashboard.putString("Orientation", orientation.name());
+        selectedReefOrientation = orientation;
+    }
 
-  public boolean getLeftLidarDetect() {
-    return leftRange.getIsDetected().getValue();
-  }
+    public static void setPoleSide(ReefTargetSide side) {
+        SmartDashboard.putString("Side", side.name());
+        selectedPoleSide = side;
+    }
 
-  public static void setReefOrientation(ReefTargetOrientation orientation) {
-    SmartDashboard.putString("Orientation", orientation.name());
-    selectedReefOrientation = orientation;
-  }
+    public static void setPoleLevel(ElevatorStates level) {
+        SmartDashboard.putString("level", level.name());
+        selectedLevel = level;
+    }
 
-  public static void setPoleSide(ReefTargetSide side) {
-    SmartDashboard.putString("Side", side.name());
-    selectedPoleSide = side;
-  }
-
-  public static void setPoleLevel(ElevatorStates level) {
-    SmartDashboard.putString("level", level.name());
-    selectedLevel = level;
-  }
-
-  public boolean isAligned() {
-    return xInTolerance && yInTolerance && rotInTolerance;
-  }
+    public boolean isAligned() {
+        return xInTolerance && yInTolerance && rotInTolerance;
+    }
 }

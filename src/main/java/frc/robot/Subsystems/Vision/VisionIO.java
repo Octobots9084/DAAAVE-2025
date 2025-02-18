@@ -9,33 +9,32 @@ import org.photonvision.EstimatedRobotPose;
 import org.photonvision.targeting.PhotonPipelineResult;
 
 public interface VisionIO {
-  @AutoLog
-  public static class VisionIOInputs {
-    public boolean frontLeftConnected = false;
-    public boolean frontRightConnected = false;
-    public boolean middleLeftConnected = false;
-    public boolean middleRightConnected = false;
-    public boolean backMiddleConnected = false;
+    @AutoLog
+    public static class VisionIOInputs {
+        public boolean frontLeftConnected = false;
+        public boolean frontRightConnected = false;
+        public boolean middleLeftConnected = false;
+        public boolean middleRightConnected = false;
+        public boolean backMiddleConnected = false;
 
-    public Pose3d frontLeftPose;
-    public Pose3d frontRightPose;
-    public Pose3d middleLeftPose;
-    public Pose3d middleRightPose;
-    public Pose3d backMiddlePose;
+        public Pose3d frontLeftPose;
+        public Pose3d frontRightPose;
+        public Pose3d middleLeftPose;
+        public Pose3d middleRightPose;
+        public Pose3d backMiddlePose;
 
-    public PhotonPipelineResult frontLeftResult = null;
-    public PhotonPipelineResult frontRightResult = null;
-    public PhotonPipelineResult middleLeftResult = null;
-    public PhotonPipelineResult middleRightResult = null;
-    public PhotonPipelineResult backMiddleResult = null;
-  }
+        public PhotonPipelineResult frontLeftResult = null;
+        public PhotonPipelineResult frontRightResult = null;
+        public PhotonPipelineResult middleLeftResult = null;
+        public PhotonPipelineResult middleRightResult = null;
+        public PhotonPipelineResult backMiddleResult = null;
+    }
 
-  public default void updateInputs(VisionIOInputs inputs) {
-  }
+    public default void updateInputs(VisionIOInputs inputs) {}
 
-  public void updatePose();
+    public void updatePose();
 
-  public void closeNotifiers();
+    public void closeNotifiers();
 
-  public void addVisionReading(EstimatedRobotPose pose, Matrix<N3, N1> visionMeasurementStdDevs);
+    public void addVisionReading(String cameraName, EstimatedRobotPose pose, Matrix<N3, N1> visionMeasurementStdDevs);
 }
