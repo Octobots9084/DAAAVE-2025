@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Commands.Elevator.SetElevatorState;
+import frc.robot.Commands.ReefSelection.manager;
 import frc.robot.Commands.complex.Intake;
 import frc.robot.Commands.complex.PlaceCoral;
 import frc.robot.Commands.complex.PrepReefPlacement;
@@ -41,7 +42,7 @@ public class testPlace extends Command {
         AlignVision.setPoleLevel(targetLevel);
         AlignVision.setPoleSide(targetSide);
         AlignVision.setReefOrientation(targetOrientation);
-        Elevator.getInstance().setTargetState(ElevatorStates.LEVEL4);
+        manager.level = ElevatorStates.LEVEL4;
         CommandScheduler.getInstance().schedule(new PrepReefPlacement());
     }
 

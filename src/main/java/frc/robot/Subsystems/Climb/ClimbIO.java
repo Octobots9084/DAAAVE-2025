@@ -5,21 +5,31 @@ import org.littletonrobotics.junction.AutoLog;
 public interface ClimbIO {
     @AutoLog
     public static class ClimbIOInputs {
-        public double encoderPosition;
+        public double positionRotations;
+        public double velocityRPM;
         public double appliedVolts;
+        public double busVoltage;
+        public double currentAmps;
     }
 
     /** Updates the set of loggable inputs. */
-    public default void updateInputs(ClimbIOInputs inputs) {}
+    public default void updateInputs(ClimbIOInputs inputs) {
+    }
 
-
-    public default void setPosition(double newPosition) {}
+    public default void setPosition(double newPosition) {
+    }
 
     public default double getPosition() {
         return 0;
     }
 
-    public default void updateSim() {}
+    public default void updateSim() {
+    }
 
-    
+    public default void zeroEncoder() {
+    };
+
+    public default void setVoltage(double voltage) {
+    };
+
 }

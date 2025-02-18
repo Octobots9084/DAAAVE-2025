@@ -26,10 +26,10 @@ public class VisionIOSim implements VisionIO {
     private final Swerve swerve;
     public static VisionIOSystem INSTANCE;
 
-    VisionSystemSim visionSim = new VisionSystemSim("main");
-    TargetModel targetModel = TargetModel.kAprilTag36h11;
-    SimCameraProperties cameraProp = new SimCameraProperties();
-    AprilTagFieldLayout tagLayout = AprilTagFieldLayout.loadFromResource(AprilTagFields.kDefaultField.m_resourceFile);
+  VisionSystemSim visionSim = new VisionSystemSim("main");
+  TargetModel targetModel = TargetModel.kAprilTag36h11;
+  SimCameraProperties cameraProp = new SimCameraProperties();
+  AprilTagFieldLayout tagLayout;
 
     public Matrix<N3, N1> defatultStdDev = VecBuilder.fill(0.5, 0.5, 99999);
 
@@ -38,9 +38,9 @@ public class VisionIOSim implements VisionIO {
     // VisionConstants.triceratopsTransform);
     // public StdDevs stdDevsCalculation;
 
-    // The simulation of this camera. Its values used in real robot code will be
-    // updated.
-    PhotonCameraSim cameraSim = null; // new PhotonCameraSim(frontLeftCamera.getCameraObject(), cameraProp);
+  // The simulation of this camera. Its values used in real robot code will be
+  // updated.
+  PhotonCameraSim cameraSim = new PhotonCameraSim(frontLeftCamera.getCamera(), cameraProp);
 
     private final Notifier allNotifier = new Notifier(
             () -> {
@@ -48,8 +48,13 @@ public class VisionIOSim implements VisionIO {
                 // frontRightCamera.run();
             });
 
-    public VisionIOSim() throws IOException {
-        this.swerve = Swerve.getInstance();
+  public VisionIOSim() {
+    try {
+      tagLayout = AprilTagFieldLayout.loadFromResource(AprilTagFields.kDefaultField.m_resourceFile);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    this.swerve = Swerve.getInstance();
 
         visionSim.addAprilTags(tagLayout);
         // A 640 x 480 camera with a 100 degree diagonal FOV.

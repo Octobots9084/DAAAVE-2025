@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Commands.Elevator.SetElevatorState;
 import frc.robot.Commands.Elevator.SetElevatorStateTolerance;
+import frc.robot.Commands.ReefSelection.manager;
 import frc.robot.Commands.Wrist.SetWristState;
 import frc.robot.Commands.Wrist.SetWristStateTolerance;
 import frc.robot.Subsystems.Elevator.Elevator;
@@ -22,7 +23,7 @@ public class PrepReefPlacement extends InstantCommand {
         new SetWristStateTolerance(WristStates.PREP,
             0.05,
             ClosedLoopSlot.kSlot0),
-        new SetElevatorStateTolerance(Elevator.getInstance().getTargetState(), 1.5),
-        new SetWristStateTolerance(Elevator.getInstance().getTargetState(), 0.001, ClosedLoopSlot.kSlot0)));
+        new SetElevatorStateTolerance(manager.level, 1.5),
+        new SetWristStateTolerance(manager.level, 0.001, ClosedLoopSlot.kSlot0)));
   }
 }

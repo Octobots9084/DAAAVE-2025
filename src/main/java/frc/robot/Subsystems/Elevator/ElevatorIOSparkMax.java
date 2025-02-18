@@ -34,8 +34,8 @@ public class ElevatorIOSparkMax implements ElevatorIO {
         leftConfig.closedLoop.maxMotion.allowedClosedLoopError(0);
         leftConfig.closedLoop.positionWrappingEnabled(false);
         leftConfig.voltageCompensation(10);
-        leftConfig.smartCurrentLimit(40, 40);
-        leftConfig.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder).pid(0.1, 0.000, 0);
+        leftConfig.smartCurrentLimit(60, 60);
+        leftConfig.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder).pid(0.15, 0.000, 0);
         leftConfig.closedLoop.iZone(5);
         leftMotor.configure(leftConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         leftMotor.setPeriodicFrameTimeout(30);
@@ -52,11 +52,11 @@ public class ElevatorIOSparkMax implements ElevatorIO {
         rightConfig.closedLoop.maxMotion.allowedClosedLoopError(0);
         rightConfig.closedLoop.positionWrappingEnabled(false);
         rightConfig.voltageCompensation(10);
-        rightConfig.smartCurrentLimit(40, 40);
-        rightConfig.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder).pid(0.1, 0.000, 0);
+        rightConfig.smartCurrentLimit(60, 60);
+        rightConfig.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder).pid(0.15, 0.000, 0);
         rightConfig.closedLoop.iZone(5);
         rightMotor.configure(
-            rightConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+                rightConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         rightMotor.setPeriodicFrameTimeout(30);
         rightMotor.setCANTimeout(30);
         rightMotor.setCANMaxRetries(5);
@@ -101,15 +101,15 @@ public class ElevatorIOSparkMax implements ElevatorIO {
         }
         SmartDashboard.putNumber("setPoint", position);
         leftMotor
-            .getClosedLoopController()
-            .setReference(position, ControlType.kPosition, ClosedLoopSlot.kSlot0, feedForward);
+                .getClosedLoopController()
+                .setReference(position, ControlType.kPosition, ClosedLoopSlot.kSlot0, feedForward);
         rightMotor
-            .getClosedLoopController()
-            .setReference(-position, ControlType.kPosition, ClosedLoopSlot.kSlot0, -feedForward);
+                .getClosedLoopController()
+                .setReference(-position, ControlType.kPosition, ClosedLoopSlot.kSlot0, -feedForward);
     }
 
     @Override
     public double getPosition() {
-        return leftMotor.getEncoder().getPosition();
+        return (leftMotor.getEncoder().getPosition() - rightMotor.getEncoder().getPosition()) / 2.0;
     }
 }

@@ -32,15 +32,12 @@ import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
 public class VisionCamera implements Runnable {
-    private final PhotonCamera camera;
-    private final PhotonPoseEstimator photonEstimator;
-    private Matrix<N3, N1> curStdDevs;
-    private final AtomicReference<EstimatedRobotPose> atomicEstimatedRobotPose =
-            new AtomicReference<EstimatedRobotPose>();
-    private final AtomicReference<Matrix<N3, N1>> atomicStdDev =
-            new AtomicReference<Matrix<N3, N1>>();
-    private final AtomicReference<PhotonPipelineResult> atomicPhotonResult =
-            new AtomicReference<PhotonPipelineResult>();
+  private final PhotonCamera camera;
+  private final PhotonPoseEstimator photonEstimator;
+  private Matrix<N3, N1> curStdDevs;
+  private final AtomicReference<EstimatedRobotPose> atomicEstimatedRobotPose = new AtomicReference<EstimatedRobotPose>();
+  private final AtomicReference<Matrix<N3, N1>> atomicStdDev = new AtomicReference<Matrix<N3, N1>>();
+  private final AtomicReference<PhotonPipelineResult> atomicPhotonResult = new AtomicReference<PhotonPipelineResult>();
 
     public VisionCamera(String photonCameraName, Transform3d robotToCamera) {
         camera = new PhotonCamera(photonCameraName);

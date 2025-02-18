@@ -1,6 +1,7 @@
 package frc.robot.Subsystems.Elevator;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -22,7 +23,14 @@ public class Elevator extends SubsystemBase {
     public DigitalInput toplimitSwitch = new DigitalInput(0);
     public DigitalInput bottomlimitSwitch = new DigitalInput(1);
 
-    private static Elevator instance;
+  private static Elevator instance;
+
+  private static double kDt = 0.02;
+
+  private final TrapezoidProfile elevatorProfile;
+
+  private TrapezoidProfile.State elevatorGoal;
+  private TrapezoidProfile.State elevatorCurrentPoint;
 
     public static Elevator getInstance() {
         if (instance == null) {
@@ -44,19 +52,23 @@ public class Elevator extends SubsystemBase {
         return instance;
     }
 
-    private Elevator(ElevatorIO io) {
-        this.io = io;
-        // this.io.configurePID(0.7, 0, 0);
-    }
+  private Elevator(ElevatorIO io) {
+    this.io = io;
+
+    this.elevatorProfile = new TrapezoidProfile(new TrapezoidProfile.Constraints(450, 900));
+    this.elevatorCurrentPoint = new TrapezoidProfile.State(getPosition(), 0);
+
+    // this.io.configurePID(0.7, 0, 0);
+  }
 
     public ElevatorIO getElevatorIo() {
         return io;
     }
 
-    @Override
-    public void periodic() {
+  @Override
+  public void periodic() {
 
-        // double currentPosition = this.inputs.leftPositionRotations;
+    // double currentPosition = this.inputs.leftPositionRotations;
 
         // if (((targetLevel.position > this.BOT_CROSSBAR_POS && currentPosition <
         // this.BOT_CROSSBAR_POS) ||
@@ -66,23 +78,29 @@ public class Elevator extends SubsystemBase {
         // io.setPosition(currentPosition, currentPosition);
         // }
 
-        // if (bottomlimitSwitch.get()) {
-        // // We are going up and top limit is tripped so stop
-        // if (currentPosition < 0) {
-        // io.setPosition(0, 0);
-        // }
-        // }
-        io.updateInputs(inputs);
-        Logger.processInputs("Elevator", inputs);
-    }
+    // if (bottomlimitSwitch.get()) {
+    // // We are going up and top limit is tripped so stop
+    // if (currentPosition < 0) {
+    // io.setPosition(0, 0);
+    // }
+    // }
+    io.updateInputs(inputs);
+    elevatorCurrentPoint = elevatorProfile.calculate(kDt, elevatorCurrentPoint, elevatorGoal);
+    manualSetTargetPosistion(elevatorCurrentPoint.position);
 
-    public void setState(ElevatorStates state) {
-        if (state.position < 0)
-            state.position = 0;
-        // io.setPosition(state.position);
-        targetLevel = state;
-        Logger.recordOutput("Elevator/State", state);
-    }
+    Logger.processInputs("Elevator", inputs);
+  }
+
+  public void setState(ElevatorStates state) {
+    if (state.position < 0)
+      state.position = 0;
+
+    this.elevatorGoal = new TrapezoidProfile.State(state.position, 0);
+
+    // io.setPosition(state.position);
+    targetLevel = state;
+    Logger.recordOutput("Elevator/State", state);
+  }
 
     public ElevatorStates getTargetState() {
 
