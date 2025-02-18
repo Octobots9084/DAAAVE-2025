@@ -26,4 +26,10 @@ public interface ClimbIO {
     public default void updateSim() {
     }
 
+    public default void zeroEncoder() {
+    };
+
+    public default void setVoltage(double voltage) {
+    };
+
 }

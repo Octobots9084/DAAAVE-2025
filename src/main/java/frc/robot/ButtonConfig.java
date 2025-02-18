@@ -11,6 +11,8 @@ import frc.robot.States.ReefTargetLevel;
 import frc.robot.States.ReefTargetOrientation;
 import frc.robot.States.ReefTargetSide;
 import frc.robot.Commands.AlgaeRollers.SetAlgaeRollersState;
+import frc.robot.Commands.Climb.SetClimbState;
+import frc.robot.Commands.Climb.ZeroClimb;
 import frc.robot.Commands.complex.CancelAllCommands;
 import frc.robot.Commands.complex.Intake;
 import frc.robot.Commands.complex.PlaceCoral;
@@ -29,6 +31,7 @@ import frc.robot.Commands.ReefSelection.SetOrientation;
 import frc.robot.Commands.Wrist.PrepCoral;
 import frc.robot.Commands.Wrist.SetWristState;
 import frc.robot.Subsystems.AlgaeRollers.AlgaeRollersStates;
+import frc.robot.Subsystems.Climb.ClimbStates;
 import frc.robot.Subsystems.CoralRollers.CoralRollers;
 import frc.robot.Subsystems.CoralRollers.CoralRollersState;
 import frc.robot.Subsystems.Elevator.Elevator;
@@ -66,6 +69,10 @@ public class ButtonConfig {
                 coDriverButtons.button(14).onTrue(new ReefLevelSelection(2));
                 coDriverButtons.button(16).onTrue(new ReefLevelSelection(1));
 
+                coDriverButtons.button(7).onTrue(new SetClimbState(ClimbStates.Stored));
+                coDriverButtons.button(8).onTrue(new SetClimbState(ClimbStates.Deployed));
+                coDriverButtons.button(9).whileTrue(new ZeroClimb());
+
                 // reef align
                 driverButtons.button(1).whileTrue(new InstantCommand(() -> {
                         Swerve.getInstance().setDriveState(DriveState.AlignReef);
@@ -80,7 +87,7 @@ public class ButtonConfig {
                 driverButtons.button(5).onTrue(new Intake());
                 driverButtons.button(10).onTrue(new CancelAllCommands());
 
-                //TODO change button to actual button for dropping the chute
+                // TODO change button to actual button for dropping the chute
                 driverButtons.button(9).onTrue(new LetTheChuteBeFree());
 
         }

@@ -55,7 +55,7 @@ public class Elevator extends SubsystemBase {
   private Elevator(ElevatorIO io) {
     this.io = io;
 
-    this.elevatorProfile = new TrapezoidProfile(new TrapezoidProfile.Constraints(100, 100));
+    this.elevatorProfile = new TrapezoidProfile(new TrapezoidProfile.Constraints(450, 900));
     this.elevatorCurrentPoint = new TrapezoidProfile.State(getPosition(), 0);
 
     // this.io.configurePID(0.7, 0, 0);
