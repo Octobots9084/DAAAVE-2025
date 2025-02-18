@@ -7,30 +7,6 @@
         {
           "type": "path",
           "data": {
-            "pathName": "back_low"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "side_low"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "push_low"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "around_low"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
             "pathName": "f_to_lowstation"
           }
         },
