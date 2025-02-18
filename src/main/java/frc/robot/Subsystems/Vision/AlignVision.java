@@ -158,25 +158,28 @@ public class AlignVision extends SubsystemBase {
   }
 
   public ChassisSpeeds getAlignChassisSpeeds(AlignState state) {
-    result = vision.inputs.frontLeftResult;
+
     double ySpeed = 0;
     double xSpeed = 0;
     double turnSpeed = 0;
     double targetDistance = 0;
-    double aveLidarDist = (this.getRightLidarDistance() + this.getLeftLidarDistance()) / 2;
-    double diffLidarDist = this.getRightLidarDistance() - this.getLeftLidarDistance() - 0.01;
-
-    int currentOffsetIndex = state == AlignState.Reef
-        ? calcOrientationOffset(selectedReefOrientation, selectedPoleSide, selectedLevel)
-        : 0;
-
-    Pose3d refPosition = this.getReferenceRobotPosition();
-    SmartDashboard.putString("Refpos", refPosition.toString());
-    AlignOffset currentOffset = state == AlignState.Reef ? AlignOffset.values()[currentOffsetIndex] : null;
-
-    SmartDashboard.putBoolean("is both lidar", areBothLidarsValid());
-
     try {
+      result = vision.inputs.frontLeftResult;
+      SmartDashboard.putString("Align Result", result.toString());
+
+      double aveLidarDist = (this.getRightLidarDistance() + this.getLeftLidarDistance()) / 2;
+      double diffLidarDist = this.getRightLidarDistance() - this.getLeftLidarDistance() - 0.01;
+
+      int currentOffsetIndex = state == AlignState.Reef
+          ? calcOrientationOffset(selectedReefOrientation, selectedPoleSide, selectedLevel)
+          : 0;
+
+      Pose3d refPosition = this.getReferenceRobotPosition();
+      SmartDashboard.putString("Refpos", refPosition.toString());
+      AlignOffset currentOffset = state == AlignState.Reef ? AlignOffset.values()[currentOffsetIndex] : null;
+
+      SmartDashboard.putBoolean("is both lidar", areBothLidarsValid());
+
       if (refPosition.getX() != Transform2d.kZero.getX()
           && refPosition.getY() != Transform2d.kZero.getY()
           && !Double.isNaN(turnAngle)) {

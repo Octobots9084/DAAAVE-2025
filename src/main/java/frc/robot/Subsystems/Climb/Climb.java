@@ -11,7 +11,7 @@ public class Climb extends SubsystemBase {
 
     public static Climb getInstance() {
         if (instance == null) {
-        throw new IllegalStateException("Climb instance not set");
+            throw new IllegalStateException("Climb instance not set");
         }
         return instance;
     }
@@ -40,8 +40,15 @@ public class Climb extends SubsystemBase {
         return climbState;
     }
 
-
     public void updateSim() {
         io.updateSim();
+    }
+
+    public void zeroEncoder() {
+        io.zeroEncoder();
+    }
+
+    public void setVoltage(double voltage) {
+        io.setVoltage(voltage);
     }
 }

@@ -26,7 +26,7 @@ public class WristIOSparkMax implements WristIO {
   public WristIOSparkMax() {
     config = new SparkMaxConfig();
     config.inverted(false);
-    config.idleMode(IdleMode.kCoast);
+    config.idleMode(IdleMode.kBrake);
     config.voltageCompensation(3);
     config.smartCurrentLimit(60, 60);
     config.closedLoop.feedbackSensor(FeedbackSensor.kAbsoluteEncoder).pid(7, 0.0, 0, ClosedLoopSlot.kSlot0);

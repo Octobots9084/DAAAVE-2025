@@ -25,7 +25,7 @@ public class ShowSelection {
     }
 
     for (int i = 1; i < 5; i++) {
-      SmartDashboard.putBoolean("L" + i, elevator.getTargetState() == ElevatorStates.values()[i]);
+      SmartDashboard.putBoolean("L" + i, manager.level == ElevatorStates.values()[i]);
     }
   }
 }

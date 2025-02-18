@@ -29,10 +29,16 @@ public class MathUtil {
     return Math.abs(value - target) < tolerance;
   }
 
+  /**
+   * Wraps an angle to the unit circle, then clamps to [-pi, pi]
+   * such that the angle loops across the range if it exceeds it.
+   * 
+   * @param angle The unbounded input angle.
+   * @return The looped, clamped angle.
+   */
   public static double clampAngle(double angle) {
-    double high = Math.PI;
     angle = MathUtil.wrapToCircle(angle, 2 * Math.PI);
-    if (angle > high) {
+    if (angle > Math.PI) {
       angle -= 2 * Math.PI;
     }
     return angle;
@@ -70,10 +76,10 @@ public class MathUtil {
   }
 
   /**
-   * Flips an angle over the y axis
+   * Flips an angle over the y axis.
    *
-   * @param angle The angle in degrees
-   * @return The flipped angle
+   * @param angle The angle in degrees.
+   * @return The flipped angle.
    */
   public static double flipAngleOverYAxis(double angle) {
     double radians = Math.toRadians(angle);
@@ -85,8 +91,31 @@ public class MathUtil {
     return mirroredAngle;
   }
 
+  /**
+   * Exponentiates a number while preserving the sign of the number pre-exponentiation.
+   *
+   * @param a The number to be exponentiated.
+   * @param b The power with which to exponentiate.
+   * @return The exponentiated number w/ preserved sign.
+   */
   public static double powPreserveSign(double a, double b) {
     final double sign = Math.signum(a);
     return sign * Math.pow(Math.abs(a), b);
+  }
+
+  /**
+   * Takes a vector within the unit square and converts it to the appropriate
+   * vector on a unit circle scaled by the given scale factor.
+   *
+   * @param x The vector's x component (between -1 and 1).
+   * @param y The vector's y component (between -1 and 1).
+   * @param vectorScaleFactor The factor with which to scale the base vector by.
+   * @return An array containing the x and y vector components of the scaled vector (as index 0 and 1 respectively).
+   */
+  public static double[] circleVectorFromSquare(double x, double y, double vectorScaleFactor) {
+    double angle = Math.atan2(y, x);
+    double maxDist = (0.375 + ((Math.asin(Math.sin(2*(angle + 0.785398163397) + 1.57079632679))) / (Math.sin(2*(angle + 0.785398163397) + 1.57079632679)*1.57079632679)));
+    double scaleRatio = vectorScaleFactor * Math.sqrt(x*x + y*y) / maxDist;
+    return new double[]{x*scaleRatio, y*scaleRatio};
   }
 }
