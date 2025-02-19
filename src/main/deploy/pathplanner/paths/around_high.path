@@ -8,24 +8,24 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.541722972972973,
-        "y": 6.61402027027027
+        "x": 7.24934659090909,
+        "y": 5.06703125
       },
       "isLocked": false,
       "linkedName": "end_high"
     },
     {
       "anchor": {
-        "x": 5.16528409090909,
-        "y": 5.515752840909091
+        "x": 6.122556818181818,
+        "y": 4.010042613636363
       },
       "prevControl": {
-        "x": 5.316385135135135,
-        "y": 6.169341216216216
+        "x": 7.000056818181817,
+        "y": 4.249360795454545
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "j_solo"
+      "linkedName": "h"
     }
   ],
   "rotationTargets": [],
@@ -42,7 +42,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -119.99999999999999
+    "rotation": -178.89829388479367
   },
   "reversed": false,
   "folder": "push_paths",

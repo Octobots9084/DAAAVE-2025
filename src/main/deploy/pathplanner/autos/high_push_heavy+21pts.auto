@@ -7,19 +7,31 @@
         {
           "type": "path",
           "data": {
-            "pathName": "initial_to_e"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.5
+            "pathName": "back_high"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "e_to_lowstation"
+            "pathName": "side_high"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "push_high_heavy"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "around_high"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "h_to_lowstation"
           }
         },
         {
@@ -39,29 +51,11 @@
           "data": {
             "pathName": "lowstation_to_c"
           }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.5
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "c_to_lowstation"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "lowstation_to_b"
-          }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "28pt",
+  "folder": "push",
   "choreoAuto": false
 }

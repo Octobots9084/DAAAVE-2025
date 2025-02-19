@@ -1,0 +1,43 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "initial_to_f"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "f_to_lowstation"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "lowstation_to_d"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "d_to_lowstation"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "lowstation_to_c"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": "21pt",
+  "choreoAuto": false
+}

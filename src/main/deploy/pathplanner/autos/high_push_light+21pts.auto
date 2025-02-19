@@ -7,7 +7,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "f_to_lowstation"
+            "pathName": "push_high_light"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "around_high"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "h_to_lowstation"
           }
         },
         {
