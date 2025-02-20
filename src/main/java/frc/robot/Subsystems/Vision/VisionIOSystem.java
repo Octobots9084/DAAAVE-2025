@@ -19,9 +19,12 @@ public class VisionIOSystem implements VisionIO {
     public Matrix<N3, N1> defatultStdDev = VecBuilder.fill(0.5, 0.5, 99999);
 
     public final VisionCamera frontLeftCamera = new VisionCamera("Rex", VisionConstants.transformFrontLeftToRobot);
-    public final VisionCamera frontRightCamera = new VisionCamera("Tyrannosaurus", VisionConstants.transformFrontRightToRobot);
-    public final VisionCamera middleRightCamera = new VisionCamera("Oviraptor", VisionConstants.transformMiddleRightToRobot);
-    public final VisionCamera middleLeftCamera = new VisionCamera("Brontosaurus", VisionConstants.transformMiddleLeftToRobot);
+    public final VisionCamera frontRightCamera = new VisionCamera("Tyrannosaurus",
+            VisionConstants.transformFrontRightToRobot);
+    public final VisionCamera middleRightCamera = new VisionCamera("Oviraptor",
+            VisionConstants.transformMiddleRightToRobot);
+    public final VisionCamera middleLeftCamera = new VisionCamera("Brontosaurus",
+            VisionConstants.transformMiddleLeftToRobot);
 
     public StdDevs stdDevsCalculation;
     private final Notifier allNotifier = new Notifier(

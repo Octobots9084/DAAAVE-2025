@@ -34,6 +34,8 @@ public interface VisionIO {
 
     public void updatePose();
 
+    // public VisionCamera[] getCamera();
+
     public void closeNotifiers();
 
     public void addVisionReading(String cameraName, EstimatedRobotPose pose, Matrix<N3, N1> visionMeasurementStdDevs);

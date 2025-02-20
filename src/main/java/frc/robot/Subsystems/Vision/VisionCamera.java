@@ -1,15 +1,26 @@
 /*
- * MIT License Copyright (c) PhotonVision Permission is hereby granted, free of charge, to any
- * person obtaining a copy of this software and associated documentation files (the "Software"), to
- * deal in the Software without restriction, including without limitation the rights to use, copy,
- * modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit
- * persons to whom the Software is furnished to do so, subject to the following conditions: The
- * above copyright notice and this permission notice shall be included in all copies or substantial
- * portions of the Software. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
- * PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
- * LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
- * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+ * MIT License Copyright (c) PhotonVision Permission is hereby granted, free of
+ * charge, to any
+ * person obtaining a copy of this software and associated documentation files
+ * (the "Software"), to
+ * deal in the Software without restriction, including without limitation the
+ * rights to use, copy,
+ * modify, merge, publish, distribute, sublicense, and/or sell copies of the
+ * Software, and to permit
+ * persons to whom the Software is furnished to do so, subject to the following
+ * conditions: The
+ * above copyright notice and this permission notice shall be included in all
+ * copies or substantial
+ * portions of the Software. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY
+ * OF ANY KIND, EXPRESS
+ * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A
+ * PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+ * COPYRIGHT HOLDERS BE
+ * LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+ * CONTRACT, TORT OR
+ * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
+ * OR OTHER DEALINGS
  * IN THE SOFTWARE.
  */
 
@@ -32,19 +43,18 @@ import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
 public class VisionCamera implements Runnable {
-  private final PhotonCamera camera;
-  private final PhotonPoseEstimator photonEstimator;
-  private Matrix<N3, N1> curStdDevs;
-  private final AtomicReference<EstimatedRobotPose> atomicEstimatedRobotPose = new AtomicReference<EstimatedRobotPose>();
-  private final AtomicReference<Matrix<N3, N1>> atomicStdDev = new AtomicReference<Matrix<N3, N1>>();
-  private final AtomicReference<PhotonPipelineResult> atomicPhotonResult = new AtomicReference<PhotonPipelineResult>();
+    private final PhotonCamera camera;
+    private final PhotonPoseEstimator photonEstimator;
+    private Matrix<N3, N1> curStdDevs;
+    private final AtomicReference<EstimatedRobotPose> atomicEstimatedRobotPose = new AtomicReference<EstimatedRobotPose>();
+    private final AtomicReference<Matrix<N3, N1>> atomicStdDev = new AtomicReference<Matrix<N3, N1>>();
+    private final AtomicReference<PhotonPipelineResult> atomicPhotonResult = new AtomicReference<PhotonPipelineResult>();
 
     public VisionCamera(String photonCameraName, Transform3d robotToCamera) {
         camera = new PhotonCamera(photonCameraName);
 
-        photonEstimator =
-                new PhotonPoseEstimator(
-                        VisionConstants.kTagLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, robotToCamera);
+        photonEstimator = new PhotonPoseEstimator(
+                VisionConstants.kTagLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, robotToCamera);
         photonEstimator.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);
     }
 
@@ -56,7 +66,6 @@ public class VisionCamera implements Runnable {
             visionEst = photonEstimator.update(change);
             updateEstimationStdDevs(visionEst, change.getTargets());
         }
-
 
         // if (!unreadResults.isEmpty()) {
         //     latestResult = unreadResults.get(unreadResults.size() - 1);
@@ -120,12 +129,11 @@ public class VisionCamera implements Runnable {
                 if (tagPose.isEmpty())
                     continue;
                 numTags++;
-                avgDist +=
-                        tagPose
-                                .get()
-                                .toPose2d()
-                                .getTranslation()
-                                .getDistance(estimatedPose.get().estimatedPose.toPose2d().getTranslation());
+                avgDist += tagPose
+                        .get()
+                        .toPose2d()
+                        .getTranslation()
+                        .getDistance(estimatedPose.get().estimatedPose.toPose2d().getTranslation());
             }
 
             if (numTags == 0) {
@@ -149,6 +157,10 @@ public class VisionCamera implements Runnable {
 
     public PhotonPoseEstimator getPoseEstimator() {
         return photonEstimator;
+    }
+
+    public PhotonCamera getCamera() {
+        return camera;
     }
 
     /**

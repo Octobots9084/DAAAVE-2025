@@ -59,132 +59,127 @@ import org.ironmaple.simulation.SimulatedArena;
  */
 public class RobotContainer {
 
-  private final SendableChooser<Command> autoChooser;
+    private final SendableChooser<Command> autoChooser;
 
-  // The robot's subsystems and commands are defined here...
-  private AlgaeRollers algaeRollers;
-  private CoralRollers coralRollers;
-  private Elevator elevator;
-  private Wrist wrist;
-  private Swerve swerve;
-  private VisionSubsystem vision;
-  private Climb climb;
+    // The robot's subsystems and commands are defined here...
+    private AlgaeRollers algaeRollers;
+    private CoralRollers coralRollers;
+    private Elevator elevator;
+    private Wrist wrist;
+    private Swerve swerve;
+    private VisionSubsystem vision;
+    private Climb climb;
 
-  private AlgaeRollersManual algaeRollersManual;
-  private CoralRollersManual coralRollersManual;
-  private ElevatorManual elevatorManual;
-  private WristManual wristManual;
+    private AlgaeRollersManual algaeRollersManual;
+    private CoralRollersManual coralRollersManual;
+    private ElevatorManual elevatorManual;
+    private WristManual wristManual;
 
-  /**
-   * The container for the robot. Contains subsystems, OI devices, and commands.
-   */
-  public RobotContainer() {
-    switch (Constants.currentMode) {
-      case REAL:
-        Optional<Alliance> ally = DriverStation.getAlliance();
-        if (ally.isPresent()) {
-          if (ally.get() == Alliance.Red) {
-            Constants.isBlueAlliance = false;
-          }
-          if (ally.get() == Alliance.Blue) {
-            Constants.isBlueAlliance = true;
-          }
+    /**
+     * The container for the robot. Contains subsystems, OI devices, and commands.
+     */
+    public RobotContainer() {
+        switch (Constants.currentMode) {
+            case REAL:
+                Optional<Alliance> ally = DriverStation.getAlliance();
+                if (ally.isPresent()) {
+                    if (ally.get() == Alliance.Red) {
+                        Constants.isBlueAlliance = false;
+                    }
+                    if (ally.get() == Alliance.Blue) {
+                        Constants.isBlueAlliance = true;
+                    }
+                }
+
+                // AlgaeRollers.setInstance(new AlgaeRollersIOSystems());
+                // algaeRollers = AlgaeRollers.getInstance();
+
+                CoralRollers.setInstance(new CoralRollersIOSystems());
+                coralRollers = CoralRollers.getInstance();
+
+                Elevator.setInstance(new ElevatorIOSparkMax());
+                elevator = Elevator.getInstance();
+
+                Wrist.setInstance(new WristIOSparkMax());
+                wrist = Wrist.getInstance();
+
+                Swerve.setInstance(new SwerveIOSystem());
+                swerve = Swerve.getInstance();
+
+                VisionSubsystem.setInstance(new VisionIOSystem());
+                vision = VisionSubsystem.getInstance();
+
+                Climb.setInstance(new ClimbIOSystems());
+                climb = Climb.getInstance();
+                break;
+
+            case SIM:
+                Swerve.setInstance(new SwerveIOSystem());
+                swerve = Swerve.getInstance();
+
+                AlgaeRollers.setInstance(
+                        new AlgaeRollersIOSim(swerve.getIo().getSwerveDrive().getMapleSimDrive().get()));
+                algaeRollers = AlgaeRollers.getInstance();
+
+                CoralRollers.setInstance(
+                        new CoralRollersIOSim(swerve.getIo().getSwerveDrive().getMapleSimDrive().get()));
+                coralRollers = CoralRollers.getInstance();
+
+                Elevator.setInstance(new ElevatorIOSim());
+                elevator = Elevator.getInstance();
+
+                Wrist.setInstance(new WristIOSim());
+                wrist = Wrist.getInstance();
+
+                VisionSubsystem.setInstance(new VisionIOSim());
+                vision = VisionSubsystem.getInstance();
+
+                SimulatedArena.getInstance().resetFieldForAuto();
+                break;
+
+            case REPLAY:
+                // AlgaeRollers.setInstance(new AlgaeRollersIO() {});
+                // algaeRollers = AlgaeRollers.getInstance();
+                Climb.setInstance(new ClimbIO() {});
+                climb = Climb.getInstance();
+                CoralRollers.setInstance(new CoralRollersIO() {});
+                coralRollers = CoralRollers.getInstance();
+
+                Elevator.setInstance(new ElevatorIO() {});
+                elevator = Elevator.getInstance();
+
+                Wrist.setInstance(new WristIO() {});
+                wrist = Wrist.getInstance();
+
+                Swerve.setInstance(new SwerveIO() {});
+                swerve = Swerve.getInstance();
+                break;
+            default:
+                break;
         }
 
-        // AlgaeRollers.setInstance(new AlgaeRollersIOSystems());
-        // algaeRollers = AlgaeRollers.getInstance();
+        TeleopDrive closedFieldRel = new TeleopDrive(
+                () -> MathUtil.applyDeadband(
+                        -ButtonConfig.driverLeft.getRawAxis(1), OperatorConstants.LEFT_Y_DEADBAND),
+                () -> MathUtil.applyDeadband(
+                        -ButtonConfig.driverLeft.getRawAxis(0), OperatorConstants.LEFT_X_DEADBAND),
+                () -> MathUtil.applyDeadband(
+                        -ButtonConfig.driverRight.getRawAxis(0), OperatorConstants.RIGHT_X_DEADBAND));
+        swerve.setDefaultCommand(closedFieldRel);
 
-        CoralRollers.setInstance(new CoralRollersIOSystems());
-        coralRollers = CoralRollers.getInstance();
-
-        Elevator.setInstance(new ElevatorIOSparkMax());
-        elevator = Elevator.getInstance();
-
-        Wrist.setInstance(new WristIOSparkMax());
-        wrist = Wrist.getInstance();
-
-        Swerve.setInstance(new SwerveIOSystem());
-        swerve = Swerve.getInstance();
-
-        VisionSubsystem.setInstance(new VisionIOSystem());
-        vision = VisionSubsystem.getInstance();
-
-        Climb.setInstance(new ClimbIOSystems());
-        climb = Climb.getInstance();
-        break;
-
-      case SIM:
-        Swerve.setInstance(new SwerveIOSystem());
-        swerve = Swerve.getInstance();
-
-        AlgaeRollers.setInstance(
-            new AlgaeRollersIOSim(swerve.getIo().getSwerveDrive().getMapleSimDrive().get()));
-        algaeRollers = AlgaeRollers.getInstance();
-
-        CoralRollers.setInstance(
-            new CoralRollersIOSim(swerve.getIo().getSwerveDrive().getMapleSimDrive().get()));
-        coralRollers = CoralRollers.getInstance();
-
-        Elevator.setInstance(new ElevatorIOSim());
-        elevator = Elevator.getInstance();
-
-        Wrist.setInstance(new WristIOSim());
-        wrist = Wrist.getInstance();
-
-        VisionSubsystem.setInstance(new VisionIOSim());
-        vision = VisionSubsystem.getInstance();
-
-        SimulatedArena.getInstance().resetFieldForAuto();
-        break;
-
-      case REPLAY:
-        // AlgaeRollers.setInstance(new AlgaeRollersIO() {});
-        // algaeRollers = AlgaeRollers.getInstance();
-        Climb.setInstance(new ClimbIO() {
-        });
-        climb = Climb.getInstance();
-        CoralRollers.setInstance(new CoralRollersIO() {
-        });
-        coralRollers = CoralRollers.getInstance();
-
-        Elevator.setInstance(new ElevatorIO() {
-        });
-        elevator = Elevator.getInstance();
-
-        Wrist.setInstance(new WristIO() {
-        });
-        wrist = Wrist.getInstance();
-
-        Swerve.setInstance(new SwerveIO() {
-        });
-        swerve = Swerve.getInstance();
-        break;
-      default:
-        break;
+        autoChooser = AutoBuilder.buildAutoChooser(); // Default auto will be `Commands.none()`
+        SmartDashboard.putData("Auto Mode", autoChooser);
+        // VisionSubsystem.getInstance();
+        ButtonConfig buttons = new ButtonConfig();
+        buttons.initTeleop();
     }
 
-    TeleopDrive closedFieldRel = new TeleopDrive(
-        () -> MathUtil.applyDeadband(
-            -ButtonConfig.driverLeft.getRawAxis(1), OperatorConstants.LEFT_Y_DEADBAND),
-        () -> MathUtil.applyDeadband(
-            -ButtonConfig.driverLeft.getRawAxis(0), OperatorConstants.LEFT_X_DEADBAND),
-        () -> MathUtil.applyDeadband(
-            -ButtonConfig.driverRight.getRawAxis(0), OperatorConstants.RIGHT_X_DEADBAND));
-    swerve.setDefaultCommand(closedFieldRel);
-
-    autoChooser = AutoBuilder.buildAutoChooser(); // Default auto will be `Commands.none()`
-    SmartDashboard.putData("Auto Mode", autoChooser);
-    // VisionSubsystem.getInstance();
-    ButtonConfig buttons = new ButtonConfig();
-    buttons.initTeleop();
-  }
-
-  /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @return the command to run in autonomous
-   */
-  public Command getAutonomousCommand() {
-    return autoChooser.getSelected();
-  }
+    /**
+     * Use this to pass the autonomous command to the main {@link Robot} class.
+     *
+     * @return the command to run in autonomous
+     */
+    public Command getAutonomousCommand() {
+        return autoChooser.getSelected();
+    }
 }

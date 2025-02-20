@@ -26,35 +26,40 @@ public class VisionIOSim implements VisionIO {
     private final Swerve swerve;
     public static VisionIOSystem INSTANCE;
 
-  VisionSystemSim visionSim = new VisionSystemSim("main");
-  TargetModel targetModel = TargetModel.kAprilTag36h11;
-  SimCameraProperties cameraProp = new SimCameraProperties();
-  AprilTagFieldLayout tagLayout;
+    VisionSystemSim visionSim = new VisionSystemSim("main");
+    TargetModel targetModel = TargetModel.kAprilTag36h11;
+    SimCameraProperties cameraProp = new SimCameraProperties();
+    AprilTagFieldLayout tagLayout;
 
     public Matrix<N3, N1> defatultStdDev = VecBuilder.fill(0.5, 0.5, 99999);
 
     public final VisionCamera frontLeftCamera = new VisionCamera("Rex", VisionConstants.transformFrontLeftToRobot);
-    // public final VisionCamera frontRightCamera = new VisionCamera("Triceratops",
-    // VisionConstants.triceratopsTransform);
-    // public StdDevs stdDevsCalculation;
+    public final VisionCamera frontRightCamera = new VisionCamera("Tyrannosaurus",
+            VisionConstants.transformFrontRightToRobot);
+    public final VisionCamera middleRightCamera = new VisionCamera("Oviraptor",
+            VisionConstants.transformMiddleRightToRobot);
+    public final VisionCamera middleLeftCamera = new VisionCamera("Brontosaurus",
+            VisionConstants.transformMiddleLeftToRobot);
 
-  // The simulation of this camera. Its values used in real robot code will be
-  // updated.
-  PhotonCameraSim cameraSim = new PhotonCameraSim(frontLeftCamera.getCamera(), cameraProp);
+    // The simulation of this camera. Its values used in real robot code will be
+    // updated.
+    PhotonCameraSim cameraSim = new PhotonCameraSim(frontLeftCamera.getCamera(), cameraProp);
 
     private final Notifier allNotifier = new Notifier(
             () -> {
                 frontLeftCamera.run();
-                // frontRightCamera.run();
+                frontRightCamera.run();
+                middleRightCamera.run();
+                middleLeftCamera.run();
             });
 
-  public VisionIOSim() {
-    try {
-      tagLayout = AprilTagFieldLayout.loadFromResource(AprilTagFields.kDefaultField.m_resourceFile);
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-    this.swerve = Swerve.getInstance();
+    public VisionIOSim() {
+        try {
+            tagLayout = AprilTagFieldLayout.loadFromResource(AprilTagFields.kDefaultField.m_resourceFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        this.swerve = Swerve.getInstance();
 
         visionSim.addAprilTags(tagLayout);
         // A 640 x 480 camera with a 100 degree diagonal FOV.
