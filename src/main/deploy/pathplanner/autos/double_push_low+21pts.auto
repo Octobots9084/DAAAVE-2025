@@ -35,6 +35,12 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "placeCD"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "d_to_lowstation"
@@ -44,6 +50,12 @@
           "type": "path",
           "data": {
             "pathName": "lowstation_to_c"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "placeCD"
           }
         }
       ]
