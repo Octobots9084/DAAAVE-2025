@@ -14,6 +14,8 @@ import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Constants;
+import frc.robot.Constants.Mode;
 import frc.robot.Subsystems.Elevator.Elevator;
 import frc.robot.Subsystems.Elevator.ElevatorStates;
 
@@ -119,15 +121,20 @@ public class SwerveIOSystem implements SwerveIO {
   }
 
   public void driveFieldRelative(ChassisSpeeds fieldRelativeSpeeds) {
-    if (Elevator.getInstance().isAtState(ElevatorStates.LEVEL4, 5)) {
+    if (Elevator.getInstance().isAtState(ElevatorStates.LEVEL4, 5) && Constants.currentMode == Mode.REAL) {
       fieldRelativeSpeeds = new ChassisSpeeds(
           xFilterL4FieldRelative.calculate(fieldRelativeSpeeds.vxMetersPerSecond),
           yFilterL4FieldRelative.calculate(fieldRelativeSpeeds.vyMetersPerSecond),
           fieldRelativeSpeeds.omegaRadiansPerSecond);
-    } else if (Elevator.getInstance().isAtState(ElevatorStates.LEVEL4, 5)) {
+    } else if (Elevator.getInstance().isAtState(ElevatorStates.LEVEL4, 5) && Constants.currentMode == Mode.REAL) {
       fieldRelativeSpeeds = new ChassisSpeeds(
           xFilterL3FieldRelative.calculate(fieldRelativeSpeeds.vxMetersPerSecond),
           yFilterL3FieldRelative.calculate(fieldRelativeSpeeds.vyMetersPerSecond),
+          fieldRelativeSpeeds.omegaRadiansPerSecond);
+    } else {
+        fieldRelativeSpeeds = new ChassisSpeeds(
+          fieldRelativeSpeeds.vxMetersPerSecond,
+          fieldRelativeSpeeds.vyMetersPerSecond,
           fieldRelativeSpeeds.omegaRadiansPerSecond);
     }
 

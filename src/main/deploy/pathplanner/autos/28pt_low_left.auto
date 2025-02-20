@@ -25,13 +25,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "e_to_lowstation_skid"
+            "pathName": "e_to_lowstation"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "lowstation_to_c"
+            "pathName": "lowstation_to_d"
           }
         },
         {
@@ -43,7 +43,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "c_to_lowstation"
+            "pathName": "d_to_lowstation"
           }
         },
         {
