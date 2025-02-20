@@ -31,7 +31,10 @@ import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.VisionConstants;
+import frc.robot.Robot;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
@@ -60,20 +63,12 @@ public class VisionCamera implements Runnable {
 
     public Optional<EstimatedRobotPose> getEstimatedGlobalPose() {
         Optional<EstimatedRobotPose> visionEst = Optional.empty();
-
         for (var change : camera.getAllUnreadResults()) {
-            atomicPhotonResult.set(change);
             visionEst = photonEstimator.update(change);
+            SmartDashboard.putString("visionestthing", visionEst.toString());
             updateEstimationStdDevs(visionEst, change.getTargets());
+
         }
-
-        // if (!unreadResults.isEmpty()) {
-        //     latestResult = unreadResults.get(unreadResults.size() - 1);
-        //     atomicPhotonResult.set(latestResult);
-        //     visionEst = photonEstimator.update(latestResult);
-        //     updateEstimationStdDevs(visionEst, latestResult.getTargets());
-        // }
-
         return visionEst;
     }
 
@@ -86,6 +81,7 @@ public class VisionCamera implements Runnable {
         Optional<EstimatedRobotPose> estimatedRobotPose = getEstimatedGlobalPose();
         if (estimatedRobotPose.isPresent()) {
             EstimatedRobotPose pose = estimatedRobotPose.get();
+
             atomicEstimatedRobotPose.set(pose);
             atomicStdDev.set(curStdDevs);
         }

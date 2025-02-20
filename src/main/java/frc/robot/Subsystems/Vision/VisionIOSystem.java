@@ -62,6 +62,10 @@ public class VisionIOSystem implements VisionIO {
 
     public void updatePose() {
         EstimatedRobotPose frontLeftPose = frontLeftCamera.grabLatestEstimatedPose();
+        if (frontLeftPose != null) {
+            SmartDashboard.putString("frontleftpose", frontLeftPose.toString());
+
+        }
         EstimatedRobotPose frontRightPose = frontRightCamera.grabLatestEstimatedPose();
         EstimatedRobotPose middleLeftPose = middleLeftCamera.grabLatestEstimatedPose();
         EstimatedRobotPose middleRightPose = middleRightCamera.grabLatestEstimatedPose();

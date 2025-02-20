@@ -30,7 +30,6 @@ public class VisionSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         io.updateInputs(inputs);
-        io.updatePose();
         Logger.processInputs("Vision", inputs);
         if (VisionConstants.USE_VISION) {
             io.updatePose();

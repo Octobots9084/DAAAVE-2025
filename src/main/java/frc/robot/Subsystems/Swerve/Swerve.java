@@ -238,8 +238,8 @@ public class Swerve extends SubsystemBase {
             DoubleSupplier headingY) {
         return run(
                 () -> {
-                    double xInput = Math.pow(translationX.getAsDouble(), 3); // Smooth controll out
-                    double yInput = Math.pow(translationY.getAsDouble(), 3); // Smooth controll out
+                    double xInput = Math.pow(translationX.getAsDouble(), 3); // Smooth control out
+                    double yInput = Math.pow(translationY.getAsDouble(), 3); // Smooth control out
                     // Make the robot move
                     driveFieldRelative(
                             this.io.getTargetSpeeds(

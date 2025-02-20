@@ -23,15 +23,9 @@
           }
         },
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "c_to_lowstation"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "lowstation_to_c"
+            "name": "placeCD"
           }
         },
         {
@@ -47,6 +41,12 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "placeCD"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "c_to_lowstation"
@@ -56,6 +56,30 @@
           "type": "path",
           "data": {
             "pathName": "lowstation_to_c"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "placeCD"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "c_to_lowstation"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "lowstation_to_c"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "placeCD"
           }
         }
       ]

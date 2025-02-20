@@ -23,6 +23,12 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "placeEF"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "f_to_lowstation"
@@ -32,6 +38,12 @@
           "type": "path",
           "data": {
             "pathName": "lowstation_to_d"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "placeCD"
           }
         }
       ]
