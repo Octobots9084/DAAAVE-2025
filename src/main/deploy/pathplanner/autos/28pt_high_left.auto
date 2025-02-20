@@ -7,37 +7,43 @@
         {
           "type": "path",
           "data": {
-            "pathName": "initial_to_e"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "placeEF"
+            "pathName": "initial_to_j"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "e_to_lowstation_broken"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "fakeAlignSource"
+            "pathName": "j_to_topstation"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "lowstation_to_a"
+            "pathName": "topstation_to_k"
           }
         },
         {
-          "type": "named",
+          "type": "path",
           "data": {
-            "name": "placeAB"
+            "pathName": "k_to_topstation"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "topstation_to_l"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "l_to_topstation"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "topstation_to_a"
           }
         }
       ]

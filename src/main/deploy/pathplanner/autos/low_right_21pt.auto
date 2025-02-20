@@ -19,18 +19,6 @@
         {
           "type": "path",
           "data": {
-            "pathName": "lowstation_to_e"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "e_to_lowstation"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
             "pathName": "lowstation_to_d"
           }
         },
@@ -45,17 +33,11 @@
           "data": {
             "pathName": "lowstation_to_c"
           }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "c_to_lowstation"
-          }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": null,
+  "folder": "21pt",
   "choreoAuto": false
 }

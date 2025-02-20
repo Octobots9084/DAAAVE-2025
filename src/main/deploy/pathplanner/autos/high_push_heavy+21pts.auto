@@ -7,49 +7,55 @@
         {
           "type": "path",
           "data": {
-            "pathName": "initial_to_j"
+            "pathName": "back_high"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "j_to_topstation"
+            "pathName": "side_high"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "topstation_to_k"
+            "pathName": "push_high_heavy"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "k_to_topstation"
+            "pathName": "around_high"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "topstation_to_l"
+            "pathName": "h_to_lowstation"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "l_to_topstation"
+            "pathName": "lowstation_to_d"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "topstation_to_a"
+            "pathName": "d_to_lowstation"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "lowstation_to_c"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": null,
+  "folder": "push",
   "choreoAuto": false
 }

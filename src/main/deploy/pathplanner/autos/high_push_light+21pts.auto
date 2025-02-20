@@ -7,31 +7,43 @@
         {
           "type": "path",
           "data": {
-            "pathName": "back"
+            "pathName": "push_high_light"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "side"
+            "pathName": "around_high"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "push"
+            "pathName": "h_to_lowstation"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "around"
+            "pathName": "lowstation_to_d"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "d_to_lowstation"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "lowstation_to_c"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": null,
+  "folder": "push",
   "choreoAuto": false
 }
