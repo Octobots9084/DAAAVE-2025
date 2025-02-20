@@ -4,8 +4,10 @@ import com.ctre.phoenix6.configs.CANrangeConfiguration;
 import com.ctre.phoenix6.configs.FovParamsConfigs;
 import com.ctre.phoenix6.hardware.CANrange;
 
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform2d;
@@ -24,6 +26,9 @@ import frc.robot.States.ReefTargetOrientation;
 import frc.robot.States.ReefTargetSide;
 import frc.robot.Subsystems.Elevator.ElevatorStates;
 import frc.robot.Subsystems.Swerve.Swerve;
+
+import java.util.Optional;
+
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
@@ -163,6 +168,7 @@ public class AlignVision extends SubsystemBase {
                             .getDistance(Translation3d.kZero)) {
                 return rightCamResult;
             } else {
+
                 return null;
             }
         } else {
@@ -205,12 +211,24 @@ public class AlignVision extends SubsystemBase {
         double targetDistance = 0;
         double aveLidarDist = (this.getRightLidarDistance() + this.getLeftLidarDistance()) / 2;
         double diffLidarDist = this.getRightLidarDistance() - this.getLeftLidarDistance() - 0.01;
+        Pose3d refPosition;
 
         int currentOffsetIndex = state == AlignState.Reef
                 ? calcOrientationOffset(selectedReefOrientation, selectedPoleSide, selectedLevel)
                 : 0;
 
-        Pose3d refPosition = this.getReferenceRobotPosition(finalResult);
+        if(finalResult != null){
+            refPosition = this.getReferenceRobotPosition(finalResult);
+        }else{
+            Pose3d fieldPosition = new Pose3d(swerve.getPose());
+            Optional<Pose3d> tagPos = VisionConstants.kTagLayout.getTagPose(finalTagID);
+            if (tagPos.isPresent()){
+                refPosition =  fieldPosition.relativeTo(tagPos.get());
+            }else{
+                //TODO figure it aayush
+                refPosition = new Pose3d();
+            }
+        }
         SmartDashboard.putString("Refpos", refPosition.toString());
         AlignOffset currentOffset =
                 state == AlignState.Reef ? AlignOffset.values()[currentOffsetIndex] : null;
