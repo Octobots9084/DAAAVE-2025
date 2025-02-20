@@ -80,10 +80,10 @@ public final class Constants {
     public static final Transform3d transformFrontRightToRobot = new Transform3d(0.13, -0.33, 0.2921,
         new Rotation3d(0, 0, Math.toRadians(30)));
 
-    public static final Transform3d transformMiddleRightToRobot = new Transform3d(0.13, -0.2794, 0.4318,
+    public static final Transform3d transformMiddleRightToRobot = new Transform3d(0.1, -0.3, 0.4318,
         new Rotation3d(0, 0, Math.toRadians(-90)));
 
-    public static final Transform3d transformMiddleLeftToRobot = new Transform3d(0.13, 0.2794, 0.4318,
+    public static final Transform3d transformMiddleLeftToRobot = new Transform3d(0.1, 0.3, 0.4318,
         new Rotation3d(0, 0, Math.toRadians(90)));
 
     // Position of the AprilTag in Tag Coordinates.
@@ -106,7 +106,7 @@ public final class Constants {
         21, 22);
 
     // The layout of the AprilTags on the field
-    public static final AprilTagFieldLayout kTagLayout = AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
+    public static final AprilTagFieldLayout kTagLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2025Reefscape);
 
     // The standard deviations of our vision estimated poses, which affect
     // correction rate

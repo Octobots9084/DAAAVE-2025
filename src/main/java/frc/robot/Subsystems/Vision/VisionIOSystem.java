@@ -6,6 +6,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj.Notifier;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.VisionConstants;
 import frc.robot.Subsystems.Swerve.Swerve;
 import org.photonvision.EstimatedRobotPose;
@@ -27,10 +28,11 @@ public class VisionIOSystem implements VisionIO {
   public StdDevs stdDevsCalculation;
   private final Notifier allNotifier = new Notifier(
       () -> {
-        frontLeftCamera.run();
-        frontRightCamera.run();
+        // frontLeftCamera.run();
+        // frontRightCamera.run();
+        // middleLeftCamera.run();
         middleRightCamera.run();
-        middleLeftCamera.run();
+
       });
 
   public VisionIOSystem() {
@@ -60,6 +62,10 @@ public class VisionIOSystem implements VisionIO {
 
   public void updatePose() {
     EstimatedRobotPose frontLeftPose = frontLeftCamera.grabLatestEstimatedPose();
+    if (frontLeftPose != null) {
+      SmartDashboard.putString("frontleftpose", frontLeftPose.toString());
+
+    }
     EstimatedRobotPose frontRightPose = frontRightCamera.grabLatestEstimatedPose();
     EstimatedRobotPose middleLeftPose = middleLeftCamera.grabLatestEstimatedPose();
     EstimatedRobotPose middleRightPose = middleRightCamera.grabLatestEstimatedPose();
@@ -69,9 +75,9 @@ public class VisionIOSystem implements VisionIO {
     Matrix<N3, N1> middleLeftStdDevs = middleLeftCamera.grabLatestStdDev();
     Matrix<N3, N1> middleRightStdDevs = middleRightCamera.grabLatestStdDev();
 
-    addVisionReading(frontLeftPose, frontLeftStdDevs);
-    addVisionReading(frontRightPose, frontRightStdDevs);
-    addVisionReading(middleLeftPose, middleLeftStdDevs);
+    // addVisionReading(frontLeftPose, frontLeftStdDevs);
+    // addVisionReading(frontRightPose, frontRightStdDevs);
+    // addVisionReading(middleLeftPose, middleLeftStdDevs);
     addVisionReading(middleRightPose, middleRightStdDevs);
   }
 
@@ -93,7 +99,7 @@ public class VisionIOSystem implements VisionIO {
       // SmartDashboard.putNumber("StdDevsRot",
       // stdDevsCalculation.getStandardDeviationRotation());
 
-      // swerve.addVisionReading(pose2d, pose.timestampSeconds, stdDevs);
+      swerve.addVisionReading(pose2d, pose.timestampSeconds, stdDevs);
     }
   }
 }
