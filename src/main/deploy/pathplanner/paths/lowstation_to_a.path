@@ -33,8 +33,14 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
+      "name": "PrepWristPosition",
+      "waypointRelativePos": 0.18365968939905064,
+      "endWaypointRelativePos": null,
+      "command": null
+    },
+    {
       "name": "BringUpElevator",
-      "waypointRelativePos": 0.7076299797434202,
+      "waypointRelativePos": 0.7859554355165468,
       "endWaypointRelativePos": null,
       "command": null
     }
