@@ -30,7 +30,7 @@ public class SetOrientation extends InstantCommand {
       manager.clearReef();
       manager.setReef(reefStatePos, manager.LastButtonPos[1], true);
 
-      swerve.setReefTargetSide(ReefTargetSide.values()[manager.LastButtonPos[1]]);
+      swerve.setReefTargetSide(ReefTargetSide.values()[manager.LastButtonPos[1] == 0 ? 1 : 0]);
       swerve.setReefTargetOrientation(ReefTargetOrientation.values()[manager.LastButtonPos[0]]);
       SmartDashboard.putString("stuff",manager.LastButtonPos[0]+" "+manager.LastButtonPos[1]);
     }
