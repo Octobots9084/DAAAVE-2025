@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Commands.Elevator.SetElevatorStateTolerance;
+import frc.robot.Commands.Wrist.SetWristState;
 import frc.robot.Commands.Wrist.SetWristStateTolerance;
 import frc.robot.Commands.complex.collectCoral.WaitForCoralDetected;
 import frc.robot.Subsystems.CoralRollers.CoralRollers;
@@ -31,7 +32,8 @@ public class Intake extends SequentialCommandGroup {
                 new WaitCommand(0.1),
                 new InstantCommand(() -> {
                     CoralRollers.getInstance().setState(CoralRollersState.STOPPED);
-                }));
+                }),
+                new SetWristState(WristStates.PREP, ClosedLoopSlot.kSlot0));
     }
 
 }

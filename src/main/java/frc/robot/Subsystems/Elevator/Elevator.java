@@ -23,14 +23,14 @@ public class Elevator extends SubsystemBase {
     public DigitalInput toplimitSwitch = new DigitalInput(0);
     public DigitalInput bottomlimitSwitch = new DigitalInput(1);
 
-  private static Elevator instance;
+    private static Elevator instance;
 
-  private static double kDt = 0.02;
+    private static double kDt = 0.02;
 
-  private final TrapezoidProfile elevatorProfile;
+    private final TrapezoidProfile elevatorProfile;
 
-  private TrapezoidProfile.State elevatorGoal;
-  private TrapezoidProfile.State elevatorCurrentPoint;
+    private TrapezoidProfile.State elevatorGoal;
+    private TrapezoidProfile.State elevatorCurrentPoint;
 
     public static Elevator getInstance() {
         if (instance == null) {
@@ -52,23 +52,23 @@ public class Elevator extends SubsystemBase {
         return instance;
     }
 
-  private Elevator(ElevatorIO io) {
-    this.io = io;
+    private Elevator(ElevatorIO io) {
+        this.io = io;
 
-    this.elevatorProfile = new TrapezoidProfile(new TrapezoidProfile.Constraints(450, 900));
-    this.elevatorCurrentPoint = new TrapezoidProfile.State(getPosition(), 0);
+        this.elevatorProfile = new TrapezoidProfile(new TrapezoidProfile.Constraints(450, 900));
+        this.elevatorCurrentPoint = new TrapezoidProfile.State(getPosition(), 0);
 
-    // this.io.configurePID(0.7, 0, 0);
-  }
+        // this.io.configurePID(0.7, 0, 0);
+    }
 
     public ElevatorIO getElevatorIo() {
         return io;
     }
 
-  @Override
-  public void periodic() {
+    @Override
+    public void periodic() {
 
-    // double currentPosition = this.inputs.leftPositionRotations;
+        // double currentPosition = this.inputs.leftPositionRotations;
 
         // if (((targetLevel.position > this.BOT_CROSSBAR_POS && currentPosition <
         // this.BOT_CROSSBAR_POS) ||
@@ -78,29 +78,29 @@ public class Elevator extends SubsystemBase {
         // io.setPosition(currentPosition, currentPosition);
         // }
 
-    // if (bottomlimitSwitch.get()) {
-    // // We are going up and top limit is tripped so stop
-    // if (currentPosition < 0) {
-    // io.setPosition(0, 0);
-    // }
-    // }
-    io.updateInputs(inputs);
-    elevatorCurrentPoint = elevatorProfile.calculate(kDt, elevatorCurrentPoint, elevatorGoal);
-    manualSetTargetPosistion(elevatorCurrentPoint.position);
+        // if (bottomlimitSwitch.get()) {
+        // // We are going up and top limit is tripped so stop
+        // if (currentPosition < 0) {
+        // io.setPosition(0, 0);
+        // }
+        // }
+        io.updateInputs(inputs);
+        elevatorCurrentPoint = elevatorProfile.calculate(kDt, elevatorCurrentPoint, elevatorGoal);
+        manualSetTargetPosistion(elevatorCurrentPoint.position);
 
-    Logger.processInputs("Elevator", inputs);
-  }
+        Logger.processInputs("Elevator", inputs);
+    }
 
-  public void setState(ElevatorStates state) {
-    if (state.position < 0)
-      state.position = 0;
+    public void setState(ElevatorStates state) {
+        if (state.position < 0)
+            state.position = 0;
 
-    this.elevatorGoal = new TrapezoidProfile.State(state.position, 0);
+        this.elevatorGoal = new TrapezoidProfile.State(state.position, 0);
 
-    // io.setPosition(state.position);
-    targetLevel = state;
-    Logger.recordOutput("Elevator/State", state);
-  }
+        // io.setPosition(state.position);
+        targetLevel = state;
+        Logger.recordOutput("Elevator/State", state);
+    }
 
     public ElevatorStates getTargetState() {
 
@@ -114,9 +114,9 @@ public class Elevator extends SubsystemBase {
     }
 
     public boolean isAtState(ElevatorStates state, double tolerance) {
-        return MathUtil.isNear(this.inputs.leftPositionRotations, targetLevel.position, tolerance)
+        return MathUtil.isNear(this.inputs.leftPositionRotations, state.position, tolerance)
                 || MathUtil.isNear(
-                        this.inputs.rightPositionRotations, targetLevel.position, tolerance);
+                        this.inputs.rightPositionRotations, state.position, tolerance);
     }
 
     public boolean isAtState(double tolerance) {

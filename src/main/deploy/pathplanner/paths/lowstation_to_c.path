@@ -33,21 +33,15 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "PrepWristPosition",
-      "waypointRelativePos": 0.20256583389601296,
-      "endWaypointRelativePos": null,
-      "command": null
-    },
-    {
       "name": "BringUpElevator",
-      "waypointRelativePos": 0.6860229574611783,
+      "waypointRelativePos": 0.6590141796083736,
       "endWaypointRelativePos": null,
       "command": null
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 4.0,
-    "maxAcceleration": 3.0,
+    "maxVelocity": 1.0,
+    "maxAcceleration": 0.5,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 10.0,

@@ -63,12 +63,15 @@ public class VisionCamera implements Runnable {
 
     public Optional<EstimatedRobotPose> getEstimatedGlobalPose() {
         Optional<EstimatedRobotPose> visionEst = Optional.empty();
-        for (var change : camera.getAllUnreadResults()) {
-            visionEst = photonEstimator.update(change);
-            SmartDashboard.putString("visionestthing", visionEst.toString());
-            updateEstimationStdDevs(visionEst, change.getTargets());
+        List<PhotonPipelineResult> unreadResults = camera.getAllUnreadResults();
 
+        if (!unreadResults.isEmpty()) {
+            latestResult = unreadResults.get(unreadResults.size() - 1);
+            atomicPhotonResult.set(latestResult);
+            visionEst = photonEstimator.update(latestResult);
+            updateEstimationStdDevs(visionEst, latestResult.getTargets());
         }
+
         return visionEst;
     }
 

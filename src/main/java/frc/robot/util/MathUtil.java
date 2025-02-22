@@ -1,13 +1,17 @@
 package frc.robot.util;
 
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
+
 public class MathUtil {
   /**
    * Wraps a circular angle value to within one circle.
    *
-   * <p>Customizable number of angle units per circle. Angle is equivalent and wrapped to the
+   * <p>
+   * Customizable number of angle units per circle. Angle is equivalent and
+   * wrapped to the
    * positive [0, fullCircle] range.
    *
-   * @param angle the raw angle units to wrap.
+   * @param angle      the raw angle units to wrap.
    * @param fullCircle the number of angle units to be one circle.
    * @return the wrapped angle in corresponding angle units.
    */
@@ -17,12 +21,14 @@ public class MathUtil {
   }
 
   /**
-   * Checks if a value is within a certain tolerance of a target. Directions irrelevant.
+   * Checks if a value is within a certain tolerance of a target. Directions
+   * irrelevant.
    *
-   * @param value the current value for which to check.
-   * @param target the target to check the value against.
-   * @param tolerance the tolerance (positive and negative directions) around the target that is
-   *     acceptable error for the value to be "within tolerance".
+   * @param value     the current value for which to check.
+   * @param target    the target to check the value against.
+   * @param tolerance the tolerance (positive and negative directions) around the
+   *                  target that is
+   *                  acceptable error for the value to be "within tolerance".
    * @return if the value is within tolerance of the target.
    */
   public static boolean isWithinTolerance(double value, double target, double tolerance) {
@@ -47,12 +53,17 @@ public class MathUtil {
   /**
    * Fits value between -1 and 1 but eliminates noise between the deadband.
    *
-   * <p>Generally used for eliminating noise in joystick readings by setting the output to zero when
-   * within a certain deadband amount of zero. Non-joystick values are also limited between -1 and 1
+   * <p>
+   * Generally used for eliminating noise in joystick readings by setting the
+   * output to zero when
+   * within a certain deadband amount of zero. Non-joystick values are also
+   * limited between -1 and 1
    * so as to use in a motor set.
    *
-   * @param val the value to fit inside the valid range and outside the deadband.
-   * @param deadband the amount of tolerance around zero in which values are set to zero.
+   * @param val      the value to fit inside the valid range and outside the
+   *                 deadband.
+   * @param deadband the amount of tolerance around zero in which values are set
+   *                 to zero.
    * @return the value fitted to the range.
    * @since 0.1.0
    */
@@ -92,7 +103,8 @@ public class MathUtil {
   }
 
   /**
-   * Exponentiates a number while preserving the sign of the number pre-exponentiation.
+   * Exponentiates a number while preserving the sign of the number
+   * pre-exponentiation.
    *
    * @param a The number to be exponentiated.
    * @param b The power with which to exponentiate.
@@ -107,15 +119,38 @@ public class MathUtil {
    * Takes a vector within the unit square and converts it to the appropriate
    * vector on a unit circle scaled by the given scale factor.
    *
-   * @param x The vector's x component (between -1 and 1).
-   * @param y The vector's y component (between -1 and 1).
+   * @param x                 The vector's x component (between -1 and 1).
+   * @param y                 The vector's y component (between -1 and 1).
    * @param vectorScaleFactor The factor with which to scale the base vector by.
-   * @return An array containing the x and y vector components of the scaled vector (as index 0 and 1 respectively).
+   * @return An array containing the x and y vector components of the scaled
+   *         vector (as index 0 and 1 respectively).
    */
   public static double[] circleVectorFromSquare(double x, double y, double vectorScaleFactor) {
     double angle = Math.atan2(y, x);
-    double maxDist = (0.375 + ((Math.asin(Math.sin(2*(angle + 0.785398163397) + 1.57079632679))) / (Math.sin(2*(angle + 0.785398163397) + 1.57079632679)*1.57079632679)));
-    double scaleRatio = vectorScaleFactor * Math.sqrt(x*x + y*y) / maxDist;
-    return new double[]{x*scaleRatio, y*scaleRatio};
+    double maxDist = (0.375 + ((Math.asin(Math.sin(2 * (angle + 0.785398163397) + 1.57079632679)))
+        / (Math.sin(2 * (angle + 0.785398163397) + 1.57079632679) * 1.57079632679)));
+    double scaleRatio = vectorScaleFactor * Math.sqrt(x * x + y * y) / maxDist;
+    return new double[] { x * scaleRatio, y * scaleRatio };
+  }
+
+  public static ChassisSpeeds limitXAndYAcceleration(ChassisSpeeds targetChassisSpeeds,
+      ChassisSpeeds currentChassisSpeeds, double maxAccelerationX, double maxAccelerationY, double loopTime) {
+    double targetAccelerationX = (targetChassisSpeeds.vxMetersPerSecond - currentChassisSpeeds.vxMetersPerSecond)
+        / loopTime;
+    double targetAccelerationY = (targetChassisSpeeds.vyMetersPerSecond - currentChassisSpeeds.vyMetersPerSecond)
+        / loopTime;
+
+    if (Math.abs(targetAccelerationX) > maxAccelerationX) {
+      targetAccelerationX = maxAccelerationX * Math.signum(targetAccelerationX);
+    }
+
+    if (Math.abs(targetAccelerationY) > maxAccelerationY) {
+      targetAccelerationY = maxAccelerationY * Math.signum(targetAccelerationY);
+    }
+
+    return new ChassisSpeeds(currentChassisSpeeds.vxMetersPerSecond + targetAccelerationX * loopTime,
+        currentChassisSpeeds.vyMetersPerSecond + targetAccelerationY * loopTime,
+        targetChassisSpeeds.omegaRadiansPerSecond);
+
   }
 }

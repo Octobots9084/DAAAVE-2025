@@ -191,9 +191,8 @@ public class AlignVision extends SubsystemBase {
             transformTagToCamera = bestTarget.getBestCameraToTarget();
 
             // Transform Tag Position into Robot Coordinates
-            referenceRobotPosition =
-                    VisionConstants.referenceTagPosition.transformBy(transformTagToCamera.inverse())
-                            .transformBy(VisionConstants.transformFrontLeftToRobot.inverse());
+            referenceRobotPosition = VisionConstants.referenceTagPosition.transformBy(transformTagToCamera.inverse())
+                    .transformBy(VisionConstants.transformFrontLeftToRobot.inverse());
             return referenceRobotPosition;
 
         } else {
@@ -217,21 +216,20 @@ public class AlignVision extends SubsystemBase {
                 ? calcOrientationOffset(selectedReefOrientation, selectedPoleSide, selectedLevel)
                 : 0;
 
-        if(finalResult != null){
+        if (finalResult != null) {
             refPosition = this.getReferenceRobotPosition(finalResult);
-        }else{
+        } else {
             Pose3d fieldPosition = new Pose3d(swerve.getPose());
             Optional<Pose3d> tagPos = VisionConstants.kTagLayout.getTagPose(finalTagID);
-            if (tagPos.isPresent()){
-                refPosition =  fieldPosition.relativeTo(tagPos.get());
-            }else{
+            if (tagPos.isPresent()) {
+                refPosition = fieldPosition.relativeTo(tagPos.get());
+            } else {
                 //TODO figure it aayush
                 refPosition = new Pose3d();
             }
         }
         SmartDashboard.putString("Refpos", refPosition.toString());
-        AlignOffset currentOffset =
-                state == AlignState.Reef ? AlignOffset.values()[currentOffsetIndex] : null;
+        AlignOffset currentOffset = state == AlignState.Reef ? AlignOffset.values()[currentOffsetIndex] : null;
 
         SmartDashboard.putBoolean("is both lidar", areBothLidarsValid());
 
@@ -247,9 +245,9 @@ public class AlignVision extends SubsystemBase {
 
                 if (state == AlignState.Reef) {
                     if (selectedPoleSide == ReefTargetSide.LEFT) {
-                        targetDistance -= VisionConstants.distanceToPole;
-                    } else if (selectedPoleSide == ReefTargetSide.RIGHT) {
                         targetDistance += VisionConstants.distanceToPole;
+                    } else if (selectedPoleSide == ReefTargetSide.RIGHT) {
+                        targetDistance -= VisionConstants.distanceToPole;
                     }
                 } else {
                     targetDistance = 0;
@@ -335,8 +333,7 @@ public class AlignVision extends SubsystemBase {
         SmartDashboard.putNumber("avg lidar dist", aveLidarDist);
         SmartDashboard.putNumber("camerax", refPosition.getX());
         if (this.areBothLidarsValid()) {
-            xInTolerance =
-                    MathUtil.isNear(aveLidarDist, VisionConstants.maxLidarDepthDistance, 0.03);
+            xInTolerance = MathUtil.isNear(aveLidarDist, VisionConstants.maxLidarDepthDistance, 0.03);
 
             return -lidarXPIDController.calculate(aveLidarDist,
                     VisionConstants.maxLidarDepthDistance);
@@ -360,8 +357,7 @@ public class AlignVision extends SubsystemBase {
         } else {
             rotInTolerance = MathUtil.isNear(swerve.getGyro(), Math.toRadians(turnAngle), 0.05);
 
-            return -gyroRotationPIDController.calculate(swerve.getGyro(),
-                    Math.toRadians(turnAngle));
+            return gyroRotationPIDController.calculate(swerve.getGyro(), Math.toRadians(turnAngle));
         }
 
     }
