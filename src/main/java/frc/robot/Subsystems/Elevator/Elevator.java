@@ -114,9 +114,9 @@ public class Elevator extends SubsystemBase {
   }
 
   public boolean isAtState(ElevatorStates state, double tolerance) {
-    return MathUtil.isNear(this.inputs.leftPositionRotations, targetLevel.position, tolerance)
+    return MathUtil.isNear(this.inputs.leftPositionRotations, state.position, tolerance)
         || MathUtil.isNear(
-            this.inputs.rightPositionRotations, targetLevel.position, tolerance);
+            this.inputs.rightPositionRotations, state.position, tolerance);
   }
 
   public boolean isAtState(double tolerance) {

@@ -192,9 +192,9 @@ public class AlignVision extends SubsystemBase {
 
         if (state == AlignState.Reef) {
           if (selectedPoleSide == ReefTargetSide.LEFT) {
-            targetDistance -= VisionConstants.distanceToPole;
-          } else if (selectedPoleSide == ReefTargetSide.RIGHT) {
             targetDistance += VisionConstants.distanceToPole;
+          } else if (selectedPoleSide == ReefTargetSide.RIGHT) {
+            targetDistance -= VisionConstants.distanceToPole;
           }
         } else {
           targetDistance = 0;
@@ -298,7 +298,7 @@ public class AlignVision extends SubsystemBase {
     } else {
       rotInTolerance = MathUtil.isNear(swerve.getGyro(), Math.toRadians(turnAngle), 0.05);
 
-      return -gyroRotationPIDController.calculate(swerve.getGyro(), Math.toRadians(turnAngle));
+      return gyroRotationPIDController.calculate(swerve.getGyro(), Math.toRadians(turnAngle));
     }
 
   }

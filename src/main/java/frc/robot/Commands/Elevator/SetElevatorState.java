@@ -18,8 +18,4 @@ public class SetElevatorState extends InstantCommand {
     Elevator.getInstance().setState(targetState);
   }
 
-  @Override
-  public boolean isFinished () {
-    return Elevator.getInstance().isAtState(0.1);//TODO: set actual tolerance
-  }
 }
