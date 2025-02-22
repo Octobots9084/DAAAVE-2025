@@ -19,113 +19,113 @@ public class Elevator extends SubsystemBase {
   private ElevatorStates targetLevel = ElevatorStates.LOW;
   public ElevatorStates driverDesiredElevatorStates;
 
-  // TODO add actual input chanel
-  public DigitalInput toplimitSwitch = new DigitalInput(0);
-  public DigitalInput bottomlimitSwitch = new DigitalInput(1);
+    // TODO add actual input chanel
+    public DigitalInput toplimitSwitch = new DigitalInput(0);
+    public DigitalInput bottomlimitSwitch = new DigitalInput(1);
 
-  private static Elevator instance;
+    private static Elevator instance;
 
-  private static double kDt = 0.02;
+    private static double kDt = 0.02;
 
-  private final TrapezoidProfile elevatorProfile;
+    private final TrapezoidProfile elevatorProfile;
 
-  private TrapezoidProfile.State elevatorGoal;
-  private TrapezoidProfile.State elevatorCurrentPoint;
+    private TrapezoidProfile.State elevatorGoal;
+    private TrapezoidProfile.State elevatorCurrentPoint;
 
-  public static Elevator getInstance() {
-    if (instance == null) {
-      throw new IllegalStateException("Elevator instance not set");
+    public static Elevator getInstance() {
+        if (instance == null) {
+            throw new IllegalStateException("Elevator instance not set");
+        }
+        return instance;
     }
-    return instance;
-  }
 
-  public void setTargetState(ElevatorStates state) {
-    targetLevel = state;
-  }
+    public void setTargetState(ElevatorStates state) {
+        targetLevel = state;
+    }
 
-  public double getPosition() {
-    return this.io.getPosition();
-  }
+    public double getPosition() {
+        return this.io.getPosition();
+    }
 
-  public static Elevator setInstance(ElevatorIO io) {
-    instance = new Elevator(io);
-    return instance;
-  }
+    public static Elevator setInstance(ElevatorIO io) {
+        instance = new Elevator(io);
+        return instance;
+    }
 
-  private Elevator(ElevatorIO io) {
-    this.io = io;
+    private Elevator(ElevatorIO io) {
+        this.io = io;
 
-    this.elevatorProfile = new TrapezoidProfile(new TrapezoidProfile.Constraints(450, 900));
-    this.elevatorCurrentPoint = new TrapezoidProfile.State(getPosition(), 0);
+        this.elevatorProfile = new TrapezoidProfile(new TrapezoidProfile.Constraints(450, 900));
+        this.elevatorCurrentPoint = new TrapezoidProfile.State(getPosition(), 0);
 
-    // this.io.configurePID(0.7, 0, 0);
-  }
+        // this.io.configurePID(0.7, 0, 0);
+    }
 
-  public ElevatorIO getElevatorIo() {
-    return io;
-  }
+    public ElevatorIO getElevatorIo() {
+        return io;
+    }
 
-  @Override
-  public void periodic() {
+    @Override
+    public void periodic() {
 
-    // double currentPosition = this.inputs.leftPositionRotations;
+        // double currentPosition = this.inputs.leftPositionRotations;
 
-    // if (((targetLevel.position > this.BOT_CROSSBAR_POS && currentPosition <
-    // this.BOT_CROSSBAR_POS) ||
-    // (targetLevel.position < this.TOP_CROSSBAR_POS && currentPosition >
-    // this.TOP_CROSSBAR_POS))
-    // && Wrist.getInstance().IsInsideRobot()) {
-    // io.setPosition(currentPosition, currentPosition);
-    // }
+        // if (((targetLevel.position > this.BOT_CROSSBAR_POS && currentPosition <
+        // this.BOT_CROSSBAR_POS) ||
+        // (targetLevel.position < this.TOP_CROSSBAR_POS && currentPosition >
+        // this.TOP_CROSSBAR_POS))
+        // && Wrist.getInstance().IsInsideRobot()) {
+        // io.setPosition(currentPosition, currentPosition);
+        // }
 
-    // if (bottomlimitSwitch.get()) {
-    // // We are going up and top limit is tripped so stop
-    // if (currentPosition < 0) {
-    // io.setPosition(0, 0);
-    // }
-    // }
-    io.updateInputs(inputs);
-    elevatorCurrentPoint = elevatorProfile.calculate(kDt, elevatorCurrentPoint, elevatorGoal);
-    manualSetTargetPosistion(elevatorCurrentPoint.position);
+        // if (bottomlimitSwitch.get()) {
+        // // We are going up and top limit is tripped so stop
+        // if (currentPosition < 0) {
+        // io.setPosition(0, 0);
+        // }
+        // }
+        io.updateInputs(inputs);
+        elevatorCurrentPoint = elevatorProfile.calculate(kDt, elevatorCurrentPoint, elevatorGoal);
+        manualSetTargetPosistion(elevatorCurrentPoint.position);
 
-    Logger.processInputs("Elevator", inputs);
-  }
+        Logger.processInputs("Elevator", inputs);
+    }
 
-  public void setState(ElevatorStates state) {
-    if (state.position < 0)
-      state.position = 0;
+    public void setState(ElevatorStates state) {
+        if (state.position < 0)
+            state.position = 0;
 
-    this.elevatorGoal = new TrapezoidProfile.State(state.position, 0);
+        this.elevatorGoal = new TrapezoidProfile.State(state.position, 0);
 
-    // io.setPosition(state.position);
-    targetLevel = state;
-    Logger.recordOutput("Elevator/State", state);
-  }
+        // io.setPosition(state.position);
+        targetLevel = state;
+        Logger.recordOutput("Elevator/State", state);
+    }
 
-  public ElevatorStates getTargetState() {
+    public ElevatorStates getTargetState() {
 
-    return targetLevel;
-  }
+        return targetLevel;
+    }
 
-  public void manualSetTargetPosistion(double position) {
-    if (position < 0)
-      position = 0;
-    io.setPosition(position);
-  }
+    public void manualSetTargetPosistion(double position) {
+        if (position < 0)
+            position = 0;
+        io.setPosition(position);
+    }
 
-  public boolean isAtState(ElevatorStates state, double tolerance) {
-    return MathUtil.isNear(this.inputs.leftPositionRotations, state.position, tolerance)
-        || MathUtil.isNear(
-            this.inputs.rightPositionRotations, state.position, tolerance);
-  }
+    public boolean isAtState(ElevatorStates state, double tolerance) {
+        return MathUtil.isNear(this.inputs.leftPositionRotations, state.position, tolerance)
+                || MathUtil.isNear(
+                        this.inputs.rightPositionRotations, state.position, tolerance);
+    }
 
-  public boolean isAtState(double tolerance) {
-    return MathUtil.isNear(this.inputs.leftPositionRotations, targetLevel.position, tolerance)
-        || MathUtil.isNear(
-            this.inputs.rightPositionRotations, targetLevel.position, tolerance);
-  }
+    public boolean isAtState(double tolerance) {
+        return MathUtil.isNear(this.inputs.leftPositionRotations, targetLevel.position, tolerance)
+                || MathUtil.isNear(
+                        this.inputs.rightPositionRotations, targetLevel.position, tolerance);
+    }
 
-  public void updateSim() {
-    io.updateSim();
-  }
+    public void updateSim() {
+        io.updateSim();
+    }
 }

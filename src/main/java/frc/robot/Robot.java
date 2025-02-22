@@ -45,149 +45,145 @@ import com.revrobotics.spark.ClosedLoopSlot;
  * project.
  */
 public class Robot extends LoggedRobot {
-  private Command m_autonomousCommand;
-  private RobotContainer robotContainer;
+    private Command m_autonomousCommand;
+    private RobotContainer robotContainer;
 
-  public Robot() {
-    // Record metadata
-    Logger.recordMetadata("ProjectName", BuildConstants.MAVEN_NAME);
-    Logger.recordMetadata("BuildDate", BuildConstants.BUILD_DATE);
-    Logger.recordMetadata("GitSHA", BuildConstants.GIT_SHA);
-    Logger.recordMetadata("GitDate", BuildConstants.GIT_DATE);
-    Logger.recordMetadata("GitBranch", BuildConstants.GIT_BRANCH);
-    switch (BuildConstants.DIRTY) {
-      case 0:
-        Logger.recordMetadata("GitDirty", "All changes committed");
-        break;
-      case 1:
-        Logger.recordMetadata("GitDirty", "Uncomitted changes");
-        break;
-      default:
-        Logger.recordMetadata("GitDirty", "Unknown");
-        break;
+    public Robot() {
+        // Record metadata
+        Logger.recordMetadata("ProjectName", BuildConstants.MAVEN_NAME);
+        Logger.recordMetadata("BuildDate", BuildConstants.BUILD_DATE);
+        Logger.recordMetadata("GitSHA", BuildConstants.GIT_SHA);
+        Logger.recordMetadata("GitDate", BuildConstants.GIT_DATE);
+        Logger.recordMetadata("GitBranch", BuildConstants.GIT_BRANCH);
+        switch (BuildConstants.DIRTY) {
+            case 0:
+                Logger.recordMetadata("GitDirty", "All changes committed");
+                break;
+            case 1:
+                Logger.recordMetadata("GitDirty", "Uncomitted changes");
+                break;
+            default:
+                Logger.recordMetadata("GitDirty", "Unknown");
+                break;
+        }
+
+        // Set up data receivers & replay source
+        switch (Constants.currentMode) {
+            case REAL:
+                // Running on a real robot, log to a USB stick ("/U/logs")
+                Logger.addDataReceiver(new WPILOGWriter());
+                Logger.addDataReceiver(new NT4Publisher());
+                break;
+
+            case SIM:
+                // Running a physics simulator, log to NT
+                Logger.addDataReceiver(new NT4Publisher());
+                break;
+
+            case REPLAY:
+                // Replaying a log, set up replay source
+                setUseTiming(false); // Run as fast as possible
+                String logPath = LogFileUtil.findReplayLog();
+                Logger.setReplaySource(new WPILOGReader(logPath));
+                Logger.addDataReceiver(
+                        new WPILOGWriter(LogFileUtil.addPathSuffix(logPath, "_sim")));
+                break;
+        }
+
+        // Start AdvantageKit logger
+        Logger.start();
+
+        SmartDashboard.putString("debugging llama", "it worked");
     }
 
-    // Set up data receivers & replay source
-    switch (Constants.currentMode) {
-      case REAL:
-        // Running on a real robot, log to a USB stick ("/U/logs")
-        Logger.addDataReceiver(new WPILOGWriter());
-        Logger.addDataReceiver(new NT4Publisher());
-        break;
-
-      case SIM:
-        // Running a physics simulator, log to NT
-        Logger.addDataReceiver(new NT4Publisher());
-        break;
-
-      case REPLAY:
-        // Replaying a log, set up replay source
-        setUseTiming(false); // Run as fast as possible
-        String logPath = LogFileUtil.findReplayLog();
-        Logger.setReplaySource(new WPILOGReader(logPath));
-        Logger.addDataReceiver(new WPILOGWriter(LogFileUtil.addPathSuffix(logPath, "_sim")));
-        break;
+    @Override
+    public void robotInit() {
+        robotContainer = new RobotContainer();
     }
 
-    // Start AdvantageKit logger
-    Logger.start();
-
-    SmartDashboard.putString("debugging llama", "it worked");
-  }
-
-  @Override
-  public void robotInit() {
-    robotContainer = new RobotContainer();
-  }
-
-  /** This function is called periodically during all modes. */
-  @Override
-  public void robotPeriodic() {
-    CommandScheduler.getInstance().run();
-    // SmartDashboard.putNumber("LeftLidar",
-    // AlignVision.getInstance().getLeftLidarDistance());
-    // SmartDashboard.putNumber("RightLidar",
-    // AlignVision.getInstance().getRightLidarDistance());
-  }
-
-  /** This function is called once when the robot is disabled. */
-  @Override
-  public void disabledInit() {
-    Elevator.getInstance().setTargetState(ElevatorStates.LEVEL1);
-    Elevator.getInstance().setState(ElevatorStates.LEVEL1);
-    Wrist.getInstance().setState(ElevatorStates.LEVEL1,ClosedLoopSlot.kSlot0);
-  }
-
-  /** This function is called periodically when disabled. */
-  @Override
-  public void disabledPeriodic() {
-  }
-
-  /**
-   * This autonomous runs the autonomous command selected by your
-   * {@link RobotContainer} class.
-   */
-  @Override
-  public void autonomousInit() {
-    m_autonomousCommand = robotContainer.getAutonomousCommand();
-
-    // schedule the autonomous command (example)
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.schedule();
-    }
-  }
-
-  /** This function is called periodically during autonomous. */
-  @Override
-  public void autonomousPeriodic() {
-  }
-
-  /** This function is called once when teleop is enabled. */
-  @Override
-  public void teleopInit() {
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.cancel();
+    /** This function is called periodically during all modes. */
+    @Override
+    public void robotPeriodic() {
+        CommandScheduler.getInstance().run();
+        // SmartDashboard.putNumber("LeftLidar",
+        // AlignVision.getInstance().getLeftLidarDistance());
+        // SmartDashboard.putNumber("RightLidar",
+        // AlignVision.getInstance().getRightLidarDistance());
     }
 
-    Swerve.getInstance().setDriveState(DriveState.Manual);
+    /** This function is called once when the robot is disabled. */
+    @Override
+    public void disabledInit() {
+        Elevator.getInstance().setTargetState(ElevatorStates.LEVEL1);
+        Elevator.getInstance().setState(ElevatorStates.LEVEL1);
+        Wrist.getInstance().setState(ElevatorStates.LEVEL1, ClosedLoopSlot.kSlot0);
+    }
 
-  }
+    /** This function is called periodically when disabled. */
+    @Override
+    public void disabledPeriodic() {}
 
-  /** This function is called periodically during operator control. */
-  @Override
-  public void teleopPeriodic() {
-    ShowSelection.displayReefSelection();
-  }
+    /**
+     * This autonomous runs the autonomous command selected by your
+     * {@link RobotContainer} class.
+     */
+    @Override
+    public void autonomousInit() {
+        m_autonomousCommand = robotContainer.getAutonomousCommand();
 
-  /** This function is called once when test mode is enabled. */
-  @Override
-  public void testInit() {
-  }
+        // schedule the autonomous command (example)
+        if (m_autonomousCommand != null) {
+            m_autonomousCommand.schedule();
+        }
+    }
 
-  /** This function is called periodically during test mode. */
-  @Override
-  public void testPeriodic() {
-  }
+    /** This function is called periodically during autonomous. */
+    @Override
+    public void autonomousPeriodic() {}
 
-  /** This function is called once when the robot is first started up. */
-  @Override
-  public void simulationInit() {
-  }
+    /** This function is called once when teleop is enabled. */
+    @Override
+    public void teleopInit() {
+        if (m_autonomousCommand != null) {
+            m_autonomousCommand.cancel();
+        }
 
-  /** This function is called periodically whilst in simulation. */
-  @Override
-  public void simulationPeriodic() {
-    SimulatedArena.getInstance().simulationPeriodic();
-    AlgaeRollers.getInstance().updateSim();
-    CoralRollers.getInstance().updateSim();
-    Elevator.getInstance().updateSim();
-    Wrist.getInstance().updateSim();
-    // Publish to telemetry using AdvantageKit
-    Logger.recordOutput(
-        "FieldSimulation/AlgaePositions",
-        SimulatedArena.getInstance().getGamePiecesArrayByType("Algae"));
-    Logger.recordOutput(
-        "FieldSimulation/Coral",
-        SimulatedArena.getInstance().getGamePiecesArrayByType("Coral"));
-  }
+        Swerve.getInstance().setDriveState(DriveState.Manual);
+
+    }
+
+    /** This function is called periodically during operator control. */
+    @Override
+    public void teleopPeriodic() {
+        ShowSelection.displayReefSelection();
+    }
+
+    /** This function is called once when test mode is enabled. */
+    @Override
+    public void testInit() {}
+
+    /** This function is called periodically during test mode. */
+    @Override
+    public void testPeriodic() {}
+
+    /** This function is called once when the robot is first started up. */
+    @Override
+    public void simulationInit() {}
+
+    /** This function is called periodically whilst in simulation. */
+    @Override
+    public void simulationPeriodic() {
+        SimulatedArena.getInstance().simulationPeriodic();
+        AlgaeRollers.getInstance().updateSim();
+        CoralRollers.getInstance().updateSim();
+        Elevator.getInstance().updateSim();
+        Wrist.getInstance().updateSim();
+        // Publish to telemetry using AdvantageKit
+        Logger.recordOutput(
+                "FieldSimulation/AlgaePositions",
+                SimulatedArena.getInstance().getGamePiecesArrayByType("Algae"));
+        Logger.recordOutput(
+                "FieldSimulation/Coral",
+                SimulatedArena.getInstance().getGamePiecesArrayByType("Coral"));
+    }
 }
