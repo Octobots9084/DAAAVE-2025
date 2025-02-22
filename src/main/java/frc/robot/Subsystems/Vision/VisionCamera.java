@@ -53,6 +53,8 @@ public class VisionCamera implements Runnable {
     private final AtomicReference<Matrix<N3, N1>> atomicStdDev = new AtomicReference<Matrix<N3, N1>>();
     private final AtomicReference<PhotonPipelineResult> atomicPhotonResult = new AtomicReference<PhotonPipelineResult>();
 
+    private PhotonPipelineResult latestResult;
+
     public VisionCamera(String photonCameraName, Transform3d robotToCamera) {
         camera = new PhotonCamera(photonCameraName);
 
