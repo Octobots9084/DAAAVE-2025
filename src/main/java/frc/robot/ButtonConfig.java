@@ -52,7 +52,7 @@ public class ButtonConfig {
     public void initTeleop() {
         AlignVision.setPoleLevel(ElevatorStates.LEVEL1);
         AlignVision.setPoleSide(ReefTargetSide.LEFT);
-        AlignVision.setReefOrientation(ReefTargetOrientation.CD);
+        AlignVision.setReefOrientation(ReefTargetOrientation.EF);
 
         driverButtons.button(6).onTrue(new InstantCommand(() -> {
             Swerve.getInstance().zeroGyro();

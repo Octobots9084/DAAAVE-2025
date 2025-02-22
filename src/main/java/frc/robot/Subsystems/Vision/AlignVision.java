@@ -212,6 +212,10 @@ public class AlignVision extends SubsystemBase {
         turnAngle = handleTurnAngle(state);
         finalResult = getBestResult(state);
 
+        SmartDashboard.putNumber("AlignVision/TurnAngle", turnAngle);
+        SmartDashboard.putNumber("AlignVision/Tag ID", finalTagID);
+        // SmartDashboard.putString("AlignVision/Final Result", finalResult.toString());
+
         double ySpeed = 0;
         double xSpeed = 0;
         double turnSpeed = 0;
@@ -237,10 +241,10 @@ public class AlignVision extends SubsystemBase {
                 refPosition = new Pose3d();
             }
         }
-        SmartDashboard.putString("Refpos", refPosition.toString());
+        SmartDashboard.putString("AlignVision/Refpos", refPosition.toString());
         AlignOffset currentOffset = state == AlignState.Reef ? AlignOffset.values()[currentOffsetIndex] : null;
 
-        SmartDashboard.putBoolean("is both lidar", areBothLidarsValid());
+        // SmartDashboard.putBoolean("AlignVision/is both lidar", areBothLidarsValid());
 
         try {
             if (refPosition.getX() != Transform2d.kZero.getX()
@@ -262,13 +266,13 @@ public class AlignVision extends SubsystemBase {
                     targetDistance = 0;
                 }
 
-                SmartDashboard.putNumber("RefPoseY", refPosition.getY());
-                SmartDashboard.putNumber("RefPoseX", refPosition.getX());
+                SmartDashboard.putNumber("AlignVision/RefPoseY", refPosition.getY());
+                SmartDashboard.putNumber("AlignVision/RefPoseX", refPosition.getX());
 
                 ySpeed = cameraYPIDController.calculate(-refPosition.getY(), targetDistance);
                 yInTolerance = MathUtil.isNear(-refPosition.getY(), targetDistance, 0.03);
                 xSpeed = this.calculateXSpeed(aveLidarDist, refPosition);
-                SmartDashboard.putNumber("TargetDist", targetDistance);
+                SmartDashboard.putNumber("AlignVision/TargetDist", targetDistance);
 
                 turnSpeed = this.calculateTurnSpeed(diffLidarDist, refPosition);
 
@@ -301,6 +305,7 @@ public class AlignVision extends SubsystemBase {
     }
 
     private int handleTurnAngle(AlignState state) {
+        // SmartDashboard.putString("AlignVision/State", state.toString());
         // Different orientations of the reef (Degrees)
         if (state == AlignState.Reef) {
             switch (selectedReefOrientation) {
@@ -339,8 +344,6 @@ public class AlignVision extends SubsystemBase {
     }
 
     private double calculateXSpeed(double aveLidarDist, Pose3d refPosition) {
-        SmartDashboard.putNumber("avg lidar dist", aveLidarDist);
-        SmartDashboard.putNumber("camerax", refPosition.getX());
         if (this.areBothLidarsValid()) {
             xInTolerance = MathUtil.isNear(aveLidarDist, VisionConstants.maxLidarDepthDistance, 0.03);
 
