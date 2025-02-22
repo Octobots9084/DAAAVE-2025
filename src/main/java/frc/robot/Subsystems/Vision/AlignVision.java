@@ -65,6 +65,7 @@ public class AlignVision extends SubsystemBase {
     private static ReefTargetSide selectedPoleSide = null;
     private static ElevatorStates selectedLevel = null;
     private PhotonTrackedTarget bestTarget = new PhotonTrackedTarget();
+    private Transform3d transformCameraToRobot;
 
     boolean xInTolerance = false;
     boolean yInTolerance = false;
@@ -144,6 +145,9 @@ public class AlignVision extends SubsystemBase {
         PhotonPipelineResult rightCamResult = vision.inputs.frontRightResult;
         PhotonPipelineResult leftCamResult = vision.inputs.frontLeftResult;
 
+        // SmartDashboard.putString("RightCamRefPos", this.getReferenceRobotPosition(rightCamResult, VisionConstants.transformFrontRightToRobot).toString());
+        // SmartDashboard.putString("LeftCamRefPos", this.getReferenceRobotPosition(leftCamResult, VisionConstants.transformFrontLeftToRobot).toString());
+
         Transform3d rightBestTarget = new Transform3d(Double.MAX_VALUE, Double.MAX_VALUE,
                 Double.MAX_VALUE, new Rotation3d());
         Transform3d leftBestTarget = new Transform3d(Double.MAX_VALUE, Double.MAX_VALUE,
@@ -162,10 +166,13 @@ public class AlignVision extends SubsystemBase {
 
             if (rightBestTarget.getTranslation().getDistance(Translation3d.kZero) > leftBestTarget
                     .getTranslation().getDistance(Translation3d.kZero)) {
+
+                transformCameraToRobot = VisionConstants.transformFrontLeftToRobot;
                 return leftCamResult;
             } else if (rightBestTarget.getTranslation()
                     .getDistance(Translation3d.kZero) < leftBestTarget.getTranslation()
                             .getDistance(Translation3d.kZero)) {
+                transformCameraToRobot = VisionConstants.transformFrontRightToRobot;
                 return rightCamResult;
             } else {
 
@@ -173,11 +180,12 @@ public class AlignVision extends SubsystemBase {
             }
         } else {
             // Change when back camera is added
+            transformCameraToRobot = VisionConstants.transformFrontRightToRobot;
             return rightCamResult;
         }
     }
 
-    private Pose3d getReferenceRobotPosition(PhotonPipelineResult result) {
+    private Pose3d getReferenceRobotPosition(PhotonPipelineResult result, Transform3d transformCameraToRobot) {
         // Transform Tag Coordinates to Camera Coordinates from photonvision.
         Transform3d transformTagToCamera;
 
@@ -192,7 +200,7 @@ public class AlignVision extends SubsystemBase {
 
             // Transform Tag Position into Robot Coordinates
             referenceRobotPosition = VisionConstants.referenceTagPosition.transformBy(transformTagToCamera.inverse())
-                    .transformBy(VisionConstants.transformFrontLeftToRobot.inverse());
+                    .transformBy(transformCameraToRobot.inverse());
             return referenceRobotPosition;
 
         } else {
@@ -217,12 +225,13 @@ public class AlignVision extends SubsystemBase {
                 : 0;
 
         if (finalResult != null) {
-            refPosition = this.getReferenceRobotPosition(finalResult);
+            refPosition = this.getReferenceRobotPosition(finalResult, transformCameraToRobot);
         } else {
             Pose3d fieldPosition = new Pose3d(swerve.getPose());
             Optional<Pose3d> tagPos = VisionConstants.kTagLayout.getTagPose(finalTagID);
             if (tagPos.isPresent()) {
                 refPosition = fieldPosition.relativeTo(tagPos.get());
+                SmartDashboard.putString("GlobalRefPose", refPosition.toString());
             } else {
                 //TODO figure it aayush
                 refPosition = new Pose3d();
