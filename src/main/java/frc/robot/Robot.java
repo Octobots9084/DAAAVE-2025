@@ -14,6 +14,7 @@
 package frc.robot;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -150,7 +151,8 @@ public class Robot extends LoggedRobot {
             m_autonomousCommand.cancel();
         }
 
-        Swerve.getInstance().resetPose(Swerve.getInstance().getPose());
+        Swerve.getInstance().resetPose(new Pose2d(Swerve.getInstance().getPose().getX(), Swerve.getInstance().getPose().getY(),
+                new Rotation2d(Swerve.getInstance().getGyro())));
 
         Swerve.getInstance().setDriveState(DriveState.Manual);
 

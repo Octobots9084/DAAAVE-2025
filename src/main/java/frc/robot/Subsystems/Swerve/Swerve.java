@@ -226,10 +226,14 @@ public class Swerve extends SubsystemBase {
      * Command to drive the robot using translative values and heading as a
      * setpoint.
      *
-     * @param translationX Translation in the X direction.
-     * @param translationY Translation in the Y direction.
-     * @param headingX     Heading X to calculate angle of the joystick.
-     * @param headingY     Heading Y to calculate angle of the joystick.
+     * @param translationX
+     *            Translation in the X direction.
+     * @param translationY
+     *            Translation in the Y direction.
+     * @param headingX
+     *            Heading X to calculate angle of the joystick.
+     * @param headingY
+     *            Heading Y to calculate angle of the joystick.
      * @return Drive command.
      */
     public Command driveCommand(
@@ -252,9 +256,12 @@ public class Swerve extends SubsystemBase {
      * Command to drive the robot using translative values and heading as angular
      * velocity.
      *
-     * @param translationX     Translation in the X direction.
-     * @param translationY     Translation in the Y direction.
-     * @param angularRotationX Rotation of the robot to set
+     * @param translationX
+     *            Translation in the X direction.
+     * @param translationY
+     *            Translation in the Y direction.
+     * @param angularRotationX
+     *            Rotation of the robot to set
      * @return Drive command.
      */
     public Command driveCommand(

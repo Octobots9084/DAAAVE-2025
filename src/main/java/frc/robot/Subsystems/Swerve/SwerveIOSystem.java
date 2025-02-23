@@ -48,10 +48,10 @@ public class SwerveIOSystem implements SwerveIO {
             swerveDrive.setHeadingCorrection(
                     false); // Heading correction should only be used while controlling the robot via
             // angle.
-            swerveDrive.setCosineCompensator(false);
-            // !SwerveDriveTelemetry.isSimulation); // Disables cosine compensation
+            swerveDrive.setCosineCompensator(
+                    !SwerveDriveTelemetry.isSimulation); // Disables cosine compensation
             // for simulations since it causes discrepancies not seen in real life.
-            swerveDrive.setAngularVelocityCompensation(false, false, 0.07);
+            swerveDrive.setAngularVelocityCompensation(true, true, 0.07);
         } catch (IOException e) {
             e.printStackTrace();
         }
