@@ -123,8 +123,10 @@ public class Swerve extends SubsystemBase {
 
             NamedCommands.registerCommand("placeAB",
                     new testPlace(ElevatorStates.LEVEL4, ReefTargetSide.LEFT, ReefTargetOrientation.AB));
-            NamedCommands.registerCommand("placeCD",
+            NamedCommands.registerCommand("placeC",
                     new testPlace(ElevatorStates.LEVEL4, ReefTargetSide.LEFT, ReefTargetOrientation.CD));
+            NamedCommands.registerCommand("placeD",
+                    new testPlace(ElevatorStates.LEVEL4, ReefTargetSide.RIGHT, ReefTargetOrientation.CD));
             NamedCommands.registerCommand("placeEF",
                     new testPlace(ElevatorStates.LEVEL4, ReefTargetSide.LEFT, ReefTargetOrientation.EF));
             NamedCommands.registerCommand("InitalWristPos", new SetWristState(WristStates.PREP, ClosedLoopSlot.kSlot0));

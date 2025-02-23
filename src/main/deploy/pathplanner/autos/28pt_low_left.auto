@@ -37,7 +37,7 @@
         {
           "type": "named",
           "data": {
-            "name": "placeCD"
+            "name": "placeD"
           }
         },
         {
@@ -55,7 +55,7 @@
         {
           "type": "named",
           "data": {
-            "name": "placeCD"
+            "name": "placeC"
           }
         },
         {
@@ -67,19 +67,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "lowstation_to_a"
+            "pathName": "lowstation_to_b"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "placeAB"
+            "name": "placeB"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "a_to_lowstation"
+            "pathName": "b_to_lowstation"
           }
         }
       ]
