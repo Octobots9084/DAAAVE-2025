@@ -27,8 +27,8 @@ import org.photonvision.simulation.VisionSystemSim;
 import org.littletonrobotics.junction.Logger;
 
 public class VisionIOSim implements VisionIO {
-  private final Swerve swerve;
-  public static VisionIOSystem INSTANCE;
+    private final Swerve swerve;
+    public static VisionIOSystem INSTANCE;
 
   VisionSystemSim visionSim = new VisionSystemSim("main");
   TargetModel targetModel = TargetModel.kAprilTag36h11;
@@ -57,19 +57,21 @@ public class VisionIOSim implements VisionIO {
 //   PhotonCameraSim cameraSim3 = new PhotonCameraSim(middleRightCamera.getCamera(), cameraProp3);
 //   PhotonCameraSim cameraSim4 = new PhotonCameraSim(middleLeftCamera.getCamera(), cameraProp4);
 
-  private final Notifier allNotifier = new Notifier(
-      () -> {
-        frontLeftCamera.run();
-        // frontRightCamera.run();
-      });
+    private final Notifier allNotifier = new Notifier(
+            () -> {
+                frontLeftCamera.run();
+                frontRightCamera.run();
+                middleRightCamera.run();
+                middleLeftCamera.run();
+            });
 
-  public VisionIOSim() {
-    try {
-      tagLayout = AprilTagFieldLayout.loadFromResource(AprilTagFields.kDefaultField.m_resourceFile);
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-    this.swerve = Swerve.getInstance();
+    public VisionIOSim() {
+        try {
+            tagLayout = AprilTagFieldLayout.loadFromResource(AprilTagFields.kDefaultField.m_resourceFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        this.swerve = Swerve.getInstance();
 
     visionSim.addAprilTags(tagLayout);
     cameraProp.setCalibration(1280, 800, Rotation2d.fromDegrees(77.63));
@@ -106,14 +108,14 @@ public class VisionIOSim implements VisionIO {
     // SmartDashboard.putData(visionSim.getDebugField());
   }
 
-  public void closeNotifiers() {
-    allNotifier.close();
-  }
+    public void closeNotifiers() {
+        allNotifier.close();
+    }
 
-  @Override
-  public void updateInputs(VisionIOInputs inputs) {
-    inputs.frontLeftConnected = frontLeftCamera.isConnected();
-    // inputs.frontRightConnected = frontRightCamera.isConnected();
+    @Override
+    public void updateInputs(VisionIOInputs inputs) {
+        inputs.frontLeftConnected = frontLeftCamera.isConnected();
+        // inputs.frontRightConnected = frontRightCamera.isConnected();
 
     inputs.frontLeftResult = frontLeftCamera.grabLatestResult();
     // inputs.frontRightResult = frontRightCamera.grabLatestResult();
@@ -128,16 +130,16 @@ public class VisionIOSim implements VisionIO {
     EstimatedRobotPose frontLeftPose = frontLeftCamera.grabLatestEstimatedPose();
     // EstimatedRobotPose frontRightPose = frontRightCamera.grabLatestEstimatedPose();
 
-    Matrix<N3, N1> frontLeftStdDevs = frontLeftCamera.grabLatestStdDev();
-    // Matrix<N3, N1> frontRightStdDevs = frontRightCamera.grabLatestStdDev();
+        Matrix<N3, N1> frontLeftStdDevs = frontLeftCamera.grabLatestStdDev();
+        // Matrix<N3, N1> frontRightStdDevs = frontRightCamera.grabLatestStdDev();
 
-    addVisionReading(frontLeftPose, frontLeftStdDevs);
-    // addVisionReading(frontRightPose, frontRightStdDevs);
-  }
+        addVisionReading("Front Left", frontLeftPose, frontLeftStdDevs);
+        // addVisionReading(frontRightPose, frontRightStdDevs);
+    }
 
-  public VisionCamera getFrontLeftCamera() {
-    return frontLeftCamera;
-  }
+    public VisionCamera getFrontLeftCamera() {
+        return frontLeftCamera;
+    }
 
   @Override
   public void addVisionReading(EstimatedRobotPose pose, Matrix<N3, N1> stdDevs) {

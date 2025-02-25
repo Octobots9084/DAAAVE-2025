@@ -11,9 +11,9 @@ public enum WristStates {
   MANUAL(0.55),
   ALAGEREMOVAL(0);//TODO actually set this value
 
-  public double wristPosition;
+    public double wristPosition;
 
-  WristStates(double totalPosition) {
-    this.wristPosition = totalPosition;
-  }
+    WristStates(double totalPosition) {
+        this.wristPosition = totalPosition;
+    }
 }

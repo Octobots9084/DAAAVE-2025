@@ -22,6 +22,7 @@ import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Commands.fakeAlignSource;
@@ -45,239 +46,248 @@ import org.littletonrobotics.junction.Logger;
  * Basic simulation of a swerve subsystem with the methods needed by PathPlanner
  */
 public class Swerve extends SubsystemBase {
-  SwerveIO io;
-  private final SwerveIOInputsAutoLogged inputs = new SwerveIOInputsAutoLogged();
-  private static Swerve INSTANCE = null;
+    SwerveIO io;
+    private final SwerveIOInputsAutoLogged inputs = new SwerveIOInputsAutoLogged();
+    private static Swerve INSTANCE = null;
 
-  public ReefTargetOrientation alignmentOrientation;
-  public ReefTargetSide reefTargetSide;
+    public ReefTargetOrientation alignmentOrientation;
+    public ReefTargetSide reefTargetSide;
 
-  public static enum DriveState {
-    None,
-    Manual,
-    AlignReef,
-    AlignProcessor,
-    AlignSource
-  };
+    public static enum DriveState {
+        None,
+        Manual,
+        AlignReef,
+        AlignProcessor,
+        AlignSource
+    };
 
-  private DriveState driveState = DriveState.None;
+    private DriveState driveState = DriveState.None;
 
-  public boolean isAlignedToSource;
-  public boolean isAlignedToCoralRight;
-  public boolean isAlignedToCoralLeft;
-  public boolean isAlignedToProcessor;
-  public boolean isAlignedCenterReef; // TODO check if the algae removal needs to be centered on the reef
-  private ReefTargetSide targetSide;
-  private ReefTargetOrientation targetOrientation = ReefTargetOrientation.AB;
+    public boolean isAlignedToSource;
+    public boolean isAlignedToCoralRight;
+    public boolean isAlignedToCoralLeft;
+    public boolean isAlignedToProcessor;
+    public boolean isAlignedCenterReef; // TODO check if the algae removal needs to be centered on the reef
+    private ReefTargetSide targetSide;
+    private ReefTargetOrientation targetOrientation = ReefTargetOrientation.AB;
 
-  public static Swerve getInstance() {
-    if (INSTANCE == null) {
-      throw new IllegalStateException("Swerve instance not set");
+    public static Swerve getInstance() {
+        if (INSTANCE == null) {
+            throw new IllegalStateException("Swerve instance not set");
+        }
+        return INSTANCE;
     }
-    return INSTANCE;
-  }
 
-  public static Swerve setInstance(SwerveIO io) {
-    INSTANCE = new Swerve(io);
-    return INSTANCE;
-  }
+    public static Swerve setInstance(SwerveIO io) {
+        INSTANCE = new Swerve(io);
+        return INSTANCE;
+    }
 
-  public void setReefTargetSide(ReefTargetSide side) {
-    targetSide = side;
-    AlignVision.setPoleSide(side);
-    Logger.recordOutput("Reef Allignment Target Side", targetSide);
-  }
+    public void setReefTargetSide(ReefTargetSide side) {
+        targetSide = side;
+        AlignVision.setPoleSide(side);
+        Logger.recordOutput("Reef Allignment Target Side", targetSide);
+    }
 
   public Optional<Pose2d> getSimPose() {
     return io.getSimPose();
   }
 
-  public void setReefTargetOrientation(ReefTargetOrientation orientation) {
-    targetOrientation = orientation;
-    AlignVision.setReefOrientation(orientation);
-    Logger.recordOutput("Reef Allignment Target Position", targetOrientation);
-  }
-
-  public ReefTargetSide getReefTargetSide() {
-    return targetSide;
-  }
-
-  public ReefTargetOrientation getReefTargetOrientation() {
-    return targetOrientation;
-  }
-
-  public Swerve(SwerveIO io) {
-    this.io = io;
-    try {
-
-      // NamedCommands.registerCommand("AlignSource", new
-      // AlignSource().withTimeout(1));
-      // NamedCommands.registerCommand("ScoreCoral_E_L4", new
-      // ScoreCoral(ElevatorStates.LEVEL4, ReefTargetSide.RIGHT,
-      // ReefTargetOrientation.EF).withTimeout(0.75));
-      // NamedCommands.registerCommand("ScoreCoral_D_L4", new
-      // ScoreCoral(ElevatorStates.LEVEL4, ReefTargetSide.LEFT,
-      // ReefTargetOrientation.CD).withTimeout(0.75));
-      // NamedCommands.registerCommand("ScoreCoral_C_L4", new
-      // ScoreCoral(ElevatorStates.LEVEL4, ReefTargetSide.RIGHT,
-      // ReefTargetOrientation.CD).withTimeout(0.75));
-      // NamedCommands.registerCommand("ScoreCoral_B_L4", new
-      // ScoreCoral(ElevatorStates.LEVEL4, ReefTargetSide.RIGHT,
-      // ReefTargetOrientation.AB).withTimeout(0.75));
-
-      NamedCommands.registerCommand("placeAB",
-          new testPlace(ElevatorStates.LEVEL4, ReefTargetSide.LEFT, ReefTargetOrientation.AB));
-      NamedCommands.registerCommand("placeCD",
-          new testPlace(ElevatorStates.LEVEL4, ReefTargetSide.LEFT, ReefTargetOrientation.CD));
-      NamedCommands.registerCommand("placeEF",
-          new testPlace(ElevatorStates.LEVEL4, ReefTargetSide.LEFT, ReefTargetOrientation.EF));
-      NamedCommands.registerCommand("InitalWristPos", new SetWristState(WristStates.PREP, ClosedLoopSlot.kSlot0));
-      new EventTrigger("PrepWristPosition").onTrue(new SetWristState(WristStates.PREP, ClosedLoopSlot.kSlot0));
-      new EventTrigger("BringUpElevator").onTrue(new SetElevatorState(ElevatorStates.LEVEL4));
-
-      RobotConfig config = RobotConfig.fromGUISettings();
-
-      // Configure AutoBuilder
-      AutoBuilder.configure(
-          this::getPose,
-          this::resetPose,
-          this::getSpeeds,
-          (speeds, feedforwards) -> driveRobotRelative(speeds),
-          new PPHolonomicDriveController(
-              Constants.Swerve.translationConstants, Constants.Swerve.rotationConstants),
-          config,
-          () -> {
-            // Boolean supplier that controls when the path will be mirrored for the red
-            // alliance
-            // This will flip the path being followed to the red side of the field.
-            // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
-
-            var alliance = DriverStation.getAlliance();
-            if (alliance.isPresent()) {
-              return alliance.get() == DriverStation.Alliance.Red;
-            }
-            return false;
-          },
-          this);
-
-    } catch (Exception e) {
-      DriverStation.reportError(
-          "Failed to load PathPlanner config and configure AutoBuilder", e.getStackTrace());
+    public void setReefTargetOrientation(ReefTargetOrientation orientation) {
+        targetOrientation = orientation;
+        AlignVision.setReefOrientation(orientation);
+        Logger.recordOutput("Reef Allignment Target Position", targetOrientation);
     }
-  }
 
-  public SwerveIO getIo() {
-    return io;
-  }
+    public ReefTargetSide getReefTargetSide() {
+        return targetSide;
+    }
 
-  public void zeroGyro() {
-    this.io.zeroGyro();
-  }
+    public ReefTargetOrientation getReefTargetOrientation() {
+        return targetOrientation;
+    }
 
-  @Override
-  public void periodic() {
-    this.io.updateInputs(inputs);
-    Logger.processInputs("Swerve Drive", inputs);
-  }
+    public Swerve(SwerveIO io) {
+        this.io = io;
+        try {
 
-  public double getGyro() {
-    return this.io.getGyro();
-  }
+            // NamedCommands.registerCommand("AlignSource", new
+            // AlignSource().withTimeout(1));
+            // NamedCommands.registerCommand("ScoreCoral_E_L4", new
+            // ScoreCoral(ElevatorStates.LEVEL4, ReefTargetSide.RIGHT,
+            // ReefTargetOrientation.EF).withTimeout(0.75));
+            // NamedCommands.registerCommand("ScoreCoral_D_L4", new
+            // ScoreCoral(ElevatorStates.LEVEL4, ReefTargetSide.LEFT,
+            // ReefTargetOrientation.CD).withTimeout(0.75));
+            // NamedCommands.registerCommand("ScoreCoral_C_L4", new
+            // ScoreCoral(ElevatorStates.LEVEL4, ReefTargetSide.RIGHT,
+            // ReefTargetOrientation.CD).withTimeout(0.75));
+            // NamedCommands.registerCommand("ScoreCoral_B_L4", new
+            // ScoreCoral(ElevatorStates.LEVEL4, ReefTargetSide.RIGHT,
+            // ReefTargetOrientation.AB).withTimeout(0.75));
 
-  public Pose2d getPose() {
-    return this.io.getPose();
-  }
+            NamedCommands.registerCommand("placeAB",
+                    new testPlace(ElevatorStates.LEVEL4, ReefTargetSide.LEFT, ReefTargetOrientation.AB));
+            NamedCommands.registerCommand("placeC",
+                    new testPlace(ElevatorStates.LEVEL4, ReefTargetSide.LEFT, ReefTargetOrientation.CD));
+            NamedCommands.registerCommand("placeD",
+                    new testPlace(ElevatorStates.LEVEL4, ReefTargetSide.RIGHT, ReefTargetOrientation.CD));
+            NamedCommands.registerCommand("placeEF",
+                    new testPlace(ElevatorStates.LEVEL4, ReefTargetSide.LEFT, ReefTargetOrientation.EF));
+            NamedCommands.registerCommand("InitalWristPos", new SetWristState(WristStates.PREP, ClosedLoopSlot.kSlot0));
+            new EventTrigger("PrepWristPosition").onTrue(new SetWristState(WristStates.PREP, ClosedLoopSlot.kSlot0));
+            new EventTrigger("BringUpElevator").onTrue(new SetElevatorState(ElevatorStates.LEVEL4));
 
-  public void resetPose(Pose2d pose) {
-    this.io.resetPose(pose);
-  }
+            RobotConfig config = RobotConfig.fromGUISettings();
 
-  public void setDriveState(DriveState state) {
-    driveState = state;
-    Logger.recordOutput("DriveState", state);
-  }
+            // Configure AutoBuilder
+            AutoBuilder.configure(
+                    this::getPose,
+                    this::resetPose,
+                    this::getSpeeds,
+                    (speeds, feedforwards) -> driveRobotRelative(speeds),
+                    new PPHolonomicDriveController(
+                            Constants.Swerve.translationConstants, Constants.Swerve.rotationConstants),
+                    config,
+                    () -> {
+                        // Boolean supplier that controls when the path will be mirrored for the red
+                        // alliance
+                        // This will flip the path being followed to the red side of the field.
+                        // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
 
-  public DriveState getDriveState() {
-    return driveState;
-  }
+                        var alliance = DriverStation.getAlliance();
+                        if (alliance.isPresent()) {
+                            return alliance.get() == DriverStation.Alliance.Red;
+                        }
+                        return false;
+                    },
+                    this);
 
-  public ChassisSpeeds getSpeeds() {
-    return this.io.getSpeeds();
-  }
+        } catch (Exception e) {
+            DriverStation.reportError(
+                    "Failed to load PathPlanner config and configure AutoBuilder", e.getStackTrace());
+        }
+    }
 
-  public void driveFieldRelative(ChassisSpeeds fieldRelativeSpeeds) {
-    this.io.driveFieldRelative(fieldRelativeSpeeds);
-  }
+    public SwerveIO getIo() {
+        return io;
+    }
 
-  public void driveRobotRelative(ChassisSpeeds robotRelativeSpeeds) {
-    SmartDashboard.putString("Chassis speeds", robotRelativeSpeeds.toString());
-    this.io.driveRobotRelative(robotRelativeSpeeds);
-  }
+    public void zeroGyro() {
+        this.io.zeroGyro();
+    }
 
-  public SwerveModuleState[] getModuleStates() {
-    return this.io.getModuleStates();
-  }
+    @Override
+    public void periodic() {
+        this.io.updateInputs(inputs);
+        Logger.processInputs("Swerve Drive", inputs);
+    }
 
-  public SwerveModuleState[] getModuleDesiredStates() {
-    return this.io.getModuleDesiredStates();
-  }
+    public double getGyro() {
+        return this.io.getGyro();
+    }
 
-  public SwerveModulePosition[] getPositions() {
-    return this.io.getPositions();
-  }
+    public Pose2d getPose() {
+        return this.io.getPose();
+    }
 
-  /**
-   * Command to drive the robot using translative values and heading as a
-   * setpoint.
-   *
-   * @param translationX Translation in the X direction.
-   * @param translationY Translation in the Y direction.
-   * @param headingX     Heading X to calculate angle of the joystick.
-   * @param headingY     Heading Y to calculate angle of the joystick.
-   * @return Drive command.
-   */
-  public Command driveCommand(
-      DoubleSupplier translationX,
-      DoubleSupplier translationY,
-      DoubleSupplier headingX,
-      DoubleSupplier headingY) {
-    return run(
-        () -> {
-          double xInput = Math.pow(translationX.getAsDouble(), 3); // Smooth control out
-          double yInput = Math.pow(translationY.getAsDouble(), 3); // Smooth control out
-          // Make the robot move
-          driveFieldRelative(
-              this.io.getTargetSpeeds(
-                  xInput, yInput, headingX.getAsDouble(), headingY.getAsDouble()));
-        });
-  }
+    public void resetPose(Pose2d pose) {
+        this.io.resetPose(pose);
+    }
 
-  /**
-   * Command to drive the robot using translative values and heading as angular
-   * velocity.
-   *
-   * @param translationX     Translation in the X direction.
-   * @param translationY     Translation in the Y direction.
-   * @param angularRotationX Rotation of the robot to set
-   * @return Drive command.
-   */
-  public Command driveCommand(
-      DoubleSupplier translationX, DoubleSupplier translationY, DoubleSupplier angularRotationX) {
-    return run(
-        () -> {
-          // Make the robot move
-          this.io.driveRobotRelative(
-              new Translation2d(
-                  translationX.getAsDouble() * this.io.getMaximumChassisVelocity(),
-                  translationY.getAsDouble() * this.io.getMaximumChassisVelocity()),
-              angularRotationX.getAsDouble() * this.io.getMaximumChassisAngularVelocity(),
-              true,
-              false);
-        });
-  }
+    public void setDriveState(DriveState state) {
+        driveState = state;
+        Logger.recordOutput("DriveState", state);
+    }
 
-  public void addVisionReading(
-      Pose2d robotPose, double timestamp, Matrix<N3, N1> visionMeasurementStdDevs) {
-    this.io.addVisionReading(robotPose, timestamp, visionMeasurementStdDevs);
-  }
+    public DriveState getDriveState() {
+        return driveState;
+    }
+
+    public ChassisSpeeds getSpeeds() {
+        return this.io.getSpeeds();
+    }
+
+    public void driveFieldRelative(ChassisSpeeds fieldRelativeSpeeds) {
+        this.io.driveFieldRelative(fieldRelativeSpeeds);
+    }
+
+    public void driveRobotRelative(ChassisSpeeds robotRelativeSpeeds) {
+        SmartDashboard.putString("Chassis speeds", robotRelativeSpeeds.toString());
+        this.io.driveRobotRelative(robotRelativeSpeeds);
+    }
+
+    public SwerveModuleState[] getModuleStates() {
+        return this.io.getModuleStates();
+    }
+
+    public SwerveModuleState[] getModuleDesiredStates() {
+        return this.io.getModuleDesiredStates();
+    }
+
+    public SwerveModulePosition[] getPositions() {
+        return this.io.getPositions();
+    }
+
+    /**
+     * Command to drive the robot using translative values and heading as a
+     * setpoint.
+     *
+     * @param translationX
+     *            Translation in the X direction.
+     * @param translationY
+     *            Translation in the Y direction.
+     * @param headingX
+     *            Heading X to calculate angle of the joystick.
+     * @param headingY
+     *            Heading Y to calculate angle of the joystick.
+     * @return Drive command.
+     */
+    public Command driveCommand(
+            DoubleSupplier translationX,
+            DoubleSupplier translationY,
+            DoubleSupplier headingX,
+            DoubleSupplier headingY) {
+        return run(
+                () -> {
+                    double xInput = Math.pow(translationX.getAsDouble(), 3); // Smooth control out
+                    double yInput = Math.pow(translationY.getAsDouble(), 3); // Smooth control out
+                    // Make the robot move
+                    driveFieldRelative(
+                            this.io.getTargetSpeeds(
+                                    xInput, yInput, headingX.getAsDouble(), headingY.getAsDouble()));
+                });
+    }
+
+    /**
+     * Command to drive the robot using translative values and heading as angular
+     * velocity.
+     *
+     * @param translationX
+     *            Translation in the X direction.
+     * @param translationY
+     *            Translation in the Y direction.
+     * @param angularRotationX
+     *            Rotation of the robot to set
+     * @return Drive command.
+     */
+    public Command driveCommand(
+            DoubleSupplier translationX, DoubleSupplier translationY, DoubleSupplier angularRotationX) {
+        return run(
+                () -> {
+                    // Make the robot move
+                    this.io.driveRobotRelative(
+                            new Translation2d(
+                                    translationX.getAsDouble() * this.io.getMaximumChassisVelocity(),
+                                    translationY.getAsDouble() * this.io.getMaximumChassisVelocity()),
+                            angularRotationX.getAsDouble() * this.io.getMaximumChassisAngularVelocity(),
+                            true,
+                            false);
+                });
+    }
+
+    public void addVisionReading(
+            Pose2d robotPose, double timestamp, Matrix<N3, N1> visionMeasurementStdDevs) {
+        this.io.addVisionReading(robotPose, timestamp, visionMeasurementStdDevs);
+    }
 }

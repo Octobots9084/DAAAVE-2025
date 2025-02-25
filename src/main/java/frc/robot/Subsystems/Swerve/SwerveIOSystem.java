@@ -18,6 +18,7 @@ import frc.robot.Constants;
 import frc.robot.Constants.Mode;
 import frc.robot.Subsystems.Elevator.Elevator;
 import frc.robot.Subsystems.Elevator.ElevatorStates;
+import frc.robot.util.MathUtil;
 
 import java.io.File;
 import java.io.IOException;
@@ -34,168 +35,144 @@ import swervelib.telemetry.SwerveDriveTelemetry;
 import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
 
 public class SwerveIOSystem implements SwerveIO {
-  private SwerveDrive swerveDrive;
-  File swerveJsonDirectory = new File(Filesystem.getDeployDirectory(), "swerve");
-  double maximumSpeed = 12;
-  double maxTurnSpeed = 5;
-  private Field2d field = new Field2d();
-  SlewRateLimiter xFilterL4FieldRelative = new SlewRateLimiter(3);
-  SlewRateLimiter yFilterL4FieldRelative = new SlewRateLimiter(3);
+    private SwerveDrive swerveDrive;
+    File swerveJsonDirectory = new File(Filesystem.getDeployDirectory(), "swerve");
+    double maximumSpeed = 12;
+    double maxTurnSpeed = 5;
+    private Field2d field = new Field2d();
 
-  SlewRateLimiter xFilterL3FieldRelative = new SlewRateLimiter(6);
-  SlewRateLimiter yFilterL3FieldRelative = new SlewRateLimiter(6);
+    public SwerveIOSystem() {
+        SwerveDriveTelemetry.verbosity = TelemetryVerbosity.HIGH;
+        try {
+            swerveDrive = new SwerveParser(swerveJsonDirectory)
+                    .createSwerveDrive(maximumSpeed, new Pose2d(3.1, 4, new Rotation2d(0)));
+            swerveDrive.setHeadingCorrection(
+                    false); // Heading correction should only be used while controlling the robot via
+            // angle.
+            swerveDrive.setCosineCompensator(
+                    !SwerveDriveTelemetry.isSimulation); // Disables cosine compensation
+            // for simulations since it causes discrepancies not seen in real life.
+            swerveDrive.setAngularVelocityCompensation(true, true, 0.07);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-  SlewRateLimiter xFilterL4RobotRelative = new SlewRateLimiter(3);
-  SlewRateLimiter yFilterL4RobotRelative = new SlewRateLimiter(3);
-
-  SlewRateLimiter xFilterL3RobotRelative = new SlewRateLimiter(6);
-  SlewRateLimiter yFilterL3RobotRelative = new SlewRateLimiter(6);
-
-  public SwerveIOSystem() {
-    SwerveDriveTelemetry.verbosity = TelemetryVerbosity.HIGH;
-    try {
-      swerveDrive = new SwerveParser(swerveJsonDirectory)
-          .createSwerveDrive(maximumSpeed, new Pose2d(3.1, 4, new Rotation2d(0)));
-      swerveDrive.setHeadingCorrection(
-          false); // Heading correction should only be used while controlling the robot via
-      // angle.
-      swerveDrive.setCosineCompensator(
-          !SwerveDriveTelemetry.isSimulation); // Disables cosine compensation
-      // for simulations since it causes discrepancies not seen in real life.
-      swerveDrive.setAngularVelocityCompensation(true, true, 0.07);
-    } catch (IOException e) {
-      e.printStackTrace();
+        SmartDashboard.putData("Field", field);
     }
 
-    SmartDashboard.putData("Field", field);
-  }
+    public void setMaxSpeed(double speed) {
+        maximumSpeed = speed;
+    }
 
-  public void setMaxSpeed(double speed) {
-    maximumSpeed = speed;
-  }
+    public double getMaxSpeed() {
+        return maximumSpeed;
+    }
 
-  public double getMaxSpeed() {
-    return maximumSpeed;
-  }
+    public void setMaxTurnSpeed(double speed) {
+        maxTurnSpeed = speed;
+    }
 
-  public void setMaxTurnSpeed(double speed) {
-    maxTurnSpeed = speed;
-  }
+    public double getMaxTurnSpeed() {
+        return maxTurnSpeed;
+    }
 
-  public double getMaxTurnSpeed() {
-    return maxTurnSpeed;
-  }
+    public void zeroGyro() {
+        swerveDrive.zeroGyro();
+    }
 
-  public void zeroGyro() {
-    swerveDrive.zeroGyro();
-  }
+    public double getGyro() {
+        return swerveDrive.getGyroRotation3d().getZ();
+    }
 
-  public double getGyro() {
-    return swerveDrive.getGyroRotation3d().getZ();
-  }
-
-  public Pose2d getPose() {
-    return swerveDrive.getPose();
-  }
+    public Pose2d getPose() {
+        return swerveDrive.getPose();
+    }
 
   public Optional<Pose2d> getSimPose() {
     return swerveDrive.getSimulationDriveTrainPose();
   }
 
-  public void resetPose(Pose2d pose) {
-    swerveDrive.resetOdometry(pose);
-  }
-
-  public ChassisSpeeds getSpeeds() {
-    return swerveDrive.getRobotVelocity();
-  }
-
-  public void driveRobotRelative(ChassisSpeeds robotRelativeSpeeds) {
-    if (Elevator.getInstance().isAtState(ElevatorStates.LEVEL4, 5)) {
-      robotRelativeSpeeds = new ChassisSpeeds(
-          xFilterL4RobotRelative.calculate(robotRelativeSpeeds.vxMetersPerSecond),
-          yFilterL4RobotRelative.calculate(robotRelativeSpeeds.vyMetersPerSecond),
-          robotRelativeSpeeds.omegaRadiansPerSecond);
-    } else if (Elevator.getInstance().isAtState(ElevatorStates.LEVEL3, 5)) {
-      robotRelativeSpeeds = new ChassisSpeeds(
-          xFilterL3RobotRelative.calculate(robotRelativeSpeeds.vxMetersPerSecond),
-          yFilterL3RobotRelative.calculate(robotRelativeSpeeds.vyMetersPerSecond),
-          robotRelativeSpeeds.omegaRadiansPerSecond);
-    }
-    swerveDrive.drive(robotRelativeSpeeds);
-  }
-
-  public void driveFieldRelative(ChassisSpeeds fieldRelativeSpeeds) {
-    if (Elevator.getInstance().isAtState(ElevatorStates.LEVEL4, 5) && Constants.currentMode == Mode.REAL) {
-      fieldRelativeSpeeds = new ChassisSpeeds(
-          xFilterL4FieldRelative.calculate(fieldRelativeSpeeds.vxMetersPerSecond),
-          yFilterL4FieldRelative.calculate(fieldRelativeSpeeds.vyMetersPerSecond),
-          fieldRelativeSpeeds.omegaRadiansPerSecond);
-    } else if (Elevator.getInstance().isAtState(ElevatorStates.LEVEL4, 5) && Constants.currentMode == Mode.REAL) {
-      fieldRelativeSpeeds = new ChassisSpeeds(
-          xFilterL3FieldRelative.calculate(fieldRelativeSpeeds.vxMetersPerSecond),
-          yFilterL3FieldRelative.calculate(fieldRelativeSpeeds.vyMetersPerSecond),
-          fieldRelativeSpeeds.omegaRadiansPerSecond);
-    } else {
-        fieldRelativeSpeeds = new ChassisSpeeds(
-          fieldRelativeSpeeds.vxMetersPerSecond,
-          fieldRelativeSpeeds.vyMetersPerSecond,
-          fieldRelativeSpeeds.omegaRadiansPerSecond);
+    public void resetPose(Pose2d pose) {
+        swerveDrive.resetOdometry(pose);
     }
 
-    swerveDrive.driveFieldOriented(fieldRelativeSpeeds);
-  }
+    public ChassisSpeeds getSpeeds() {
+        return swerveDrive.getRobotVelocity();
+    }
 
-  public SwerveModuleState[] getModuleStates() {
-    return swerveDrive.getStates();
-  }
+    public void driveRobotRelative(ChassisSpeeds robotRelativeSpeeds) {
+        double maxAcceleration = getMaxAccelerationFromElevatorHeight();
+        ChassisSpeeds limitedRobotRelativeSpeeds = MathUtil.limitXAndYAcceleration(robotRelativeSpeeds, getSpeeds(),
+                maxAcceleration, maxAcceleration, 0.02);
+        swerveDrive.drive(limitedRobotRelativeSpeeds);
+    }
 
-  public SwerveModulePosition[] getPositions() {
-    return swerveDrive.getModulePositions();
-  }
+    public void driveFieldRelative(ChassisSpeeds fieldRelativeSpeeds) {
+        SmartDashboard.putString("FIELDRELATIVESPEDD", fieldRelativeSpeeds.toString());
+        double maxAcceleration = getMaxAccelerationFromElevatorHeight();
+        ChassisSpeeds limitedFieldRelativeSpeeds = MathUtil.limitXAndYAcceleration(fieldRelativeSpeeds,
+                ChassisSpeeds.fromRobotRelativeSpeeds(getSpeeds(), new Rotation2d(getGyro())),
+                maxAcceleration, maxAcceleration, 0.02);
+        SmartDashboard.putString("limitedspeeds", fieldRelativeSpeeds.toString());
 
-  public ChassisSpeeds getTargetSpeeds(
-      double xInput, double yInput, double headingX, double headingY) {
-    return swerveDrive.swerveController.getTargetSpeeds(
-        xInput,
-        yInput,
-        headingX,
-        headingY,
-        swerveDrive.getYaw().getRadians(),
-        swerveDrive.getMaximumChassisVelocity());
-  }
+        swerveDrive.driveFieldOriented(limitedFieldRelativeSpeeds);
+    }
 
-  public double getMaximumChassisVelocity() {
-    return swerveDrive.getMaximumChassisVelocity();
-  }
+    public double getMaxAccelerationFromElevatorHeight() {
+        return (1.0 - (Elevator.getInstance().getPosition() / ElevatorStates.LEVEL4.position)) * 7.0 + 5.0;
+    }
 
-  public double getMaximumChassisAngularVelocity() {
-    return swerveDrive.getMaximumChassisAngularVelocity();
-  }
+    public SwerveModuleState[] getModuleStates() {
+        return swerveDrive.getStates();
+    }
 
-  public void addVisionReading(
-      Pose2d robotPose, double timestamp, Matrix<N3, N1> visionMeasurementStdDevs) {
-    swerveDrive.addVisionMeasurement(new Pose2d(robotPose.getX(), robotPose.getY(), new Rotation2d(this.getGyro())),
-        timestamp, visionMeasurementStdDevs);
-  }
+    public SwerveModulePosition[] getPositions() {
+        return swerveDrive.getModulePositions();
+    }
 
-  @Override
-  public SwerveDrive getSwerveDrive() {
-    return swerveDrive;
-  }
+    public ChassisSpeeds getTargetSpeeds(
+            double xInput, double yInput, double headingX, double headingY) {
+        return swerveDrive.swerveController.getTargetSpeeds(
+                xInput,
+                yInput,
+                headingX,
+                headingY,
+                swerveDrive.getYaw().getRadians(),
+                swerveDrive.getMaximumChassisVelocity());
+    }
 
-  // public SwerveModuleState[] getModuleDesiredStates() {
-  // return swerveDrive.getDesiredStates();
-  // }
+    public double getMaximumChassisVelocity() {
+        return swerveDrive.getMaximumChassisVelocity();
+    }
 
-  @Override
-  public void updateInputs(SwerveIOInputs inputs) {
-    // TODO - Implement
-    inputs.pose = this.getPose();
-    inputs.speeds = this.getSpeeds();
+    public double getMaximumChassisAngularVelocity() {
+        return swerveDrive.getMaximumChassisAngularVelocity();
+    }
 
-    inputs.swerveModuleStates = this.getModuleStates();
-    inputs.swerveModuleDesiredStates = this.getModuleDesiredStates();
-    inputs.gyroAngleRadians = swerveDrive.getGyro().getRotation3d().toRotation2d().getRadians();
-  }
+    public void addVisionReading(
+            Pose2d robotPose, double timestamp, Matrix<N3, N1> visionMeasurementStdDevs) {
+        swerveDrive.addVisionMeasurement(new Pose2d(robotPose.getX(), robotPose.getY(), robotPose.getRotation()),
+                timestamp, visionMeasurementStdDevs);
+    }
+
+    @Override
+    public SwerveDrive getSwerveDrive() {
+        return swerveDrive;
+    }
+
+    // public SwerveModuleState[] getModuleDesiredStates() {
+    // return swerveDrive.getDesiredStates();
+    // }
+
+    @Override
+    public void updateInputs(SwerveIOInputs inputs) {
+        SmartDashboard.putNumber("odometeryheading", swerveDrive.getOdometryHeading().getRadians());
+        // TODO - Implement
+        inputs.pose = this.getPose();
+        inputs.speeds = this.getSpeeds();
+
+        inputs.swerveModuleStates = this.getModuleStates();
+        inputs.swerveModuleDesiredStates = this.getModuleDesiredStates();
+        inputs.gyroAngleRadians = swerveDrive.getGyro().getRotation3d().toRotation2d().getRadians();
+    }
 }

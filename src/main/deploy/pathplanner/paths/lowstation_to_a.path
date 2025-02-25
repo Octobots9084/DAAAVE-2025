@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 3.084872341155905,
-        "y": 3.7434038550395594
+        "x": 2.84108606557377,
+        "y": 3.8511782786885242
       },
       "prevControl": {
-        "x": 2.988970701811643,
-        "y": 3.275883363236281
+        "x": 2.745184426229508,
+        "y": 3.3836577868852458
       },
       "nextControl": null,
       "isLocked": false,
@@ -33,21 +33,15 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "PrepWristPosition",
-      "waypointRelativePos": 0.18365968939905064,
-      "endWaypointRelativePos": null,
-      "command": null
-    },
-    {
       "name": "BringUpElevator",
-      "waypointRelativePos": 0.7859554355165468,
+      "waypointRelativePos": 0.7076299797434202,
       "endWaypointRelativePos": null,
       "command": null
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 4.0,
-    "maxAcceleration": 3.0,
+    "maxVelocity": 2.0,
+    "maxAcceleration": 1.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 10.0,
