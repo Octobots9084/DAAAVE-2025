@@ -2,14 +2,14 @@ package frc.robot.Subsystems.Elevator;
 
 public enum ElevatorStates {
     // TODO edit these to the actual positions
-    LOW(0.1 / 3),
-    LEVEL1(0.5 / 3),
-    LEVEL2(8 / 3.0),
-    LEVEL3(51 / 3.0),
-    LEVEL4(145 / 3.0),
+    LOW(0),
+    LEVEL1(0),
+    LEVEL2(0),
+    LEVEL3(16.57),
+    LEVEL4(43.45),
     INTAKE(0),
     // all in terms of "arbitrary encoder units"
-    MANUAL(50 / 3.0),
+    MANUAL(0),
     BOTTOMALGAE(0), // TODO: make it below algae bottom so we can go up from there and push off
     // algae
     TOPALGAE(0); // TOTO: make it the tall algae bottom
