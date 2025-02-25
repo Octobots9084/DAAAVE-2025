@@ -111,7 +111,7 @@ public class SwerveIOSystem implements SwerveIO {
         SmartDashboard.putString("FIELDRELATIVESPEDD", fieldRelativeSpeeds.toString());
         double maxAcceleration = getMaxAccelerationFromElevatorHeight();
         ChassisSpeeds limitedFieldRelativeSpeeds = MathUtil.limitXAndYAcceleration(fieldRelativeSpeeds,
-                ChassisSpeeds.fromRobotRelativeSpeeds(getSpeeds(), new Rotation2d(getGyro())),
+                swerveDrive.getFieldVelocity(),
                 maxAcceleration, maxAcceleration, 0.02);
         SmartDashboard.putString("limitedspeeds", fieldRelativeSpeeds.toString());
 

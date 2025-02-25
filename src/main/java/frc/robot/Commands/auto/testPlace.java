@@ -12,6 +12,8 @@ import frc.robot.Commands.ReefSelection.manager;
 import frc.robot.Commands.complex.Intake;
 import frc.robot.Commands.complex.PlaceCoral;
 import frc.robot.Commands.complex.PrepReefPlacement;
+import frc.robot.Constants;
+import frc.robot.Constants.Mode;
 import frc.robot.States.AlignState;
 import frc.robot.States.ReefTargetLevel;
 import frc.robot.States.ReefTargetOrientation;
@@ -54,6 +56,9 @@ public class testPlace extends Command {
 
     @Override
     public boolean isFinished() {
+        if (Constants.currentMode == Mode.SIM) {
+            return true;
+        }
         if (AlignVision.getInstance().isAligned() && Elevator.getInstance().isAtState(ElevatorStates.LEVEL4, 1.5)
                 && Wrist.getInstance().isAtState(ElevatorStates.LEVEL4, 0.01)) {
             CoralRollers.getInstance().setState(CoralRollersState.OUTPUT);

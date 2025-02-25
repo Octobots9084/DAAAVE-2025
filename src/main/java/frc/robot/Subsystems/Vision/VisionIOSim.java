@@ -60,9 +60,9 @@ public class VisionIOSim implements VisionIO {
     private final Notifier allNotifier = new Notifier(
             () -> {
                 frontLeftCamera.run();
-                frontRightCamera.run();
-                middleRightCamera.run();
-                middleLeftCamera.run();
+                // frontRightCamera.run();
+                // middleRightCamera.run();
+                // middleLeftCamera.run();
             });
 
     public VisionIOSim() {
@@ -130,7 +130,7 @@ public class VisionIOSim implements VisionIO {
     EstimatedRobotPose frontLeftPose = frontLeftCamera.grabLatestEstimatedPose();
     // EstimatedRobotPose frontRightPose = frontRightCamera.grabLatestEstimatedPose();
 
-        Matrix<N3, N1> frontLeftStdDevs = frontLeftCamera.grabLatestStdDev();
+        Matrix<N3, N1> frontLeftStdDevs = VecBuilder.fill(0, 0, 99999);//frontLeftCamera.grabLatestStdDev();
         // Matrix<N3, N1> frontRightStdDevs = frontRightCamera.grabLatestStdDev();
 
         addVisionReading("Front Left", frontLeftPose, frontLeftStdDevs);
@@ -142,7 +142,7 @@ public class VisionIOSim implements VisionIO {
     }
 
   @Override
-  public void addVisionReading(EstimatedRobotPose pose, Matrix<N3, N1> stdDevs) {
+  public void addVisionReading(String cameraName, EstimatedRobotPose pose, Matrix<N3, N1> stdDevs) {
     if (pose != null && stdDevs != null) {
       Pose2d pose2d = pose.estimatedPose.toPose2d();
       Logger.recordOutput("FrontLeftPositionEstimate", pose2d);
