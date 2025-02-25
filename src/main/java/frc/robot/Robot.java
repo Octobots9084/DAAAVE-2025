@@ -151,9 +151,6 @@ public class Robot extends LoggedRobot {
             m_autonomousCommand.cancel();
         }
 
-        Swerve.getInstance().resetPose(new Pose2d(Swerve.getInstance().getPose().getX(), Swerve.getInstance().getPose().getY(),
-                new Rotation2d(Swerve.getInstance().getGyro())));
-
         Swerve.getInstance().setDriveState(DriveState.Manual);
 
     }

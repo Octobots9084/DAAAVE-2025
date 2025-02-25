@@ -95,7 +95,7 @@ public class VisionIOSystem implements VisionIO {
             SmartDashboard.putNumber(cameraName + " StdDevsY", stdDevsCalculation.getStandardDeviationY());
             SmartDashboard.putNumber(cameraName + " StdDevsRot", stdDevsCalculation.getStandardDeviationRotation());
 
-            // swerve.addVisionReading(pose2d, pose.timestampSeconds, stdDevs);
-        }
+    //   swerve.addVisionReading(pose2d, pose.timestampSeconds, stdDevs);
     }
+  }
 }
