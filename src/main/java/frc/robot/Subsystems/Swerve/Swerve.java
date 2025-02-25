@@ -31,6 +31,10 @@ import frc.robot.Commands.Elevator.SetElevatorState;
 import frc.robot.Commands.Elevator.SetElevatorStateTolerance;
 import frc.robot.Commands.Wrist.SetWristState;
 import frc.robot.Commands.auto.testPlace;
+import frc.robot.Commands.complex.CollectCoral;
+import frc.robot.Commands.complex.PrepCollect;
+import frc.robot.Commands.complex.PrepIntake;
+import frc.robot.Commands.complex.collectCoral.WaitForCoralDetected;
 import frc.robot.States.ReefTargetLevel;
 import frc.robot.States.ReefTargetOrientation;
 import frc.robot.States.ReefTargetSide;
@@ -132,6 +136,8 @@ public class Swerve extends SubsystemBase {
             NamedCommands.registerCommand("InitalWristPos", new SetWristState(WristStates.PREP, ClosedLoopSlot.kSlot0));
             new EventTrigger("PrepWristPosition").onTrue(new SetWristState(WristStates.PREP, ClosedLoopSlot.kSlot0));
             new EventTrigger("BringUpElevator").onTrue(new SetElevatorState(ElevatorStates.LEVEL4));
+            NamedCommands.registerCommand("CollectCoral", new CollectCoral());
+            NamedCommands.registerCommand("PrepIntake", new PrepCollect());
 
             RobotConfig config = RobotConfig.fromGUISettings();
 

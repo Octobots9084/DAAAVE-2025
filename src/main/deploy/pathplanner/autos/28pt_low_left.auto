@@ -23,9 +23,21 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "PrepIntake"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "e_to_lowstation"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "WaitForCoralDetected"
           }
         },
         {
@@ -41,9 +53,21 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "PrepIntake"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "d_to_lowstation"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "WaitForCoralDetected"
           }
         },
         {
@@ -59,9 +83,21 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "PrepIntake"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "c_to_lowstation"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "WaitForCoralDetected"
           }
         },
         {
