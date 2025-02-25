@@ -2,6 +2,7 @@ package frc.robot;
 
 import com.revrobotics.spark.ClosedLoopSlot;
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -55,6 +56,8 @@ public class ButtonConfig {
         AlignVision.setPoleLevel(ElevatorStates.LEVEL1);
         AlignVision.setPoleSide(ReefTargetSide.RIGHT);
         AlignVision.setReefOrientation(ReefTargetOrientation.GH);
+        // SmartDashboard.putString("Orientation", ReefTargetOrientation.GH.name());
+        // SmartDashboard.putString("Side", ReefTargetSide.RIGHT.name());
 
         driverButtons.button(6).onTrue(new InstantCommand(() -> {
             Swerve.getInstance().zeroGyro();

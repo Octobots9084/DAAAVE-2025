@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class GetReefSide {
   public static final CommandJoystick Right = ControlMap.CO_DRIVER_RIGHT;
-  private double[][] reefPoints = {{0, -0.3}, {0.27, -0.1}, {0.3, 0.3}, {0, 0.475}, {-0.2, 0.3}, {-0.1, -0.1}};
+  private double[][] reefPoints = {{0, -0.93}, {0.74, -0.39}, {0.74, 0.35}, {0, 0.99}, {-0.7, 0.36}, {-0.71, -0.4}};
 
   @SuppressWarnings("static-access")
   public States.ReefTargetOrientation joystickPos() {
