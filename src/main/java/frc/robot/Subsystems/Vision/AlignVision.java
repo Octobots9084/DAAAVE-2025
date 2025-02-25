@@ -292,7 +292,7 @@ public class AlignVision extends SubsystemBase {
         return (6 * orientation.ordinal()) + (3 * side.ordinal()) + level.ordinal() - 1;
     }
 
-    private int handleTurnAngle(AlignState state) {
+    public int handleTurnAngle(AlignState state) {
         // SmartDashboard.putString("AlignVision/State", state.toString());
         // Different orientations of the reef (Degrees)
         if (state == AlignState.Reef) {
@@ -321,10 +321,10 @@ public class AlignVision extends SubsystemBase {
         } else if (state == AlignState.Processor) {
             return -90;
         } else if (state == AlignState.Source
-                && (this.isValidAlignTag(1) || this.isValidAlignTag(13))) {
+                && (this.isValidAlignTag(1) || this.isValidAlignTag(13)) && Constants.isBlueAlliance) {
             return 135;
         } else if (state == AlignState.Source
-                && (this.isValidAlignTag(2) || this.isValidAlignTag(12))) {
+                && (this.isValidAlignTag(2) || this.isValidAlignTag(12)) && !Constants.isBlueAlliance) {
             return -135;
         } else {
             return Integer.MAX_VALUE;
