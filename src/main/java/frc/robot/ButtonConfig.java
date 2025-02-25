@@ -31,6 +31,7 @@ import frc.robot.Commands.ReefSelection.ReefLevelSelection;
 import frc.robot.Commands.ReefSelection.SetOrientation;
 import frc.robot.Commands.Wrist.PrepCoral;
 import frc.robot.Commands.Wrist.SetWristState;
+import frc.robot.Commands.auto.AlignCollect;
 import frc.robot.Subsystems.AlgaeRollers.AlgaeRollersStates;
 import frc.robot.Subsystems.Climb.ClimbStates;
 import frc.robot.Subsystems.CoralRollers.CoralRollers;
@@ -85,6 +86,7 @@ public class ButtonConfig {
         driverButtons.button(4)
                 .onTrue(new PrepReefPlacement());
         driverButtons.button(5).onTrue(new Intake());
+        driverButtons.button(7).whileTrue(new AlignCollect());
         driverButtons.button(10).onTrue(new CancelAllCommands());
 
         // TODO change button to actual button for dropping the chute
