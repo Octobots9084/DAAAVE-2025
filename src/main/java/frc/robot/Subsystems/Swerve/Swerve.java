@@ -37,6 +37,7 @@ import frc.robot.Subsystems.Elevator.ElevatorStates;
 import frc.robot.Subsystems.Vision.AlignVision;
 import frc.robot.Subsystems.Wrist.WristStates;
 
+import java.util.Optional;
 import java.util.function.DoubleSupplier;
 import org.littletonrobotics.junction.Logger;
 
@@ -85,6 +86,10 @@ public class Swerve extends SubsystemBase {
     targetSide = side;
     AlignVision.setPoleSide(side);
     Logger.recordOutput("Reef Allignment Target Side", targetSide);
+  }
+
+  public Optional<Pose2d> getSimPose() {
+    return io.getSimPose();
   }
 
   public void setReefTargetOrientation(ReefTargetOrientation orientation) {

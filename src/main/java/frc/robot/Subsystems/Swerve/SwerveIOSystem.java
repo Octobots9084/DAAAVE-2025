@@ -23,6 +23,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import swervelib.SwerveDrive;
 import swervelib.math.Matter;
@@ -95,6 +96,10 @@ public class SwerveIOSystem implements SwerveIO {
 
   public Pose2d getPose() {
     return swerveDrive.getPose();
+  }
+
+  public Optional<Pose2d> getSimPose() {
+    return swerveDrive.getSimulationDriveTrainPose();
   }
 
   public void resetPose(Pose2d pose) {
