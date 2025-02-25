@@ -142,8 +142,8 @@ public class Swerve extends SubsystemBase {
             NamedCommands.registerCommand("InitalWristPos", new SetWristState(WristStates.PREP, ClosedLoopSlot.kSlot0));
             new EventTrigger("PrepWristPosition").onTrue(new SetWristState(WristStates.PREP, ClosedLoopSlot.kSlot0));
             new EventTrigger("BringUpElevator").onTrue(new SetElevatorState(ElevatorStates.LEVEL4));
-            NamedCommands.registerCommand("CollectCoral", new AlignCollect());
-            NamedCommands.registerCommand("PrepIntake", new PrepCollect());
+            NamedCommands.registerCommand("AlignCollect", new AlignCollect());
+            NamedCommands.registerCommand("PrepCollect", new PrepCollect());
 
             RobotConfig config = RobotConfig.fromGUISettings();
 

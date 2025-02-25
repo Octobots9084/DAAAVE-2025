@@ -25,7 +25,7 @@
         {
           "type": "named",
           "data": {
-            "name": "PrepIntake"
+            "name": "PrepCollect"
           }
         },
         {
@@ -37,7 +37,7 @@
         {
           "type": "named",
           "data": {
-            "name": "WaitForCoralDetected"
+            "name": "AlignCollect"
           }
         },
         {
@@ -55,7 +55,7 @@
         {
           "type": "named",
           "data": {
-            "name": "PrepIntake"
+            "name": "PrepCollect"
           }
         },
         {
@@ -67,7 +67,7 @@
         {
           "type": "named",
           "data": {
-            "name": "WaitForCoralDetected"
+            "name": "AlignCollect"
           }
         },
         {
@@ -85,7 +85,7 @@
         {
           "type": "named",
           "data": {
-            "name": "PrepIntake"
+            "name": "PrepCollect"
           }
         },
         {
@@ -97,7 +97,7 @@
         {
           "type": "named",
           "data": {
-            "name": "WaitForCoralDetected"
+            "name": "AlignCollect"
           }
         },
         {
