@@ -119,7 +119,7 @@ public class Robot extends LoggedRobot {
     public void disabledInit() {
         Elevator.getInstance().setTargetState(ElevatorStates.LEVEL1);
         Elevator.getInstance().setState(ElevatorStates.LEVEL1);
-        Wrist.getInstance().setState(ElevatorStates.LEVEL1, ClosedLoopSlot.kSlot0);
+        Wrist.getInstance().setState(WristStates.TUNING, ClosedLoopSlot.kSlot0);
     }
 
     /** This function is called periodically when disabled. */
