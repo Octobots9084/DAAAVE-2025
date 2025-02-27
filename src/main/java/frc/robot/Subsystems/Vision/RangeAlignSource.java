@@ -28,7 +28,7 @@ public class RangeAlignSource extends SubsystemBase {
     }
 
     public RangeAlignSource() {
-        this.backRange = new CANrange(0, "KrakensBus");
+        this.backRange = new CANrange(23, "KrakensBus");
         this.backRangePID = new PIDController(1, 0, 0);
         this.gyroRotationPIDController = new PIDController(0.4, 0, 0);
         this.gyroRotationPIDController.enableContinuousInput(0, 2 * Math.PI);
@@ -52,6 +52,6 @@ public class RangeAlignSource extends SubsystemBase {
     public ChassisSpeeds getAlignChassisSpeeds() {
         // rotInTolerance = MathUtil.isNear(swerve.getGyro(), Math.toRadians(turnAngle), 0.05);
 
-        return new ChassisSpeeds(backRangePID.calculate(this.getBackRange()), 0, gyroRotationPIDController.calculate(Swerve.getInstance().getGyro(), Math.toRadians(AlignVision.getInstance().handleTurnAngle(AlignState.Source))));
+        return new ChassisSpeeds(backRangePID.calculate(this.getBackRange(),0.46), 0, gyroRotationPIDController.calculate(Swerve.getInstance().getGyro(), Math.toRadians(AlignVision.getInstance().handleTurnAngle(AlignState.Source))));
     }
 }

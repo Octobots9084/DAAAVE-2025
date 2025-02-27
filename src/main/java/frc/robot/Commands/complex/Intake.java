@@ -32,7 +32,7 @@ public class Intake extends SequentialCommandGroup {
                 CoralRollers.getInstance().setState(CoralRollersState.INTAKING);
             }),
             new WaitForCoralDetected(),
-            new WaitCommand(0.1),
+            new WaitCommand(0.3),
             new InstantCommand(() -> {
                 CoralRollers.getInstance().setState(CoralRollersState.STOPPED);
             }),

@@ -75,10 +75,10 @@ public final class Constants {
         // Transform Camera Coordinates to Robot Coordinates. Based on camera mounting
         // position.
         public static final Transform3d transformFrontLeftToRobot = new Transform3d(0.13, 0.33, 0.2921,
-                new Rotation3d(0, 0, Math.toRadians(-30)));
+                new Rotation3d(0, 0, Math.toRadians(-25)));
 
         public static final Transform3d transformFrontRightToRobot = new Transform3d(0.13, -0.33, 0.2921,
-                new Rotation3d(0, 0, Math.toRadians(30)));
+                new Rotation3d(0, 0, Math.toRadians(25)));
 
         public static final Transform3d transformMiddleRightToRobot = new Transform3d(0.1, -0.3, 0.4318,
                 new Rotation3d(0, 0, Math.toRadians(-90)));
