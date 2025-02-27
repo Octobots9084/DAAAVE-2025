@@ -88,9 +88,9 @@ public class SwerveIOSystem implements SwerveIO {
         return swerveDrive.getPose();
     }
 
-  public Optional<Pose2d> getSimPose() {
-    return swerveDrive.getSimulationDriveTrainPose();
-  }
+    public Optional<Pose2d> getSimPose() {
+        return swerveDrive.getSimulationDriveTrainPose();
+    }
 
     public void resetPose(Pose2d pose) {
         swerveDrive.resetOdometry(pose);

@@ -358,9 +358,9 @@ public class AlignVision extends SubsystemBase {
 
             return -lidarRotationPIDController.calculate(diffLidarDist, 0);
         } else {
-            rotInTolerance = MathUtil.isNear(swerve.getGyro(), Math.toRadians(turnAngle), 0.05);
+            rotInTolerance = MathUtil.isNear(swerve.getPose().getRotation().getRadians(), Math.toRadians(turnAngle), 0.05);
 
-            return gyroRotationPIDController.calculate(swerve.getGyro(), Math.toRadians(turnAngle));
+            return gyroRotationPIDController.calculate(swerve.getPose().getRotation().getRadians(), Math.toRadians(turnAngle));
         }
 
     }

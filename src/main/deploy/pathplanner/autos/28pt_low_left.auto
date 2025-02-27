@@ -23,12 +23,6 @@
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "PrepCollect"
-          }
-        },
-        {
           "type": "path",
           "data": {
             "pathName": "e_to_lowstation"
@@ -53,12 +47,6 @@
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "PrepCollect"
-          }
-        },
-        {
           "type": "path",
           "data": {
             "pathName": "d_to_lowstation"
@@ -80,12 +68,6 @@
           "type": "named",
           "data": {
             "name": "placeC"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "PrepCollect"
           }
         },
         {

@@ -135,8 +135,8 @@ public class Swerve extends SubsystemBase {
             // ScoreCoral(ElevatorStates.LEVEL4, ReefTargetSide.RIGHT,
             // ReefTargetOrientation.AB).withTimeout(0.75));
 
-            NamedCommands.registerCommand("placeAB",
-                    new testPlace(ElevatorStates.LEVEL4, ReefTargetSide.LEFT, ReefTargetOrientation.AB));
+            NamedCommands.registerCommand("placeB",
+                    new testPlace(ElevatorStates.LEVEL4, ReefTargetSide.RIGHT, ReefTargetOrientation.AB));
             NamedCommands.registerCommand("placeC",
                     new testPlace(ElevatorStates.LEVEL4, ReefTargetSide.LEFT, ReefTargetOrientation.CD));
             NamedCommands.registerCommand("placeD",
@@ -147,7 +147,7 @@ public class Swerve extends SubsystemBase {
             new EventTrigger("PrepWristPosition").onTrue(new SetWristState(WristStates.PREP, ClosedLoopSlot.kSlot0));
             new EventTrigger("BringUpElevator").onTrue(new SetElevatorState(ElevatorStates.LEVEL4));
             NamedCommands.registerCommand("AlignCollect", new AlignCollect());
-            NamedCommands.registerCommand("PrepCollect", new PrepCollect());
+            new EventTrigger("PrepCollect").onTrue(new PrepCollect());
 
             RobotConfig config = RobotConfig.fromGUISettings();
 

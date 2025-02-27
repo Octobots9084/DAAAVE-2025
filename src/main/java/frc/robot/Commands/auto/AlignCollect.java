@@ -11,8 +11,12 @@ import frc.robot.Subsystems.Vision.RangeAlignSource;
 import frc.robot.Subsystems.Vision.AlignVision;
 
 public class AlignCollect extends Command {
-    public AlignCollect() {
+    public AlignCollect() {}
+
+    @Override
+    public void initialize() {
         CommandScheduler.getInstance().schedule(new Intake());
+
     }
 
     @Override

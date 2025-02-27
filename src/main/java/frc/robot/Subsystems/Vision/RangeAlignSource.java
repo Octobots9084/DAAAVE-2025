@@ -54,6 +54,7 @@ public class RangeAlignSource extends SubsystemBase {
         // 0.05);
 
         return new ChassisSpeeds(backRangePID.calculate(this.getBackRange(), 0.46), 0,
-                gyroRotationPIDController.calculate(Swerve.getInstance().getGyro(), Math.toRadians(AlignVision.getInstance().handleTurnAngle(AlignState.Source))));
+                gyroRotationPIDController.calculate(Swerve.getInstance().getPose().getRotation().getRadians(),
+                        Math.toRadians(AlignVision.getInstance().handleTurnAngle(AlignState.Source))));
     }
 }
