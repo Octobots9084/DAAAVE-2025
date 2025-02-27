@@ -6,7 +6,9 @@ import com.ctre.phoenix6.hardware.CANrange;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
+import com.revrobotics.spark.SparkBase.Warnings;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.SparkBase;
 import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
@@ -89,4 +91,9 @@ public class CoralRollersIOSystems implements CoralRollersIO {
   public boolean clawBackSensorTriggered() {
     return clawBackSensor.getDistance().getValueAsDouble() < 0.1;
   }
+  @Override
+  public boolean isStalled() {
+    return motor.getWarnings().overcurrent;
+  }
+
 }

@@ -9,7 +9,7 @@ public enum WristStates {
   L4(0.828),
   PREP(0.97),
   MANUAL(0.554),
-  ALAGEREMOVAL(0);//TODO actually set this value
+  ALAGEREMOVAL(0.757);//TODO actually set this value
 
     public double wristPosition;
 

@@ -55,6 +55,10 @@ public class TeleopDrive extends Command {
                     speeds[1],
                     omega.getAsDouble() * swerveInstance.getIo().getMaxTurnSpeed()));
         break;
+      case Reverse:
+        SmartDashboard.putString("Reverse", "Reverse");
+        swerveInstance.driveRobotRelative(new ChassisSpeeds(-1,0,omega.getAsDouble() * swerveInstance.getIo().getMaxTurnSpeed()));
+        break;
       case AlignReef:
         SmartDashboard.putString("AlignReef", "AllignReef");
         swerveInstance.driveRobotRelative(alignInstance.getAlignChassisSpeeds(AlignState.Reef));

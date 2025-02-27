@@ -7,6 +7,7 @@ import frc.robot.Subsystems.CoralRollers.CoralRollers;
 import frc.robot.Subsystems.CoralRollers.CoralRollersState;
 import frc.robot.Subsystems.Swerve.Swerve;
 import frc.robot.Subsystems.Swerve.Swerve.DriveState;
+import frc.robot.Subsystems.Vision.AlignVision;
 
 public class AlignReef extends Command {
   private Swerve swerve = Swerve.getInstance();
@@ -21,9 +22,8 @@ public class AlignReef extends Command {
 
   @Override
   public boolean isFinished() {
-    CommandScheduler.getInstance().schedule(new SetCoralRollersState(CoralRollersState.OUTPUT));
 
-    // check if the coral has left robot
-    return !CoralRollers.getInstance().HasCoral();
+    // check if the robot is aligned
+    return AlignVision.getInstance().isAligned();
   }
 }
