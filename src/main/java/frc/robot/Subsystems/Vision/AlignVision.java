@@ -82,7 +82,7 @@ public class AlignVision extends SubsystemBase {
         this.cameraXPIDController = new PIDController(3, 0, 0);
         this.cameraYPIDController = new PIDController(3, 0, 0);
         this.lidarXPIDController = new PIDController(3, 0, 0);
-        this.lidarRotationPIDController = new PIDController(10, 0, 0);
+        this.lidarRotationPIDController = new PIDController(12, 0, 0);
         this.gyroRotationPIDController = new PIDController(0.4, 0, 0);
         this.gyroRotationPIDController.enableContinuousInput(0, 2 * Math.PI);
 
@@ -320,12 +320,15 @@ public class AlignVision extends SubsystemBase {
             }
         } else if (state == AlignState.Processor) {
             return -90;
-        } else if (state == AlignState.Source
-                && (this.isValidAlignTag(1) || this.isValidAlignTag(13)) && Constants.isBlueAlliance) {
-            return 135;
-        } else if (state == AlignState.Source
-                && (this.isValidAlignTag(2) || this.isValidAlignTag(12)) && !Constants.isBlueAlliance) {
-            return -135;
+        } else if (state == AlignState.Source) {
+
+            // && (this.isValidAlignTag(1) || this.isValidAlignTag(13)) &&
+            // Constants.isBlueAlliance) {
+            return 45;
+        } else if (state == AlignState.Source)// &&(this.isValidAlignTag(2)||this.isValidAlignTag(12))&&!Constants.isBlueAlliance)
+
+        {
+            return -45;
         } else {
             return Integer.MAX_VALUE;
         }

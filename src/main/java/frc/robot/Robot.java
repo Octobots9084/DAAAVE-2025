@@ -20,12 +20,15 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Commands.ReefSelection.ShowSelection;
+import frc.robot.States.ReefTargetOrientation;
+import frc.robot.States.ReefTargetSide;
 import frc.robot.Subsystems.AlgaeRollers.AlgaeRollers;
 import frc.robot.Subsystems.CoralRollers.CoralRollers;
 import frc.robot.Subsystems.Elevator.*;
 import frc.robot.Subsystems.Swerve.Swerve;
 import frc.robot.Subsystems.Swerve.Swerve.DriveState;
 import frc.robot.Subsystems.Vision.AlignVision;
+import frc.robot.Subsystems.Vision.VisionSubsystem;
 import frc.robot.Subsystems.Wrist.*;
 
 import org.ironmaple.simulation.SimulatedArena;
@@ -152,6 +155,9 @@ public class Robot extends LoggedRobot {
         }
 
         Swerve.getInstance().setDriveState(DriveState.Manual);
+        AlignVision.setReefOrientation(ReefTargetOrientation.EF);
+        AlignVision.setPoleLevel(ElevatorStates.LEVEL1);
+        AlignVision.setPoleSide(ReefTargetSide.RIGHT);
 
     }
 
