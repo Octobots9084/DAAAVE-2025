@@ -94,9 +94,9 @@ public class Swerve extends SubsystemBase {
         Logger.recordOutput("Reef Allignment Target Side", targetSide);
     }
 
-  public Optional<Pose2d> getSimPose() {
-    return io.getSimPose();
-  }
+    public Optional<Pose2d> getSimPose() {
+        return io.getSimPose();
+    }
 
     public void setReefTargetOrientation(ReefTargetOrientation orientation) {
         targetOrientation = orientation;
@@ -114,6 +114,10 @@ public class Swerve extends SubsystemBase {
 
     public Swerve(SwerveIO io) {
         this.io = io;
+
+    }
+
+    public void configurePathplanner() {
         try {
 
             // NamedCommands.registerCommand("AlignSource", new
