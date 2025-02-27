@@ -18,7 +18,7 @@ public class ElevatorIOSparkMax implements ElevatorIO {
     // TODO replace device ids with actual ones
     private final SparkMax leftMotor = new SparkMax(10, MotorType.kBrushless);
     private final SparkMax rightMotor = new SparkMax(11, MotorType.kBrushless);
-    private double feedForward = 0.5;
+    private double feedForward = 0.6;
 
     private SparkMaxConfig leftConfig;
 

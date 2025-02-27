@@ -93,7 +93,13 @@ public class ButtonConfig {
         driverButtons.button(10).onTrue(new CancelAllCommands());
 
         // TODO change button to actual button for dropping the chute
-        driverButtons.button(9).onTrue(new LetTheChuteBeFree());
+        driverButtons.button(17).onTrue(new LetTheChuteBeFree());
+        driverButtons.button(8).onTrue(new InstantCommand(()->{
+            CoralRollers.getInstance().setState(CoralRollersState.LEVEL1);
+        }));
 
+        driverButtons.button(9).onTrue(new InstantCommand(()->{
+            CoralRollers.getInstance().setState(CoralRollersState.OUTPUT);
+        }));
     }
 }

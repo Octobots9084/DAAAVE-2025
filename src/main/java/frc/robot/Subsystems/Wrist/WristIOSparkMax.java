@@ -70,11 +70,6 @@ public class WristIOSparkMax implements WristIO {
         double ffVal = 0.4 * Math.cos((position - 0.7561) * 2 * Math.PI);
         SmartDashboard.putNumber("wristFeedForward", ffVal);
 
-        wristMotor
-                .getClosedLoopController()
-                .setReference(position, ControlType.kPosition, ClosedLoopSlot.kSlot0, ffVal);
-    }
-
     @Override
     public double getPosition() {
         return wristMotor.getAbsoluteEncoder().getPosition();

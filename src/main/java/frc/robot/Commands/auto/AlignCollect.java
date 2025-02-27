@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.States.AlignState;
 import frc.robot.Commands.complex.CollectCoral;
+import frc.robot.Commands.complex.Intake;
 import frc.robot.Subsystems.CoralRollers.CoralRollers;
 import frc.robot.Subsystems.Swerve.Swerve;
 import frc.robot.Subsystems.Vision.RangeAlignSource;
@@ -11,7 +12,7 @@ import frc.robot.Subsystems.Vision.AlignVision;
 
 public class AlignCollect extends Command {
     public AlignCollect() {
-        CommandScheduler.getInstance().schedule(new CollectCoral());
+        CommandScheduler.getInstance().schedule(new Intake());
     }
 
     @Override
