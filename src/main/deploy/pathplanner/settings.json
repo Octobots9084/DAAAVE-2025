@@ -18,7 +18,7 @@
     "stack",
     "push"
   ],
-  "defaultMaxVel": 1.0,
+  "defaultMaxVel": 2.0,
   "defaultMaxAccel": 1.0,
   "defaultMaxAngVel": 540.0,
   "defaultMaxAngAccel": 720.0,
@@ -29,7 +29,7 @@
   "driveWheelRadius": 0.035,
   "driveGearing": 5.818,
   "maxDriveSpeed": 9.0,
-  "driveMotorType": "krakenX60",
+  "driveMotorType": "krakenX60FOC",
   "driveCurrentLimit": 60.0,
   "wheelCOF": 1.5,
   "flModuleX": 0.31,

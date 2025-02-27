@@ -34,13 +34,13 @@
   "eventMarkers": [
     {
       "name": "PrepCollect",
-      "waypointRelativePos": 0.49155975692099757,
+      "waypointRelativePos": 0.27548953409858434,
       "endWaypointRelativePos": null,
       "command": null
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 1.0,
+    "maxVelocity": 2.0,
     "maxAcceleration": 1.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
