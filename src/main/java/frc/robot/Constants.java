@@ -80,10 +80,10 @@ public final class Constants {
         public static final Transform3d transformFrontRightToRobot = new Transform3d(0.13, -0.32, 0.2921,
                 new Rotation3d(0, 0, Math.toRadians(25)));
 
-        public static final Transform3d transformMiddleRightToRobot = new Transform3d(0.1, -0.3, 0.4318,
+        public static final Transform3d transformMiddleRightToRobot = new Transform3d(0.08, -0.255, 0.59,
                 new Rotation3d(0, 0, Math.toRadians(-90)));
 
-        public static final Transform3d transformMiddleLeftToRobot = new Transform3d(0.1, 0.3, 0.4318,
+        public static final Transform3d transformMiddleLeftToRobot = new Transform3d(0.08, 0.255, 0.59,
                 new Rotation3d(0, 0, Math.toRadians(90)));
 
         // Position of the AprilTag in Tag Coordinates.
