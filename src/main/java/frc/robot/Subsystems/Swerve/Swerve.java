@@ -63,7 +63,8 @@ public class Swerve extends SubsystemBase {
         Manual,
         AlignReef,
         AlignProcessor,
-        AlignSource
+        AlignSource,
+        Reverse
     };
 
     private DriveState driveState = DriveState.None;

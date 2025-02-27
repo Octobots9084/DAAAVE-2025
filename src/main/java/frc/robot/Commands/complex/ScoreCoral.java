@@ -84,5 +84,4 @@ public class ScoreCoral extends Command {
     public void end(boolean interrupted) {
         Swerve.getInstance().setDriveState(DriveState.Manual);        
     }
-  // new AlignReef().andThen(new SetCoralRollersState(CoralRollersState.REJECTING))
 }
