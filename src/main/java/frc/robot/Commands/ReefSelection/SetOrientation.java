@@ -22,7 +22,7 @@ public class SetOrientation extends InstantCommand {
         if (reefState != ReefTargetOrientation.NONE) {
             manager.LastButtonPos[0] = reefStatePos;
             // replaces the terrible switching at last moment code
-            if (manager.LastButtonPos[0] > 2 && manager.LastButtonPos[0] < 5) {
+            if (manager.LastButtonPos[0] > 1 && manager.LastButtonPos[0] < 5) {
                 manager.LastButtonPos[1] = (side == 0 ? 1 : 0);
             } else {
                 manager.LastButtonPos[1] = side;
@@ -30,7 +30,7 @@ public class SetOrientation extends InstantCommand {
             manager.clearReef();
             manager.setReef(reefStatePos, manager.LastButtonPos[1], true);
 
-            ReefTargetSide reefSide = ReefTargetSide.values()[manager.LastButtonPos[1] == 0 ? 1 : 0];
+            ReefTargetSide reefSide = ReefTargetSide.values()[manager.LastButtonPos[1]];
             ReefTargetOrientation reefOrientation = ReefTargetOrientation.values()[manager.LastButtonPos[0]];
 
             SmartDashboard.putString("Selected Reef Side", reefSide.name());

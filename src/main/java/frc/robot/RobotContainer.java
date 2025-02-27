@@ -111,12 +111,18 @@ public class RobotContainer {
 
                 Climb.setInstance(new ClimbIOSystems());
                 climb = Climb.getInstance();
+
+                swerve.configurePathplanner();
+
                 break;
 
             case SIM:
+                Wrist.setInstance(new WristIOSim());
+                wrist = Wrist.getInstance();
+                Elevator.setInstance(new ElevatorIOSim());
+                elevator = Elevator.getInstance();
                 Swerve.setInstance(new SwerveIOSystem());
                 swerve = Swerve.getInstance();
-
                 AlgaeRollers.setInstance(
                         new AlgaeRollersIOSim(swerve.getIo().getSwerveDrive().getMapleSimDrive().get()));
                 algaeRollers = AlgaeRollers.getInstance();
@@ -125,14 +131,10 @@ public class RobotContainer {
                         new CoralRollersIOSim(swerve.getIo().getSwerveDrive().getMapleSimDrive().get()));
                 coralRollers = CoralRollers.getInstance();
 
-                Elevator.setInstance(new ElevatorIOSim());
-                elevator = Elevator.getInstance();
-
-                Wrist.setInstance(new WristIOSim());
-                wrist = Wrist.getInstance();
-
                 VisionSubsystem.setInstance(new VisionIOSim());
                 vision = VisionSubsystem.getInstance();
+
+                swerve.configurePathplanner();
 
                 SimulatedArena.getInstance().resetFieldForAuto();
                 break;
@@ -153,6 +155,7 @@ public class RobotContainer {
 
                 Swerve.setInstance(new SwerveIO() {});
                 swerve = Swerve.getInstance();
+
                 break;
             default:
                 break;
