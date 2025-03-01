@@ -320,15 +320,14 @@ public class AlignVision extends SubsystemBase {
             }
         } else if (state == AlignState.Processor) {
             return -90;
-        } else if (state == AlignState.Source) {
-
-            // && (this.isValidAlignTag(1) || this.isValidAlignTag(13)) &&
-            // Constants.isBlueAlliance) {
+        } else if (state == AlignState.SourceRight && Constants.isBlueAlliance) { 
             return 45;
-        } else if (state == AlignState.Source)// &&(this.isValidAlignTag(2)||this.isValidAlignTag(12))&&!Constants.isBlueAlliance)
-
-        {
+        } else if (state == AlignState.SourceLeft && Constants.isBlueAlliance) {
             return -45;
+        } else if (state == AlignState.SourceRight && !Constants.isBlueAlliance) {
+            return -135;
+        } else if (state == AlignState.SourceLeft && !Constants.isBlueAlliance) {
+            return 135;
         } else {
             return Integer.MAX_VALUE;
         }

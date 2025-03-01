@@ -84,7 +84,8 @@ public class States {
     public enum AlignState {
         Reef,
         Processor,
-        Source,
+        SourceRight,
+        SourceLeft,
         Manual
     }
 }
