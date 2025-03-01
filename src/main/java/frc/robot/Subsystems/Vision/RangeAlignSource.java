@@ -17,6 +17,7 @@ public class RangeAlignSource extends SubsystemBase {
     private PIDController gyroRotationPIDController;
     CANrangeConfiguration configuration;
     FovParamsConfigs paramsConfigs;
+    boolean rotInTolerance = false;
 
     private static RangeAlignSource instance;
 
@@ -50,11 +51,14 @@ public class RangeAlignSource extends SubsystemBase {
     }
 
     public ChassisSpeeds getAlignChassisSpeeds() {
-        // rotInTolerance = MathUtil.isNear(swerve.getGyro(), Math.toRadians(turnAngle),
-        // 0.05);
+        double turnAngle = gyroRotationPIDController.calculate(Swerve.getInstance().getPose().getRotation().getRadians(), Math.toRadians(AlignVision.getInstance().handleTurnAngle(AlignState.SourceRight)));
+        rotInTolerance = MathUtil.isNear(Swerve.getInstance().getPose().getRotation().getRadians(), Math.toRadians(turnAngle), 0.05);
 
-        return new ChassisSpeeds(backRangePID.calculate(this.getBackRange(), 0.46), 0,
-                gyroRotationPIDController.calculate(Swerve.getInstance().getPose().getRotation().getRadians(),
-                        Math.toRadians(AlignVision.getInstance().handleTurnAngle(AlignState.Source))));
+        if (rotInTolerance) {
+            turnAngle = 0;
+        }
+
+        // return new ChassisSpeeds(backRangePID.calculate(this.getBackRange(), 0.46), 0, turnAngle);
+        return new ChassisSpeeds(0, 0, turnAngle);
     }
 }
