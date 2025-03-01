@@ -1,8 +1,11 @@
 package frc.robot.Commands.auto;
 
+import com.fasterxml.jackson.annotation.JsonCreator.Mode;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.States.AlignState;
+import frc.robot.Constants;
 import frc.robot.Commands.complex.CollectCoral;
 import frc.robot.Commands.complex.Intake;
 import frc.robot.Subsystems.CoralRollers.CoralRollers;
@@ -26,6 +29,9 @@ public class AlignCollect extends Command {
 
     @Override
     public boolean isFinished() {
+        if (Constants.currentMode == Constants.simMode) {
+            return true;
+        }
         return CoralRollers.getInstance().HasCoral();
     }
 

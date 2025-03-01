@@ -61,9 +61,9 @@ public class AlignVision extends SubsystemBase {
     private int finalTagID;
     private double turnAngle;
 
-    private static ReefTargetOrientation selectedReefOrientation = null;
-    private static ReefTargetSide selectedPoleSide = null;
-    private static ElevatorStates selectedLevel = null;
+    private static ReefTargetOrientation selectedReefOrientation = ReefTargetOrientation.AB;
+    private static ReefTargetSide selectedPoleSide = ReefTargetSide.RIGHT;
+    private static ElevatorStates selectedLevel = ElevatorStates.LEVEL1;
     private PhotonTrackedTarget bestTarget = new PhotonTrackedTarget();
     private Transform3d transformCameraToRobot;
 
@@ -148,7 +148,7 @@ public class AlignVision extends SubsystemBase {
         } else {
             // Change when back camera is added
             transformCameraToRobot = VisionConstants.transformFrontRightToRobot;
-            return rightCamResult;
+            return null;
         }
     }
 
@@ -178,6 +178,10 @@ public class AlignVision extends SubsystemBase {
     public ChassisSpeeds getAlignChassisSpeeds(AlignState state) {
         turnAngle = handleTurnAngle(state);
         finalResult = getBestResult(state);
+
+        if (finalResult == null) {
+            return new ChassisSpeeds(0, 0, 0);
+        }
 
         // this.cameraXPIDController.setP(SmartDashboard.getNumber("AlignVision/PIDS/CameraXPID",
         // this.cameraXPIDController.getP()));
@@ -253,9 +257,6 @@ public class AlignVision extends SubsystemBase {
                 } else {
                     targetDistance = 0;
                 }
-
-                SmartDashboard.putNumber("AlignVision/RefPoseY", refPosition.getY());
-                SmartDashboard.putNumber("AlignVision/RefPoseX", refPosition.getX());
 
                 ySpeed = cameraYPIDController.calculate(-refPosition.getY(), targetDistance);
                 yInTolerance = MathUtil.isNear(-refPosition.getY(), targetDistance, 0.03);

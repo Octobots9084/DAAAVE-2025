@@ -155,10 +155,6 @@ public class Robot extends LoggedRobot {
         }
 
         Swerve.getInstance().setDriveState(DriveState.Manual);
-        AlignVision.setReefOrientation(ReefTargetOrientation.EF);
-        AlignVision.setPoleLevel(ElevatorStates.LEVEL1);
-        AlignVision.setPoleSide(ReefTargetSide.RIGHT);
-
     }
 
     /** This function is called periodically during operator control. */
