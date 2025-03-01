@@ -67,7 +67,12 @@ public class AlignVision extends SubsystemBase {
     private PhotonTrackedTarget bestTarget = new PhotonTrackedTarget();
     private Transform3d transformCameraToRobot;
 
-    private int[] blueReefAngles = { 0, 60, 120, 180, -120, -60 };
+    /*
+     * The first six are for the reef, the seventh is for the processor, the eighth
+     * is for the right source, and the ninth is for the left source.
+     */
+    private final int[] blueAlignAngles = { 0, 60, 120, 180, -120, -60, -90, 45, -45 };
+    private final int[] redAlignAngles = { 180, 240, 300, 0, 60, 120, 90, -135, 135 };
 
     boolean xInTolerance = false;
     boolean yInTolerance = false;
@@ -298,39 +303,38 @@ public class AlignVision extends SubsystemBase {
     public int handleTurnAngle(AlignState state) {
         // SmartDashboard.putString("AlignVision/State", state.toString());
         // Different orientations of the reef (Degrees)
+
+        int[] finalAngles = Constants.isBlueAlliance ? blueAlignAngles : redAlignAngles;
+
         if (state == AlignState.Reef) {
             switch (selectedReefOrientation) {
                 case AB:
                     finalTagID = Constants.isBlueAlliance ? 18 : 7;
-                    return 0;
+                    return finalAngles[0];
                 case CD:
                     finalTagID = Constants.isBlueAlliance ? 17 : 8;
-                    return 60;
+                    return finalAngles[1];
                 case EF:
                     finalTagID = Constants.isBlueAlliance ? 22 : 9;
-                    return 120;
+                    return finalAngles[2];
                 case GH:
                     finalTagID = Constants.isBlueAlliance ? 21 : 10;
-                    return 180;
+                    return finalAngles[3];
                 case IJ:
                     finalTagID = Constants.isBlueAlliance ? 20 : 11;
-                    return -120;
+                    return finalAngles[4];
                 case KL:
                     finalTagID = Constants.isBlueAlliance ? 19 : 6;
-                    return -60;
+                    return finalAngles[5];
                 default:
                     return Integer.MAX_VALUE;
             }
         } else if (state == AlignState.Processor) {
-            return -90;
-        } else if (state == AlignState.SourceRight && Constants.isBlueAlliance) { 
-            return 45;
-        } else if (state == AlignState.SourceLeft && Constants.isBlueAlliance) {
-            return -45;
-        } else if (state == AlignState.SourceRight && !Constants.isBlueAlliance) {
-            return -135;
-        } else if (state == AlignState.SourceLeft && !Constants.isBlueAlliance) {
-            return 135;
+            return finalAngles[6];
+        } else if (state == AlignState.SourceRight) {
+            return finalAngles[7];
+        } else if (state == AlignState.SourceLeft) {
+            return finalAngles[8];
         } else {
             return Integer.MAX_VALUE;
         }
