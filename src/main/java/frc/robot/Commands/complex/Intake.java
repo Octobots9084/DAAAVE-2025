@@ -29,7 +29,7 @@ public class Intake extends SequentialCommandGroup {
                             return Elevator.getInstance().getPosition() > Elevator.BOT_CROSSBAR_POS;
                         }),
                 new SetElevatorStateTolerance(ElevatorStates.INTAKE, 1.5),
-                new SetWristStateTolerance(WristStates.INTAKE, 0.05, ClosedLoopSlot.kSlot0),
+                new SetWristStateTolerance(WristStates.INTAKE, 0.05, ClosedLoopSlot.kSlot0).withTimeout(5),//TODO(SetWristStateTolerance) timeout
                 new InstantCommand(() -> {
                     CoralRollers.getInstance().setState(CoralRollersState.INTAKING);
                 }),
