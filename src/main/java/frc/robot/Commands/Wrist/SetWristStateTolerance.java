@@ -2,10 +2,14 @@ package frc.robot.Commands.Wrist;
 
 import com.revrobotics.spark.ClosedLoopSlot;
 
+import edu.wpi.first.wpilibj.RuntimeType;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.Subsystems.CoralRollers.CoralRollers;
 import frc.robot.Subsystems.Elevator.ElevatorStates;
 import frc.robot.Subsystems.Wrist.Wrist;
 import frc.robot.Subsystems.Wrist.WristStates;
+import frc.robot.Subsystems.Vision.AlignVision;
 
 public class SetWristStateTolerance extends Command {
   private WristStates targetState;
@@ -32,9 +36,18 @@ public class SetWristStateTolerance extends Command {
       wrist.setState(targetElevatorState, slot);
 
     } else {
-      wrist.setState(targetState, slot);
-
+        if (targetState != WristStates.INTAKE) {
+            wrist.setState(targetState, slot);
+        }
     }
+  }
+
+  public void execute () {
+    // Only let the wrist come back when we clear the reef
+    if(AlignVision.getInstance().areBothLidarsValid() && targetState == WristStates.INTAKE) {
+        wrist.setState(targetState, slot);
+    }
+
   }
 
   @Override
