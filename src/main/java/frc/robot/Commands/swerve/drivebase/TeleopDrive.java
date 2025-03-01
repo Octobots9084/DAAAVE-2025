@@ -16,65 +16,65 @@ import frc.robot.util.MathUtil;
 
 /** An example command that uses an example subsystem. */
 public class TeleopDrive extends Command {
-  private final DoubleSupplier vX;
-  private final DoubleSupplier vY;
-  private final DoubleSupplier omega;
-  private static Swerve swerveInstance = Swerve.getInstance();
-  private static AlignVision alignInstance = AlignVision.getInstance();
+    private final DoubleSupplier vX;
+    private final DoubleSupplier vY;
+    private final DoubleSupplier omega;
+    private static Swerve swerveInstance = Swerve.getInstance();
+    private static AlignVision alignInstance = AlignVision.getInstance();
 
-  /**
-   * Creates a new ExampleCommand.
-   *
-   * @param swerve The subsystem used by this command.
-   */
-  public TeleopDrive(DoubleSupplier vX, DoubleSupplier vY, DoubleSupplier omega) {
-    this.vX = vX;
-    this.vY = vY;
-    this.omega = omega;
-    this.addRequirements(Swerve.getInstance());
-  }
-
-  // Called when the command is initially scheduled.
-  @Override
-  public void initialize() {
-    SmartDashboard.putString("Command", "command");
-  }
-
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {
-    // TODO 𓃕
-    switch (swerveInstance.getDriveState()) {
-      case Manual:
-        SmartDashboard.putString("the code works!!", "nope sorry");
-        double[] speeds = MathUtil.circleVectorFromSquare(vX.getAsDouble(), vY.getAsDouble(), swerveInstance.getIo().getMaxSpeed()); 
-        Swerve.getInstance()
-            .driveFieldRelative(
-                new ChassisSpeeds(
-                    speeds[0],
-                    speeds[1],
-                    omega.getAsDouble() * swerveInstance.getIo().getMaxTurnSpeed()));
-        break;
-      case Reverse:
-        SmartDashboard.putString("Reverse", "Reverse");
-        swerveInstance.driveRobotRelative(new ChassisSpeeds(-1,0,omega.getAsDouble() * swerveInstance.getIo().getMaxTurnSpeed()));
-        break;
-      case AlignReef:
-        SmartDashboard.putString("AlignReef", "AllignReef");
-        swerveInstance.driveRobotRelative(alignInstance.getAlignChassisSpeeds(AlignState.Reef));
-      case AlignProcessor:
-        break;
-      case AlignSource:
-        break;
-      default:
-        SmartDashboard.putString("the code works!!", "nope sorry");
-        Swerve.getInstance()
-            .driveFieldRelative(
-                new ChassisSpeeds(
-                    vX.getAsDouble() * swerveInstance.getIo().getMaxSpeed(),
-                    vY.getAsDouble() * swerveInstance.getIo().getMaxSpeed(),
-                    omega.getAsDouble() * swerveInstance.getIo().getMaxTurnSpeed()));
-        break;
+    /**
+     * Creates a new ExampleCommand.
+     *
+     * @param swerve The subsystem used by this command.
+     */
+    public TeleopDrive(DoubleSupplier vX, DoubleSupplier vY, DoubleSupplier omega) {
+        this.vX = vX;
+        this.vY = vY;
+        this.omega = omega;
+        this.addRequirements(Swerve.getInstance());
     }
-  }
+
+    // Called when the command is initially scheduled.
+    @Override
+    public void initialize() {
+        SmartDashboard.putString("Command", "command");
+    }
+
+    // Called every time the scheduler runs while the command is scheduled.
+    @Override
+    public void execute() {
+        // TODO 𓃕
+        switch (swerveInstance.getDriveState()) {
+            case Manual:
+                SmartDashboard.putString("the code works!!", "nope sorry");
+                double[] speeds = MathUtil.circleVectorFromSquare(vX.getAsDouble(), vY.getAsDouble(), swerveInstance.getIo().getMaxSpeed());
+                Swerve.getInstance()
+                        .driveFieldRelative(
+                                new ChassisSpeeds(
+                                        speeds[0],
+                                        speeds[1],
+                                        omega.getAsDouble() * swerveInstance.getIo().getMaxTurnSpeed()));
+                break;
+            case Reverse:
+                SmartDashboard.putString("Reverse", "Reverse");
+                swerveInstance.driveRobotRelative(new ChassisSpeeds(-1, 0, omega.getAsDouble() * swerveInstance.getIo().getMaxTurnSpeed()));
+                break;
+            case AlignReef:
+                SmartDashboard.putString("AlignReef", "AllignReef");
+                swerveInstance.driveRobotRelative(alignInstance.getAlignChassisSpeeds(AlignState.Reef));
+            case AlignProcessor:
+                break;
+            case AlignSource:
+                break;
+            default:
+                SmartDashboard.putString("the code works!!", "nope sorry");
+                Swerve.getInstance()
+                        .driveFieldRelative(
+                                new ChassisSpeeds(
+                                        vX.getAsDouble() * swerveInstance.getIo().getMaxSpeed(),
+                                        vY.getAsDouble() * swerveInstance.getIo().getMaxSpeed(),
+                                        omega.getAsDouble() * swerveInstance.getIo().getMaxTurnSpeed()));
+                break;
+        }
+    }
 }

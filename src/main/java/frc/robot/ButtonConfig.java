@@ -55,12 +55,6 @@ public class ButtonConfig {
     static CommandJoystick coDriverButtons = ControlMap.CO_DRIVER_BUTTONS;
 
     public void initTeleop() {
-        AlignVision.setPoleLevel(ElevatorStates.LEVEL1);
-        AlignVision.setPoleSide(ReefTargetSide.RIGHT);
-        AlignVision.setReefOrientation(ReefTargetOrientation.GH);
-        // SmartDashboard.putString("Orientation", ReefTargetOrientation.GH.name());
-        // SmartDashboard.putString("Side", ReefTargetSide.RIGHT.name());
-
         driverButtons.button(6).onTrue(new InstantCommand(() -> {
             Swerve.getInstance().zeroGyro();
         }));
@@ -96,11 +90,11 @@ public class ButtonConfig {
 
         // TODO change button to actual button for dropping the chute
         driverButtons.button(17).onTrue(new LetTheChuteBeFree());
-        driverButtons.button(8).onTrue(new InstantCommand(()->{
+        driverButtons.button(8).onTrue(new InstantCommand(() -> {
             CoralRollers.getInstance().setState(CoralRollersState.LEVEL1);
         }));
 
-        driverButtons.button(9).onTrue(new InstantCommand(()->{
+        driverButtons.button(9).onTrue(new InstantCommand(() -> {
             CoralRollers.getInstance().setState(CoralRollersState.OUTPUT);
         }));
         coDriverButtons.button(11).onTrue(new ClearAlgae());
