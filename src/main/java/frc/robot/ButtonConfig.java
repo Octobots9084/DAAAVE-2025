@@ -20,6 +20,7 @@ import frc.robot.Commands.complex.ClearAlgae;
 import frc.robot.Commands.complex.Intake;
 import frc.robot.Commands.complex.PlaceCoral;
 import frc.robot.Commands.complex.PrepReefPlacement;
+import frc.robot.Commands.complex.RobotStop;
 import frc.robot.Commands.complex.ScoreCoral;
 import frc.robot.Commands.complex.LetTheChuteBeFree;
 import frc.robot.Commands.complex.collectCoral.WaitForCoralDetected;
@@ -99,5 +100,7 @@ public class ButtonConfig {
         }));
         coDriverButtons.button(11).onTrue(new ClearAlgae());
         coDriverButtons.button(11).onFalse(new AlgaeInterupted());
+        driverButtons.button(8).onTrue(new RobotStop());
+        driverButtons.button(3).whileTrue(new ScoreCoral());
     }
 }
