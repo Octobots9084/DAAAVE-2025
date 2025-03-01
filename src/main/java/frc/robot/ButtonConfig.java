@@ -20,6 +20,7 @@ import frc.robot.Commands.complex.CancelAllCommands;
 import frc.robot.Commands.complex.Intake;
 import frc.robot.Commands.complex.PlaceCoral;
 import frc.robot.Commands.complex.PrepReefPlacement;
+import frc.robot.Commands.complex.RobotStop;
 import frc.robot.Commands.complex.ScoreCoral;
 import frc.robot.Commands.complex.LetTheChuteBeFree;
 import frc.robot.Commands.complex.collectCoral.WaitForCoralDetected;
@@ -55,12 +56,6 @@ public class ButtonConfig {
     static CommandJoystick coDriverButtons = ControlMap.CO_DRIVER_BUTTONS;
 
     public void initTeleop() {
-        AlignVision.setPoleLevel(ElevatorStates.LEVEL1);
-        AlignVision.setPoleSide(ReefTargetSide.RIGHT);
-        AlignVision.setReefOrientation(ReefTargetOrientation.GH);
-        // SmartDashboard.putString("Orientation", ReefTargetOrientation.GH.name());
-        // SmartDashboard.putString("Side", ReefTargetSide.RIGHT.name());
-
         driverButtons.button(6).onTrue(new InstantCommand(() -> {
             Swerve.getInstance().zeroGyro();
         }));
@@ -96,11 +91,11 @@ public class ButtonConfig {
 
         // TODO change button to actual button for dropping the chute
         driverButtons.button(17).onTrue(new LetTheChuteBeFree());
-        driverButtons.button(8).onTrue(new InstantCommand(()->{
+        driverButtons.button(8).onTrue(new InstantCommand(() -> {
             CoralRollers.getInstance().setState(CoralRollersState.LEVEL1);
         }));
 
-        driverButtons.button(9).onTrue(new InstantCommand(()->{
+        driverButtons.button(9).onTrue(new InstantCommand(() -> {
             CoralRollers.getInstance().setState(CoralRollersState.OUTPUT);
         }));
 
@@ -110,5 +105,7 @@ public class ButtonConfig {
 
         // coDriverButtons.button(11).onTrue(new ClearAlgae());
         // coDriverButtons.button(11).onFalse(new AlgaeInterupted());
+        driverButtons.button(8).onTrue(new RobotStop());
+        driverButtons.button(3).whileTrue(new ScoreCoral());
     }
 }

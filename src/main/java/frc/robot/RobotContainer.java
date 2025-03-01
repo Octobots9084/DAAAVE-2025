@@ -37,6 +37,7 @@ import frc.robot.Subsystems.Elevator.ElevatorIOSparkMax;
 import frc.robot.Subsystems.Swerve.Swerve;
 import frc.robot.Subsystems.Swerve.SwerveIO;
 import frc.robot.Subsystems.Swerve.SwerveIOSystem;
+import frc.robot.Subsystems.Vision.AlignVision;
 import frc.robot.Subsystems.Vision.VisionIOSim;
 import frc.robot.Subsystems.Vision.VisionIOSystem;
 import frc.robot.Subsystems.Vision.VisionSubsystem;
@@ -68,6 +69,7 @@ public class RobotContainer {
     private Wrist wrist;
     private Swerve swerve;
     private VisionSubsystem vision;
+    private AlignVision alignVision;
     private Climb climb;
 
     private AlgaeRollersManual algaeRollersManual;
@@ -108,6 +110,8 @@ public class RobotContainer {
 
                 VisionSubsystem.setInstance(new VisionIOSystem());
                 vision = VisionSubsystem.getInstance();
+
+                alignVision = AlignVision.getInstance();
 
                 Climb.setInstance(new ClimbIOSystems());
                 climb = Climb.getInstance();
