@@ -101,5 +101,6 @@ public class ButtonConfig {
         coDriverButtons.button(11).onTrue(new ClearAlgae());
         coDriverButtons.button(11).onFalse(new AlgaeInterupted());
         driverButtons.button(8).onTrue(new RobotStop());
+        driverButtons.button(3).whileTrue(new ScoreCoral());
     }
 }
