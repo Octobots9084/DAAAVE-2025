@@ -67,6 +67,8 @@ public class AlignVision extends SubsystemBase {
     private PhotonTrackedTarget bestTarget = new PhotonTrackedTarget();
     private Transform3d transformCameraToRobot;
 
+    private int[] blueReefAngles = { 0, 60, 120, 180, -120, -60 };
+
     boolean xInTolerance = false;
     boolean yInTolerance = false;
     boolean rotInTolerance = false;
