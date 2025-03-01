@@ -44,7 +44,7 @@ public class SetWristStateTolerance extends Command {
 
   public void execute () {
     // Only let the wrist come back when we clear the reef
-    if(AlignVision.getInstance().areBothLidarsValid() && targetState == WristStates.INTAKE) {
+    if((AlignVision.getInstance().getLeftLidarDistance() > 0.4 || AlignVision.getInstance().getRightLidarDistance() > 0.4) && targetState == WristStates.INTAKE) {
         wrist.setState(targetState, slot);
     }
 

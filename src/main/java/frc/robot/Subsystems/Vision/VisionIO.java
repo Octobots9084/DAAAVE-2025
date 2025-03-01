@@ -28,6 +28,9 @@ public interface VisionIO {
         public PhotonPipelineResult middleLeftResult = null;
         public PhotonPipelineResult middleRightResult = null;
         public PhotonPipelineResult backMiddleResult = null;
+
+        public double leftLidarDistance;
+        public double rightLidarDistance;
     }
 
     public default void updateInputs(VisionIOInputs inputs) {}

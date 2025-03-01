@@ -59,6 +59,9 @@ public class VisionIOSystem implements VisionIO {
         inputs.frontRightResult = frontRightCamera.grabLatestResult();
         inputs.middleLeftResult = middleLeftCamera.grabLatestResult();
         inputs.middleRightResult = middleRightCamera.grabLatestResult();
+
+        inputs.leftLidarDistance = AlignVision.getInstance().getLeftLidarDistance();
+        inputs.rightLidarDistance = AlignVision.getInstance().getRightLidarDistance();
     }
 
     public void updatePose() {

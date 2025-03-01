@@ -70,9 +70,9 @@ public class ButtonConfig {
         coDriverButtons.button(14).onTrue(new ReefLevelSelection(2));
         coDriverButtons.button(16).onTrue(new ReefLevelSelection(1));
 
-        coDriverButtons.button(7).onTrue(new SetClimbState(ClimbStates.Stored));
-        coDriverButtons.button(8).onTrue(new SetClimbState(ClimbStates.Deployed));
-        coDriverButtons.button(9).whileTrue(new ZeroClimb());
+        // coDriverButtons.button(7).onTrue(new SetClimbState(ClimbStates.Stored));
+        // coDriverButtons.button(8).onTrue(new SetClimbState(ClimbStates.Deployed));
+        // coDriverButtons.button(9).whileTrue(new ZeroClimb());
 
         // reef align
         driverButtons.button(1).whileTrue(new InstantCommand(() -> {
@@ -85,7 +85,8 @@ public class ButtonConfig {
                 .onTrue(new PlaceCoral());
         driverButtons.button(4)
                 .onTrue(new PrepReefPlacement());
-        driverButtons.button(5).onTrue(new Intake());
+        driverButtons.button(5).onTrue(new Intake().onlyIf(
+            () -> {return !CoralRollers.getInstance().HasCoral();} ));
         driverButtons.button(7).whileTrue(new AlignCollect());
         driverButtons.button(10).onTrue(new CancelAllCommands());
 
@@ -101,6 +102,11 @@ public class ButtonConfig {
         coDriverButtons.button(11).onTrue(new ClearAlgae());
         coDriverButtons.button(11).onFalse(new AlgaeInterupted());
         driverButtons.button(8).onTrue(new RobotStop());
-        driverButtons.button(3).whileTrue(new ScoreCoral());
+
+        driverRight.button(1).whileTrue(new ScoreCoral().onlyIf(
+            () -> {return CoralRollers.getInstance().HasCoral();} ));
+        driverRight.button(2).onTrue(new Intake().onlyIf(
+            () -> {return !CoralRollers.getInstance().HasCoral();} ));
+
     }
 }
