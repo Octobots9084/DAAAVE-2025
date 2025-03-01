@@ -16,7 +16,7 @@ import frc.robot.Commands.AlgaeRollers.SetAlgaeRollersState;
 import frc.robot.Commands.Climb.SetClimbState;
 import frc.robot.Commands.Climb.ZeroClimb;
 import frc.robot.Commands.complex.CancelAllCommands;
-import frc.robot.Commands.complex.ClearAlgae;
+// import frc.robot.Commands.complex.ClearAlgae;
 import frc.robot.Commands.complex.Intake;
 import frc.robot.Commands.complex.PlaceCoral;
 import frc.robot.Commands.complex.PrepReefPlacement;
@@ -26,7 +26,7 @@ import frc.robot.Commands.complex.LetTheChuteBeFree;
 import frc.robot.Commands.complex.collectCoral.WaitForCoralDetected;
 import frc.robot.Commands.Elevator.SetElevatorState;
 import frc.robot.Commands.Elevator.SetElevatorStateTolerance;
-import frc.robot.Commands.ManualControl.AlgaeInterupted;
+// import frc.robot.Commands.ManualControl.AlgaeInterupted;
 import frc.robot.Commands.ManualControl.WristManualControl;
 import frc.robot.Commands.CoralRollers.LoadCoral;
 import frc.robot.Commands.CoralRollers.OutputCoral;
@@ -99,8 +99,13 @@ public class ButtonConfig {
         driverButtons.button(9).onTrue(new InstantCommand(() -> {
             CoralRollers.getInstance().setState(CoralRollersState.OUTPUT);
         }));
-        coDriverButtons.button(11).onTrue(new ClearAlgae());
-        coDriverButtons.button(11).onFalse(new AlgaeInterupted());
+
+        driverButtons.button(3).onTrue(new AlignCollect());
+
+
+
+        // coDriverButtons.button(11).onTrue(new ClearAlgae());
+        // coDriverButtons.button(11).onFalse(new AlgaeInterupted());
         driverButtons.button(8).onTrue(new RobotStop());
 
         driverRight.button(1).whileTrue(new ScoreCoral().onlyIf(

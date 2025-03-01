@@ -78,6 +78,9 @@ public class SwerveIOSystem implements SwerveIO {
 
     public void zeroGyro() {
         swerveDrive.zeroGyro();
+        if (!Constants.isBlueAlliance) {
+            swerveDrive.resetOdometry(new Pose2d(getPose().getTranslation(), new Rotation2d(Math.toRadians(180))));
+        }
     }
 
     public double getGyro() {
