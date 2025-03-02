@@ -19,6 +19,7 @@ import frc.robot.Commands.complex.AlignSource;
 import frc.robot.Commands.complex.CancelAllCommands;
 import frc.robot.Commands.complex.ClearAlgae;
 import frc.robot.Commands.complex.EjectCoral;
+import frc.robot.Commands.complex.Elephantiasis;
 // import frc.robot.Commands.complex.ClearAlgae;
 import frc.robot.Commands.complex.Intake;
 import frc.robot.Commands.complex.PrepReefPlacement;
@@ -66,7 +67,15 @@ public class ButtonConfig {
                 () -> {
                     return CoralRollers.getInstance().HasCoral();
                 }));
-        driverRight.button(2).onTrue(new AlignSource().onlyIf(
+        driverRight.button(2).onTrue(new Intake().onlyIf(
+                () -> {
+                    return !CoralRollers.getInstance().HasCoral();
+                }));
+        driverLeft.button(1).whileTrue(new ScoreCoral().onlyIf(
+                () -> {
+                    return CoralRollers.getInstance().HasCoral();
+                }));
+        driverLeft.button(2).onTrue(new Intake().onlyIf(
                 () -> {
                     return !CoralRollers.getInstance().HasCoral();
                 }));
@@ -133,5 +142,6 @@ public class ButtonConfig {
         driverButtons.button(11).whileTrue(new ClearAlgae());
         driverButtons.button(13).whileTrue(new ReverseRollersWileTrue());
 
+        driverButtons.button(15).onTrue(new Elephantiasis());
     }
 }

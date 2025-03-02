@@ -19,7 +19,11 @@ public class Wrist extends SubsystemBase {
   public final double MaxAngle = 0.668;
   public final double MinAngle = 0;
   public final double UnderCrossbarAngle = 0.261;
+  double horizonAngle = 0.75;
 
+    public double getHorizonAngle() {
+        return horizonAngle;
+    }
   public static Wrist getInstance() {
     if (instance == null) {
       throw new IllegalStateException("Wrist instance not set");

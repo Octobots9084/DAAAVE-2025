@@ -27,23 +27,19 @@ import frc.robot.Subsystems.Wrist.WristStates;
 public class ClearAlgae extends SequentialCommandGroup {
     public ClearAlgae() {
         addCommands(
-            new ConditionalCommand(
-                new SetWristStateTolerance(WristStates.PREP,
-                0.05, ClosedLoopSlot.kSlot0),
-                new InstantCommand(),
-                () -> { return Elevator.getInstance().getPosition() <= Elevator.BOT_CROSSBAR_POS; }),
-            
+            new SetWristStateTolerance(WristStates.PREP, 0.05, ClosedLoopSlot.kSlot0),
             new SetDriveState(DriveState.AlignReef),
             
-                new ConditionalCommand(
-                    new SetElevatorStateTolerance(ElevatorStates.TOPALGAE, 1.5).withTimeout(5),
-                    new SetElevatorStateTolerance(ElevatorStates.BOTTOMALGAE, 1.5).withTimeout(5),
-                    () -> { 
-                        ReefTargetOrientation targetOrientation = Swerve.getInstance().getReefTargetOrientation();
-                        return (targetOrientation == ReefTargetOrientation.AB || targetOrientation == ReefTargetOrientation.EF || targetOrientation == ReefTargetOrientation.IJ); 
-                    }),
-                new SetWristStateTolerance(WristStates.ALAGEREMOVAL,
-                0.05, ClosedLoopSlot.kSlot0),
+            new ConditionalCommand(
+                new SetElevatorStateTolerance(ElevatorStates.TOPALGAE, 1.5).withTimeout(5),
+                new SetElevatorStateTolerance(ElevatorStates.BOTTOMALGAE, 1.5).withTimeout(5),
+                () -> { 
+                    ReefTargetOrientation targetOrientation = Swerve.getInstance().getReefTargetOrientation();
+                    return (targetOrientation == ReefTargetOrientation.AB || targetOrientation == ReefTargetOrientation.EF || targetOrientation == ReefTargetOrientation.IJ); 
+                }
+            ),
+
+            new SetWristStateTolerance(WristStates.ALGAEPOP, 0.05, ClosedLoopSlot.kSlot0),
                 
             new SetTargetReefSide(ReefTargetSide.ALGAE),
             new InstantCommand(() -> {
