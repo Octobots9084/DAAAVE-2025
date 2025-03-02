@@ -9,9 +9,11 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -86,10 +88,10 @@ public class AlignVision extends SubsystemBase {
         this.leftRange = new CANrange(13, "KrakensBus");
         this.rightRange = new CANrange(14, "KrakensBus");
 
-        this.cameraXPIDController = new PIDController(3, 0, 0);
-        this.cameraYPIDController = new PIDController(3, 0, 0);
-        this.lidarXPIDController = new PIDController(3, 0, 0);
-        this.lidarRotationPIDController = new PIDController(12, 0, 0);
+        this.cameraXPIDController = new PIDController(0.75, 0, 0);
+        this.cameraYPIDController = new PIDController(0.75, 0, 0);
+        this.lidarXPIDController = new PIDController(2, 0, 0);
+        this.lidarRotationPIDController = new PIDController(8, 0, 0);
         this.gyroRotationPIDController = new PIDController(0.4, 0, 0);
         this.gyroRotationPIDController.enableContinuousInput(0, 2 * Math.PI);
 
@@ -122,10 +124,8 @@ public class AlignVision extends SubsystemBase {
         PhotonPipelineResult rightCamResult = vision.inputs.frontRightResult;
         PhotonPipelineResult leftCamResult = vision.inputs.frontLeftResult;
 
-        Transform3d rightBestTarget = new Transform3d(Double.MAX_VALUE, Double.MAX_VALUE,
-                Double.MAX_VALUE, new Rotation3d());
-        Transform3d leftBestTarget = new Transform3d(Double.MAX_VALUE, Double.MAX_VALUE,
-                Double.MAX_VALUE, new Rotation3d());
+        Transform3d rightBestTarget = null;
+        Transform3d leftBestTarget = null;
 
         if (state == AlignState.Reef || state == AlignState.Processor) {
             if (rightCamResult != null && rightCamResult.hasTargets()
@@ -138,20 +138,24 @@ public class AlignVision extends SubsystemBase {
                 leftBestTarget = leftCamResult.getBestTarget().getBestCameraToTarget();
             }
 
-            if (rightBestTarget.getTranslation().getDistance(Translation3d.kZero) > leftBestTarget
-                    .getTranslation().getDistance(Translation3d.kZero)) {
-
+            if (rightBestTarget != null && leftBestTarget != null) {
+                if (rightBestTarget.getTranslation().getDistance(Translation3d.kZero) >= leftBestTarget.getTranslation().getDistance(Translation3d.kZero)) {
+                    transformCameraToRobot = VisionConstants.transformFrontLeftToRobot;
+                    return leftCamResult;
+                } else {
+                    transformCameraToRobot = VisionConstants.transformFrontRightToRobot;
+                    return rightCamResult;
+                }
+            } else if (leftBestTarget != null) {
                 transformCameraToRobot = VisionConstants.transformFrontLeftToRobot;
                 return leftCamResult;
-            } else if (rightBestTarget.getTranslation()
-                    .getDistance(Translation3d.kZero) < leftBestTarget.getTranslation()
-                            .getDistance(Translation3d.kZero)) {
+            } else if (rightBestTarget != null) {
                 transformCameraToRobot = VisionConstants.transformFrontRightToRobot;
                 return rightCamResult;
             } else {
-
                 return null;
             }
+
         } else {
             // Change when back camera is added
             transformCameraToRobot = VisionConstants.transformFrontRightToRobot;
@@ -186,9 +190,9 @@ public class AlignVision extends SubsystemBase {
         turnAngle = handleTurnAngle(state);
         finalResult = getBestResult(state);
 
-        if (finalResult == null) {
-            return new ChassisSpeeds(0, 0, 0);
-        }
+        // if (finalResult == null) {
+        //     return new ChassisSpeeds(0, 0, 0);
+        // }
 
         // this.cameraXPIDController.setP(SmartDashboard.getNumber("AlignVision/PIDS/CameraXPID",
         // this.cameraXPIDController.getP()));
@@ -229,18 +233,29 @@ public class AlignVision extends SubsystemBase {
                 ? calcOrientationOffset(selectedReefOrientation, selectedPoleSide, selectedLevel)
                 : 0;
 
-        if (finalResult != null) {
-            refPosition = this.getReferenceRobotPosition(finalResult, transformCameraToRobot);
-        } else {
+        SmartDashboard.putNumber("AlignVision/FinalTagID", finalTagID);
+        if (finalResult == null) {
             Pose3d fieldPosition = new Pose3d(swerve.getPose());
             Optional<Pose3d> tagPos = VisionConstants.kTagLayout.getTagPose(finalTagID);
+            SmartDashboard.putString("AlignVision/TagPose", tagPos.toString());
+
             if (tagPos.isPresent()) {
-                refPosition = fieldPosition.relativeTo(tagPos.get());
-                SmartDashboard.putString("GlobalRefPose", refPosition.toString());
+                Pose3d tagRelativeToField = fieldPosition.relativeTo(tagPos.get());
+                SmartDashboard.putNumber("AlignVision/TagRelFieldX", tagRelativeToField.getX());
+                SmartDashboard.putNumber("AlignVision/TagRelFieldY", tagRelativeToField.getY());
+                SmartDashboard.putNumber("AlignVision/TagRelFieldZ", tagRelativeToField.getRotation().getZ());
+
+                SmartDashboard.putBoolean("AlignVision/TagGreaterZero", tagRelativeToField.getX() > 0);
+                if (tagRelativeToField.getX() > 0) {
+                    refPosition = tagPos.get().relativeTo(fieldPosition);
+                } else {
+                    refPosition = new Pose3d();
+                }
             } else {
-                // TODO figure it aayush
                 refPosition = new Pose3d();
             }
+        } else {
+            refPosition = this.getReferenceRobotPosition(finalResult, transformCameraToRobot);
         }
         SmartDashboard.putString("AlignVision/Refpos", refPosition.toString());
         AlignOffset currentOffset = state == AlignState.Reef ? AlignOffset.values()[currentOffsetIndex] : null;
@@ -269,6 +284,10 @@ public class AlignVision extends SubsystemBase {
                 yInTolerance = MathUtil.isNear(-refPosition.getY(), targetDistance, 0.03);
                 xSpeed = this.calculateXSpeed(aveLidarDist, refPosition);
                 SmartDashboard.putNumber("AlignVision/TargetDist", targetDistance);
+
+                SmartDashboard.putBoolean("AlignVision/XTolerance", xInTolerance);
+                SmartDashboard.putBoolean("AlignVision/YTolerance", yInTolerance);
+                SmartDashboard.putBoolean("AlignVision/RotTolerance", rotInTolerance);
 
                 turnSpeed = this.calculateTurnSpeed(diffLidarDist, refPosition);
 

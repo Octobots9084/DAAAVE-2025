@@ -86,8 +86,10 @@ public class ButtonConfig {
         driverButtons.button(4)
                 .onTrue(new PrepReefPlacement());
         driverButtons.button(5).onTrue(new Intake().onlyIf(
-            () -> {return !CoralRollers.getInstance().HasCoral();} ));
-        driverButtons.button(7).whileTrue(new AlignCollect());
+                () -> {
+                    return !CoralRollers.getInstance().HasCoral();
+                }));
+        driverButtons.button(7).onTrue(new AlignCollect());
         driverButtons.button(10).onTrue(new CancelAllCommands());
 
         // TODO change button to actual button for dropping the chute
@@ -100,18 +102,18 @@ public class ButtonConfig {
             CoralRollers.getInstance().setState(CoralRollersState.OUTPUT);
         }));
 
-        driverButtons.button(3).onTrue(new AlignCollect());
-
-
-
         // coDriverButtons.button(11).onTrue(new ClearAlgae());
         // coDriverButtons.button(11).onFalse(new AlgaeInterupted());
         driverButtons.button(8).onTrue(new RobotStop());
 
         driverRight.button(1).whileTrue(new ScoreCoral().onlyIf(
-            () -> {return CoralRollers.getInstance().HasCoral();} ));
+                () -> {
+                    return CoralRollers.getInstance().HasCoral();
+                }));
         driverRight.button(2).onTrue(new Intake().onlyIf(
-            () -> {return !CoralRollers.getInstance().HasCoral();} ));
+                () -> {
+                    return !CoralRollers.getInstance().HasCoral();
+                }));
 
     }
 }

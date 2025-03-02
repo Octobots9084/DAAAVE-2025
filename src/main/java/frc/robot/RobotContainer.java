@@ -165,15 +165,15 @@ public class RobotContainer {
                 break;
         }
 
-        int negative = Constants.isBlueAlliance ? 1 : -1;
+        int negative = Constants.isBlueAlliance ? -1 : 1;
 
         TeleopDrive closedFieldRel = new TeleopDrive(
                 () -> MathUtil.applyDeadband(
-                        negative * ButtonConfig.driverLeft.getRawAxis(1), OperatorConstants.LEFT_Y_DEADBAND)/2.,
+                        negative * ButtonConfig.driverLeft.getRawAxis(1), OperatorConstants.LEFT_Y_DEADBAND) / 2.,
                 () -> MathUtil.applyDeadband(
-                        negative * ButtonConfig.driverLeft.getRawAxis(0), OperatorConstants.LEFT_X_DEADBAND)/2.,
+                        negative * ButtonConfig.driverLeft.getRawAxis(0), OperatorConstants.LEFT_X_DEADBAND) / 2.,
                 () -> MathUtil.applyDeadband(
-                        -ButtonConfig.driverRight.getRawAxis(0), OperatorConstants.RIGHT_X_DEADBAND)/2.);
+                        -ButtonConfig.driverRight.getRawAxis(0), OperatorConstants.RIGHT_X_DEADBAND) / 2.);
         swerve.setDefaultCommand(closedFieldRel);
 
         autoChooser = AutoBuilder.buildAutoChooser(); // Default auto will be `Commands.none()`
