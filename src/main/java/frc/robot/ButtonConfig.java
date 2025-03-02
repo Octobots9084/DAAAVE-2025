@@ -57,16 +57,21 @@ public class ButtonConfig {
     static CommandJoystick coDriverButtons = ControlMap.CO_DRIVER_BUTTONS;
 
     public void initTeleop() {
+        // Score and Intake assistance buttons
         driverRight.button(1).whileTrue(new ScoreCoral().onlyIf(
             () -> {return CoralRollers.getInstance().HasCoral();} ));
         driverRight.button(2).onTrue(new Intake().onlyIf(
             () -> {return !CoralRollers.getInstance().HasCoral();} ));
 
+        // Zero gyro button
         driverButtons.button(6).onTrue(new InstantCommand(() -> {
             Swerve.getInstance().zeroGyro();
         }));
 
-        // level selection
+        // Return robot to a safe configuration
+        coDriverButtons.button(8).onTrue(new RobotStop());
+        coDriverButtons.button(9).onTrue(new CancelAllCommands());
+        // Reef levl selection
         coDriverButtons.button(10).onTrue(new ReefLevelSelection(4));
         coDriverButtons.button(11).onTrue(new ReefLevelSelection(4));
         coDriverButtons.button(12).onTrue(new ReefLevelSelection(3));
@@ -88,18 +93,13 @@ public class ButtonConfig {
             Swerve.getInstance().setDriveState(DriveState.Manual);
         }));
 
-        driverButtons.button(2)
-                .onTrue(new EjectCoral());
-        driverButtons.button(4)
-                .onTrue(new PrepReefPlacement());
-        driverButtons.button(7).whileTrue(new AlignCollect());
-        driverButtons.button(10).onTrue(new CancelAllCommands());
-
+        driverButtons.button(2).onTrue(new EjectCoral());
         driverButtons.button(3).onTrue(new AlignCollect());
+        driverButtons.button(4).onTrue(new PrepReefPlacement());
+        driverButtons.button(8).onTrue(new RobotStop());
+        driverButtons.button(9).onTrue(new CancelAllCommands());
 
         // coDriverButtons.button(11).onTrue(new ClearAlgae());
         // coDriverButtons.button(11).onFalse(new AlgaeInterupted());
-        driverButtons.button(9).onTrue(new RobotStop());
-        coDriverButtons.button(9).onTrue(new RobotStop());
     }
 }
