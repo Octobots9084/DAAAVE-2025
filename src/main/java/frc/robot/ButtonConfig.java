@@ -78,11 +78,18 @@ public class ButtonConfig {
         coDriverRight.button(1).onTrue(new SetOrientation(0));
         coDriverRight.button(2).onTrue(new SetOrientation(1));
 
+        coDriverButtons.button(2).onTrue(new EjectCoral());
+        coDriverButtons.button(6).onTrue(new PrepReefPlacement());
+
         // Return robot to a safe configuration
         coDriverButtons.button(8).onTrue(new RobotSafeState());
         coDriverButtons.button(9).onTrue(new RobotStop());
 
         coDriverButtons.button(4).onTrue(new SetWristStateTolerance(WristStates.PREP, 0.01, ClosedLoopSlot.kSlot0));
+        coDriverButtons.button(5).onTrue(new Intake().onlyIf(
+        () -> {
+            return !CoralRollers.getInstance().HasCoral();
+        }));
         // Reef levl selection
         coDriverButtons.button(10).onTrue(new ReefLevelSelection(4));
         coDriverButtons.button(11).onTrue(new ReefLevelSelection(4));
@@ -94,10 +101,12 @@ public class ButtonConfig {
         coDriverButtons.button(17).onTrue(new ReefLevelSelection(1));
 
         // TODO Uncomment when climb system is ready
-        // driverButtons.button(17).onTrue(new LetTheChuteBeFree());
-        // coDriverButtons.button(7).onTrue(new SetClimbState(ClimbStates.Stored));
-        // coDriverButtons.button(8).onTrue(new SetClimbState(ClimbStates.Deployed));
-        // coDriverButtons.button(9).whileTrue(new ZeroClimb());
+        coDriverButtons.button(20).onTrue(new LetTheChuteBeFree());
+        coDriverButtons.button(14).and(coDriverButtons.button(20)).whileTrue(new SetClimbState(ClimbStates.Stored));
+        coDriverButtons.button(16).and(coDriverButtons.button(20)).whileTrue(new SetClimbState(ClimbStates.Deployed));
+        coDriverButtons.button(14).and(coDriverButtons.button(20)).onFalse(new SetClimbState(ClimbStates.Climbing));
+        coDriverButtons.button(16).and(coDriverButtons.button(20)).onFalse(new SetClimbState(ClimbStates.Climbing));
+        coDriverButtons.button(17).and(coDriverButtons.button(20)).whileTrue(new ZeroClimb());
 
         // reef align
         driverButtons.button(1).whileTrue(new AlignReef());
@@ -108,6 +117,11 @@ public class ButtonConfig {
         driverButtons.button(2).onTrue(new EjectCoral());
         driverButtons.button(3).onTrue(new AlignCollect());
         driverButtons.button(4).onTrue(new SetWristStateTolerance(WristStates.PREP, 0.01, ClosedLoopSlot.kSlot0));
+        driverButtons.button(5).onTrue(new Intake().onlyIf(
+        () -> {
+            return !CoralRollers.getInstance().HasCoral();
+        }));
+        
         driverButtons.button(8).onTrue(new RobotSafeState());
         driverButtons.button(9).onTrue(new RobotStop());
 

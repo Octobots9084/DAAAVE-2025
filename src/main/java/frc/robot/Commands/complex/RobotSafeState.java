@@ -28,8 +28,8 @@ public class RobotSafeState extends InstantCommand {
 
     @Override
     public void initialize() {
-        elevator.setState(ElevatorStates.MANUAL);
-        wrist.setState(WristStates.MANUAL, ClosedLoopSlot.kSlot0);
+        elevator.setState(ElevatorStates.LEVEL1);
+        wrist.setState(WristStates.PREP, ClosedLoopSlot.kSlot0);
         coralRollers.setState(CoralRollersState.STOPPED);
         swerve.setDriveState(DriveState.Manual);
 
