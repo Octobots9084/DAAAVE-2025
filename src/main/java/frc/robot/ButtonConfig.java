@@ -72,6 +72,10 @@ public class ButtonConfig {
             Swerve.getInstance().zeroGyro();
         }));
 
+        // Reef selection
+        coDriverRight.button(1).onTrue(new SetOrientation(0));
+        coDriverRight.button(2).onTrue(new SetOrientation(1));
+
         // Return robot to a safe configuration
         coDriverButtons.button(8).onTrue(new RobotStop());
         coDriverButtons.button(9).onTrue(new CancelAllCommands());
