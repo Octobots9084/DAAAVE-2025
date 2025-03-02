@@ -51,14 +51,14 @@ public class RangeAlignSource extends SubsystemBase {
     }
 
     public ChassisSpeeds getAlignChassisSpeeds() {
-        double turnAngle = gyroRotationPIDController.calculate(Swerve.getInstance().getPose().getRotation().getRadians(), Math.toRadians(AlignVision.getInstance().handleTurnAngle(AlignState.SourceRight)));
+        double turnAngle = gyroRotationPIDController.calculate(Swerve.getInstance().getPose().getRotation().getRadians(),
+                Math.toRadians(AlignVision.getInstance().handleTurnAngle(AlignState.SourceRight)));
         rotInTolerance = MathUtil.isNear(Swerve.getInstance().getPose().getRotation().getRadians(), Math.toRadians(turnAngle), 0.05);
 
         if (rotInTolerance) {
             turnAngle = 0;
         }
 
-        // return new ChassisSpeeds(backRangePID.calculate(this.getBackRange(), 0.46), 0, turnAngle);
-        return new ChassisSpeeds(0, 0, turnAngle);
+        return new ChassisSpeeds(backRangePID.calculate(this.getBackRange(), 0.46), 0, turnAngle);
     }
 }
