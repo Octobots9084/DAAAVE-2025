@@ -27,9 +27,9 @@ public class WristIOSparkMax implements WristIO {
         config = new SparkMaxConfig();
         config.inverted(false);
         config.idleMode(IdleMode.kBrake);
-        config.voltageCompensation(3);
-        config.smartCurrentLimit(60, 60);
-        config.closedLoop.feedbackSensor(FeedbackSensor.kAbsoluteEncoder).pid(20, 0.0, 0, ClosedLoopSlot.kSlot0);
+        config.voltageCompensation(10);
+        config.smartCurrentLimit(10, 60);
+        config.closedLoop.feedbackSensor(FeedbackSensor.kAbsoluteEncoder).pid(5, 0.0, 0, ClosedLoopSlot.kSlot0);
         config.closedLoop.feedbackSensor(FeedbackSensor.kAbsoluteEncoder).pid(0.5, 0.000, 0, ClosedLoopSlot.kSlot1);
 
         wristMotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
@@ -44,8 +44,6 @@ public class WristIOSparkMax implements WristIO {
         inputs.wristAppliedVolts = wristMotor.getAppliedOutput();
         inputs.wristBusVoltage = wristMotor.getBusVoltage();
         inputs.wristCurrentAmps = wristMotor.getOutputCurrent();
-        // double ffVal = 0.5 * (Math.sin((this.getPosition() - 0.113) * 2 * Math.PI));
-        // SmartDashboard.putNumber("wristFeedForward", ffVal);
     }
 
     @Override
@@ -67,8 +65,10 @@ public class WristIOSparkMax implements WristIO {
     @Override
     public void setPosition(double position, ClosedLoopSlot slot) {
         SmartDashboard.putNumber("commandedWristPosition", position);
-        double ffVal = 0.4 * Math.cos((position - 0.7561) * 2 * Math.PI);
-        SmartDashboard.putNumber("wristFeedForward", ffVal);
+        double ffVal = 0;
+        // removing feed forward for the gas piston brake
+        // ffVal = 0.4 * Math.cos((position - 0.7561) * 2 * Math.PI);
+        // SmartDashboard.putNumber("wristFeedForward", ffVal);
         wristMotor
                 .getClosedLoopController()
                 .setReference(position, ControlType.kPosition, ClosedLoopSlot.kSlot0, ffVal);
