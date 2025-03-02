@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import com.ctre.phoenix.led.Animation;
 import com.ctre.phoenix.led.CANdle;
 
+import edu.wpi.first.wpilibj.Timer;
+
 public class LightsIOSystem implements LightsIO {
 
     private CANdle candle;
@@ -35,28 +37,23 @@ public class LightsIOSystem implements LightsIO {
         lastAnimation = animation;
     }
 
-    // int flag = 0;
-    // double start = 0;
-    // @Override
-    // public void periodic() {
-    //     if (animationsList.isEmpty()) {
-    //         return;
-    //     }
-    //     switch (flag) {
-    //         case 0:
-    //             start = Timer.getFPGATimestamp();
-    //             configAnimation(animationsList.get(0).animation);
-    //             flag = 1;
-    //             break;
-    //         case 1:
-    //             if (animationsList.get(0).time <= Timer.getFPGATimestamp() - start) {
-    //                 animationsList.remove(0);
-    //                 flag = 0;
-    //                 configAnimation(Animations.DEFAULT.animation);
-    //                 break;
-    //             }
-    //     }
-    // }
+    @Override
+    public void playAnimation(double start, int flag){
+        switch (flag) {
+            case 0:
+                start = Timer.getFPGATimestamp();
+                configAnimation(animationsList.get(0).animation);
+                flag = 1;
+                break;
+            case 1:
+                if (animationsList.get(0).time <= Timer.getFPGATimestamp() - start) {
+                    animationsList.remove(0);
+                    flag = 0;
+                    configAnimation(Animations.DEFAULT.animation);
+                    break;
+                }
+        }
+    }
 
     @Override
     public void updateInputs(LightsIOInputs inputs) {

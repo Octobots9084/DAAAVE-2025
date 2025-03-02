@@ -31,5 +31,22 @@ public class Light extends SubsystemBase {
     public Light(LightsIO io) {
         this.io = io;
     }
+
+    int flag = 0;
+    double start = 0;
+    public void periodic() {
+        if (animationsList.isEmpty()) {
+            return;
+        }
+        io.playAnimation(start, flag);
+    }
+
+    public void setAnimation(Animations animation){
+        io.setAnimation(animation);
+    }
+
+    public void setAnimation(Animations[] animations){
+        io.setAnimation(animations);
+    }
     
 }
