@@ -23,7 +23,7 @@ public class PrepReefPlacement extends InstantCommand {
         new SetWristStateTolerance(WristStates.PREP,
             0.05,
             ClosedLoopSlot.kSlot0),
-        new SetElevatorStateTolerance(manager.level, 1.5),
+        new SetElevatorStateTolerance(manager.level, 1.5).withTimeout(5),
         new SetWristStateTolerance(manager.level, 0.001, ClosedLoopSlot.kSlot0)));
   }
 }

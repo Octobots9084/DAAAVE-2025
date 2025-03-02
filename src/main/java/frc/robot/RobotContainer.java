@@ -165,7 +165,7 @@ public class RobotContainer {
                 break;
         }
 
-        int negative = Constants.isBlueAlliance ? 1 : -1;
+        int negative = Constants.isBlueAlliance ? -1 : 1;
 
         TeleopDrive closedFieldRel = new TeleopDrive(
                 () -> MathUtil.applyDeadband(

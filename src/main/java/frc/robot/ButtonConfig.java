@@ -16,6 +16,7 @@ import frc.robot.Commands.AlgaeRollers.SetAlgaeRollersState;
 import frc.robot.Commands.Climb.SetClimbState;
 import frc.robot.Commands.Climb.ZeroClimb;
 import frc.robot.Commands.complex.CancelAllCommands;
+import frc.robot.Commands.complex.ClearAlgae;
 // import frc.robot.Commands.complex.ClearAlgae;
 import frc.robot.Commands.complex.Intake;
 import frc.robot.Commands.complex.PlaceCoral;
@@ -30,6 +31,7 @@ import frc.robot.Commands.Elevator.SetElevatorStateTolerance;
 import frc.robot.Commands.ManualControl.WristManualControl;
 import frc.robot.Commands.CoralRollers.LoadCoral;
 import frc.robot.Commands.CoralRollers.OutputCoral;
+import frc.robot.Commands.CoralRollers.ReverseRollersWileTrue;
 import frc.robot.Commands.CoralRollers.SetCoralRollersState;
 import frc.robot.Commands.ReefSelection.ReefLevelSelection;
 import frc.robot.Commands.ReefSelection.SetOrientation;
@@ -112,6 +114,9 @@ public class ButtonConfig {
             () -> {return CoralRollers.getInstance().HasCoral();} ));
         driverRight.button(2).onTrue(new Intake().onlyIf(
             () -> {return !CoralRollers.getInstance().HasCoral();} ));
+
+        driverButtons.button(11).whileTrue(new ClearAlgae());
+        driverButtons.button(13).whileTrue(new ReverseRollersWileTrue());
 
     }
 }

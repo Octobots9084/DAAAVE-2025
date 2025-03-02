@@ -22,30 +22,14 @@ public class Intake extends SequentialCommandGroup {
     public Intake() {
 
         addCommands(
+            new PrepCollect().andThen(
                 new ConditionalCommand(
-                    new SetWristStateTolerance(WristStates.PREP,
-                            0.05, ClosedLoopSlot.kSlot0),
-                    new InstantCommand(),
-                    () -> {
-                        return Elevator.getInstance().getPosition() > Elevator.BOT_CROSSBAR_POS;
-                    }),
-
-                new SetElevatorStateTolerance(ElevatorStates.INTAKE, 1.5),
-                new SetWristStateTolerance(WristStates.INTAKE, 0.05, ClosedLoopSlot.kSlot0).withTimeout(5).andThen(
-                    new ConditionalCommand(
                     new SequentialCommandGroup(
-                        new InstantCommand(() -> {
-                            CoralRollers.getInstance().setState(CoralRollersState.INTAKING);
-                        }),
-                        new WaitForCoralDetected(),
-                        new WaitCommand(0.1),
-                        new InstantCommand(() -> {
-                            CoralRollers.getInstance().setState(CoralRollersState.STOPPED);
-                        }),
+                        new CollectCoral(),
                         new SetWristState(WristStates.PREP, ClosedLoopSlot.kSlot0)
                     ),
                     new InstantCommand(), () -> {return Wrist.getInstance().isAtState(WristStates.INTAKE, 0.05);})
-                )
-                    );
+            )
+        );
     }
 }

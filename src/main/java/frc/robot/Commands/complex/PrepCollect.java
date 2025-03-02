@@ -22,11 +22,15 @@ public class PrepCollect extends SequentialCommandGroup {
                     
         addCommands(
             new ConditionalCommand(
-                new SetWristStateTolerance(WristStates.PREP,
-                0.05, ClosedLoopSlot.kSlot0),
+                new SetWristStateTolerance(WristStates.PREP, 0.05, ClosedLoopSlot.kSlot0),
                 new InstantCommand(),
                 () -> { return Elevator.getInstance().getPosition() > Elevator.BOT_CROSSBAR_POS; }),
-            new SetElevatorStateTolerance(ElevatorStates.INTAKE, 1.5),
-            new SetWristStateTolerance(WristStates.INTAKE, 0.05, ClosedLoopSlot.kSlot0).withTimeout(5));//TODO(SetWristStateTolerance) timeout
+
+            new SetElevatorStateTolerance(ElevatorStates.INTAKE, 1.5).withTimeout(5),
+
+            new ConditionalCommand(
+                new SetWristStateTolerance(WristStates.INTAKE, 0.05, ClosedLoopSlot.kSlot0),
+                new InstantCommand(),
+                () -> { return Elevator.getInstance().isAtState(ElevatorStates.INTAKE, 1.5); }));//TODO(SetWristStateTolerance) timeout
     }
 }

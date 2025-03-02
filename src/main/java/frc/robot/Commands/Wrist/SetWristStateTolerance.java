@@ -47,7 +47,6 @@ public class SetWristStateTolerance extends Command {
     if((AlignVision.getInstance().getLeftLidarDistance() > 0.4 || AlignVision.getInstance().getRightLidarDistance() > 0.4) && targetState == WristStates.INTAKE) {
         wrist.setState(targetState, slot);
     }
-
   }
 
   @Override

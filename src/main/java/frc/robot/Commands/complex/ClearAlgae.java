@@ -13,6 +13,7 @@ import frc.robot.Commands.ReefSelection.SetTargetReefSide;
 import frc.robot.Commands.Wrist.SetWristState;
 import frc.robot.Commands.Wrist.SetWristStateTolerance;
 import frc.robot.Commands.complex.collectCoral.WaitForCoralDetected;
+import frc.robot.Commands.swerve.drivebase.SetDriveState;
 import frc.robot.States.ReefTargetOrientation;
 import frc.robot.States.ReefTargetSide;
 import frc.robot.Subsystems.CoralRollers.CoralRollers;
@@ -31,21 +32,22 @@ public class ClearAlgae extends SequentialCommandGroup {
                 0.05, ClosedLoopSlot.kSlot0),
                 new InstantCommand(),
                 () -> { return Elevator.getInstance().getPosition() <= Elevator.BOT_CROSSBAR_POS; }),
-            new ParallelCommandGroup(
+            
+            new SetDriveState(DriveState.AlignReef),
+            
                 new ConditionalCommand(
-                    new SetElevatorStateTolerance(ElevatorStates.TOPALGAE, 1.5),
-                    new SetElevatorStateTolerance(ElevatorStates.BOTTOMALGAE, 1.5),
+                    new SetElevatorStateTolerance(ElevatorStates.TOPALGAE, 1.5).withTimeout(5),
+                    new SetElevatorStateTolerance(ElevatorStates.BOTTOMALGAE, 1.5).withTimeout(5),
                     () -> { 
                         ReefTargetOrientation targetOrientation = Swerve.getInstance().getReefTargetOrientation();
                         return (targetOrientation == ReefTargetOrientation.AB || targetOrientation == ReefTargetOrientation.EF || targetOrientation == ReefTargetOrientation.IJ); 
                     }),
                 new SetWristStateTolerance(WristStates.ALAGEREMOVAL,
-                0.05, ClosedLoopSlot.kSlot0)
-            ),
+                0.05, ClosedLoopSlot.kSlot0),
                 
             new SetTargetReefSide(ReefTargetSide.ALGAE),
             new InstantCommand(() -> {
-                CoralRollers.getInstance().setState(CoralRollersState.INTAKING);
+                CoralRollers.getInstance().setState(CoralRollersState.OUTPUT);
             }),
             new AlignReef(),
             new WaitForAlgae().withTimeout(3),
