@@ -14,8 +14,8 @@ import frc.robot.Subsystems.Elevator.ElevatorStates;
 import frc.robot.Subsystems.Wrist.Wrist;
 import frc.robot.Subsystems.Wrist.WristStates;
 
-public class PlaceCoral extends SequentialCommandGroup {
-    public PlaceCoral() {
+public class EjectCoral extends SequentialCommandGroup {
+    public EjectCoral() {
         BooleanSupplier wristAtL1 = () -> (Wrist.getInstance()
                 .isAtState(WristStates.L1, 0.1));
         addCommands(

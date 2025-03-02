@@ -65,7 +65,7 @@ public class ScoreCoral extends Command {
             && isAligned
             && (coralRollers.getState() != CoralRollersState.OUTPUT))
         CommandScheduler.getInstance()
-            .schedule(new PlaceCoral());
+            .schedule(new EjectCoral());
   }
 
     @Override
