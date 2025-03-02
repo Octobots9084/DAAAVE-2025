@@ -11,7 +11,7 @@ public class LightsIOSystem implements LightsIO {
     private ArrayList<Animations> animationsList = new ArrayList<Animations>();
 
     public LightsIOSystem() {
-        this.candle = new CANdle(19);
+        this.candle = new CANdle(24);
     }
 
     public void setAnimation(Animations animations) {
