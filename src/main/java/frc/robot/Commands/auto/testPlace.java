@@ -14,7 +14,7 @@ import frc.robot.Commands.ReefSelection.manager;
 import frc.robot.Commands.Wrist.SetWristState;
 import frc.robot.Commands.Wrist.SetWristStateTolerance;
 import frc.robot.Commands.complex.Intake;
-import frc.robot.Commands.complex.PlaceCoral;
+import frc.robot.Commands.complex.EjectCoral;
 import frc.robot.Commands.complex.PrepReefPlacement;
 import frc.robot.Constants;
 import frc.robot.Constants.Mode;

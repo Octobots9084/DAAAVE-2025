@@ -8,7 +8,6 @@ public class CancelAllCommands extends InstantCommand {
     public void initialize() {
         CommandScheduler.getInstance().cancelAll();
         CommandScheduler.getInstance().clearComposedCommands();
-
     }
 
 }

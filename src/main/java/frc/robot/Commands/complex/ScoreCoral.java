@@ -46,8 +46,8 @@ public class ScoreCoral extends Command {
   public void execute() {
     SmartDashboard.putBoolean("place L4", true);
     elevatorInPosition = elevator.isAtState(targetElevatorState, 1.5);
-    wristInPosition = wrist.isAtState(targetElevatorState, 0.01);
-    boolean isWristPrepped = wrist.isAtState(WristStates.PREP, 0.01);
+    wristInPosition = wrist.isAtState(targetElevatorState, 0.02);
+    boolean isWristPrepped = wrist.isAtState(WristStates.PREP, 0.02);
     isAligned = alignVision.isAligned();
 
     if (!elevatorInPosition && isWristPrepped) {
@@ -65,7 +65,7 @@ public class ScoreCoral extends Command {
             && isAligned
             && (coralRollers.getState() != CoralRollersState.OUTPUT))
         CommandScheduler.getInstance()
-            .schedule(new PlaceCoral());
+            .schedule(new EjectCoral());
   }
 
     @Override
