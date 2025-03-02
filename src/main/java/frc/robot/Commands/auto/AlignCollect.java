@@ -10,6 +10,7 @@ import frc.robot.Commands.complex.CollectCoral;
 import frc.robot.Commands.complex.Intake;
 import frc.robot.Subsystems.CoralRollers.CoralRollers;
 import frc.robot.Subsystems.Swerve.Swerve;
+import frc.robot.Subsystems.Swerve.Swerve.DriveState;
 import frc.robot.Subsystems.Vision.RangeAlignSource;
 import frc.robot.Subsystems.Vision.AlignVision;
 
@@ -19,20 +20,18 @@ public class AlignCollect extends Command {
     @Override
     public void initialize() {
         CommandScheduler.getInstance().schedule(new Intake());
-
+        Swerve.getInstance().setDriveState(DriveState.AlignSource);
     }
-
-    @Override
-    public void execute() {
-        Swerve.getInstance().driveRobotRelative(RangeAlignSource.getInstance().getAlignChassisSpeeds());
-    }
-
     @Override
     public boolean isFinished() {
         if (Constants.currentMode == Constants.simMode) {
             return true;
         }
         return CoralRollers.getInstance().HasCoral();
+    }
+    public void end(boolean interrupted)
+    {
+        Swerve.getInstance().setDriveState(DriveState.Manual);
     }
 
 }

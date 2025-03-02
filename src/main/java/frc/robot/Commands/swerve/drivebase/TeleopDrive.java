@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.States.AlignState;
 import frc.robot.Subsystems.Swerve.Swerve;
 import frc.robot.Subsystems.Vision.AlignVision;
+import frc.robot.Subsystems.Vision.RangeAlignSource;
 
 import java.util.function.DoubleSupplier;
 import frc.robot.util.MathUtil;
@@ -65,6 +66,7 @@ public class TeleopDrive extends Command {
             case AlignProcessor:
                 break;
             case AlignSource:
+                Swerve.getInstance().driveRobotRelative(RangeAlignSource.getInstance().getAlignChassisSpeeds());
                 break;
             default:
                 SmartDashboard.putString("the code works!!", "nope sorry");
