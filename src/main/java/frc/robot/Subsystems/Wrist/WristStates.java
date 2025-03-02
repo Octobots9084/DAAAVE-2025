@@ -8,7 +8,7 @@ public enum WristStates {
     L3(0.866),
     L4(0.786),
     PREP(0.97),
-    MANUAL(0.554),
+    MANUAL(0.5),
     ALAGEREMOVAL(0.757),
     TUNING(0.7561);// TODO actually set this value
     // TODO actually set this value

@@ -21,6 +21,7 @@ import frc.robot.Commands.complex.CancelAllCommands;
 import frc.robot.Commands.complex.Intake;
 import frc.robot.Commands.complex.EjectCoral;
 import frc.robot.Commands.complex.PrepReefPlacement;
+import frc.robot.Commands.complex.RobotSafeState;
 import frc.robot.Commands.complex.RobotStop;
 import frc.robot.Commands.complex.ScoreCoral;
 import frc.robot.Commands.complex.LetTheChuteBeFree;
@@ -36,6 +37,7 @@ import frc.robot.Commands.ReefSelection.ReefLevelSelection;
 import frc.robot.Commands.ReefSelection.SetOrientation;
 import frc.robot.Commands.Wrist.PrepCoral;
 import frc.robot.Commands.Wrist.SetWristState;
+import frc.robot.Commands.Wrist.SetWristStateTolerance;
 import frc.robot.Commands.auto.AlignCollect;
 import frc.robot.Subsystems.AlgaeRollers.AlgaeRollersStates;
 import frc.robot.Subsystems.Climb.ClimbStates;
@@ -77,8 +79,10 @@ public class ButtonConfig {
         coDriverRight.button(2).onTrue(new SetOrientation(1));
 
         // Return robot to a safe configuration
-        coDriverButtons.button(8).onTrue(new RobotStop());
-        coDriverButtons.button(9).onTrue(new CancelAllCommands());
+        coDriverButtons.button(8).onTrue(new RobotSafeState());
+        coDriverButtons.button(9).onTrue(new RobotStop());
+
+        coDriverButtons.button(4).onTrue(new SetWristStateTolerance(WristStates.PREP, 0.01, ClosedLoopSlot.kSlot0));
         // Reef levl selection
         coDriverButtons.button(10).onTrue(new ReefLevelSelection(4));
         coDriverButtons.button(11).onTrue(new ReefLevelSelection(4));
@@ -103,9 +107,9 @@ public class ButtonConfig {
 
         driverButtons.button(2).onTrue(new EjectCoral());
         driverButtons.button(3).onTrue(new AlignCollect());
-        driverButtons.button(4).onTrue(new PrepReefPlacement());
-        driverButtons.button(8).onTrue(new RobotStop());
-        driverButtons.button(9).onTrue(new CancelAllCommands());
+        driverButtons.button(4).onTrue(new SetWristStateTolerance(WristStates.PREP, 0.01, ClosedLoopSlot.kSlot0));
+        driverButtons.button(8).onTrue(new RobotSafeState());
+        driverButtons.button(9).onTrue(new RobotStop());
 
         // coDriverButtons.button(11).onTrue(new ClearAlgae());
         // coDriverButtons.button(11).onFalse(new AlgaeInterupted());
