@@ -17,5 +17,7 @@ public interface LightsIO {
     /** Updates the set of loggable inputs. */
     public default void updateInputs(LightsIOInputs inputs) {}
 
+    public default void playAnimation(double start, int flag){}
+
     public default void updateSim() {}
 }

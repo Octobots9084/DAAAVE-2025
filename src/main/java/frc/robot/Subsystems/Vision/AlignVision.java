@@ -27,6 +27,9 @@ import frc.robot.States.ReefTargetOrientation;
 // import frc.robot.States.ReefTargetOrientation;
 import frc.robot.States.ReefTargetSide;
 import frc.robot.Subsystems.Elevator.ElevatorStates;
+import frc.robot.Subsystems.Lights.Animations;
+import frc.robot.Subsystems.Lights.Light;
+import frc.robot.Subsystems.Lights.LightsIO;
 import frc.robot.Subsystems.Swerve.Swerve;
 
 import java.util.Optional;
@@ -139,11 +142,20 @@ public class AlignVision extends SubsystemBase {
             // If the right camera is not null, has a target and the target is the final tag
             if (rightCamResult != null && rightCamResult.hasTargets() && rightCamResult.getBestTarget().getFiducialId() == finalTagID) {
                 rightBestTransform = rightCamResult.getBestTarget().getBestCameraToTarget();
+                Light.getInstance().setAnimation(Animations.CANSEEREEFTAG);
+            }else{
+                //TODO replace with lighting code when the CANdle is on the robot
+                Light.getInstance().setAnimation(Animations.CANNOTSEEREEFTAG);
             }
 
             // If the left camera is not null, has a target and the target is the final tag
             if (leftCamResult != null && leftCamResult.hasTargets() && leftCamResult.getBestTarget().getFiducialId() == finalTagID) {
                 leftBestTransform = leftCamResult.getBestTarget().getBestCameraToTarget();
+                //TODO replace with lighting code when the CANdle is on the robot
+                Light.getInstance().setAnimation(Animations.CANSEEREEFTAG);
+            }else{
+                //TODO replace with lighting code when the CANdle is on the robot
+                Light.getInstance().setAnimation(Animations.CANNOTSEEREEFTAG);
             }
 
             // If both cameras have a target, then check which is the closer transform
