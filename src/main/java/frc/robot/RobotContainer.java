@@ -34,6 +34,8 @@ import frc.robot.Subsystems.Elevator.Elevator;
 import frc.robot.Subsystems.Elevator.ElevatorIO;
 import frc.robot.Subsystems.Elevator.ElevatorIOSim;
 import frc.robot.Subsystems.Elevator.ElevatorIOSparkMax;
+import frc.robot.Subsystems.Lights.Light;
+import frc.robot.Subsystems.Lights.LightsIOSystem;
 import frc.robot.Subsystems.Swerve.Swerve;
 import frc.robot.Subsystems.Swerve.SwerveIO;
 import frc.robot.Subsystems.Swerve.SwerveIOSystem;
@@ -71,6 +73,7 @@ public class RobotContainer {
     private VisionSubsystem vision;
     private AlignVision alignVision;
     private Climb climb;
+    private Light lights;
 
     private AlgaeRollersManual algaeRollersManual;
     private CoralRollersManual coralRollersManual;
@@ -115,6 +118,9 @@ public class RobotContainer {
 
                 Climb.setInstance(new ClimbIOSystems());
                 climb = Climb.getInstance();
+
+                Light.setInstance(new LightsIOSystem());
+                lights = Light.getInstance();
 
                 swerve.configurePathplanner();
 

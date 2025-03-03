@@ -29,7 +29,7 @@ public class RangeAlignSource extends SubsystemBase {
     }
 
     public RangeAlignSource() {
-        this.backRange = new CANrange(23, "KrakensBus");
+        this.backRange = new CANrange(23);
         this.backRangePID = new PIDController(3, 0, 0);
         this.gyroRotationPIDController = new PIDController(0.8, 0, 0);
         this.gyroRotationPIDController.enableContinuousInput(0, 2 * Math.PI);
@@ -50,15 +50,30 @@ public class RangeAlignSource extends SubsystemBase {
         return backRange.getDistance().getValueAsDouble();
     }
 
+    // From Nate :)
+    // This should return whether the robot is close enough to the source to take control
+    // from the drivers and align.
+    public boolean wrenchControlFromDriversForSourceAlign() {
+        return backRange.getIsDetected().getValue();
+    }
+
     public ChassisSpeeds getAlignChassisSpeeds() {
-        double turnAngle = gyroRotationPIDController.calculate(Swerve.getInstance().getPose().getRotation().getRadians(),
-                Math.toRadians(AlignVision.getInstance().handleTurnAngle(AlignState.SourceRight)));
-        rotInTolerance = MathUtil.isNear(Swerve.getInstance().getPose().getRotation().getRadians(), Math.toRadians(turnAngle), 0.05);
+        double poseAngle = Swerve.getInstance().getPose().getRotation().getRadians();
+        double sourceAngle = Math.toRadians(AlignVision.getInstance().handleTurnAngle(AlignState.SourceRight));
+        double turnAngle = gyroRotationPIDController.calculate(poseAngle, sourceAngle);
+        rotInTolerance = MathUtil.isNear(poseAngle, Math.toRadians(turnAngle), 0.05);
 
         if (rotInTolerance) {
             turnAngle = 0;
         }
 
-        return new ChassisSpeeds(backRangePID.calculate(this.getBackRange(), 0.46), 0, turnAngle);
+        // only go back if we are within 1 meter
+        double desiredSpeed = 0;
+        if(this.backRange.getIsDetected().getValue()) {
+            double distance = this.getBackRange();
+            desiredSpeed = backRangePID.calculate(distance, 0.55);
+        }
+
+        return new ChassisSpeeds(desiredSpeed, 0, turnAngle);
     }
 }

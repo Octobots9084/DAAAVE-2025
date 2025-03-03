@@ -13,7 +13,7 @@ public class AlignSource extends Command {
   @Override
   public void initialize() {
     swerve.setDriveState(DriveState.AlignSource);
-    CommandScheduler.getInstance().schedule(new PrepSourceCollect());
+    CommandScheduler.getInstance().schedule(new Intake());
   }
 
   @Override

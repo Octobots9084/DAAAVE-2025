@@ -16,7 +16,7 @@ public class Light extends SubsystemBase {
     private final LightsIO io; 
     public static Light getInstance() {
         if (instance == null) {
-            throw new IllegalStateException("AlgaeRollers instance not set");
+            throw new IllegalStateException("Light instance not set");
         }
         return instance;
     }

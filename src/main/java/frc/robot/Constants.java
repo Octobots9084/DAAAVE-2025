@@ -93,10 +93,10 @@ public final class Constants {
         public static final double distanceToPole = 0.164;
 
         // Max Depth Distance of Lidar from Tag (Meters)
-        public static final double maxLidarDepthDistance = 0.15;
+        public static final double maxLidarDepthDistance = 0.22;
 
         // Max Depth Distance of Camera from Tag (Meters)
-        public static final double maxCameraDepthDistance = 0.5;
+        public static final double maxCameraDepthDistance = 0.65;
 
         // Lidar Turn Angle Baseline (Might Be Radians)
         public static final double lidarTurnAngleBaseline = 0.605;
@@ -111,8 +111,8 @@ public final class Constants {
         // The standard deviations of our vision estimated poses, which affect
         // correction rate
         // (Fake values. Experiment and determine estimation noise on an actual robot.)
-        public static final Matrix<N3, N1> kSingleTagStdDevs = VecBuilder.fill(0.2, 0.2, 9999999);
-        public static final Matrix<N3, N1> kMultiTagStdDevs = VecBuilder.fill(0.2, 0.2, 9999999);
+        public static final Matrix<N3, N1> kSingleTagStdDevs = VecBuilder.fill(1, 1, 1);
+        public static final Matrix<N3, N1> kMultiTagStdDevs = VecBuilder.fill(0.2, 0.2, 0.5);
 
     }
 }

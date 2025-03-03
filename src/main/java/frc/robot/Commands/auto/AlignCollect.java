@@ -12,15 +12,21 @@ import frc.robot.Subsystems.CoralRollers.CoralRollers;
 import frc.robot.Subsystems.Swerve.Swerve;
 import frc.robot.Subsystems.Swerve.Swerve.DriveState;
 import frc.robot.Subsystems.Vision.RangeAlignSource;
-import frc.robot.Subsystems.Vision.AlignVision;
 
 public class AlignCollect extends Command {
     public AlignCollect() {}
 
     @Override
     public void initialize() {
-        CommandScheduler.getInstance().schedule(new Intake());
         Swerve.getInstance().setDriveState(DriveState.AlignSource);
+        CommandScheduler.getInstance().schedule(new Intake());
+    }
+
+    @Override
+    public void execute() {
+        if (RangeAlignSource.getInstance().wrenchControlFromDriversForSourceAlign()) {
+            Swerve.getInstance().driveRobotRelative(RangeAlignSource.getInstance().getAlignChassisSpeeds());
+        }
     }
     @Override
     public boolean isFinished() {
@@ -34,4 +40,8 @@ public class AlignCollect extends Command {
         Swerve.getInstance().setDriveState(DriveState.Manual);
     }
 
+    @Override
+    public void end (boolean interrupted) {
+        Swerve.getInstance().setDriveState(DriveState.Manual);
+    }
 }

@@ -66,7 +66,14 @@ public class TeleopDrive extends Command {
             case AlignProcessor:
                 break;
             case AlignSource:
-                Swerve.getInstance().driveRobotRelative(RangeAlignSource.getInstance().getAlignChassisSpeeds());
+                if (!RangeAlignSource.getInstance().wrenchControlFromDriversForSourceAlign()) {
+                    Swerve.getInstance()
+                            .driveFieldRelative(
+                                    new ChassisSpeeds(
+                                            vX.getAsDouble() * swerveInstance.getIo().getMaxSpeed(),
+                                            vY.getAsDouble() * swerveInstance.getIo().getMaxSpeed(),
+                                            RangeAlignSource.getInstance().getAlignChassisSpeeds().omegaRadiansPerSecond));
+                }
                 break;
             default:
                 SmartDashboard.putString("the code works!!", "nope sorry");
