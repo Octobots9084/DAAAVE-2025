@@ -142,6 +142,10 @@ public class ButtonConfig {
         driverButtons.button(11).whileTrue(new ClearAlgae());
         driverButtons.button(13).whileTrue(new ReverseRollersWileTrue());
 
-        driverButtons.button(15).onTrue(new Elephantiasis());
+        driverButtons.button(17).whileTrue(new Elephantiasis().onlyIf(
+            () -> {return !CoralRollers.getInstance().HasCoral();} ));
+        coDriverButtons.button(17).whileTrue(new Elephantiasis().onlyIf(
+            () -> {return !CoralRollers.getInstance().HasCoral();} ));
+
     }
 }

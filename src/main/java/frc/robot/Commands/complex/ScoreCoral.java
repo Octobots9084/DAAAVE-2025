@@ -39,7 +39,9 @@ public class ScoreCoral extends Command {
         targetElevatorState = manager.level;
         swerve = Swerve.getInstance();
         swerve.setDriveState(DriveState.AlignReef);
-        Wrist.getInstance().setState(WristStates.PREP, ClosedLoopSlot.kSlot0);
+        if(!wrist.isAtState(targetElevatorState, 0.02)) {
+            Wrist.getInstance().setState(WristStates.PREP, ClosedLoopSlot.kSlot0);
+        }
     }
 
   @Override

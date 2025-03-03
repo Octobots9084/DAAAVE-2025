@@ -4,7 +4,7 @@ public enum ElevatorStates {
     // TODO edit these to the actual positions
     LOW(0),
     LEVEL1(0),
-    LEVEL2(4),
+    LEVEL2(2),
     LEVEL3(17.17),
     LEVEL4(48.45),
     INTAKE(0),
