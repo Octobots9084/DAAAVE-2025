@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import org.littletonrobotics.junction.AutoLog;
 
 import com.ctre.phoenix.led.Animation;
+import com.ctre.phoenix.led.CANdle;
+import com.fasterxml.jackson.databind.ser.std.StdKeySerializers.Default;
 
 public interface LightsIO {
     @AutoLog
@@ -26,4 +28,6 @@ public interface LightsIO {
     }
 
     public default void updateSim() {}
+
+    public default CANdle getcandle() {return null;}
 }

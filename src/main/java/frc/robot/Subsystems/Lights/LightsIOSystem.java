@@ -2,6 +2,7 @@ package frc.robot.Subsystems.Lights;
 
 import java.util.ArrayList;
 
+import com.ctre.phoenix.ErrorCode;
 import com.ctre.phoenix.led.Animation;
 import com.ctre.phoenix.led.CANdle;
 import com.fasterxml.jackson.databind.deser.impl.PropertyValueBuffer;
@@ -10,7 +11,7 @@ import edu.wpi.first.wpilibj.Timer;
 
 public class LightsIOSystem implements LightsIO {
 
-    private CANdle candle;
+    public CANdle candle;
     private TimedAnimation animation;
 
     public LightsIOSystem() {
@@ -34,11 +35,16 @@ public class LightsIOSystem implements LightsIO {
 
     @Override
     public void playAnimation(){
-        candle.animate(this.animation.animation);
+        // ErrorCode error = candle.animate(this.animation.animation);
+        this.candle.setLEDs(1, 1, 1);
     }
 
     @Override
     public void updateInputs(LightsIOInputs inputs) {
         
+    }
+
+    public CANdle getcandle() {
+        return this.candle;
     }
 }

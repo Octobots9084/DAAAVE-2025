@@ -32,9 +32,6 @@ public class Light extends SubsystemBase {
         instance = new Light(io);
     }
 
-    public boolean command = false;
-    private ArrayList<TimedAnimation> animationsList = new ArrayList<TimedAnimation>();
-    //Honestly some of the best logic code I've ever written. // TODO - Document this later
     public Light(LightsIO io) {
         this.io = io;
     }
@@ -66,12 +63,14 @@ public class Light extends SubsystemBase {
         }
         if(AlignVision.getInstance().TagIsInView(targetTagID)){
             io.setAnimation(TimedAnimation.CANSEEREEFTAG);
+            io.getcandle().setLEDs(0,1,0);
         }else{
             io.setAnimation(TimedAnimation.CANNOTSEEREEFTAG);
+            io.getcandle().setLEDs(1,0,0);
+
         }
 
-        io.playAnimation();
-        
+        // io.playAnimation();
     }
     
 }
