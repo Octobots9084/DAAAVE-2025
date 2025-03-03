@@ -27,7 +27,7 @@ import frc.robot.States.ReefTargetOrientation;
 // import frc.robot.States.ReefTargetOrientation;
 import frc.robot.States.ReefTargetSide;
 import frc.robot.Subsystems.Elevator.ElevatorStates;
-import frc.robot.Subsystems.Lights.Animations;
+import frc.robot.Subsystems.Lights.TimedAnimation;
 import frc.robot.Subsystems.Lights.Light;
 import frc.robot.Subsystems.Lights.LightsIO;
 import frc.robot.Subsystems.Swerve.Swerve;
