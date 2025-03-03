@@ -35,11 +35,7 @@ public class AlignCollect extends Command {
         }
         return CoralRollers.getInstance().HasCoral();
     }
-    public void end(boolean interrupted)
-    {
-        Swerve.getInstance().setDriveState(DriveState.Manual);
-    }
-
+ 
     @Override
     public void end (boolean interrupted) {
         Swerve.getInstance().setDriveState(DriveState.Manual);
