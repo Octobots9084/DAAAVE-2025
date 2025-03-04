@@ -18,6 +18,7 @@ import frc.robot.Commands.Climb.ZeroClimb;
 import frc.robot.Commands.complex.AlignSource;
 import frc.robot.Commands.complex.CancelAllCommands;
 import frc.robot.Commands.complex.ClearAlgae;
+import frc.robot.Commands.complex.CollectAlgaeStack;
 import frc.robot.Commands.complex.EjectCoral;
 import frc.robot.Commands.complex.Elephantiasis;
 // import frc.robot.Commands.complex.ClearAlgae;
@@ -98,6 +99,7 @@ public class ButtonConfig {
         coDriverButtons.button(8).onTrue(new RobotSafeState());
         coDriverButtons.button(9).onTrue(new RobotStop());
 
+        coDriverButtons.button(7).onTrue(new CollectAlgaeStack());
         // Reef mode active (Switch 20)
         // Reef selection
         coDriverButtons.button(10).and(coDriverButtons.button(20).negate()).onTrue(new ReefLevelSelection(4));
