@@ -81,8 +81,6 @@ public class ButtonConfig {
         coDriverButtons.button(2).onTrue(new EjectCoral());
         coDriverButtons.button(4).onTrue(new PrepReefPlacement());
 
-
-        coDriverButtons.button(4).onTrue(new SetWristStateTolerance(WristStates.PREP, 0.01, ClosedLoopSlot.kSlot0));
         coDriverButtons.button(5).onTrue(new Intake().onlyIf(
             () -> { return !CoralRollers.getInstance().HasCoral(); }));
         // Return robot to a safe configuration
