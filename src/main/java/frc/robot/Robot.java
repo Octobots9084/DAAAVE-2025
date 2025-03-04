@@ -25,6 +25,7 @@ import frc.robot.States.ReefTargetSide;
 import frc.robot.Subsystems.AlgaeRollers.AlgaeRollers;
 import frc.robot.Subsystems.CoralRollers.CoralRollers;
 import frc.robot.Subsystems.Elevator.*;
+import frc.robot.Subsystems.Lights.Light;
 import frc.robot.Subsystems.Swerve.Swerve;
 import frc.robot.Subsystems.Swerve.Swerve.DriveState;
 import frc.robot.Subsystems.Vision.AlignVision;
@@ -120,6 +121,7 @@ public class Robot extends LoggedRobot {
     /** This function is called once when the robot is disabled. */
     @Override
     public void disabledInit() {
+        Light.getInstance().candleOff();
         Elevator.getInstance().setTargetState(ElevatorStates.LEVEL1);
         Elevator.getInstance().setState(ElevatorStates.LEVEL1);
         Wrist.getInstance().setState(WristStates.L1, ClosedLoopSlot.kSlot0);
@@ -161,6 +163,7 @@ public class Robot extends LoggedRobot {
     @Override
     public void teleopPeriodic() {
         ShowSelection.displayReefSelection();
+        Light.getInstance().lights();
     }
 
     /** This function is called once when test mode is enabled. */
