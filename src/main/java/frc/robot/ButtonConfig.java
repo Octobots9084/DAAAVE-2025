@@ -26,7 +26,6 @@ import frc.robot.Commands.complex.PrepReefPlacement;
 import frc.robot.Commands.complex.RobotSafeState;
 import frc.robot.Commands.complex.RobotStop;
 import frc.robot.Commands.complex.ScoreCoral;
-import frc.robot.Commands.complex.LetTheChuteBeFree;
 import frc.robot.Commands.complex.collectCoral.WaitForCoralDetected;
 import frc.robot.Commands.Elevator.SetElevatorState;
 import frc.robot.Commands.Elevator.SetElevatorStateTolerance;
@@ -97,7 +96,6 @@ public class ButtonConfig {
             () -> {return !CoralRollers.getInstance().HasCoral();} ));
 
         // Climb mode active (Switch 20)
-        coDriverButtons.button(20).onTrue(new LetTheChuteBeFree());
         coDriverButtons.button(14).and(coDriverButtons.button(20)).whileTrue(new SetClimbState(ClimbStates.Stored));
         coDriverButtons.button(16).and(coDriverButtons.button(20)).whileTrue(new SetClimbState(ClimbStates.Deployed));
         coDriverButtons.button(14).and(coDriverButtons.button(20)).onFalse(new SetClimbState(ClimbStates.Climbing));
@@ -126,7 +124,6 @@ public class ButtonConfig {
             () -> {return !CoralRollers.getInstance().HasCoral();} ));
 
         // Climb mode active (Switch 20)
-        driverButtons.button(20).onTrue(new LetTheChuteBeFree());
         driverButtons.button(14).and(driverButtons.button(20)).whileTrue(new SetClimbState(ClimbStates.Stored));
         driverButtons.button(16).and(driverButtons.button(20)).whileTrue(new SetClimbState(ClimbStates.Deployed));
         driverButtons.button(14).and(driverButtons.button(20)).onFalse(new SetClimbState(ClimbStates.Climbing));
