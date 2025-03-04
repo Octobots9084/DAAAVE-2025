@@ -23,6 +23,8 @@ import frc.robot.Commands.complex.Elephantiasis;
 // import frc.robot.Commands.complex.ClearAlgae;
 import frc.robot.Commands.complex.Intake;
 import frc.robot.Commands.complex.PrepReefPlacement;
+import frc.robot.Commands.complex.RemoveAlgaeBottom;
+import frc.robot.Commands.complex.RemoveAlgaeTop;
 import frc.robot.Commands.complex.RobotSafeState;
 import frc.robot.Commands.complex.RobotStop;
 import frc.robot.Commands.complex.ScoreCoral;
@@ -118,7 +120,8 @@ public class ButtonConfig {
         driverButtons.button(8).onTrue(new RobotSafeState());
         driverButtons.button(9).onTrue(new RobotStop());
 
-        driverButtons.button(7).onTrue(new ClearAlgae());
+        driverButtons.button(3).onTrue(new RemoveAlgaeBottom());
+        driverButtons.button(7).onTrue(new RemoveAlgaeTop());
         //coDriverButtons.button(11).onTrue(new ClearAlgae());
         //coDriverButtons.button(11).onFalse(new AlgaeInterupted());
 
