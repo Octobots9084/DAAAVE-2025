@@ -5,6 +5,7 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.States.ReefTargetLevel;
 import frc.robot.Subsystems.Vision.AlignVision;
 import frc.robot.Subsystems.Wrist.Wrist;
@@ -24,8 +25,6 @@ public class Elevator extends SubsystemBase {
     public DigitalInput bottomlimitSwitch = new DigitalInput(1);
 
     private static Elevator instance;
-
-    private static double kDt = 0.02;
 
     private final TrapezoidProfile elevatorProfile;
 
@@ -85,7 +84,7 @@ public class Elevator extends SubsystemBase {
         // }
         // }
         io.updateInputs(inputs);
-        elevatorCurrentPoint = elevatorProfile.calculate(kDt, elevatorCurrentPoint, elevatorGoal);
+        elevatorCurrentPoint = elevatorProfile.calculate(Constants.LOOP_TIME, elevatorCurrentPoint, elevatorGoal);
         manualSetTargetPosistion(elevatorCurrentPoint.position);
 
         Logger.processInputs("Elevator", inputs);

@@ -2,12 +2,12 @@ package frc.robot.Subsystems.Wrist;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.Subsystems.Elevator.ElevatorStates;
 import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import com.fasterxml.jackson.annotation.JsonCreator.Mode;
-import com.google.flatbuffers.Constants;
 import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.SparkMax;
@@ -66,7 +66,7 @@ public class Wrist extends SubsystemBase {
   public void periodic() {
 
     io.updateInputs(inputs);
-    wristCurrentPoint = wristProfile.calculate(kDt, wristCurrentPoint, wristGoal);
+    wristCurrentPoint = wristProfile.calculate(Constants.LOOP_TIME, wristCurrentPoint, wristGoal);
     //manualSetTargetPosistion(wristCurrentPoint.position);
     Logger.processInputs("Wrist", inputs);
 
