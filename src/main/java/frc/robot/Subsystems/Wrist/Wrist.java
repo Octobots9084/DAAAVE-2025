@@ -2,11 +2,12 @@ package frc.robot.Subsystems.Wrist;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.Subsystems.Elevator.ElevatorStates;
 import org.littletonrobotics.junction.Logger;
 
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import com.fasterxml.jackson.annotation.JsonCreator.Mode;
-import com.google.flatbuffers.Constants;
 import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.SparkMax;
@@ -20,6 +21,12 @@ public class Wrist extends SubsystemBase {
   public final double MinAngle = 0;
   public final double UnderCrossbarAngle = 0.261;
   double horizonAngle = 0.75;
+
+  private final TrapezoidProfile wristProfile;
+
+  private TrapezoidProfile.State wristGoal;
+  private TrapezoidProfile.State wristCurrentPoint;
+
 
     public double getHorizonAngle() {
         return horizonAngle;
@@ -46,6 +53,9 @@ public class Wrist extends SubsystemBase {
 
   public Wrist(WristIO io) {
     this.io = io;
+
+    this.wristProfile = new TrapezoidProfile(new TrapezoidProfile.Constraints(450, 900));
+    this.wristCurrentPoint = new TrapezoidProfile.State(getPosition(), 0);
   }
 
   public double getPosition() {
@@ -56,7 +66,11 @@ public class Wrist extends SubsystemBase {
   public void periodic() {
 
     io.updateInputs(inputs);
+    wristCurrentPoint = wristProfile.calculate(Constants.LOOP_TIME, wristCurrentPoint, wristGoal);
+    //manualSetTargetPosistion(wristCurrentPoint.position);
     Logger.processInputs("Wrist", inputs);
+
+    
   }
 
   public void setState(WristStates state, ClosedLoopSlot slot) {
@@ -64,6 +78,8 @@ public class Wrist extends SubsystemBase {
     targetState = state;
     Logger.recordOutput("Wrist/State", state);
     Logger.recordOutput("Wrist/CommandedPosition", state.wristPosition);
+
+    this.wristGoal = new TrapezoidProfile.State(state.wristPosition, 0);
   }
 
   public WristStates getState() {

@@ -61,7 +61,7 @@ public class TeleopDrive extends Command {
                 swerveInstance.driveRobotRelative(new ChassisSpeeds(-1, 0, omega.getAsDouble() * swerveInstance.getIo().getMaxTurnSpeed()));
                 break;
             case AlignReef:
-                SmartDashboard.putString("AlignReef", "AllignReef");
+                SmartDashboard.putString("AlignReef", "AlignReef");
                 swerveInstance.driveRobotRelative(alignInstance.getAlignChassisSpeeds(AlignState.Reef));
             case AlignProcessor:
                 break;

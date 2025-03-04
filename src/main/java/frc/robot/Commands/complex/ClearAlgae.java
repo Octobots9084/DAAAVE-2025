@@ -1,24 +1,18 @@
 package frc.robot.Commands.complex;
 import com.revrobotics.spark.ClosedLoopSlot;
 
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.Commands.Elevator.SetElevatorState;
 import frc.robot.Commands.Elevator.SetElevatorStateTolerance;
 import frc.robot.Commands.ReefSelection.SetTargetReefSide;
-import frc.robot.Commands.Wrist.SetWristState;
 import frc.robot.Commands.Wrist.SetWristStateTolerance;
-import frc.robot.Commands.complex.collectCoral.WaitForCoralDetected;
 import frc.robot.Commands.swerve.drivebase.SetDriveState;
 import frc.robot.States.ReefTargetOrientation;
 import frc.robot.States.ReefTargetSide;
 import frc.robot.Subsystems.CoralRollers.CoralRollers;
 import frc.robot.Subsystems.CoralRollers.CoralRollersState;
-import frc.robot.Subsystems.Elevator.Elevator;
 import frc.robot.Subsystems.Elevator.ElevatorStates;
 import frc.robot.Subsystems.Swerve.Swerve;
 import frc.robot.Subsystems.Swerve.Swerve.DriveState;
@@ -33,7 +27,7 @@ public class ClearAlgae extends SequentialCommandGroup {
             new ConditionalCommand(
                 new SetElevatorStateTolerance(ElevatorStates.TOPALGAE, 1.5).withTimeout(5),
                 new SetElevatorStateTolerance(ElevatorStates.BOTTOMALGAE, 1.5).withTimeout(5),
-                () -> { 
+                () -> {
                     ReefTargetOrientation targetOrientation = Swerve.getInstance().getReefTargetOrientation();
                     return (targetOrientation == ReefTargetOrientation.AB || targetOrientation == ReefTargetOrientation.EF || targetOrientation == ReefTargetOrientation.IJ); 
                 }

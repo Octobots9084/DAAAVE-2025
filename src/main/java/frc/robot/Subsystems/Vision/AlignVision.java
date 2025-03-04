@@ -341,6 +341,8 @@ public class AlignVision extends SubsystemBase {
                         targetDistance += VisionConstants.distanceToPole;
                     } else if (selectedPoleSide == ReefTargetSide.RIGHT) { // If the pole side is right, then subtract the distance to the pole from the target distance
                         targetDistance -= VisionConstants.distanceToPole;
+                    } else {
+                        targetDistance = 0;
                     }
                 } else { // If the state is not reef, then add the distance to the pole to the target distance
                     targetDistance = 0;
