@@ -2,6 +2,7 @@ package frc.robot.Commands.auto;
 
 import com.fasterxml.jackson.annotation.JsonCreator.Mode;
 
+import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.States.AlignState;
@@ -14,7 +15,11 @@ import frc.robot.Subsystems.Swerve.Swerve.DriveState;
 import frc.robot.Subsystems.Vision.RangeAlignSource;
 
 public class AlignCollect extends Command {
-    public AlignCollect() {}
+    private Debouncer debouncer;
+    private boolean shouldTakeControlFromDrivers = false;
+    public AlignCollect() {
+         debouncer = new Debouncer(0.5);
+    }
 
     @Override
     public void initialize() {
@@ -24,7 +29,8 @@ public class AlignCollect extends Command {
 
     @Override
     public void execute() {
-        if (RangeAlignSource.getInstance().wrenchControlFromDriversForSourceAlign()) {
+        shouldTakeControlFromDrivers = debouncer.calculate(RangeAlignSource.getInstance().wrenchControlFromDriversForSourceAlign());
+        if (shouldTakeControlFromDrivers) {
             Swerve.getInstance().driveRobotRelative(RangeAlignSource.getInstance().getAlignChassisSpeeds());
         }
     }

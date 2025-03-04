@@ -9,8 +9,8 @@ public class Elephantiasis extends SequentialCommandGroup {
     public Elephantiasis() {
         addCommands(
             new SequentialCommandGroup(
-                new SetWristStateTolerance(WristStates.ELEPHANTIASIS, 0.05, ClosedLoopSlot.kSlot0),
-                new SetWristStateTolerance(WristStates.INTAKE, 0.05, ClosedLoopSlot.kSlot0)
+                new SetWristStateTolerance(WristStates.ELEPHANTIASIS, 0.035, ClosedLoopSlot.kSlot0),
+                new SetWristStateTolerance(WristStates.INTAKE, 0.035, ClosedLoopSlot.kSlot0)
             )
         );
     }
