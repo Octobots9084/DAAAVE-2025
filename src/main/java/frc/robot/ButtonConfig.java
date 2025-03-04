@@ -98,9 +98,9 @@ public class ButtonConfig {
 
         coDriverButtons.button(4).onTrue(new SetWristStateTolerance(WristStates.PREP, 0.01, ClosedLoopSlot.kSlot0));
         coDriverButtons.button(5).onTrue(new Intake().onlyIf(
-        () -> {
-            return !CoralRollers.getInstance().HasCoral();
-        }));
+                () -> {
+                    return !CoralRollers.getInstance().HasCoral();
+                }));
         // Reef levl selection
         coDriverButtons.button(10).onTrue(new ReefLevelSelection(4));
         coDriverButtons.button(12).onTrue(new ReefLevelSelection(3));
@@ -125,10 +125,10 @@ public class ButtonConfig {
         driverButtons.button(4)
                 .onTrue(new PrepReefPlacement());
         driverButtons.button(5).onTrue(new Intake().onlyIf(
-        () -> {
-            return !CoralRollers.getInstance().HasCoral();
-        }));
-        
+                () -> {
+                    return !CoralRollers.getInstance().HasCoral();
+                }));
+
         driverButtons.button(8).onTrue(new RobotSafeState());
         driverButtons.button(9).onTrue(new RobotStop());
 
@@ -137,15 +137,21 @@ public class ButtonConfig {
         driverButtons.button(8).onTrue(new RobotStop());
 
         driverRight.button(1).whileTrue(new ScoreCoral().onlyIf(
-            () -> {return CoralRollers.getInstance().HasCoral();} ));
+                () -> {
+                    return CoralRollers.getInstance().HasCoral();
+                }));
 
         driverButtons.button(11).whileTrue(new ClearAlgae());
         driverButtons.button(13).whileTrue(new ReverseRollersWileTrue());
 
         driverButtons.button(17).whileTrue(new Elephantiasis().onlyIf(
-            () -> {return !CoralRollers.getInstance().HasCoral();} ));
+                () -> {
+                    return !CoralRollers.getInstance().HasCoral();
+                }));
         coDriverButtons.button(17).whileTrue(new Elephantiasis().onlyIf(
-            () -> {return !CoralRollers.getInstance().HasCoral();} ));
+                () -> {
+                    return !CoralRollers.getInstance().HasCoral();
+                }));
 
     }
 }
