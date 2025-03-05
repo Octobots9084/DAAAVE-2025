@@ -112,12 +112,10 @@ public class SwerveIOSystem implements SwerveIO {
     }
 
     public void driveFieldRelative(ChassisSpeeds fieldRelativeSpeeds) {
-        SmartDashboard.putString("FIELDRELATIVESPEDD", fieldRelativeSpeeds.toString());
         double maxAcceleration = getMaxAccelerationFromElevatorHeight();
         ChassisSpeeds limitedFieldRelativeSpeeds = MathUtil.limitXAndYAcceleration(fieldRelativeSpeeds,
                 swerveDrive.getFieldVelocity(),
                 maxAcceleration, maxAcceleration, 0.02);
-        SmartDashboard.putString("limitedspeeds", fieldRelativeSpeeds.toString());
 
         swerveDrive.driveFieldOriented(limitedFieldRelativeSpeeds);
     }
@@ -170,7 +168,6 @@ public class SwerveIOSystem implements SwerveIO {
 
     @Override
     public void updateInputs(SwerveIOInputs inputs) {
-        SmartDashboard.putNumber("odometeryheading", swerveDrive.getOdometryHeading().getRadians());
         // TODO - Implement
         inputs.pose = this.getPose();
         inputs.speeds = this.getSpeeds();

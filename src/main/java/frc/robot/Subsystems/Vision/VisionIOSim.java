@@ -125,7 +125,6 @@ public class VisionIOSim implements VisionIO {
     allNotifier.setName("runAll");
     allNotifier.startPeriodic(0.02);
     stdDevsCalculation = new StdDevs();
-    // SmartDashboard.putData(visionSim.getDebugField());
   }
 
     public void closeNotifiers() {

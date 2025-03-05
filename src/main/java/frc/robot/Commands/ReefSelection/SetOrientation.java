@@ -18,7 +18,6 @@ public class SetOrientation extends InstantCommand {
     public void initialize() {
         ReefTargetOrientation reefState = manager.joystick.joystickPos();
         int reefStatePos = reefState.ordinal();
-        SmartDashboard.putNumber("this is a number and if this is correct I will be happy", reefStatePos);
         if (reefState != ReefTargetOrientation.NONE) {
             manager.LastButtonPos[0] = reefStatePos;
             // replaces the terrible switching at last moment code
