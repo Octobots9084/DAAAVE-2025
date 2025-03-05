@@ -99,7 +99,6 @@ public class Robot extends LoggedRobot {
         // Start AdvantageKit logger
         Logger.start();
 
-        SmartDashboard.putString("debugging llama", "it worked");
     }
 
     @Override
@@ -111,10 +110,6 @@ public class Robot extends LoggedRobot {
     @Override
     public void robotPeriodic() {
         CommandScheduler.getInstance().run();
-        // SmartDashboard.putNumber("LeftLidar",
-        // AlignVision.getInstance().getLeftLidarDistance());
-        // SmartDashboard.putNumber("RightLidar",
-        // AlignVision.getInstance().getRightLidarDistance());
     }
 
     /** This function is called once when the robot is disabled. */

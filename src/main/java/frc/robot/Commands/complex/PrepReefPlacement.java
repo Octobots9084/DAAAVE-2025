@@ -2,7 +2,6 @@ package frc.robot.Commands.complex;
 
 import com.revrobotics.spark.ClosedLoopSlot;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;

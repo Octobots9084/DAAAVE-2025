@@ -13,7 +13,6 @@ import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj.Notifier;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.VisionConstants;
 import frc.robot.Subsystems.Swerve.Swerve;
 import java.io.IOException;
@@ -173,15 +172,6 @@ public class VisionIOSim implements VisionIO {
     if (pose != null && stdDevs != null) {
       Pose2d pose2d = pose.estimatedPose.toPose2d();
       Logger.recordOutput("FrontLeftPositionEstimate", pose2d);
-      stdDevsCalculation.update(pose2d.getX(), pose2d.getY(),
-      pose2d.getRotation().getRadians());
-      SmartDashboard.putNumber("StdDevsX",
-      stdDevsCalculation.getStandardDeviationX());
-      SmartDashboard.putNumber("StdDevsY",
-      stdDevsCalculation.getStandardDeviationY());
-
-      SmartDashboard.putNumber("StdDevsRot",
-      stdDevsCalculation.getStandardDeviationRotation());
       swerve.addVisionReading(pose2d, pose.timestampSeconds, stdDevs);
     }
   }

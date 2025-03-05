@@ -234,7 +234,6 @@ public class Swerve extends SubsystemBase {
     }
 
     public void driveRobotRelative(ChassisSpeeds robotRelativeSpeeds) {
-        SmartDashboard.putString("Chassis speeds", robotRelativeSpeeds.toString());
         this.io.driveRobotRelative(robotRelativeSpeeds);
     }
 

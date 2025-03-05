@@ -502,17 +502,14 @@ public class AlignVision extends SubsystemBase {
     }
 
     public static void setReefOrientation(ReefTargetOrientation orientation) {
-        SmartDashboard.putString("Orientation", orientation.name());
         selectedReefOrientation = orientation;
     }
 
     public static void setPoleSide(ReefTargetSide side) {
-        SmartDashboard.putString("Side", side.name());
         selectedPoleSide = side;
     }
 
     public static void setPoleLevel(ElevatorStates level) {
-        SmartDashboard.putString("level", level.name());
         selectedLevel = level;
     }
 
