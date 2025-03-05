@@ -15,8 +15,6 @@ public interface WristIO {
     public double wristBusVoltage = 0.0;
     public double wristCurrentAmps = 0.0;
     public double wristTemperature = 0.0;
-    public WristStates wristTargetState;
-    public double wristTargetPositon;
   }
 
   /** Updates the set of loggable inputs. */

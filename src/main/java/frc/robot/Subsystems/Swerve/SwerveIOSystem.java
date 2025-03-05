@@ -40,7 +40,6 @@ public class SwerveIOSystem implements SwerveIO {
     double maximumSpeed = 12;
     double maxTurnSpeed = 5;
     private Field2d field = new Field2d();
-    private Swerve swerve = Swerve.getInstance();
 
     public SwerveIOSystem() {
         SwerveDriveTelemetry.verbosity = TelemetryVerbosity.HIGH;
@@ -175,8 +174,5 @@ public class SwerveIOSystem implements SwerveIO {
         inputs.swerveModuleStates = this.getModuleStates();
         inputs.swerveModuleDesiredStates = this.getModuleDesiredStates();
         inputs.gyroAngleRadians = swerveDrive.getGyro().getRotation3d().toRotation2d().getRadians();
-        inputs.driveState = swerve.getDriveState();
-        inputs.reefTargetSide = swerve.getReefTargetSide();
-        inputs.reefTargetOrientation = swerve.getReefTargetOrientation();
     }
 }
