@@ -10,12 +10,12 @@ import frc.robot.Subsystems.CoralRollers.CoralRollersState;
 import frc.robot.Subsystems.Elevator.ElevatorStates;
 import frc.robot.Subsystems.Wrist.WristStates;
 
-public class RemoveAlgaeBottom extends SequentialCommandGroup {
-    public RemoveAlgaeBottom() {
+public class IntakeAlgaeTop extends SequentialCommandGroup {
+    public IntakeAlgaeTop() {
         addCommands(
-            new SetWristStateTolerance(WristStates.ALGAEREMOVAL, 0.05, ClosedLoopSlot.kSlot0),
-            new SetElevatorStateTolerance(ElevatorStates.LOW, 1.5),
-            new SetCoralRollersState(CoralRollersState.AlGAEOUTPUT)
+            new SetWristStateTolerance(WristStates.TOPALGAEINTAKE, 0.05, ClosedLoopSlot.kSlot0),
+            new SetElevatorStateTolerance(ElevatorStates.TOPALGAEINTAKE, 1.5),
+            new SetCoralRollersState(CoralRollersState.ALGAEINTAKING)
         );
     }
 }
