@@ -85,5 +85,7 @@ public class TeleopDrive extends Command {
                                         omega.getAsDouble() * swerveInstance.getIo().getMaxTurnSpeed()));
                 break;
         }
+
+        swerveInstance.setPreviousDriveState(swerveInstance.getDriveState());
     }
 }

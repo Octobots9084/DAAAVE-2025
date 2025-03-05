@@ -16,6 +16,7 @@ import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -31,6 +32,7 @@ import frc.robot.Subsystems.Lights.TimedAnimation;
 import frc.robot.Subsystems.Lights.Light;
 import frc.robot.Subsystems.Lights.LightsIO;
 import frc.robot.Subsystems.Swerve.Swerve;
+import frc.robot.Subsystems.Swerve.Swerve.DriveState;
 
 import java.util.Optional;
 
@@ -61,6 +63,15 @@ public class AlignVision extends SubsystemBase {
     private PIDController cameraXPIDController;
     private PIDController gyroRotationPIDController;
     private PIDController lidarRotationPIDController;
+
+    private final TrapezoidProfile yProfile = new TrapezoidProfile(new TrapezoidProfile.Constraints(5, 2));
+
+    private TrapezoidProfile.State yGoal = new TrapezoidProfile.State();
+    public static TrapezoidProfile.State ySetpoint = new TrapezoidProfile.State();
+
+    private boolean isFirstTime = false;
+
+    private double deltaTime = 0.02;
 
     private PhotonPipelineResult finalResult;
     private int finalTagID;
@@ -95,10 +106,8 @@ public class AlignVision extends SubsystemBase {
 
         this.leftRange = new CANrange(13, "KrakensBus");
         this.rightRange = new CANrange(14, "KrakensBus");
-
         this.cameraXPIDController = new PIDController(2, 0, 0);
-        this.cameraYPIDController = new PIDController(2, 0, 0);
-        this.cameraYPIDController.setIZone(0.5);
+        this.cameraYPIDController = new PIDController(8, 0, 0);
         this.lidarXPIDController = new PIDController(4, 0, 0);
         this.lidarRotationPIDController = new PIDController(10, 0, 0);
         this.gyroRotationPIDController = new PIDController(0.4, 0, 0);
@@ -140,13 +149,13 @@ public class AlignVision extends SubsystemBase {
 
     }
 
-    public boolean TagIsInView(int targetTagID){
+    public boolean TagIsInView(int targetTagID) {
         //get the tag id of the best result for both camera
         PhotonPipelineResult leftCamera = globalVision.inputs.frontLeftResult;
         PhotonPipelineResult rightCamera = globalVision.inputs.frontRightResult;
         //if either camera can see the target tag return true
-        if(rightCamera != null && rightCamera.hasTargets() && rightCamera.getBestTarget().getFiducialId() == targetTagID ||
-            leftCamera != null && leftCamera.hasTargets() && leftCamera.getBestTarget().getFiducialId() == targetTagID){
+        if (rightCamera != null && rightCamera.hasTargets() && rightCamera.getBestTarget().getFiducialId() == targetTagID ||
+                leftCamera != null && leftCamera.hasTargets() && leftCamera.getBestTarget().getFiducialId() == targetTagID) {
             return true;
         }
         //otherwise return false
@@ -225,6 +234,19 @@ public class AlignVision extends SubsystemBase {
     }
 
     public ChassisSpeeds getAlignChassisSpeeds(AlignState state) {
+
+        if (swerve.getPreviousDriveState() != DriveState.AlignReef || swerve.getPreviousDriveState() != DriveState.AlignSource || swerve.getPreviousDriveState() != DriveState.AlignProcessor) {
+            isFirstTime = true;
+            cameraXPIDController.reset();
+            cameraYPIDController.reset();
+            lidarXPIDController.reset();
+            lidarRotationPIDController.reset();
+            gyroRotationPIDController.reset();
+
+        } else {
+            isFirstTime = false;
+        }
+
         // Find the Turn Angle for the robot to align with the target.
         turnAngle = handleTurnAngle(state);
 
@@ -315,7 +337,6 @@ public class AlignVision extends SubsystemBase {
         try {
             // If the reference position is not null and the turn angle is not the max value, then starts the calculations of the speeds
             if (refPosition != null && turnAngle != Integer.MAX_VALUE) {
-
                 if (Constants.isBlueAlliance && currentOffset != null) { // If the robot is on the blue alliance, then add the blue offset value to the target distance
                     targetDistance += currentOffset.getBlueOffsetValue();
                 } else if (!Constants.isBlueAlliance && currentOffset != null) { // If the robot is on the red alliance, then add the red offset value to the target distance
@@ -334,11 +355,17 @@ public class AlignVision extends SubsystemBase {
                     targetDistance = 0;
                 }
 
+                if (isFirstTime) { // If it is the first time, then set the x, y, and turn speeds to 0
+                    ySetpoint = new TrapezoidProfile.State(-refPosition.getY(), 0);
+                    yGoal = new TrapezoidProfile.State(targetDistance, 0);
+                }
+
                 // Check if the robot y position is in tolerance for the target y rotation
                 yInTolerance = MathUtil.isNear(-refPosition.getY(), targetDistance, 0.03);
+                ySetpoint = yProfile.calculate(deltaTime, ySetpoint, yGoal);
 
                 // Calculate the speeds for the robot to align with the target
-                ySpeed = cameraYPIDController.calculate(-refPosition.getY(), targetDistance);
+                ySpeed = cameraYPIDController.calculate(-refPosition.getY(), ySetpoint.position);
 
                 // Calculate the x and turn speeds for the robot to align with the target
                 xSpeed = this.calculateXSpeed(aveLidarDist, refPosition);
@@ -421,12 +448,14 @@ public class AlignVision extends SubsystemBase {
 
             // Calculate the x speed for the robot to align with the target
             return -lidarXPIDController.calculate(aveLidarDist, VisionConstants.maxLidarDepthDistance);
+
         } else { // If both lidars are not valid, then use the camera distance to calculate the x speed
             // Check if the robot x position is in tolerance for the target x position
             xInTolerance = MathUtil.isNear(refPosition.getX(), VisionConstants.maxCameraDepthDistance, 0.03);
 
             // Calculate the x speed for the robot to align with the target
             return -cameraXPIDController.calculate(refPosition.getX(), VisionConstants.maxCameraDepthDistance);
+
         }
     }
 
