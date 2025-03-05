@@ -53,7 +53,7 @@ public class VisionCamera implements Runnable {
     private final AtomicReference<Matrix<N3, N1>> atomicStdDev = new AtomicReference<Matrix<N3, N1>>();
     private final AtomicReference<PhotonPipelineResult> atomicPhotonResult = new AtomicReference<PhotonPipelineResult>();
 
-    private PhotonPipelineResult latestResult;
+    // private PhotonPipelineResult latestResult;
 
     public VisionCamera(String photonCameraName, Transform3d robotToCamera) {
         camera = new PhotonCamera(photonCameraName);
@@ -63,17 +63,26 @@ public class VisionCamera implements Runnable {
         photonEstimator.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);
     }
 
+    // public Optional<EstimatedRobotPose> getEstimatedGlobalPose() {
+    //     Optional<EstimatedRobotPose> visionEst = Optional.empty();
+    //     List<PhotonPipelineResult> unreadResults = camera.getAllUnreadResults();
+
+    //     if (!unreadResults.isEmpty()) {
+    //         latestResult = unreadResults.get(unreadResults.size() - 1);
+    //         atomicPhotonResult.set(latestResult);
+    //         visionEst = photonEstimator.update(latestResult);
+    //         updateEstimationStdDevs(visionEst, latestResult.getTargets());
+    //     }
+
+    //     return visionEst;
+    // }
+
     public Optional<EstimatedRobotPose> getEstimatedGlobalPose() {
         Optional<EstimatedRobotPose> visionEst = Optional.empty();
-        List<PhotonPipelineResult> unreadResults = camera.getAllUnreadResults();
-
-        if (!unreadResults.isEmpty()) {
-            latestResult = unreadResults.get(unreadResults.size() - 1);
-            atomicPhotonResult.set(latestResult);
-            visionEst = photonEstimator.update(latestResult);
-            updateEstimationStdDevs(visionEst, latestResult.getTargets());
+        for (var change : camera.getAllUnreadResults()) {
+            visionEst = photonEstimator.update(change);
+            updateEstimationStdDevs(visionEst, change.getTargets());
         }
-
         return visionEst;
     }
 

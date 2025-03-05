@@ -156,6 +156,7 @@ public class Robot extends LoggedRobot {
             m_autonomousCommand.cancel();
         }
 
+        Constants.isInAuto = false;
         Swerve.getInstance().setDriveState(DriveState.Manual);
     }
 

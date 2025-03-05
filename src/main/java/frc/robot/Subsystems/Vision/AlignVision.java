@@ -57,6 +57,7 @@ public class AlignVision extends SubsystemBase {
     private FovParamsConfigs paramsConfigs;
     private CANrange rightRange;
     private CANrange leftRange;
+    private CANrange backRange;
 
     private PIDController cameraYPIDController;
     private PIDController lidarXPIDController;
@@ -83,6 +84,9 @@ public class AlignVision extends SubsystemBase {
     private PhotonTrackedTarget bestTarget = new PhotonTrackedTarget();
     private Transform3d transformCameraToRobot;
 
+    private double distanceToLeftSourceSide;
+    private double distanceToRightSourceSide;
+
     /*
      * The first six are for the reef, the seventh is for the processor, the eighth
      * is for the right source, and the ninth is for the left source.
@@ -106,6 +110,8 @@ public class AlignVision extends SubsystemBase {
 
         this.leftRange = new CANrange(13, "KrakensBus");
         this.rightRange = new CANrange(14, "KrakensBus");
+        this.backRange = new CANrange(23);
+
         this.cameraXPIDController = new PIDController(2, 0, 0);
         this.cameraYPIDController = new PIDController(8, 0, 0);
         this.lidarXPIDController = new PIDController(4, 0, 0);
@@ -124,6 +130,7 @@ public class AlignVision extends SubsystemBase {
         configuration.ProximityParams.ProximityThreshold = 1;
         rightRange.getConfigurator().apply(configuration);
         leftRange.getConfigurator().apply(configuration);
+        backRange.getConfigurator().apply(configuration);
 
         SmartDashboard.putNumber("AlignVision/PIDS/CameraXPID",
                 this.cameraXPIDController.getP());
@@ -166,6 +173,7 @@ public class AlignVision extends SubsystemBase {
         // Gets the best result for each camera from global vision.
         PhotonPipelineResult rightCamResult = globalVision.inputs.frontRightResult;
         PhotonPipelineResult leftCamResult = globalVision.inputs.frontLeftResult;
+        PhotonPipelineResult backCamResult = globalVision.inputs.backMiddleResult;
 
         // Initialize the best target for each camera to null.
         Transform3d rightBestTransform = null;
@@ -203,9 +211,12 @@ public class AlignVision extends SubsystemBase {
                 return null;
             }
 
+        } else if (backCamResult != null && (state == AlignState.SourceLeft || state == AlignState.SourceRight)) {
+            // If the back camera is not null, has a target and the target is the final tag
+            transformCameraToRobot = VisionConstants.transformBackMiddleToRobot;
+            return backCamResult;
         } else {
-            // Change when back camera is added
-            transformCameraToRobot = VisionConstants.transformFrontRightToRobot;
+            transformCameraToRobot = VisionConstants.transformBackMiddleToRobot;
             return null;
         }
     }
@@ -224,8 +235,7 @@ public class AlignVision extends SubsystemBase {
             transformTagToCamera = bestTarget.getBestCameraToTarget();
 
             // Transform Tag Position into Robot Coordinates
-            referenceRobotPosition = VisionConstants.referenceTagPosition.transformBy(transformTagToCamera.inverse())
-                    .transformBy(transformCameraToRobot.inverse());
+            referenceRobotPosition = VisionConstants.referenceTagPosition.transformBy(transformTagToCamera.inverse()).transformBy(transformCameraToRobot.inverse());
             return referenceRobotPosition;
 
         } else {
@@ -235,7 +245,8 @@ public class AlignVision extends SubsystemBase {
 
     public ChassisSpeeds getAlignChassisSpeeds(AlignState state) {
 
-        if (swerve.getPreviousDriveState() != DriveState.AlignReef || swerve.getPreviousDriveState() != DriveState.AlignSource || swerve.getPreviousDriveState() != DriveState.AlignProcessor) {
+        if (swerve.getPreviousDriveState() != DriveState.AlignReef || swerve.getPreviousDriveState() != DriveState.AlignSource
+                || swerve.getPreviousDriveState() != DriveState.AlignProcessor) {
             isFirstTime = true;
             cameraXPIDController.reset();
             cameraYPIDController.reset();
@@ -430,9 +441,11 @@ public class AlignVision extends SubsystemBase {
             //Sets the correct tag ID and angles of alignment based on the alliance for Processor
             return finalAngles[6];
         } else if (state == AlignState.SourceRight) {
+            finalTagID = Constants.isBlueAlliance ? 12 : 2;
             //Sets the correct tag ID and angles of alignment based on the alliance for SourceRight
             return finalAngles[7];
         } else if (state == AlignState.SourceLeft) {
+            finalTagID = Constants.isBlueAlliance ? 13 : 1;
             //Sets the correct tag ID and angles of alignment based on the alliance for SourceLeft
             return finalAngles[8];
         } else {
@@ -444,10 +457,17 @@ public class AlignVision extends SubsystemBase {
         // If both lidars are valid, then use the lidar distance to calculate the x speed
         if (this.areBothLidarsValid()) {
             // Check if the robot x position is in tolerance for the target x position
-            xInTolerance = MathUtil.isNear(aveLidarDist, VisionConstants.maxLidarDepthDistance, 0.03);
+            xInTolerance = MathUtil.isNear(aveLidarDist, VisionConstants.maxFrontLidarDepthDistance, 0.03);
 
             // Calculate the x speed for the robot to align with the target
-            return -lidarXPIDController.calculate(aveLidarDist, VisionConstants.maxLidarDepthDistance);
+            return -lidarXPIDController.calculate(aveLidarDist, VisionConstants.maxFrontLidarDepthDistance);
+
+        } else if (this.getBackLidarDetect()) {
+            // Check if the robot x position is in tolerance for the target x position
+            xInTolerance = MathUtil.isNear(this.getBackLidarDistance(), VisionConstants.maxBackLidarDepthDistance, 0.03);
+
+            // Calculate the x speed for the robot to align with the target
+            return -lidarXPIDController.calculate(this.getBackLidarDistance(), VisionConstants.maxBackLidarDepthDistance);
 
         } else { // If both lidars are not valid, then use the camera distance to calculate the x speed
             // Check if the robot x position is in tolerance for the target x position
@@ -477,6 +497,31 @@ public class AlignVision extends SubsystemBase {
 
     }
 
+    public double[] getDistanceToSources() {
+        if (!Constants.isBlueAlliance) {
+            distanceToLeftSourceSide = swerve.getPose().getTranslation().getDistance(VisionConstants.kTagLayout.getTagPose(1).get().getTranslation().toTranslation2d());
+            distanceToRightSourceSide = swerve.getPose().getTranslation().getDistance(VisionConstants.kTagLayout.getTagPose(2).get().getTranslation().toTranslation2d());
+        } else {
+            distanceToLeftSourceSide = swerve.getPose().getTranslation().getDistance(VisionConstants.kTagLayout.getTagPose(13).get().getTranslation().toTranslation2d());
+            distanceToRightSourceSide = swerve.getPose().getTranslation().getDistance(VisionConstants.kTagLayout.getTagPose(12).get().getTranslation().toTranslation2d());
+        }
+
+        // Return the distance to the left and right sources
+        return new double[] { distanceToLeftSourceSide, distanceToRightSourceSide };
+    }
+
+    public AlignState getAlignSourceSide() {
+        // Get the distance to the left and right sources
+        double[] distanceToSources = getDistanceToSources();
+
+        // If the distance to the left source is less than the distance to the right source, then return the left source
+        if (distanceToSources[0] < distanceToSources[1]) {
+            return AlignState.SourceLeft;
+        } else { // If the distance to the right source is less than the distance to the left source, then return the right source
+            return AlignState.SourceRight;
+        }
+    }
+
     private boolean isValidAlignTag(int tagID) {
         return VisionConstants.validAlignTags.contains(tagID);
     }
@@ -489,6 +534,10 @@ public class AlignVision extends SubsystemBase {
         return leftRange.getDistance().getValueAsDouble();
     }
 
+    public double getBackLidarDistance() {
+        return backRange.getDistance().getValueAsDouble();
+    }
+
     public boolean areBothLidarsValid() {
         return getRightLidarDetect() && getLeftLidarDetect();
     }
@@ -499,6 +548,10 @@ public class AlignVision extends SubsystemBase {
 
     public boolean getLeftLidarDetect() {
         return leftRange.getIsDetected().getValue();
+    }
+
+    public boolean getBackLidarDetect() {
+        return backRange.getIsDetected().getValue();
     }
 
     public static void setReefOrientation(ReefTargetOrientation orientation) {

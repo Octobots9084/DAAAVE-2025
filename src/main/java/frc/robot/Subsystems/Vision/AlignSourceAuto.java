@@ -6,60 +6,62 @@ import com.ctre.phoenix6.hardware.CANrange;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
+import frc.robot.Constants.VisionConstants;
 import frc.robot.States.AlignState;
 import frc.robot.Subsystems.Swerve.Swerve;
 
-public class RangeAlignSource extends SubsystemBase {
-    CANrange backRange;
+public class AlignSourceAuto extends SubsystemBase {
+    Swerve swerve;
+    AlignVision alignVision;
     PIDController backRangePID;
     private PIDController gyroRotationPIDController;
-    CANrangeConfiguration configuration;
-    FovParamsConfigs paramsConfigs;
     boolean rotInTolerance = false;
 
-    private static RangeAlignSource instance;
+    private static AlignSourceAuto instance;
 
-    public static RangeAlignSource getInstance() {
+    public static AlignSourceAuto getInstance() {
         if (instance == null) {
-            instance = new RangeAlignSource();
+            instance = new AlignSourceAuto();
         }
         return instance;
     }
 
-    public RangeAlignSource() {
-        this.backRange = new CANrange(23);
+    public AlignSourceAuto() {
+        this.swerve = Swerve.getInstance();
+        this.alignVision = AlignVision.getInstance();
         this.backRangePID = new PIDController(3, 0, 0);
         this.gyroRotationPIDController = new PIDController(0.8, 0, 0);
         this.gyroRotationPIDController.enableContinuousInput(0, 2 * Math.PI);
-
-        this.paramsConfigs = new FovParamsConfigs();
-        paramsConfigs.withFOVRangeX(6.75);
-        paramsConfigs.withFOVRangeY(6.75);
-        paramsConfigs.withFOVCenterX(6.75);
-        paramsConfigs.withFOVCenterY(6.75);
-
-        this.configuration = new CANrangeConfiguration();
-        configuration.withFovParams(paramsConfigs);
-        configuration.ProximityParams.ProximityThreshold = 1;
-        backRange.getConfigurator().apply(configuration);
     }
 
     public double getBackRange() {
-        return backRange.getDistance().getValueAsDouble();
+        return alignVision.getBackLidarDistance();
     }
 
     // From Nate :)
     // This should return whether the robot is close enough to the source to take control
     // from the drivers and align.
     public boolean wrenchControlFromDriversForSourceAlign() {
-        return backRange.getIsDetected().getValue();
+        return alignVision.getBackLidarDetect();
     }
 
     public ChassisSpeeds getAlignChassisSpeeds() {
         double poseAngle = Swerve.getInstance().getPose().getRotation().getRadians();
-        double sourceAngle = Math.toRadians(AlignVision.getInstance().handleTurnAngle(AlignState.SourceRight));
+
+        // if (!Constants.isBlueAlliance) {
+        //     distanceToLeftSide = swerve.getPose().getTranslation().getDistance(new Translation2d(14.225, 4.7));
+        //     distanceToRightSide = swerve.getPose().getTranslation().getDistance(new Translation2d(14.225, 3.35));
+        // } else {
+        //     distanceToLeftSide = swerve.getPose().getTranslation().getDistance(new Translation2d(3.325, 3.35));
+        //     distanceToRightSide = swerve.getPose().getTranslation().getDistance(new Translation2d(3.325, 4.7));
+        // }
+
+        double sourceAngle = Math.toRadians(alignVision.handleTurnAngle(alignVision.getAlignSourceSide()));
         double turnAngle = gyroRotationPIDController.calculate(poseAngle, sourceAngle);
         rotInTolerance = MathUtil.isNear(poseAngle, Math.toRadians(turnAngle), 0.05);
 
@@ -69,9 +71,9 @@ public class RangeAlignSource extends SubsystemBase {
 
         // only go back if we are within 1 meter
         double desiredSpeed = 0;
-        if(this.backRange.getIsDetected().getValue()) {
+        if (alignVision.getBackLidarDetect()) {
             double distance = this.getBackRange();
-            desiredSpeed = backRangePID.calculate(distance, 0.55);
+            desiredSpeed = backRangePID.calculate(distance, VisionConstants.maxBackLidarDepthDistance);
         }
 
         return new ChassisSpeeds(desiredSpeed, 0, turnAngle);
