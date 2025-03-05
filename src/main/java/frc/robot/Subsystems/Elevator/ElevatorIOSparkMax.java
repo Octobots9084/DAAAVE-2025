@@ -1,5 +1,7 @@
 package frc.robot.Subsystems.Elevator;
 
+import org.littletonrobotics.junction.Logger;
+
 import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
@@ -19,6 +21,7 @@ public class ElevatorIOSparkMax implements ElevatorIO {
     private final SparkMax leftMotor = new SparkMax(10, MotorType.kBrushless);
     private final SparkMax rightMotor = new SparkMax(11, MotorType.kBrushless);
     private double feedForward = 0.6;
+    private Elevator elevator = Elevator.getInstance();
 
     private SparkMaxConfig leftConfig;
 
@@ -84,6 +87,7 @@ public class ElevatorIOSparkMax implements ElevatorIO {
         inputs.rightVelocityRPM = rightMotor.getEncoder().getPosition();
         inputs.rightAppliedVolts = rightMotor.getAppliedOutput() * rightMotor.getBusVoltage();
         inputs.rightCurrentAmps = rightMotor.getOutputCurrent();
+        inputs.elevatorTargetState = elevator.getTargetState();
     }
 
     @Override
