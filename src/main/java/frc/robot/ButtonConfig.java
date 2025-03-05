@@ -69,7 +69,7 @@ public class ButtonConfig {
                 () -> {
                     return CoralRollers.getInstance().HasCoral();
                 }));
-        driverRight.button(2).onTrue(new AlignCollect().onlyIf(
+        driverRight.button(2).whileTrue(new AlignCollect().onlyIf(
                 () -> {
                     return !CoralRollers.getInstance().HasCoral();
                 }));
@@ -78,7 +78,7 @@ public class ButtonConfig {
                 () -> {
                     return CoralRollers.getInstance().HasCoral();
                 }));
-        driverLeft.button(2).onTrue(new AlignCollect().onlyIf(
+        driverLeft.button(2).whileTrue(new AlignCollect().onlyIf(
                 () -> {
                     return !CoralRollers.getInstance().HasCoral();
                 }));
