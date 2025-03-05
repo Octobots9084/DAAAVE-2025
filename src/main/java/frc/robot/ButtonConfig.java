@@ -136,8 +136,16 @@ public class ButtonConfig {
         driverButtons.button(8).onTrue(new RobotSafeState());
         driverButtons.button(9).onTrue(new RobotStop());
 
-        driverButtons.button(3).onTrue(new RemoveAlgaeBottom());
-        driverButtons.button(7).onTrue(new RemoveAlgaeTop());
+        driverButtons.button(3).onTrue(new RemoveAlgaeBottom().onlyIf(
+                () -> {
+                    return !CoralRollers.getInstance().HasCoral();
+                }
+        ));
+        driverButtons.button(7).onTrue(new RemoveAlgaeTop().onlyIf(
+                () -> {
+                    return !CoralRollers.getInstance().HasCoral();
+                }
+        ));
         //coDriverButtons.button(11).onTrue(new ClearAlgae());
         //coDriverButtons.button(11).onFalse(new AlgaeInterupted());
 
