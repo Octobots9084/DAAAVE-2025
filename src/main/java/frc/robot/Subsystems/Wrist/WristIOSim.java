@@ -6,7 +6,6 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.wpilibj.simulation.DCMotorSim;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class WristIOSim implements WristIO {
   DCMotorSim motorSim = new DCMotorSim(
@@ -30,7 +29,6 @@ public class WristIOSim implements WristIO {
 
   @Override
   public void setPosition(double position, ClosedLoopSlot slot) {
-    SmartDashboard.putNumber("Position", position);
     targetPosition = position;
 
   }

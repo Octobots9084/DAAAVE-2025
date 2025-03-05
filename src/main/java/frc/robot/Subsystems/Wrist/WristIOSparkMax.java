@@ -1,5 +1,7 @@
 package frc.robot.Subsystems.Wrist;
 
+import org.littletonrobotics.junction.Logger;
+
 import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
@@ -19,6 +21,7 @@ public class WristIOSparkMax implements WristIO {
     // TODO - motor id to be changed
     private final SparkFlex wristMotor = new SparkFlex(12, MotorType.kBrushless);
     private double offset = 0;
+    Wrist wrist = Wrist.getInstance();
     // private double feedForward = 0;
 
     private SparkMaxConfig config;
@@ -43,6 +46,8 @@ public class WristIOSparkMax implements WristIO {
         inputs.wristAppliedVolts = wristMotor.getAppliedOutput();
         inputs.wristBusVoltage = wristMotor.getBusVoltage();
         inputs.wristCurrentAmps = wristMotor.getOutputCurrent();
+        inputs.wristTargetState = wrist.getState();
+        inputs.wristTargetPositon = wrist.getState().wristPosition;
     }
 
     @Override
@@ -63,11 +68,9 @@ public class WristIOSparkMax implements WristIO {
 
     @Override
     public void setPosition(double position, ClosedLoopSlot slot) {
-        SmartDashboard.putNumber("commandedWristPosition", position);
         double ffVal = 0;
         // removing feed forward for the gas piston brake
         // ffVal = 0.4 * Math.cos((position - 0.7561) * 2 * Math.PI);
-        // SmartDashboard.putNumber("wristFeedForward", ffVal);
         wristMotor
                 .getClosedLoopController()
                 .setReference(position, ControlType.kPosition, ClosedLoopSlot.kSlot0, ffVal);

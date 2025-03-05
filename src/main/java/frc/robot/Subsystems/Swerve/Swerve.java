@@ -93,7 +93,6 @@ public class Swerve extends SubsystemBase {
     public void setReefTargetSide(ReefTargetSide side) {
         targetSide = side;
         AlignVision.setPoleSide(side);
-        Logger.recordOutput("Reef Allignment Target Side", targetSide);
     }
 
     public Optional<Pose2d> getSimPose() {
@@ -103,7 +102,6 @@ public class Swerve extends SubsystemBase {
     public void setReefTargetOrientation(ReefTargetOrientation orientation) {
         targetOrientation = orientation;
         AlignVision.setReefOrientation(orientation);
-        Logger.recordOutput("Reef Allignment Target Position", targetOrientation);
     }
 
     public ReefTargetSide getReefTargetSide() {
@@ -210,7 +208,6 @@ public class Swerve extends SubsystemBase {
 
     public void setDriveState(DriveState state) {
         driveState = state;
-        Logger.recordOutput("DriveState", state);
     }
 
     public void setPreviousDriveState(DriveState state) {
@@ -234,7 +231,6 @@ public class Swerve extends SubsystemBase {
     }
 
     public void driveRobotRelative(ChassisSpeeds robotRelativeSpeeds) {
-        SmartDashboard.putString("Chassis speeds", robotRelativeSpeeds.toString());
         this.io.driveRobotRelative(robotRelativeSpeeds);
     }
 

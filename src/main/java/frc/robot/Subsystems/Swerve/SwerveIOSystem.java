@@ -40,6 +40,7 @@ public class SwerveIOSystem implements SwerveIO {
     double maximumSpeed = 12;
     double maxTurnSpeed = 5;
     private Field2d field = new Field2d();
+    private Swerve swerve = null;
 
     public SwerveIOSystem() {
         SwerveDriveTelemetry.verbosity = TelemetryVerbosity.HIGH;
@@ -111,12 +112,10 @@ public class SwerveIOSystem implements SwerveIO {
     }
 
     public void driveFieldRelative(ChassisSpeeds fieldRelativeSpeeds) {
-        SmartDashboard.putString("FIELDRELATIVESPEDD", fieldRelativeSpeeds.toString());
         double maxAcceleration = getMaxAccelerationFromElevatorHeight();
         ChassisSpeeds limitedFieldRelativeSpeeds = MathUtil.limitXAndYAcceleration(fieldRelativeSpeeds,
                 swerveDrive.getFieldVelocity(),
                 maxAcceleration, maxAcceleration, 0.02);
-        SmartDashboard.putString("limitedspeeds", fieldRelativeSpeeds.toString());
 
         swerveDrive.driveFieldOriented(limitedFieldRelativeSpeeds);
     }
@@ -169,13 +168,18 @@ public class SwerveIOSystem implements SwerveIO {
 
     @Override
     public void updateInputs(SwerveIOInputs inputs) {
-        SmartDashboard.putNumber("odometeryheading", swerveDrive.getOdometryHeading().getRadians());
         // TODO - Implement
+        if (swerve == null) {
+            swerve = Swerve.getInstance();
+        }
         inputs.pose = this.getPose();
         inputs.speeds = this.getSpeeds();
 
         inputs.swerveModuleStates = this.getModuleStates();
         inputs.swerveModuleDesiredStates = this.getModuleDesiredStates();
         inputs.gyroAngleRadians = swerveDrive.getGyro().getRotation3d().toRotation2d().getRadians();
+        inputs.driveState = swerve.getDriveState();
+        inputs.reefTargetSide = swerve.getReefTargetSide();
+        inputs.reefTargetOrientation = swerve.getReefTargetOrientation();
     }
 }

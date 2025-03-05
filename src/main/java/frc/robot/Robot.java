@@ -22,7 +22,6 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Commands.ReefSelection.ShowSelection;
 import frc.robot.States.ReefTargetOrientation;
 import frc.robot.States.ReefTargetSide;
-import frc.robot.Subsystems.AlgaeRollers.AlgaeRollers;
 import frc.robot.Subsystems.CoralRollers.CoralRollers;
 import frc.robot.Subsystems.Elevator.*;
 import frc.robot.Subsystems.Lights.Light;
@@ -100,7 +99,6 @@ public class Robot extends LoggedRobot {
         // Start AdvantageKit logger
         Logger.start();
 
-        SmartDashboard.putString("debugging llama", "it worked");
     }
 
     @Override
@@ -112,16 +110,12 @@ public class Robot extends LoggedRobot {
     @Override
     public void robotPeriodic() {
         CommandScheduler.getInstance().run();
-        // SmartDashboard.putNumber("LeftLidar",
-        // AlignVision.getInstance().getLeftLidarDistance());
-        // SmartDashboard.putNumber("RightLidar",
-        // AlignVision.getInstance().getRightLidarDistance());
     }
 
     /** This function is called once when the robot is disabled. */
     @Override
     public void disabledInit() {
-        Light.getInstance().candleOff();
+        if (Constants.currentMode == Constants.realMode) Light.getInstance().candleOff();
         Elevator.getInstance().setTargetState(ElevatorStates.LEVEL1);
         Elevator.getInstance().setState(ElevatorStates.LEVEL1);
         Wrist.getInstance().setState(WristStates.L1, ClosedLoopSlot.kSlot0);
@@ -164,7 +158,7 @@ public class Robot extends LoggedRobot {
     @Override
     public void teleopPeriodic() {
         ShowSelection.displayReefSelection();
-        Light.getInstance().lights();
+        if (Constants.currentMode == Constants.realMode) Light.getInstance().lights();
     }
 
     /** This function is called once when test mode is enabled. */
@@ -183,7 +177,6 @@ public class Robot extends LoggedRobot {
     @Override
     public void simulationPeriodic() {
         SimulatedArena.getInstance().simulationPeriodic();
-        AlgaeRollers.getInstance().updateSim();
         CoralRollers.getInstance().updateSim();
         Elevator.getInstance().updateSim();
         Wrist.getInstance().updateSim();
