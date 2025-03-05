@@ -12,7 +12,6 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.States.ReefTargetLevel;
 import frc.robot.States.ReefTargetOrientation;
 import frc.robot.States.ReefTargetSide;
-import frc.robot.Commands.AlgaeRollers.SetAlgaeRollersState;
 import frc.robot.Commands.Climb.SetClimbState;
 import frc.robot.Commands.Climb.ZeroClimb;
 import frc.robot.Commands.complex.AlignSource;
@@ -37,6 +36,7 @@ import frc.robot.Commands.ManualControl.WristManualControl;
 import frc.robot.Commands.CoralRollers.LoadCoral;
 import frc.robot.Commands.CoralRollers.OutputCoral;
 import frc.robot.Commands.CoralRollers.ReverseRollersWileTrue;
+import frc.robot.Commands.CoralRollers.SetAlgaeRollerState;
 import frc.robot.Commands.CoralRollers.SetCoralRollersState;
 import frc.robot.Commands.ReefSelection.ReefLevelSelection;
 import frc.robot.Commands.ReefSelection.SetOrientation;
@@ -44,7 +44,6 @@ import frc.robot.Commands.Wrist.PrepCoral;
 import frc.robot.Commands.Wrist.SetWristState;
 import frc.robot.Commands.Wrist.SetWristStateTolerance;
 import frc.robot.Commands.auto.AlignCollect;
-import frc.robot.Subsystems.AlgaeRollers.AlgaeRollersStates;
 import frc.robot.Subsystems.Climb.ClimbStates;
 import frc.robot.Subsystems.CoralRollers.CoralRollers;
 import frc.robot.Subsystems.CoralRollers.CoralRollersState;
@@ -88,6 +87,11 @@ public class ButtonConfig {
             Swerve.getInstance().zeroGyro();
         }));
 
+        coDriverButtons.button(3).onTrue(new SetAlgaeRollerState(CoralRollersState.AlGAEOUTPUT).onlyIf(
+            () -> {
+                return !CoralRollers.getInstance().HasCoral();
+            }
+        ).withTimeout(1.5));
         coDriverButtons.button(2).onTrue(new EjectCoral());
         coDriverButtons.button(4).onTrue(new PrepReefPlacement());
 

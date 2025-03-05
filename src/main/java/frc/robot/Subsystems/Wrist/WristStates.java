@@ -12,6 +12,7 @@ public enum WristStates {
     MANUAL(0.47),
     ALAGEREMOVAL(0.757),
     ALAGESTACKREMOVAL(0.7),
+    BARGEALGAE(0.92),
     TUNING(0.7561); // TODO actually set this value
     
     

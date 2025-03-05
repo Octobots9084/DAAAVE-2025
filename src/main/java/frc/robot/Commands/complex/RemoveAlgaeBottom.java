@@ -15,7 +15,7 @@ public class RemoveAlgaeBottom extends SequentialCommandGroup {
         addCommands(
             new SetWristStateTolerance(WristStates.ALAGEREMOVAL, 0.05, ClosedLoopSlot.kSlot0),
             new SetElevatorStateTolerance(ElevatorStates.LOW, 1.5),
-            new SetCoralRollersState(CoralRollersState.LEVEL1)
+            new SetCoralRollersState(CoralRollersState.AlGAEOUTPUT)
         );
     }
 }
