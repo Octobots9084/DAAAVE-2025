@@ -22,7 +22,6 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Commands.ReefSelection.ShowSelection;
 import frc.robot.States.ReefTargetOrientation;
 import frc.robot.States.ReefTargetSide;
-import frc.robot.Subsystems.AlgaeRollers.AlgaeRollers;
 import frc.robot.Subsystems.CoralRollers.CoralRollers;
 import frc.robot.Subsystems.Elevator.*;
 import frc.robot.Subsystems.Lights.Light;
@@ -100,7 +99,6 @@ public class Robot extends LoggedRobot {
         // Start AdvantageKit logger
         Logger.start();
 
-        SmartDashboard.putString("debugging llama", "it worked");
     }
 
     @Override
@@ -112,10 +110,6 @@ public class Robot extends LoggedRobot {
     @Override
     public void robotPeriodic() {
         CommandScheduler.getInstance().run();
-        // SmartDashboard.putNumber("LeftLidar",
-        // AlignVision.getInstance().getLeftLidarDistance());
-        // SmartDashboard.putNumber("RightLidar",
-        // AlignVision.getInstance().getRightLidarDistance());
     }
 
     /** This function is called once when the robot is disabled. */
@@ -182,7 +176,6 @@ public class Robot extends LoggedRobot {
     @Override
     public void simulationPeriodic() {
         SimulatedArena.getInstance().simulationPeriodic();
-        AlgaeRollers.getInstance().updateSim();
         CoralRollers.getInstance().updateSim();
         Elevator.getInstance().updateSim();
         Wrist.getInstance().updateSim();

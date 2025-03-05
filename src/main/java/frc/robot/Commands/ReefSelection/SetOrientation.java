@@ -33,12 +33,9 @@ public class SetOrientation extends InstantCommand {
             ReefTargetSide reefSide = ReefTargetSide.values()[manager.LastButtonPos[1]];
             ReefTargetOrientation reefOrientation = ReefTargetOrientation.values()[manager.LastButtonPos[0]];
 
-            SmartDashboard.putString("Selected Reef Side", reefSide.name());
-            SmartDashboard.putString("Selected Reef Orientation", reefOrientation.name());
 
             swerve.setReefTargetSide(reefSide);
             swerve.setReefTargetOrientation(reefOrientation);
-            SmartDashboard.putString("stuff", manager.LastButtonPos[0] + " " + manager.LastButtonPos[1]);
         }
     }
 }

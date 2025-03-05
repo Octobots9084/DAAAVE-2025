@@ -2,7 +2,6 @@ package frc.robot;
 
 import com.revrobotics.spark.ClosedLoopSlot;
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -12,7 +11,6 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.States.ReefTargetLevel;
 import frc.robot.States.ReefTargetOrientation;
 import frc.robot.States.ReefTargetSide;
-import frc.robot.Commands.AlgaeRollers.SetAlgaeRollersState;
 import frc.robot.Commands.Climb.SetClimbState;
 import frc.robot.Commands.Climb.ZeroClimb;
 import frc.robot.Commands.complex.AlignSource;
@@ -37,6 +35,7 @@ import frc.robot.Commands.ManualControl.WristManualControl;
 import frc.robot.Commands.CoralRollers.LoadCoral;
 import frc.robot.Commands.CoralRollers.OutputCoral;
 import frc.robot.Commands.CoralRollers.ReverseRollersWileTrue;
+import frc.robot.Commands.CoralRollers.SetAlgaeRollerState;
 import frc.robot.Commands.CoralRollers.SetCoralRollersState;
 import frc.robot.Commands.ReefSelection.ReefLevelSelection;
 import frc.robot.Commands.ReefSelection.SetOrientation;
@@ -44,7 +43,6 @@ import frc.robot.Commands.Wrist.PrepCoral;
 import frc.robot.Commands.Wrist.SetWristState;
 import frc.robot.Commands.Wrist.SetWristStateTolerance;
 import frc.robot.Commands.auto.AlignCollect;
-import frc.robot.Subsystems.AlgaeRollers.AlgaeRollersStates;
 import frc.robot.Subsystems.Climb.ClimbStates;
 import frc.robot.Subsystems.CoralRollers.CoralRollers;
 import frc.robot.Subsystems.CoralRollers.CoralRollersState;
@@ -69,7 +67,7 @@ public class ButtonConfig {
                 () -> {
                     return CoralRollers.getInstance().HasCoral();
                 }));
-        driverRight.button(2).onTrue(new AlignCollect().onlyIf(
+        driverRight.button(2).whileTrue(new AlignCollect().onlyIf(
                 () -> {
                     return !CoralRollers.getInstance().HasCoral();
                 }));
@@ -78,7 +76,7 @@ public class ButtonConfig {
                 () -> {
                     return CoralRollers.getInstance().HasCoral();
                 }));
-        driverLeft.button(2).onTrue(new AlignCollect().onlyIf(
+        driverLeft.button(2).whileTrue(new AlignCollect().onlyIf(
                 () -> {
                     return !CoralRollers.getInstance().HasCoral();
                 }));
@@ -88,6 +86,11 @@ public class ButtonConfig {
             Swerve.getInstance().zeroGyro();
         }));
 
+        coDriverButtons.button(3).onTrue(new SetAlgaeRollerState(CoralRollersState.AlGAEOUTPUT).onlyIf(
+            () -> {
+                return !CoralRollers.getInstance().HasCoral();
+            }
+        ).withTimeout(1.5));
         coDriverButtons.button(2).onTrue(new EjectCoral());
         coDriverButtons.button(4).onTrue(new PrepReefPlacement());
 
@@ -136,8 +139,16 @@ public class ButtonConfig {
         driverButtons.button(8).onTrue(new RobotSafeState());
         driverButtons.button(9).onTrue(new RobotStop());
 
-        driverButtons.button(3).onTrue(new RemoveAlgaeBottom());
-        driverButtons.button(7).onTrue(new RemoveAlgaeTop());
+        driverButtons.button(3).onTrue(new RemoveAlgaeBottom().onlyIf(
+                () -> {
+                    return !CoralRollers.getInstance().HasCoral();
+                }
+        ));
+        driverButtons.button(7).onTrue(new RemoveAlgaeTop().onlyIf(
+                () -> {
+                    return !CoralRollers.getInstance().HasCoral();
+                }
+        ));
         //coDriverButtons.button(11).onTrue(new ClearAlgae());
         //coDriverButtons.button(11).onFalse(new AlgaeInterupted());
 

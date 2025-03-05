@@ -5,7 +5,6 @@
 package frc.robot.Commands.swerve.drivebase;
 
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.States.AlignState;
 import frc.robot.Subsystems.Swerve.Swerve;
@@ -38,7 +37,6 @@ public class TeleopDrive extends Command {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        SmartDashboard.putString("Command", "command");
     }
 
     // Called every time the scheduler runs while the command is scheduled.
@@ -47,7 +45,6 @@ public class TeleopDrive extends Command {
         // TODO 𓃕
         switch (swerveInstance.getDriveState()) {
             case Manual:
-                SmartDashboard.putString("the code works!!", "nope sorry");
                 double[] speeds = MathUtil.circleVectorFromSquare(vX.getAsDouble(), vY.getAsDouble(), swerveInstance.getIo().getMaxSpeed());
                 Swerve.getInstance()
                         .driveFieldRelative(
@@ -57,11 +54,9 @@ public class TeleopDrive extends Command {
                                         omega.getAsDouble() * swerveInstance.getIo().getMaxTurnSpeed()));
                 break;
             case Reverse:
-                SmartDashboard.putString("Reverse", "Reverse");
                 swerveInstance.driveRobotRelative(new ChassisSpeeds(-1, 0, omega.getAsDouble() * swerveInstance.getIo().getMaxTurnSpeed()));
                 break;
             case AlignReef:
-                SmartDashboard.putString("AlignReef", "AlignReef");
                 swerveInstance.driveRobotRelative(alignInstance.getAlignChassisSpeeds(AlignState.Reef));
             case AlignProcessor:
                 break;
@@ -76,7 +71,6 @@ public class TeleopDrive extends Command {
                 }
                 break;
             default:
-                SmartDashboard.putString("the code works!!", "nope sorry");
                 Swerve.getInstance()
                         .driveFieldRelative(
                                 new ChassisSpeeds(

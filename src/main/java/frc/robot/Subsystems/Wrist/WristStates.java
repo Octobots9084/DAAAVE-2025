@@ -11,11 +11,11 @@ public enum WristStates {
     PREP(0.97),
     MANUAL(0.47),
     ALAGEREMOVAL(0.757),
-    ALGAEPOP(0.757),
     ALAGESTACKREMOVAL(0.7),
-    TUNING(0.7561);// TODO actually set this value
-    // TODO actually set this value
-
+    BARGEALGAE(0.92),
+    TUNING(0.7561); // TODO actually set this value
+    
+    
     public double wristPosition;
 
     WristStates(double totalPosition) {

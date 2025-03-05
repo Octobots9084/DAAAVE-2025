@@ -32,6 +32,7 @@ import frc.robot.Subsystems.Lights.TimedAnimation;
 import frc.robot.Subsystems.Lights.Light;
 import frc.robot.Subsystems.Lights.LightsIO;
 import frc.robot.Subsystems.Swerve.Swerve;
+import frc.robot.Subsystems.Swerve.Swerve.DriveState;
 
 import java.util.Optional;
 
@@ -234,8 +235,14 @@ public class AlignVision extends SubsystemBase {
 
     public ChassisSpeeds getAlignChassisSpeeds(AlignState state) {
 
-        if (swerve.getDriveState() != swerve.getPreviousDriveState()) {
+        if (swerve.getPreviousDriveState() != DriveState.AlignReef || swerve.getPreviousDriveState() != DriveState.AlignSource || swerve.getPreviousDriveState() != DriveState.AlignProcessor) {
             isFirstTime = true;
+            cameraXPIDController.reset();
+            cameraYPIDController.reset();
+            lidarXPIDController.reset();
+            lidarRotationPIDController.reset();
+            gyroRotationPIDController.reset();
+
         } else {
             isFirstTime = false;
         }
@@ -495,17 +502,14 @@ public class AlignVision extends SubsystemBase {
     }
 
     public static void setReefOrientation(ReefTargetOrientation orientation) {
-        SmartDashboard.putString("Orientation", orientation.name());
         selectedReefOrientation = orientation;
     }
 
     public static void setPoleSide(ReefTargetSide side) {
-        SmartDashboard.putString("Side", side.name());
         selectedPoleSide = side;
     }
 
     public static void setPoleLevel(ElevatorStates level) {
-        SmartDashboard.putString("level", level.name());
         selectedLevel = level;
     }
 

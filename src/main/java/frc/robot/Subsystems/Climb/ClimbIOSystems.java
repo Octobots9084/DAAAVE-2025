@@ -10,7 +10,6 @@ import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class ClimbIOSystems implements ClimbIO {
     // TODO Change device ID
@@ -51,7 +50,6 @@ public class ClimbIOSystems implements ClimbIO {
 
     @Override
     public void setPosition(double newPosition) {
-        SmartDashboard.putNumber("position", newPosition);
         motor
                 .getClosedLoopController()
                 .setReference(newPosition, ControlType.kPosition, ClosedLoopSlot.kSlot0, feedForward);

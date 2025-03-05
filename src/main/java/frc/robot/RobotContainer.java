@@ -65,7 +65,6 @@ public class RobotContainer {
     private final SendableChooser<Command> autoChooser;
 
     // The robot's subsystems and commands are defined here...
-    private AlgaeRollers algaeRollers;
     private CoralRollers coralRollers;
     private Elevator elevator;
     private Wrist wrist;
@@ -75,7 +74,6 @@ public class RobotContainer {
     private Climb climb;
     private Light lights;
 
-    private AlgaeRollersManual algaeRollersManual;
     private CoralRollersManual coralRollersManual;
     private ElevatorManual elevatorManual;
     private WristManual wristManual;
@@ -133,9 +131,6 @@ public class RobotContainer {
                 elevator = Elevator.getInstance();
                 Swerve.setInstance(new SwerveIOSystem());
                 swerve = Swerve.getInstance();
-                AlgaeRollers.setInstance(
-                        new AlgaeRollersIOSim(swerve.getIo().getSwerveDrive().getMapleSimDrive().get()));
-                algaeRollers = AlgaeRollers.getInstance();
 
                 CoralRollers.setInstance(
                         new CoralRollersIOSim(swerve.getIo().getSwerveDrive().getMapleSimDrive().get()));
@@ -174,10 +169,10 @@ public class RobotContainer {
         int negative = Constants.isBlueAlliance ? -1 : 1;
 
         TeleopDrive closedFieldRel = new TeleopDrive(
-                () -> MathUtil.applyDeadband(
-                        negative * ButtonConfig.driverLeft.getRawAxis(1), OperatorConstants.LEFT_Y_DEADBAND) / 2.,
-                () -> MathUtil.applyDeadband(
-                        negative * ButtonConfig.driverLeft.getRawAxis(0), OperatorConstants.LEFT_X_DEADBAND) / 2.,
+                () -> Math.pow(MathUtil.applyDeadband(
+                        negative * ButtonConfig.driverLeft.getRawAxis(1), OperatorConstants.LEFT_Y_DEADBAND) / 2.,3.0),
+                () -> Math.pow(MathUtil.applyDeadband(
+                        negative * ButtonConfig.driverLeft.getRawAxis(0), OperatorConstants.LEFT_X_DEADBAND) / 2.,3),
                 () -> MathUtil.applyDeadband(
                         -ButtonConfig.driverRight.getRawAxis(0), OperatorConstants.RIGHT_X_DEADBAND) / 3.);
         swerve.setDefaultCommand(closedFieldRel);

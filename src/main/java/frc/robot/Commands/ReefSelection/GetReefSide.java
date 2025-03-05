@@ -5,7 +5,6 @@ import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import frc.robot.ControlMap;
 import frc.robot.States;
 import frc.robot.Subsystems.Swerve.Swerve;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class GetReefSide {
   public static final CommandJoystick Right = ControlMap.CO_DRIVER_RIGHT;
@@ -35,7 +34,6 @@ public class GetReefSide {
     if (xAxis == 0 && yAxis == 0) {
       return States.ReefTargetOrientation.NONE;
     }
-    SmartDashboard.putNumber("this is a thing and if it works I will be very very sad*-1",sidePos);
     return Swerve.getInstance().getReefTargetOrientation().values()[sidePos];
 
   }
