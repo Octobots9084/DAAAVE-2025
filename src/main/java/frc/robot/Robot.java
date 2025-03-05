@@ -115,7 +115,7 @@ public class Robot extends LoggedRobot {
     /** This function is called once when the robot is disabled. */
     @Override
     public void disabledInit() {
-        Light.getInstance().candleOff();
+        if (Constants.currentMode == Constants.realMode) Light.getInstance().candleOff();
         Elevator.getInstance().setTargetState(ElevatorStates.LEVEL1);
         Elevator.getInstance().setState(ElevatorStates.LEVEL1);
         Wrist.getInstance().setState(WristStates.L1, ClosedLoopSlot.kSlot0);
@@ -157,7 +157,7 @@ public class Robot extends LoggedRobot {
     @Override
     public void teleopPeriodic() {
         ShowSelection.displayReefSelection();
-        Light.getInstance().lights();
+        if (Constants.currentMode == Constants.realMode) Light.getInstance().lights();
     }
 
     /** This function is called once when test mode is enabled. */

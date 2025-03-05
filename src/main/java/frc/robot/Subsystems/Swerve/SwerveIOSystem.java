@@ -40,7 +40,7 @@ public class SwerveIOSystem implements SwerveIO {
     double maximumSpeed = 12;
     double maxTurnSpeed = 5;
     private Field2d field = new Field2d();
-    private Swerve swerve = Swerve.getInstance();
+    private Swerve swerve = null;
 
     public SwerveIOSystem() {
         SwerveDriveTelemetry.verbosity = TelemetryVerbosity.HIGH;
@@ -169,6 +169,9 @@ public class SwerveIOSystem implements SwerveIO {
     @Override
     public void updateInputs(SwerveIOInputs inputs) {
         // TODO - Implement
+        if (swerve == null) {
+            swerve = Swerve.getInstance();
+        }
         inputs.pose = this.getPose();
         inputs.speeds = this.getSpeeds();
 
