@@ -11,7 +11,7 @@ public class CollectCoral extends SequentialCommandGroup {
   public CollectCoral() {
     addCommands(
         new SetCoralRollersState(CoralRollersState.INTAKING),
-        new WaitForClawFrontSensor(),
+        new WaitForClawFrontSensor().withTimeout(3),
         new WaitCommand(0.1),
         new SetCoralRollersState(CoralRollersState.STOPPED));
   }
