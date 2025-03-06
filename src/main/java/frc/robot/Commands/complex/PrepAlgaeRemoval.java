@@ -29,10 +29,10 @@ public class PrepAlgaeRemoval extends Command {
       CommandScheduler.getInstance().schedule(new AlignReef());
       if (targetOrientation == ReefTargetOrientation.AB || targetOrientation == ReefTargetOrientation.EF || targetOrientation == ReefTargetOrientation.IJ) {
         targetElevatorState = ElevatorStates.TOPALGAE;
-        targetWristState = WristStates.ALGAEREMOVAL;
+        targetWristState = WristStates.ALAGEREMOVAL;
       } else {
         targetElevatorState = ElevatorStates.BOTTOMALGAE;
-        targetWristState = WristStates.ALGAEREMOVAL;
+        targetWristState = WristStates.ALAGEREMOVAL;
       }
       elevator.setState(targetElevatorState);
       Wrist.getInstance().setState(targetWristState,ClosedLoopSlot.kSlot0);
