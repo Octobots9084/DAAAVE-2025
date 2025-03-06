@@ -22,7 +22,7 @@ public class VisionIOSystem implements VisionIO {
             VisionConstants.transformMiddleRightToRobot);
     public final VisionCamera middleLeftCamera = new VisionCamera("SideLeft",
             VisionConstants.transformMiddleLeftToRobot);
-    public final VisionCamera backCamera = new VisionCamera("Back", VisionConstants.transformBackToRobot)
+    public final VisionCamera backCamera = new VisionCamera("Back", VisionConstants.transformBackToRobot);
 
     public StdDevs stdDevsCalculation;
     private final Notifier allNotifier = new Notifier(
