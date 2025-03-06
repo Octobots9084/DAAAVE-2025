@@ -28,7 +28,7 @@ public class Intake extends SequentialCommandGroup {
                         new CollectCoral(),
                         new SetWristState(WristStates.PREP, ClosedLoopSlot.kSlot0)
                     ),
-                    new InstantCommand(), () -> {return Wrist.getInstance().isAtState(WristStates.INTAKE, 0.05);})
+                    new InstantCommand(), () -> {return Wrist.getInstance().isAtState(WristStates.INTAKE, 0.1);})
             )
         );
     }
