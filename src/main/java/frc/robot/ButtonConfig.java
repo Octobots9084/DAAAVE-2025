@@ -130,9 +130,9 @@ public class ButtonConfig {
         }));
         driverButtons.button(2).onTrue(new ButtonLogger("EjectCoral attempted", true, 2))
                 .onTrue(new EjectCoral());
-        driverButtons.button(4).onTrue(new ButtonLogger("PrepReefPlacement attempted", true, 4))
+        driverButtons.button(5).onTrue(new ButtonLogger("PrepReefPlacement attempted", true, 4))
                 .onTrue(new PrepReefPlacement());
-        driverButtons.button(5).onTrue(new ButtonLogger("Intake attempted", true, 5)).onTrue(new Intake().onlyIf(
+        driverButtons.button(4).onTrue(new ButtonLogger("Intake attempted", true, 5)).onTrue(new Intake().onlyIf(
                 () -> {
                     return !CoralRollers.getInstance().HasCoral();
                 }));
