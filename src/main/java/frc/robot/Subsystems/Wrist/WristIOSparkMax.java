@@ -21,7 +21,7 @@ public class WristIOSparkMax implements WristIO {
     // TODO - motor id to be changed
     private final SparkFlex wristMotor = new SparkFlex(12, MotorType.kBrushless);
     private double offset = 0;
-    Wrist wrist = Wrist.getInstance();
+    Wrist wrist;
     // private double feedForward = 0;
 
     private SparkMaxConfig config;
@@ -41,6 +41,8 @@ public class WristIOSparkMax implements WristIO {
     }
 
     public void updateInputs(WristIOInputs inputs) {
+        if (wrist == null)
+            wrist = Wrist.getInstance();
         inputs.wristPositionRotations = wristMotor.getAbsoluteEncoder().getPosition();
         inputs.wristVelocityRPM = wristMotor.getEncoder().getVelocity();
         inputs.wristAppliedVolts = wristMotor.getAppliedOutput();

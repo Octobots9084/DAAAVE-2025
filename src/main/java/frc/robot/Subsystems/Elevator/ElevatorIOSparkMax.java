@@ -13,6 +13,7 @@ import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Subsystems.Wrist.Wrist;
 
 import com.revrobotics.spark.config.SparkMaxConfig;
 
@@ -21,7 +22,7 @@ public class ElevatorIOSparkMax implements ElevatorIO {
     private final SparkMax leftMotor = new SparkMax(10, MotorType.kBrushless);
     private final SparkMax rightMotor = new SparkMax(11, MotorType.kBrushless);
     private double feedForward = 0.6;
-    private Elevator elevator = Elevator.getInstance();
+    private Elevator elevator;
 
     private SparkMaxConfig leftConfig;
 
@@ -78,6 +79,8 @@ public class ElevatorIOSparkMax implements ElevatorIO {
 
     @Override
     public void updateInputs(ElevatorIOInputs inputs) {
+        if (elevator == null)
+            elevator = Elevator.getInstance();
         inputs.leftPositionRotations = leftMotor.getEncoder().getPosition(); // .getPosition();
         inputs.leftVelocityRPM = leftMotor.getEncoder().getVelocity();
         inputs.leftAppliedVolts = leftMotor.getAppliedOutput() * leftMotor.getBusVoltage();
