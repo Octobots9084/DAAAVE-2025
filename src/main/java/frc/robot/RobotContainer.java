@@ -13,7 +13,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Commands.CoralRollers.CoralRollersManual;
 import frc.robot.Commands.Elevator.ElevatorManual;
+import frc.robot.Commands.ManualControl.ElevatorManualControl;
 import frc.robot.Commands.Wrist.WristManual;
+import frc.robot.Commands.complex.AutoCollectCoral;
+import frc.robot.Commands.complex.CollectCoral;
 import frc.robot.Commands.swerve.drivebase.TeleopDrive;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.Subsystems.Climb.Climb;
@@ -22,6 +25,7 @@ import frc.robot.Subsystems.Climb.ClimbIOSystems;
 import frc.robot.Subsystems.CoralRollers.CoralRollers;
 import frc.robot.Subsystems.CoralRollers.CoralRollersIO;
 import frc.robot.Subsystems.CoralRollers.CoralRollersIOSim;
+import frc.robot.Subsystems.CoralRollers.CoralRollersIOSystems;
 import frc.robot.Subsystems.CoralRollers.CoralRollersIOSystems;
 import frc.robot.Subsystems.Elevator.Elevator;
 import frc.robot.Subsystems.Elevator.ElevatorIO;
@@ -87,6 +91,9 @@ public class RobotContainer {
                     }
                 }
 
+                // AlgaeRollers.setInstance(new AlgaeRollersIOSystems());
+                // algaeRollers = AlgaeRollers.getInstance();
+
                 CoralRollers.setInstance(new CoralRollersIOSystems());
                 coralRollers = CoralRollers.getInstance();
 
@@ -135,6 +142,8 @@ public class RobotContainer {
                 break;
 
             case REPLAY:
+                // AlgaeRollers.setInstance(new AlgaeRollersIO() {});
+                // algaeRollers = AlgaeRollers.getInstance();
                 Climb.setInstance(new ClimbIO() {});
                 climb = Climb.getInstance();
                 CoralRollers.setInstance(new CoralRollersIO() {});
