@@ -72,14 +72,9 @@ public class ButtonConfig {
                     return !CoralRollers.getInstance().HasCoral();
                 }));
         // Score and Intake assistance buttons for right stick
-        driverLeft.button(1).whileTrue(new ScoreCoral().onlyIf(
-                () -> {
-                    return CoralRollers.getInstance().HasCoral();
-                }));
-        driverLeft.button(2).whileTrue(new AlignCollect().onlyIf(
-                () -> {
-                    return !CoralRollers.getInstance().HasCoral();
-                }));
+        driverLeft.button(2).onTrue(new CollectAlgaeStack());
+        
+        driverLeft.button(1).onTrue(new ClearAlgae());
 
         // Zero gyro button
         driverButtons.button(6).onTrue(new InstantCommand(() -> {
@@ -102,7 +97,6 @@ public class ButtonConfig {
         coDriverButtons.button(8).onTrue(new RobotSafeState());
         coDriverButtons.button(9).onTrue(new RobotStop());
 
-        coDriverButtons.button(7).onTrue(new CollectAlgaeStack());
         // Reef mode active (Switch 20)
         // Reef selection
         coDriverButtons.button(10).and(coDriverButtons.button(20).negate()).onTrue(new ReefLevelSelection(4));
@@ -129,9 +123,8 @@ public class ButtonConfig {
         }));
         driverButtons.button(2)
                 .onTrue(new EjectCoral());
-        driverButtons.button(4)
-                .onTrue(new PrepReefPlacement());
-        driverButtons.button(5).onTrue(new Intake().onlyIf(
+        driverButtons.button(5).onTrue(new PrepReefPlacement());
+        driverButtons.button(4).onTrue(new Intake().onlyIf(
                 () -> {
                     return !CoralRollers.getInstance().HasCoral();
                 }));
