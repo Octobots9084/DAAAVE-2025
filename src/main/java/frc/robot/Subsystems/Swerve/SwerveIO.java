@@ -8,10 +8,15 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
+import frc.robot.States.ReefTargetOrientation;
+import frc.robot.States.ReefTargetSide;
+import frc.robot.Subsystems.Swerve.Swerve.DriveState;
 
 import java.util.Optional;
 
 import org.littletonrobotics.junction.AutoLog;
+
+
 import swervelib.SwerveDrive;
 
 public interface SwerveIO {
@@ -23,6 +28,9 @@ public interface SwerveIO {
     public SwerveModuleState[] swerveModuleStates;
     public SwerveModuleState[] swerveModuleDesiredStates;
     public double gyroAngleRadians;
+    public DriveState driveState;
+    public ReefTargetSide reefTargetSide;
+    public ReefTargetOrientation reefTargetOrientation;
   }
 
   /** Updates the set of loggable inputs. */

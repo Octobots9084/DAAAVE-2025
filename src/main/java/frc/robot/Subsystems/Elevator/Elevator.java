@@ -97,7 +97,6 @@ public class Elevator extends SubsystemBase {
 
         // io.setPosition(state.position);
         targetLevel = state;
-        Logger.recordOutput("Elevator/State", state);
     }
 
     public ElevatorStates getTargetState() {

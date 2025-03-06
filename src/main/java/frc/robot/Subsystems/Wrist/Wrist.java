@@ -126,7 +126,6 @@ public class Wrist extends SubsystemBase {
 
     targetState = wriststate;
     io.setPosition(wriststate.wristPosition, slot);
-    Logger.recordOutput("Wrist/State", wriststate);
   }
 
   public boolean IsInsideRobot() {

@@ -19,6 +19,7 @@ public interface ElevatorIO {
     public double rightAppliedVolts = 0.0;
     public double rightCurrentAmps = 0.0;
     public double rightTemperature = 0.0;
+    public ElevatorStates elevatorTargetState;
   }
 
   /** Updates the set of loggable inputs. */
