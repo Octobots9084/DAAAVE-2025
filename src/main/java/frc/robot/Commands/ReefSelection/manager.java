@@ -6,7 +6,7 @@ public class manager {
   public static int[] LastButtonPos = new int[2];
   private static boolean[][] reef = new boolean[6][2];
   public static GetReefSide joystick = new GetReefSide();
-  public static ElevatorStates level = ElevatorStates.LOW;
+  public static ElevatorStates level = ElevatorStates.LEVEL1;
 
   public static void clearReef() {
     for (int i = 0; i < reef.length; i++) {

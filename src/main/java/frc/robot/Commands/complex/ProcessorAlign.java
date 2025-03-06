@@ -19,7 +19,7 @@ public class ProcessorAlign extends Command {
   @Override
   public boolean isFinished() {
     if (swerve.isAlignedToProcessor) {
-      CommandScheduler.getInstance().schedule(new SetAlgaeRollerState(CoralRollersState.AlGAEOUTPUT));
+      CommandScheduler.getInstance().schedule(new SetAlgaeRollerState(CoralRollersState.OUTPUT));
     }
     // if the algae has left the robot return true
     return false;

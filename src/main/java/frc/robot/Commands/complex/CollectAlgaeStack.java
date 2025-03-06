@@ -12,7 +12,7 @@ public class CollectAlgaeStack extends SequentialCommandGroup{
     public CollectAlgaeStack(){
         addCommands(
             new SetWristState(WristStates.ALAGESTACKREMOVAL, ClosedLoopSlot.kSlot0),
-            new SetCoralRollersState(CoralRollersState.ALGAEINTAKING)
+            new SetCoralRollersState(CoralRollersState.AlGAEINTAKING)
         );
     }
 }

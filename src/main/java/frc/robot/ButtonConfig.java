@@ -13,7 +13,9 @@ import frc.robot.States.ReefTargetOrientation;
 import frc.robot.States.ReefTargetSide;
 import frc.robot.Commands.Climb.SetClimbState;
 import frc.robot.Commands.Climb.ZeroClimb;
+import frc.robot.Commands.complex.AlgaeInOut;
 import frc.robot.Commands.complex.AlignSource;
+import frc.robot.Commands.complex.BargeAlgae;
 import frc.robot.Commands.complex.CancelAllCommands;
 import frc.robot.Commands.complex.ClearAlgae;
 import frc.robot.Commands.complex.CollectAlgaeStack;
@@ -76,16 +78,15 @@ public class ButtonConfig {
         
         driverLeft.button(1).onTrue(new ClearAlgae());
 
+        driverButtons.button(3).onTrue(new BargeAlgae());
         // Zero gyro button
         driverButtons.button(6).onTrue(new InstantCommand(() -> {
             Swerve.getInstance().zeroGyro();
         }));
 
-        coDriverButtons.button(3).onTrue(new SetAlgaeRollerState(CoralRollersState.AlGAEOUTPUT).onlyIf(
-            () -> {
-                return !CoralRollers.getInstance().HasCoral();
-            }
-        ).withTimeout(1.5));
+        coDriverButtons.button(3).onTrue(new AlgaeInOut(CoralRollersState.OUTPUT));
+
+        coDriverButtons.button(1).onTrue(new AlgaeInOut(CoralRollersState.AlGAEINTAKING));
         coDriverButtons.button(2).onTrue(new EjectCoral());
         coDriverButtons.button(4).onTrue(new PrepReefPlacement());
 
@@ -121,8 +122,7 @@ public class ButtonConfig {
         driverButtons.button(1).onFalse(new InstantCommand(() -> {
             Swerve.getInstance().setDriveState(DriveState.Manual);
         }));
-        driverButtons.button(2)
-                .onTrue(new EjectCoral());
+        driverButtons.button(2).onTrue(new EjectCoral());
         driverButtons.button(5).onTrue(new PrepReefPlacement());
         driverButtons.button(4).onTrue(new Intake().onlyIf(
                 () -> {
@@ -132,16 +132,6 @@ public class ButtonConfig {
         driverButtons.button(8).onTrue(new RobotSafeState());
         driverButtons.button(9).onTrue(new RobotStop());
 
-        driverButtons.button(3).onTrue(new RemoveAlgaeBottom().onlyIf(
-                () -> {
-                    return !CoralRollers.getInstance().HasCoral();
-                }
-        ));
-        driverButtons.button(7).onTrue(new RemoveAlgaeTop().onlyIf(
-                () -> {
-                    return !CoralRollers.getInstance().HasCoral();
-                }
-        ));
         //coDriverButtons.button(11).onTrue(new ClearAlgae());
         //coDriverButtons.button(11).onFalse(new AlgaeInterupted());
 

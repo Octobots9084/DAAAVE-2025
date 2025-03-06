@@ -37,7 +37,7 @@ public class ClearAlgae extends SequentialCommandGroup {
                 
             new SetTargetReefSide(ReefTargetSide.ALGAE),
             new InstantCommand(() -> {
-                CoralRollers.getInstance().setState(CoralRollersState.OUTPUT);
+                CoralRollers.getInstance().setState(CoralRollersState.AlGAEINTAKING);
             }),
             new AlignReef(),
             new WaitForAlgae().withTimeout(3),

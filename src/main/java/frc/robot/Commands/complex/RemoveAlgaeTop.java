@@ -15,7 +15,7 @@ public class RemoveAlgaeTop extends SequentialCommandGroup {
         addCommands(
             new SetWristStateTolerance(WristStates.PREP, 0.05, ClosedLoopSlot.kSlot0),
             new SetElevatorStateTolerance(ElevatorStates.TOPALGAEREMOVAL, 1.5),
-            new SetCoralRollersState(CoralRollersState.ALGAEINTAKING)
+            new SetCoralRollersState(CoralRollersState.AlGAEINTAKING)
         );
     }
 }

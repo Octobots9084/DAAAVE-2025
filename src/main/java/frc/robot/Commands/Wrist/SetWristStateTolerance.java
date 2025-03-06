@@ -21,9 +21,11 @@ public class SetWristStateTolerance extends Command {
   private AlignVision vision = AlignVision.getInstance();
 
   public SetWristStateTolerance(WristStates targetState, double tolerance, ClosedLoopSlot slot) {
-    this.targetState = targetState;
-    this.tolerance = tolerance;
-    this.slot = slot;
+    if(targetState != null){
+        this.targetState = targetState;
+        this.tolerance = tolerance;
+        this.slot = slot;
+    }
   }
 
   public SetWristStateTolerance(ElevatorStates elevatorState, double tolerance, ClosedLoopSlot slot) {
