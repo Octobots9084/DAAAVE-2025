@@ -29,7 +29,7 @@ public class RangeAlignSource extends SubsystemBase {
     }
 
     public RangeAlignSource() {
-        this.backRange = new CANrange(23);
+        this.backRange = new CANrange(23, "KrakensBus");
         this.backRangePID = new PIDController(3, 0, 0);
         this.gyroRotationPIDController = new PIDController(0.8, 0, 0);
         this.gyroRotationPIDController.enableContinuousInput(0, 2 * Math.PI);

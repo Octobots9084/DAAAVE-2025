@@ -15,7 +15,7 @@ public class LightsIOSystem implements LightsIO {
     private TimedAnimation animation;
 
     public LightsIOSystem() {
-        this.candle = new CANdle(24);
+        this.candle = new CANdle(24, "KrakensBus");
     }
 
     public void setAnimation(TimedAnimation animations) {
