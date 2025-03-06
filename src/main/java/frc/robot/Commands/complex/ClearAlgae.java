@@ -33,7 +33,7 @@ public class ClearAlgae extends SequentialCommandGroup {
                 }
             ),
 
-            new SetWristStateTolerance(WristStates.ALGAEPOP, 0.05, ClosedLoopSlot.kSlot0),
+            new SetWristStateTolerance(WristStates.ALGAEREMOVAL, 0.05, ClosedLoopSlot.kSlot0),
                 
             new SetTargetReefSide(ReefTargetSide.ALGAE),
             new InstantCommand(() -> {

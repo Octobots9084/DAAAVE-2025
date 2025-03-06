@@ -63,11 +63,9 @@ public class WristIOSparkMax implements WristIO {
 
     @Override
     public void setPosition(double position, ClosedLoopSlot slot) {
-        SmartDashboard.putNumber("commandedWristPosition", position);
         double ffVal = 0;
         // removing feed forward for the gas piston brake
         // ffVal = 0.4 * Math.cos((position - 0.7561) * 2 * Math.PI);
-        // SmartDashboard.putNumber("wristFeedForward", ffVal);
         wristMotor
                 .getClosedLoopController()
                 .setReference(position, ControlType.kPosition, ClosedLoopSlot.kSlot0, ffVal);

@@ -6,7 +6,6 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj.Notifier;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.VisionConstants;
 import frc.robot.Subsystems.Swerve.Swerve;
 import org.littletonrobotics.junction.Logger;
@@ -90,13 +89,6 @@ public class VisionIOSystem implements VisionIO {
         if (pose != null && stdDevs != null) {
             Pose2d pose2d = pose.estimatedPose.toPose2d();
             stdDevsCalculation.update(pose2d.getX(), pose2d.getY(), pose2d.getRotation().getRadians());
-
-            SmartDashboard.putNumber(cameraName + " Pose X", pose2d.getX());
-            SmartDashboard.putNumber(cameraName + " Pose Y", pose2d.getX());
-            SmartDashboard.putNumber(cameraName + " Pose Rot", pose2d.getRotation().getDegrees());
-            SmartDashboard.putNumber(cameraName + " StdDevsX", stdDevsCalculation.getStandardDeviationX());
-            SmartDashboard.putNumber(cameraName + " StdDevsY", stdDevsCalculation.getStandardDeviationY());
-            SmartDashboard.putNumber(cameraName + " StdDevsRot", stdDevsCalculation.getStandardDeviationRotation());
 
             swerve.addVisionReading(pose2d, pose.timestampSeconds, stdDevs);
         }

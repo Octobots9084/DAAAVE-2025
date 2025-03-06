@@ -76,6 +76,7 @@ public class Swerve extends SubsystemBase {
     public boolean isAlignedCenterReef; // TODO check if the algae removal needs to be centered on the reef
     private ReefTargetSide targetSide;
     private ReefTargetOrientation targetOrientation = ReefTargetOrientation.AB;
+    public static DriveState previousDriveState;
 
     public static Swerve getInstance() {
         if (INSTANCE == null) {
@@ -212,8 +213,16 @@ public class Swerve extends SubsystemBase {
         Logger.recordOutput("DriveState", state);
     }
 
+    public void setPreviousDriveState(DriveState state) {
+        previousDriveState = state;
+    }
+
     public DriveState getDriveState() {
         return driveState;
+    }
+
+    public DriveState getPreviousDriveState() {
+        return previousDriveState;
     }
 
     public ChassisSpeeds getSpeeds() {
@@ -225,7 +234,6 @@ public class Swerve extends SubsystemBase {
     }
 
     public void driveRobotRelative(ChassisSpeeds robotRelativeSpeeds) {
-        SmartDashboard.putString("Chassis speeds", robotRelativeSpeeds.toString());
         this.io.driveRobotRelative(robotRelativeSpeeds);
     }
 

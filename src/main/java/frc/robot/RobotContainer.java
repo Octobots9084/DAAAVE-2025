@@ -11,24 +11,17 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Commands.AlgaeRollers.AlgaeRollersManual;
 import frc.robot.Commands.CoralRollers.CoralRollersManual;
 import frc.robot.Commands.Elevator.ElevatorManual;
-import frc.robot.Commands.ManualControl.ElevatorManualControl;
 import frc.robot.Commands.Wrist.WristManual;
-import frc.robot.Commands.complex.AutoCollectCoral;
-import frc.robot.Commands.complex.CollectCoral;
 import frc.robot.Commands.swerve.drivebase.TeleopDrive;
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.Subsystems.AlgaeRollers.AlgaeRollers;
-import frc.robot.Subsystems.AlgaeRollers.AlgaeRollersIOSim;
 import frc.robot.Subsystems.Climb.Climb;
 import frc.robot.Subsystems.Climb.ClimbIO;
 import frc.robot.Subsystems.Climb.ClimbIOSystems;
 import frc.robot.Subsystems.CoralRollers.CoralRollers;
 import frc.robot.Subsystems.CoralRollers.CoralRollersIO;
 import frc.robot.Subsystems.CoralRollers.CoralRollersIOSim;
-import frc.robot.Subsystems.CoralRollers.CoralRollersIOSystems;
 import frc.robot.Subsystems.CoralRollers.CoralRollersIOSystems;
 import frc.robot.Subsystems.Elevator.Elevator;
 import frc.robot.Subsystems.Elevator.ElevatorIO;
@@ -65,7 +58,6 @@ public class RobotContainer {
     private final SendableChooser<Command> autoChooser;
 
     // The robot's subsystems and commands are defined here...
-    private AlgaeRollers algaeRollers;
     private CoralRollers coralRollers;
     private Elevator elevator;
     private Wrist wrist;
@@ -75,7 +67,6 @@ public class RobotContainer {
     private Climb climb;
     private Light lights;
 
-    private AlgaeRollersManual algaeRollersManual;
     private CoralRollersManual coralRollersManual;
     private ElevatorManual elevatorManual;
     private WristManual wristManual;
@@ -95,9 +86,6 @@ public class RobotContainer {
                         Constants.isBlueAlliance = true;
                     }
                 }
-
-                // AlgaeRollers.setInstance(new AlgaeRollersIOSystems());
-                // algaeRollers = AlgaeRollers.getInstance();
 
                 CoralRollers.setInstance(new CoralRollersIOSystems());
                 coralRollers = CoralRollers.getInstance();
@@ -127,16 +115,13 @@ public class RobotContainer {
                 break;
 
             case SIM:
+                Swerve.setInstance(new SwerveIOSystem());
+                swerve = Swerve.getInstance();
                 Wrist.setInstance(new WristIOSim());
                 wrist = Wrist.getInstance();
                 Elevator.setInstance(new ElevatorIOSim());
                 elevator = Elevator.getInstance();
-                Swerve.setInstance(new SwerveIOSystem());
-                swerve = Swerve.getInstance();
-                AlgaeRollers.setInstance(
-                        new AlgaeRollersIOSim(swerve.getIo().getSwerveDrive().getMapleSimDrive().get()));
-                algaeRollers = AlgaeRollers.getInstance();
-
+                
                 CoralRollers.setInstance(
                         new CoralRollersIOSim(swerve.getIo().getSwerveDrive().getMapleSimDrive().get()));
                 coralRollers = CoralRollers.getInstance();
@@ -150,8 +135,6 @@ public class RobotContainer {
                 break;
 
             case REPLAY:
-                // AlgaeRollers.setInstance(new AlgaeRollersIO() {});
-                // algaeRollers = AlgaeRollers.getInstance();
                 Climb.setInstance(new ClimbIO() {});
                 climb = Climb.getInstance();
                 CoralRollers.setInstance(new CoralRollersIO() {});
@@ -174,12 +157,12 @@ public class RobotContainer {
         int negative = Constants.isBlueAlliance ? -1 : 1;
 
         TeleopDrive closedFieldRel = new TeleopDrive(
+                () -> Math.pow(MathUtil.applyDeadband(
+                        negative * ButtonConfig.driverLeft.getRawAxis(1), OperatorConstants.LEFT_Y_DEADBAND),3),
+                () -> Math.pow(MathUtil.applyDeadband(
+                        negative * ButtonConfig.driverLeft.getRawAxis(0), OperatorConstants.LEFT_X_DEADBAND),3),
                 () -> MathUtil.applyDeadband(
-                        negative * ButtonConfig.driverLeft.getRawAxis(1), OperatorConstants.LEFT_Y_DEADBAND) / 2.,
-                () -> MathUtil.applyDeadband(
-                        negative * ButtonConfig.driverLeft.getRawAxis(0), OperatorConstants.LEFT_X_DEADBAND) / 2.,
-                () -> MathUtil.applyDeadband(
-                        -ButtonConfig.driverRight.getRawAxis(0), OperatorConstants.RIGHT_X_DEADBAND) / 3.);
+                        -ButtonConfig.driverRight.getRawAxis(0), OperatorConstants.RIGHT_X_DEADBAND) / 2.0);
         swerve.setDefaultCommand(closedFieldRel);
 
         autoChooser = AutoBuilder.buildAutoChooser(); // Default auto will be `Commands.none()`

@@ -4,13 +4,20 @@ import java.util.ArrayList;
 
 import com.ctre.phoenix.led.Animation;
 import com.ctre.phoenix.led.CANdle;
+
+import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Commands.ReefSelection.manager;
 import frc.robot.States.ReefTargetOrientation;
+import frc.robot.Subsystems.CoralRollers.CoralRollers;
+import frc.robot.Subsystems.CoralRollers.CoralRollersState;
+import frc.robot.Subsystems.Elevator.*;
 import frc.robot.Subsystems.Swerve.Swerve;
 import frc.robot.Subsystems.Vision.AlignVision;
+import frc.robot.Subsystems.Wrist.Wrist;
+import frc.robot.Subsystems.Wrist.WristStates;
 
 import org.littletonrobotics.junction.Logger;
 //link to CANdle documentation: https://api.ctr-electronics.com/phoenix/release/java/com/ctre/phoenix/led/CANdle.html
@@ -34,9 +41,14 @@ public class Light extends SubsystemBase {
 
     public Light(LightsIO io) {
         this.io = io;
+        io.getcandle().configBrightnessScalar(0.5);
     }
 
-    public void periodic() {
+    public void candleOff(){
+        io.getcandle().setLEDs(0,0,0);
+    }
+
+    public void lights() {
         ReefTargetOrientation orientation = Swerve.getInstance().getReefTargetOrientation();
         switch (orientation) {
             case AB:
@@ -61,13 +73,17 @@ public class Light extends SubsystemBase {
                 targetTagID = -1;
             break;
         }
-        if(AlignVision.getInstance().TagIsInView(targetTagID)){
-            io.setAnimation(TimedAnimation.CANSEEREEFTAG);
-            io.getcandle().setLEDs(0,1,0);
+        if(Elevator.getInstance().getTargetState() == ElevatorStates.INTAKE && Wrist.getInstance().getState() == WristStates.INTAKE && CoralRollers.getInstance().getState() == CoralRollersState.INTAKING){
+            candleOff();
+            io.getcandle().setLEDs(148,0,211);
         }else{
-            io.setAnimation(TimedAnimation.CANNOTSEEREEFTAG);
-            io.getcandle().setLEDs(1,0,0);
+            candleOff();
+            if(AlignVision.getInstance().TagIsInView(targetTagID)){
+                io.getcandle().setLEDs(0,255,0);
+            }else{
+                io.getcandle().setLEDs(255,0,0);
 
+            }
         }
 
         // io.playAnimation();

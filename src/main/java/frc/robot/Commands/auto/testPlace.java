@@ -5,7 +5,6 @@ import java.nio.file.attribute.PosixFilePermission;
 import com.revrobotics.spark.ClosedLoopSlot;
 
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -45,7 +44,6 @@ public class testPlace extends Command {
 
     @Override
     public void initialize() {
-        SmartDashboard.putString("PLACRE", "PLACE");
         AlignVision.setPoleLevel(targetLevel);
         AlignVision.setPoleSide(targetSide);
         AlignVision.setReefOrientation(targetOrientation);

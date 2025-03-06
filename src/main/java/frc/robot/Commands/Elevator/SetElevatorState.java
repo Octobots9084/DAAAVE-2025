@@ -1,6 +1,5 @@
 package frc.robot.Commands.Elevator;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.Subsystems.Elevator.Elevator;
 import frc.robot.Subsystems.Elevator.ElevatorStates;
@@ -14,7 +13,6 @@ public class SetElevatorState extends InstantCommand {
 
   @Override
   public void initialize() {
-    SmartDashboard.putString("state", targetState.toString());
     Elevator.getInstance().setState(targetState);
   }
 

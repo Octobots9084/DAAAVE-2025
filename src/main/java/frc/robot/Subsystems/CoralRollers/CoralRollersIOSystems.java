@@ -71,7 +71,6 @@ public class CoralRollersIOSystems implements CoralRollersIO {
   @Override
   public boolean IsIntaking() {
     boolean intaking = clawBackSensor.getIsDetected().getValue();
-    SmartDashboard.putBoolean("IsIntaking", intaking);
     return intaking;
   }
 

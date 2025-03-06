@@ -99,7 +99,6 @@ public class ElevatorIOSparkMax implements ElevatorIO {
         if (position < 0) {
             position = 0;
         }
-        SmartDashboard.putNumber("setPoint", position);
         leftMotor
                 .getClosedLoopController()
                 .setReference(position, ControlType.kPosition, ClosedLoopSlot.kSlot0, feedForward);

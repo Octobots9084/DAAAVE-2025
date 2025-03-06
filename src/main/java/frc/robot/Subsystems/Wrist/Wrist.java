@@ -20,7 +20,7 @@ public class Wrist extends SubsystemBase {
   public final double MaxAngle = 0.668;
   public final double MinAngle = 0;
   public final double UnderCrossbarAngle = 0.261;
-  double horizonAngle = 0.75;
+  double horizonAngle = 0.70;
 
   private final TrapezoidProfile wristProfile;
 
