@@ -115,12 +115,12 @@ public class RobotContainer {
                 break;
 
             case SIM:
+                Swerve.setInstance(new SwerveIOSystem());
+                swerve = Swerve.getInstance();
                 Wrist.setInstance(new WristIOSim());
                 wrist = Wrist.getInstance();
                 Elevator.setInstance(new ElevatorIOSim());
                 elevator = Elevator.getInstance();
-                Swerve.setInstance(new SwerveIOSystem());
-                swerve = Swerve.getInstance();
                 
                 CoralRollers.setInstance(
                         new CoralRollersIOSim(swerve.getIo().getSwerveDrive().getMapleSimDrive().get()));

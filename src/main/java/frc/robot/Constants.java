@@ -35,6 +35,7 @@ import java.util.List;
  */
 public final class Constants {
     public static final Mode simMode = Mode.SIM;
+    public static final Mode realMode = Mode.REAL;
     public static final Mode currentMode = RobotBase.isReal() ? Mode.REAL : simMode;
     public static boolean isBlueAlliance = true;
     public static int NUM_LEDS;

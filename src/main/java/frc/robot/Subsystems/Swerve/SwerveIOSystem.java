@@ -168,6 +168,9 @@ public class SwerveIOSystem implements SwerveIO {
     @Override
     public void updateInputs(SwerveIOInputs inputs) {
         // TODO - Implement
+        if (swerve == null) {
+            swerve = Swerve.getInstance();
+        }
         inputs.pose = this.getPose();
         inputs.speeds = this.getSpeeds();
 
