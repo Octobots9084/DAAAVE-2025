@@ -344,7 +344,7 @@ public class AlignVision extends SubsystemBase {
 
                 // Makes sure the robot has space to drive to the target, if not don't move
                 // robot
-                if (tagRelativeToField.getX() > 0.6) {
+                if (tagRelativeToField.getX() > 0.3) {
                     refPosition = tagPos.get().relativeTo(fieldPosition);
                 }
             }
