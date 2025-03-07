@@ -215,10 +215,10 @@ public class AlignVision extends SubsystemBase {
 
         } else if (backCamResult != null && (state == AlignState.SourceLeft || state == AlignState.SourceRight)) {
             // If the back camera is not null, has a target and the target is the final tag
-            transformCameraToRobot = VisionConstants.transformBackMiddleToRobot;
+            transformCameraToRobot = VisionConstants.transformBackToRobot;
             return backCamResult;
         } else {
-            transformCameraToRobot = VisionConstants.transformBackMiddleToRobot;
+            transformCameraToRobot = VisionConstants.transformBackToRobot;
             return null;
         }
     }
