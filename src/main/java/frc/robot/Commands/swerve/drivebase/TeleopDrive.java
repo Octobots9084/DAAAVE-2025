@@ -25,7 +25,8 @@ public class TeleopDrive extends Command {
     /**
      * Creates a new ExampleCommand.
      *
-     * @param swerve The subsystem used by this command.
+     * @param swerve
+     *            The subsystem used by this command.
      */
     public TeleopDrive(DoubleSupplier vX, DoubleSupplier vY, DoubleSupplier omega) {
         this.vX = vX;
@@ -36,8 +37,7 @@ public class TeleopDrive extends Command {
 
     // Called when the command is initially scheduled.
     @Override
-    public void initialize() {
-    }
+    public void initialize() {}
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
@@ -45,12 +45,13 @@ public class TeleopDrive extends Command {
         // TODO 𓃕
         switch (swerveInstance.getDriveState()) {
             case Manual:
-                double[] speeds = MathUtil.circleVectorFromSquare(vX.getAsDouble(), vY.getAsDouble(), swerveInstance.getIo().getMaxSpeed());
+                // double[] speeds = MathUtil.circleVectorFromSquare(vX.getAsDouble(),
+                // vY.getAsDouble(), swerveInstance.getIo().getMaxSpeed());
                 Swerve.getInstance()
                         .driveFieldRelative(
                                 new ChassisSpeeds(
-                                        speeds[0],
-                                        speeds[1],
+                                        vX.getAsDouble() * swerveInstance.getIo().getMaxSpeed(),
+                                        vY.getAsDouble() * swerveInstance.getIo().getMaxSpeed(),
                                         omega.getAsDouble() * swerveInstance.getIo().getMaxTurnSpeed()));
                 break;
             case Reverse:

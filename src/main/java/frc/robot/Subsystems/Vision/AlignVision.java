@@ -108,10 +108,10 @@ public class AlignVision extends SubsystemBase {
         this.leftRange = new CANrange(13, "KrakensBus");
         this.rightRange = new CANrange(14, "KrakensBus");
         this.cameraXPIDController = new PIDController(2, 0, 0);
-        this.cameraYPIDController = new PIDController(8, 0, 0);
+        this.cameraYPIDController = new PIDController(2.5, 0, 0.25);
         this.lidarXPIDController = new PIDController(4, 0, 0);
         this.lidarRotationPIDController = new PIDController(10, 0, 0);
-        this.gyroRotationPIDController = new PIDController(0.4, 0, 0);
+        this.gyroRotationPIDController = new PIDController(4, 0, 0);
         this.gyroRotationPIDController.enableContinuousInput(0, 2 * Math.PI);
 
         this.paramsConfigs = new FovParamsConfigs();
@@ -151,15 +151,15 @@ public class AlignVision extends SubsystemBase {
     }
 
     public boolean TagIsInView(int targetTagID) {
-        //get the tag id of the best result for both camera
+        // get the tag id of the best result for both camera
         PhotonPipelineResult leftCamera = globalVision.inputs.frontLeftResult;
         PhotonPipelineResult rightCamera = globalVision.inputs.frontRightResult;
-        //if either camera can see the target tag return true
+        // if either camera can see the target tag return true
         if (rightCamera != null && rightCamera.hasTargets() && rightCamera.getBestTarget().getFiducialId() == targetTagID ||
                 leftCamera != null && leftCamera.hasTargets() && leftCamera.getBestTarget().getFiducialId() == targetTagID) {
             return true;
         }
-        //otherwise return false
+        // otherwise return false
         return false;
     }
 
@@ -172,7 +172,8 @@ public class AlignVision extends SubsystemBase {
         Transform3d rightBestTransform = null;
         Transform3d leftBestTransform = null;
 
-        // If the state is set of reef or processor, then check which is the best transform
+        // If the state is set of reef or processor, then check which is the best
+        // transform
         if (state == AlignState.Reef || state == AlignState.Processor) {
             // If the right camera is not null, has a target and the target is the final tag
             if (rightCamResult != null && rightCamResult.hasTargets() && rightCamResult.getBestTarget().getFiducialId() == finalTagID) {
@@ -236,7 +237,8 @@ public class AlignVision extends SubsystemBase {
 
     public ChassisSpeeds getAlignChassisSpeeds(AlignState state) {
 
-        if (swerve.getPreviousDriveState() != DriveState.AlignReef || swerve.getPreviousDriveState() != DriveState.AlignSource || swerve.getPreviousDriveState() != DriveState.AlignProcessor) {
+        if (swerve.getPreviousDriveState() != DriveState.AlignReef || swerve.getPreviousDriveState() != DriveState.AlignSource
+                || swerve.getPreviousDriveState() != DriveState.AlignProcessor) {
             isFirstTime = true;
             cameraXPIDController.reset();
             cameraYPIDController.reset();
@@ -311,7 +313,8 @@ public class AlignVision extends SubsystemBase {
                 ? calcOrientationOffset(selectedReefOrientation, selectedPoleSide, selectedLevel)
                 : 0;
 
-        // If the final result is null, then use global pose to get to the target without hitting the obstacles on the field
+        // If the final result is null, then use global pose to get to the target
+        // without hitting the obstacles on the field
         if (finalResult == null) {
             // Get the robot's current position
             Pose3d fieldPosition = new Pose3d(swerve.getPose());
@@ -319,16 +322,19 @@ public class AlignVision extends SubsystemBase {
             // Get the tag position from builtin tag layout
             Optional<Pose3d> tagPos = VisionConstants.kTagLayout.getTagPose(finalTagID);
 
-            // If the tag position is present, then get the relative position of the robot to the tag
+            // If the tag position is present, then get the relative position of the robot
+            // to the tag
             if (tagPos.isPresent()) {
                 Pose3d tagRelativeToField = fieldPosition.relativeTo(tagPos.get());
 
-                // Makes sure the robot has space to drive to the target, if not don't move robot
+                // Makes sure the robot has space to drive to the target, if not don't move
+                // robot
                 if (tagRelativeToField.getX() > 0.6) {
                     refPosition = tagPos.get().relativeTo(fieldPosition);
                 }
             }
-        } else { // If the final result is not null, then use the front cameras to get to the target
+        } else { // If the final result is not null, then use the front cameras to get to the
+                 // target
             refPosition = this.getReferenceRobotPosition(finalResult, transformCameraToRobot);
         }
 
@@ -336,23 +342,30 @@ public class AlignVision extends SubsystemBase {
         AlignOffset currentOffset = state == AlignState.Reef ? AlignOffset.values()[currentOffsetIndex] : null;
 
         try {
-            // If the reference position is not null and the turn angle is not the max value, then starts the calculations of the speeds
+            // If the reference position is not null and the turn angle is not the max
+            // value, then starts the calculations of the speeds
             if (refPosition != null && turnAngle != Integer.MAX_VALUE) {
-                if (Constants.isBlueAlliance && currentOffset != null) { // If the robot is on the blue alliance, then add the blue offset value to the target distance
+                if (Constants.isBlueAlliance && currentOffset != null) { // If the robot is on the blue alliance, then add the blue offset value to the
+                                                                         // target distance
                     targetDistance += currentOffset.getBlueOffsetValue();
-                } else if (!Constants.isBlueAlliance && currentOffset != null) { // If the robot is on the red alliance, then add the red offset value to the target distance
+                } else if (!Constants.isBlueAlliance && currentOffset != null) { // If the robot is on the red alliance, then add the red offset value to the
+                                                                                 // target distance
                     targetDistance += currentOffset.getRedOffsetValue();
                 }
 
-                if (state == AlignState.Reef) { // If the state is reef, then add the distance to the pole to the target distance
-                    if (selectedPoleSide == ReefTargetSide.LEFT) { // If the pole side is left, then add the distance to the pole to the target distance
+                if (state == AlignState.Reef) { // If the state is reef, then add the distance to the pole to the target
+                                                // distance
+                    if (selectedPoleSide == ReefTargetSide.LEFT) { // If the pole side is left, then add the distance to the pole to the target
+                                                                   // distance
                         targetDistance -= VisionConstants.distanceToPole;
-                    } else if (selectedPoleSide == ReefTargetSide.RIGHT) { // If the pole side is right, then subtract the distance to the pole from the target distance
+                    } else if (selectedPoleSide == ReefTargetSide.RIGHT) { // If the pole side is right, then subtract the distance to the pole from the
+                                                                           // target distance
                         targetDistance += VisionConstants.distanceToPole;
                     } else {
                         targetDistance = 0;
                     }
-                } else { // If the state is not reef, then add the distance to the pole to the target distance
+                } else { // If the state is not reef, then add the distance to the pole to the target
+                         // distance
                     targetDistance = 0;
                 }
 
@@ -383,7 +396,8 @@ public class AlignVision extends SubsystemBase {
                     turnSpeed = 0;
                 }
 
-            } else { // If the reference position is null or the turn angle is the max value, then set the x, y, and turn speeds to 0
+            } else { // If the reference position is null or the turn angle is the max value, then
+                     // set the x, y, and turn speeds to 0
                 ySpeed = 0;
                 xSpeed = 0;
                 turnSpeed = 0;
@@ -409,7 +423,8 @@ public class AlignVision extends SubsystemBase {
 
         if (state == AlignState.Reef) {
 
-            //Sets the correct tag ID and angles of alignment based on the alliance for Reef
+            // Sets the correct tag ID and angles of alignment based on the alliance for
+            // Reef
             switch (selectedReefOrientation) {
                 case AB:
                     finalTagID = Constants.isBlueAlliance ? 18 : 7;
@@ -433,13 +448,16 @@ public class AlignVision extends SubsystemBase {
                     return Integer.MAX_VALUE;
             }
         } else if (state == AlignState.Processor) {
-            //Sets the correct tag ID and angles of alignment based on the alliance for Processor
+            // Sets the correct tag ID and angles of alignment based on the alliance for
+            // Processor
             return finalAngles[6];
         } else if (state == AlignState.SourceRight) {
-            //Sets the correct tag ID and angles of alignment based on the alliance for SourceRight
+            // Sets the correct tag ID and angles of alignment based on the alliance for
+            // SourceRight
             return finalAngles[7];
         } else if (state == AlignState.SourceLeft) {
-            //Sets the correct tag ID and angles of alignment based on the alliance for SourceLeft
+            // Sets the correct tag ID and angles of alignment based on the alliance for
+            // SourceLeft
             return finalAngles[8];
         } else {
             return Integer.MAX_VALUE;
@@ -447,7 +465,8 @@ public class AlignVision extends SubsystemBase {
     }
 
     private double calculateXSpeed(double aveLidarDist, Pose3d refPosition) {
-        // If both lidars are valid, then use the lidar distance to calculate the x speed
+        // If both lidars are valid, then use the lidar distance to calculate the x
+        // speed
         if (this.areBothLidarsValid()) {
             // Check if the robot x position is in tolerance for the target x position
             xInTolerance = MathUtil.isNear(aveLidarDist, VisionConstants.maxLidarDepthDistance, 0.03);
@@ -456,7 +475,8 @@ public class AlignVision extends SubsystemBase {
             // Calculate the x speed for the robot to align with the target
             return -lidarXPIDController.calculate(aveLidarDist, VisionConstants.maxLidarDepthDistance);
 
-        } else { // If both lidars are not valid, then use the camera distance to calculate the x speed
+        } else { // If both lidars are not valid, then use the camera distance to calculate the x
+                 // speed
             // Check if the robot x position is in tolerance for the target x position
             xInTolerance = MathUtil.isNear(refPosition.getX(), VisionConstants.maxCameraDepthDistance, 0.03);
 
@@ -467,7 +487,8 @@ public class AlignVision extends SubsystemBase {
     }
 
     private double calculateTurnSpeed(double diffLidarDist, Pose3d refPosition) {
-        // If both lidars are valid, then use the lidar distance to calculate the turn speed
+        // If both lidars are valid, then use the lidar distance to calculate the turn
+        // speed
         if (this.areBothLidarsValid()) {
             // Check if the robot rotation is in tolerance for the target rotation
             rotInTolerance = MathUtil.isNear(diffLidarDist, 0, 0.01);

@@ -41,7 +41,6 @@ public final class Constants {
     public static int NUM_LEDS;
     public static double LOOP_TIME = 0.02;
 
-
     public static enum Mode {
         /** Running on a real robot. */
         REAL,
@@ -77,16 +76,16 @@ public final class Constants {
 
         // Transform Camera Coordinates to Robot Coordinates. Based on camera mounting
         // position.
-        public static final Transform3d transformFrontLeftToRobot = new Transform3d(0.13, 0.32, 0.2921,
+        public static final Transform3d transformFrontLeftToRobot = new Transform3d(0.13, 0.31, 0.28,
                 new Rotation3d(0, 0, Math.toRadians(-25)));
 
-        public static final Transform3d transformFrontRightToRobot = new Transform3d(0.13, -0.32, 0.2921,
+        public static final Transform3d transformFrontRightToRobot = new Transform3d(0.13, -0.31, 0.28,
                 new Rotation3d(0, 0, Math.toRadians(25)));
 
-        public static final Transform3d transformMiddleRightToRobot = new Transform3d(0.08, -0.255, 0.59,
+        public static final Transform3d transformMiddleRightToRobot = new Transform3d(0.0762, -0.273, 0.609,
                 new Rotation3d(0, 0, Math.toRadians(-90)));
 
-        public static final Transform3d transformMiddleLeftToRobot = new Transform3d(0.08, 0.255, 0.59,
+        public static final Transform3d transformMiddleLeftToRobot = new Transform3d(0.0762, 0.273, 0.609,
                 new Rotation3d(0, 0, Math.toRadians(90)));
 
         public static final Transform3d transformBackToRobot = new Transform3d(0.0, 0.0, 1.0, new Rotation3d(0, 0, Math.toRadians(180)));
