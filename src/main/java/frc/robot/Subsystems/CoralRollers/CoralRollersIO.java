@@ -46,5 +46,4 @@ public interface CoralRollersIO {
         return false;
     }
 
-    public void setCurrentLimit(double current);
 }

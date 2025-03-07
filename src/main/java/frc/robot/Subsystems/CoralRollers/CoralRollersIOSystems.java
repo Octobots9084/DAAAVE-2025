@@ -29,7 +29,7 @@ public class CoralRollersIOSystems implements CoralRollersIO {
         config = new SparkMaxConfig();
         config.inverted(false);
         config.idleMode(IdleMode.kBrake);
-        config.smartCurrentLimit(30, 10);
+        config.smartCurrentLimit(40, 10);
         motor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         motor.setPeriodicFrameTimeout(30);
         motor.setCANTimeout(30);
@@ -77,24 +77,24 @@ public class CoralRollersIOSystems implements CoralRollersIO {
 
     @Override
     public boolean HasCoral() {
-        boolean coral = clawFrontSensor.getDistance().getValueAsDouble() < 0.1;
-        SmartDashboard.putBoolean("HasCoral", coral);
+        boolean coral = clawBackSensorTriggered() || clawFrontSensorTriggered();
+        // SmartDashboard.putBoolean("HasCoral", coral);
         return coral;
     }
 
     @Override
     public boolean clawFrontSensorTriggered() {
-        return clawFrontSensor.getDistance().getValueAsDouble() < 0.1;
+        return clawFrontSensor.getDistance().getValueAsDouble() < 0.07;
     }
 
     @Override
     public boolean clawBackSensorTriggered() {
-        return clawBackSensor.getDistance().getValueAsDouble() < 0.1;
+        return clawBackSensor.getDistance().getValueAsDouble() < 0.07;
     }
 
     @Override
     public boolean isStalled() {
-        return motor.getWarnings().stall;
+        return motor.getOutputCurrent() > 35;
     }
 
 }

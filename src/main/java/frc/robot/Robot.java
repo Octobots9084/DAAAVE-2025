@@ -120,7 +120,7 @@ public class Robot extends LoggedRobot {
             Light.getInstance().candleOff();
         Elevator.getInstance().setTargetState(ElevatorStates.LEVEL1);
         Elevator.getInstance().setState(ElevatorStates.LEVEL1);
-        Wrist.getInstance().setState(WristStates.L1, ClosedLoopSlot.kSlot0);
+        Wrist.getInstance().setState(WristStates.INTAKE, ClosedLoopSlot.kSlot0);
     }
 
     /** This function is called periodically when disabled. */
