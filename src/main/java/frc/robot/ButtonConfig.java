@@ -68,7 +68,7 @@ public class ButtonConfig {
                 () -> {
                     return CoralRollers.getInstance().HasCoral();
                 }));
-        driverRight.button(2).whileTrue(new AlignCollect().onlyIf(
+        driverRight.button(2).whileTrue(new AlignSource().onlyIf(
                 () -> {
                     return !CoralRollers.getInstance().HasCoral();
                 }));
@@ -148,6 +148,7 @@ public class ButtonConfig {
 
         // Reef mode active (Switch 20)
         // Reef selection
+        coDriverButtons.button(20).onTrue(new SetWristState(WristStates.L1, ClosedLoopSlot.kSlot0));
         coDriverButtons.button(10).and(coDriverButtons.button(20).negate()).onTrue(new ReefLevelSelection(4));
         coDriverButtons.button(12).and(coDriverButtons.button(20).negate()).onTrue(new ReefLevelSelection(3));
         coDriverButtons.button(14).and(coDriverButtons.button(20).negate()).onTrue(new ReefLevelSelection(2));
