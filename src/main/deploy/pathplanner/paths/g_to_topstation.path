@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 1.7151136363636363,
-        "y": 7.3405539772727275
+        "x": 1.798,
+        "y": 7.17307169441734
       },
       "prevControl": {
-        "x": 2.6662751517053396,
-        "y": 5.590752952632372
+        "x": 2.7491615153417035,
+        "y": 5.423270669776985
       },
       "nextControl": null,
       "isLocked": false,
@@ -42,7 +42,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -42.05989977621661
+    "rotation": -55.0
   },
   "reversed": false,
   "folder": "place_to_topstation",

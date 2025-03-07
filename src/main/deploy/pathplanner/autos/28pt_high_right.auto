@@ -11,9 +11,21 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "placeI"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "i_to_topstation"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "AlignCollect"
           }
         },
         {
@@ -23,9 +35,21 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "placeJ"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "j_to_topstation"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "AlignCollect"
           }
         },
         {
@@ -35,15 +59,33 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "placeK"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "k_to_topstation"
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "AlignCollect"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "topstation_to_l"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "placeL"
           }
         }
       ]
