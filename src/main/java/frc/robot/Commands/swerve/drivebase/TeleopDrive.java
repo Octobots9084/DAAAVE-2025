@@ -44,6 +44,8 @@ public class TeleopDrive extends Command {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
+        int negative = Constants.isBlueAlliance ? -1 : 1;
+
         // TODO 𓃕
         switch (swerveInstance.getDriveState()) {
             case Manual:
@@ -52,8 +54,8 @@ public class TeleopDrive extends Command {
                 Swerve.getInstance()
                         .driveFieldRelative(
                                 new ChassisSpeeds(
-                                        vX.getAsDouble() * swerveInstance.getIo().getMaxSpeed(),
-                                        vY.getAsDouble() * swerveInstance.getIo().getMaxSpeed(),
+                                        negative * vX.getAsDouble() * swerveInstance.getIo().getMaxSpeed(),
+                                        negative * vY.getAsDouble() * swerveInstance.getIo().getMaxSpeed(),
                                         omega.getAsDouble() * swerveInstance.getIo().getMaxTurnSpeed()));
                 break;
             case Reverse:
@@ -66,10 +68,10 @@ public class TeleopDrive extends Command {
             case AlignSource:
                 if (Constants.isInAuto && !AlignSourceAuto.getInstance().wrenchControlFromDriversForSourceAlign()) {
                     // swerveInstance.driveFieldRelative(
-                    //         new ChassisSpeeds(
-                    //                 vX.getAsDouble() * swerveInstance.getIo().getMaxSpeed(),
-                    //                 vY.getAsDouble() * swerveInstance.getIo().getMaxSpeed(),
-                    //                 AlignSourceAuto.getInstance().getAlignChassisSpeeds().omegaRadiansPerSecond));
+                    // new ChassisSpeeds(
+                    // vX.getAsDouble() * swerveInstance.getIo().getMaxSpeed(),
+                    // vY.getAsDouble() * swerveInstance.getIo().getMaxSpeed(),
+                    // AlignSourceAuto.getInstance().getAlignChassisSpeeds().omegaRadiansPerSecond));
                     alignSourceAutoChassisSpeeds = AlignSourceAuto.getInstance().getAlignChassisSpeeds();
                     swerveInstance.driveRobotRelative(
                             new ChassisSpeeds(
@@ -84,8 +86,8 @@ public class TeleopDrive extends Command {
                 Swerve.getInstance()
                         .driveFieldRelative(
                                 new ChassisSpeeds(
-                                        vX.getAsDouble() * swerveInstance.getIo().getMaxSpeed(),
-                                        vY.getAsDouble() * swerveInstance.getIo().getMaxSpeed(),
+                                        negative * vX.getAsDouble() * swerveInstance.getIo().getMaxSpeed(),
+                                        negative * vY.getAsDouble() * swerveInstance.getIo().getMaxSpeed(),
                                         omega.getAsDouble() * swerveInstance.getIo().getMaxTurnSpeed()));
                 break;
         }

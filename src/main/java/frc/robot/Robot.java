@@ -16,6 +16,8 @@ package frc.robot;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -30,6 +32,8 @@ import frc.robot.Subsystems.Swerve.Swerve.DriveState;
 import frc.robot.Subsystems.Vision.AlignVision;
 import frc.robot.Subsystems.Vision.VisionSubsystem;
 import frc.robot.Subsystems.Wrist.*;
+
+import java.util.Optional;
 
 import org.ironmaple.simulation.SimulatedArena;
 import org.littletonrobotics.junction.LogFileUtil;
@@ -105,6 +109,7 @@ public class Robot extends LoggedRobot {
     public void robotInit() {
         robotContainer = new RobotContainer();
         Swerve.getInstance().zeroGyro();
+
     }
 
     /** This function is called periodically during all modes. */
@@ -121,11 +126,23 @@ public class Robot extends LoggedRobot {
         Elevator.getInstance().setTargetState(ElevatorStates.LEVEL1);
         Elevator.getInstance().setState(ElevatorStates.LEVEL1);
         Wrist.getInstance().setState(WristStates.INTAKE, ClosedLoopSlot.kSlot0);
+
     }
 
     /** This function is called periodically when disabled. */
     @Override
-    public void disabledPeriodic() {}
+    public void disabledPeriodic() {
+        Optional<Alliance> ally = DriverStation.getAlliance();
+        if (ally.isPresent()) {
+            if (ally.get() == Alliance.Red) {
+                Constants.isBlueAlliance = false;
+            }
+            if (ally.get() == Alliance.Blue) {
+                Constants.isBlueAlliance = true;
+            }
+        }
+        SmartDashboard.putBoolean("IsBlueAlliance", Constants.isBlueAlliance);
+    }
 
     /**
      * This autonomous runs the autonomous command selected by your

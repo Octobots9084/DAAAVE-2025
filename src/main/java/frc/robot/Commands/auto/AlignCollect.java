@@ -41,7 +41,7 @@ public class AlignCollect extends Command {
         if (Constants.currentMode == Constants.simMode) {
             return true;
         }
-        return CoralRollers.getInstance().HasCoral();
+        return CoralRollers.getInstance().clawFrontSensorTriggered();
     }
 
     @Override

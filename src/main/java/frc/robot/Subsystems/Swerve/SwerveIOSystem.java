@@ -42,7 +42,7 @@ public class SwerveIOSystem implements SwerveIO {
     private Field2d field = new Field2d();
 
     public SwerveIOSystem() {
-        SwerveDriveTelemetry.verbosity = TelemetryVerbosity.HIGH;
+        SwerveDriveTelemetry.verbosity = TelemetryVerbosity.MACHINE;
         try {
             swerveDrive = new SwerveParser(swerveJsonDirectory)
                     .createSwerveDrive(maximumSpeed, new Pose2d(3.1, 4, new Rotation2d(0)));

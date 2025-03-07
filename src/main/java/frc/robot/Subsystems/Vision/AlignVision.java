@@ -93,7 +93,7 @@ public class AlignVision extends SubsystemBase {
      * is for the right source, and the ninth is for the left source.
      */
     private final int[] blueAlignAngles = { 0, 60, 120, 180, -120, -60, -90, 45, -45 };
-    private final int[] redAlignAngles = { 180, 240, 300, 0, 60, 120, 90, -135, 135 };
+    private final int[] redAlignAngles = { 180, 240, 300, 0, 60, 120, 90, 135, 135 };
 
     int[] finalAngles = null;
 
@@ -107,7 +107,6 @@ public class AlignVision extends SubsystemBase {
         this.globalVision = VisionSubsystem.getInstance();
 
         // Choose the correct angles based on the alliance
-        this.finalAngles = Constants.isBlueAlliance ? blueAlignAngles : redAlignAngles;
 
         this.leftRange = new CANrange(13, "KrakensBus");
         this.rightRange = new CANrange(14, "KrakensBus");
@@ -246,6 +245,7 @@ public class AlignVision extends SubsystemBase {
     }
 
     public ChassisSpeeds getAlignChassisSpeeds(AlignState state) {
+        this.finalAngles = Constants.isBlueAlliance ? blueAlignAngles : redAlignAngles;
 
         if (swerve.getPreviousDriveState() != DriveState.AlignReef || swerve.getPreviousDriveState() != DriveState.AlignSource
                 || swerve.getPreviousDriveState() != DriveState.AlignProcessor) {
@@ -435,7 +435,7 @@ public class AlignVision extends SubsystemBase {
     }
 
     public int handleTurnAngle(AlignState state) {
-
+        SmartDashboard.putString("selectedReefOrientation", selectedReefOrientation.toString());
         if (state == AlignState.Reef) {
 
             // Sets the correct tag ID and angles of alignment based on the alliance for
@@ -468,11 +468,13 @@ public class AlignVision extends SubsystemBase {
             return finalAngles[6];
         } else if (state == AlignState.SourceRight) {
             finalTagID = Constants.isBlueAlliance ? 12 : 2;
-            //Sets the correct tag ID and angles of alignment based on the alliance for SourceRight
+            // Sets the correct tag ID and angles of alignment based on the alliance for
+            // SourceRight
             return finalAngles[7];
         } else if (state == AlignState.SourceLeft) {
             finalTagID = Constants.isBlueAlliance ? 13 : 1;
-            //Sets the correct tag ID and angles of alignment based on the alliance for SourceLeft
+            // Sets the correct tag ID and angles of alignment based on the alliance for
+            // SourceLeft
             return finalAngles[8];
         } else {
             return Integer.MAX_VALUE;
@@ -543,10 +545,12 @@ public class AlignVision extends SubsystemBase {
         // Get the distance to the left and right sources
         double[] distanceToSources = getDistanceToSources();
 
-        // If the distance to the left source is less than the distance to the right source, then return the left source
+        // If the distance to the left source is less than the distance to the right
+        // source, then return the left source
         if (distanceToSources[0] < distanceToSources[1]) {
             return AlignState.SourceLeft;
-        } else { // If the distance to the right source is less than the distance to the left source, then return the right source
+        } else { // If the distance to the right source is less than the distance to the left
+                 // source, then return the right source
             return AlignState.SourceRight;
         }
     }
