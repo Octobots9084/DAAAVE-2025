@@ -29,7 +29,7 @@ public class CoralRollersIOSystems implements CoralRollersIO {
         config = new SparkMaxConfig();
         config.inverted(false);
         config.idleMode(IdleMode.kBrake);
-        config.smartCurrentLimit(20, 10);
+        config.smartCurrentLimit(30, 10);
         motor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         motor.setPeriodicFrameTimeout(30);
         motor.setCANTimeout(30);

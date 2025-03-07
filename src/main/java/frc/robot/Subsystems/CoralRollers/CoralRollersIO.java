@@ -45,4 +45,6 @@ public interface CoralRollersIO {
     public default boolean isStalled() {
         return false;
     }
+
+    public void setCurrentLimit(double current);
 }

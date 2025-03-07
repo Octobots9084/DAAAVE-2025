@@ -52,7 +52,7 @@ public class VisionCamera implements Runnable {
     private final AtomicReference<Matrix<N3, N1>> atomicStdDev = new AtomicReference<Matrix<N3, N1>>();
     private final AtomicReference<PhotonPipelineResult> atomicPhotonResult = new AtomicReference<PhotonPipelineResult>();
 
-    // private PhotonPipelineResult latestResult;
+    private PhotonPipelineResult latestResult;
 
     public VisionCamera(String photonCameraName, Transform3d robotToCamera) {
         camera = new PhotonCamera(photonCameraName);
@@ -62,28 +62,28 @@ public class VisionCamera implements Runnable {
         photonEstimator.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);
     }
 
-    // public Optional<EstimatedRobotPose> getEstimatedGlobalPose() {
-    //     Optional<EstimatedRobotPose> visionEst = Optional.empty();
-    //     List<PhotonPipelineResult> unreadResults = camera.getAllUnreadResults();
-
-    //     if (!unreadResults.isEmpty()) {
-    //         latestResult = unreadResults.get(unreadResults.size() - 1);
-    //         atomicPhotonResult.set(latestResult);
-    //         visionEst = photonEstimator.update(latestResult);
-    //         updateEstimationStdDevs(visionEst, latestResult.getTargets());
-    //     }
-
-    //     return visionEst;
-    // }
-
     public Optional<EstimatedRobotPose> getEstimatedGlobalPose() {
         Optional<EstimatedRobotPose> visionEst = Optional.empty();
-        for (var change : camera.getAllUnreadResults()) {
-            visionEst = photonEstimator.update(change);
-            updateEstimationStdDevs(visionEst, change.getTargets());
+        List<PhotonPipelineResult> unreadResults = camera.getAllUnreadResults();
+
+        if (!unreadResults.isEmpty()) {
+            latestResult = unreadResults.get(unreadResults.size() - 1);
+            atomicPhotonResult.set(latestResult);
+            visionEst = photonEstimator.update(latestResult);
+            updateEstimationStdDevs(visionEst, latestResult.getTargets());
         }
+
         return visionEst;
     }
+
+    // public Optional<EstimatedRobotPose> getEstimatedGlobalPose() {
+    // Optional<EstimatedRobotPose> visionEst = Optional.empty();
+    // for (var change : camera.getAllUnreadResults()) {
+    // visionEst = photonEstimator.update(change);
+    // updateEstimationStdDevs(visionEst, change.getTargets());
+    // }
+    // return visionEst;
+    // }
 
     public boolean isConnected() {
         return camera.isConnected();
@@ -113,11 +113,15 @@ public class VisionCamera implements Runnable {
     }
 
     /**
-     * Calculates new standard deviations This algorithm is a heuristic that creates dynamic standard
-     * deviations based on number of tags, estimation strategy, and distance from the tags.
+     * Calculates new standard deviations This algorithm is a heuristic that creates
+     * dynamic standard
+     * deviations based on number of tags, estimation strategy, and distance from
+     * the tags.
      *
-     * @param estimatedPose The estimated pose to guess standard deviations for.
-     * @param targets All targets in this camera frame
+     * @param estimatedPose
+     *            The estimated pose to guess standard deviations for.
+     * @param targets
+     *            All targets in this camera frame
      */
     private void updateEstimationStdDevs(
             Optional<EstimatedRobotPose> estimatedPose, List<PhotonTrackedTarget> targets) {
@@ -175,7 +179,8 @@ public class VisionCamera implements Runnable {
     /**
      * Returns the latest standard deviations of the estimated pose from {@link
      * #getEstimatedGlobalPose()}, for use with {@link
-     * edu.wpi.first.math.estimator.SwerveDrivePoseEstimator SwerveDrivePoseEstimator}. This should
+     * edu.wpi.first.math.estimator.SwerveDrivePoseEstimator
+     * SwerveDrivePoseEstimator}. This should
      * only be used when there are targets visible.
      */
     public Matrix<N3, N1> getEstimationStdDevs() {
