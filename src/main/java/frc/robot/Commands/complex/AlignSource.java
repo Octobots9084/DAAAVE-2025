@@ -8,17 +8,23 @@ import frc.robot.Subsystems.Swerve.Swerve.DriveState;
 
 public class AlignSource extends Command {
 
-  Swerve swerve = Swerve.getInstance();
+    Swerve swerve = Swerve.getInstance();
 
-  @Override
-  public void initialize() {
-    swerve.setDriveState(DriveState.AlignSource);
-    CommandScheduler.getInstance().schedule(new Intake());
-  }
+    @Override
+    public void initialize() {
+        swerve.setDriveState(DriveState.AlignSource);
+        CommandScheduler.getInstance().schedule(new Intake());
+    }
 
-  @Override
-  public boolean isFinished() {
-    // if the coral is inside the robot return true
-    return CoralRollers.getInstance().HasCoral();
-  }
+    @Override
+    public boolean isFinished() {
+        // if the coral is inside the robot return true
+        return CoralRollers.getInstance().HasCoral();
+    }
+
+    @Override
+    public void end(boolean interrupted) {
+        swerve.setDriveState(DriveState.Manual);
+
+    }
 }
