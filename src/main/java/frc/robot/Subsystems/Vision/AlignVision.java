@@ -36,6 +36,7 @@ import frc.robot.Subsystems.Swerve.Swerve.DriveState;
 
 import java.util.Optional;
 
+import org.littletonrobotics.junction.Logger;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
@@ -345,9 +346,9 @@ public class AlignVision extends SubsystemBase {
 
                 if (state == AlignState.Reef) { // If the state is reef, then add the distance to the pole to the target distance
                     if (selectedPoleSide == ReefTargetSide.LEFT) { // If the pole side is left, then add the distance to the pole to the target distance
-                        targetDistance += VisionConstants.distanceToPole;
-                    } else if (selectedPoleSide == ReefTargetSide.RIGHT) { // If the pole side is right, then subtract the distance to the pole from the target distance
                         targetDistance -= VisionConstants.distanceToPole;
+                    } else if (selectedPoleSide == ReefTargetSide.RIGHT) { // If the pole side is right, then subtract the distance to the pole from the target distance
+                        targetDistance += VisionConstants.distanceToPole;
                     } else {
                         targetDistance = 0;
                     }
@@ -356,16 +357,20 @@ public class AlignVision extends SubsystemBase {
                 }
 
                 if (isFirstTime) { // If it is the first time, then set the x, y, and turn speeds to 0
-                    ySetpoint = new TrapezoidProfile.State(-refPosition.getY(), 0);
+                    ySetpoint = new TrapezoidProfile.State(refPosition.getY(), 0);
                     yGoal = new TrapezoidProfile.State(targetDistance, 0);
                 }
 
                 // Check if the robot y position is in tolerance for the target y rotation
-                yInTolerance = MathUtil.isNear(-refPosition.getY(), targetDistance, 0.03);
+                Logger.recordOutput("Vision/RefX", refPosition.getX());
+                Logger.recordOutput("Vision/RefY", refPosition.getY());
+                Logger.recordOutput("Vision/TargetY", targetDistance);
+                yInTolerance = MathUtil.isNear(refPosition.getY(), targetDistance, 0.03);
                 ySetpoint = yProfile.calculate(deltaTime, ySetpoint, yGoal);
+                Logger.recordOutput("Vision/SetPointY", ySetpoint.position);
 
                 // Calculate the speeds for the robot to align with the target
-                ySpeed = cameraYPIDController.calculate(-refPosition.getY(), ySetpoint.position);
+                ySpeed = -cameraYPIDController.calculate(refPosition.getY(), targetDistance);
 
                 // Calculate the x and turn speeds for the robot to align with the target
                 xSpeed = this.calculateXSpeed(aveLidarDist, refPosition);
@@ -392,6 +397,7 @@ public class AlignVision extends SubsystemBase {
 
         // Return the calculated speeds for the robot to align with the target
         return new ChassisSpeeds(xSpeed, ySpeed, turnSpeed);
+        // return new ChassisSpeeds(0, ySpeed, 0);
     }
 
     private int calcOrientationOffset(ReefTargetOrientation orientation, ReefTargetSide side, ElevatorStates level) {
@@ -445,6 +451,7 @@ public class AlignVision extends SubsystemBase {
         if (this.areBothLidarsValid()) {
             // Check if the robot x position is in tolerance for the target x position
             xInTolerance = MathUtil.isNear(aveLidarDist, VisionConstants.maxLidarDepthDistance, 0.03);
+            Logger.recordOutput("Vision/AvgLidarDistance", aveLidarDist);
 
             // Calculate the x speed for the robot to align with the target
             return -lidarXPIDController.calculate(aveLidarDist, VisionConstants.maxLidarDepthDistance);
