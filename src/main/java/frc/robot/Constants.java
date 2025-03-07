@@ -37,6 +37,7 @@ public final class Constants {
     public static final Mode simMode = Mode.SIM;
     public static final Mode realMode = Mode.REAL;
     public static final Mode currentMode = RobotBase.isReal() ? Mode.REAL : simMode;
+    public static boolean isInAuto = true;
     public static boolean isBlueAlliance = true;
     public static int NUM_LEDS;
     public static double LOOP_TIME = 0.02;
@@ -96,8 +97,11 @@ public final class Constants {
         // Constant Distance from Tag to Pole (6in in meters)
         public static final double distanceToPole = 0.164;
 
-        // Max Depth Distance of Lidar from Tag (Meters)
-        public static final double maxLidarDepthDistance = 0.22;
+        // Max Depth Distance of Front Lidar from Tag (Meters)
+        public static final double maxFrontLidarDepthDistance = 0.22;
+
+        // Max Depth Distance of Back Lidar from Tag (Meters)
+        public static final double maxBackLidarDepthDistance = 0.55;
 
         // Max Depth Distance of Camera from Tag (Meters)
         public static final double maxCameraDepthDistance = 0.65;
