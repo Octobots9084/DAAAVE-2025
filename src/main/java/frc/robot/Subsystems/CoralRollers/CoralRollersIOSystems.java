@@ -47,6 +47,7 @@ public class CoralRollersIOSystems implements CoralRollersIO {
         // TODO change 100
         inputs.isIntaking = this.IsIntaking();
         inputs.hasCoral = this.HasCoral();
+        inputs.temperature = motor.getMotorTemperature();
 
         inputs.coralMeasureDist = clawFrontSensor.getDistance().getValueAsDouble();
     }
