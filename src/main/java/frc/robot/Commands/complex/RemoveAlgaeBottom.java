@@ -13,9 +13,8 @@ import frc.robot.Subsystems.Wrist.WristStates;
 public class RemoveAlgaeBottom extends SequentialCommandGroup {
     public RemoveAlgaeBottom() {
         addCommands(
-            new SetWristStateTolerance(WristStates.ALGAEREMOVAL, 0.05, ClosedLoopSlot.kSlot0),
-            new SetElevatorStateTolerance(ElevatorStates.LOW, 1.5),
-            new SetCoralRollersState(CoralRollersState.AlGAEOUTPUT)
-        );
+                new SetWristStateTolerance(WristStates.ALGAEREMOVAL, 0.05, ClosedLoopSlot.kSlot0),
+                new SetElevatorStateTolerance(ElevatorStates.LOW, 1.5),
+                new SetCoralRollersState(CoralRollersState.ALGAEINTAKING));
     }
 }

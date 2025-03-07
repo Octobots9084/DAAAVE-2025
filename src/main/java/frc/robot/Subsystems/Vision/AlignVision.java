@@ -108,7 +108,7 @@ public class AlignVision extends SubsystemBase {
         this.leftRange = new CANrange(13, "KrakensBus");
         this.rightRange = new CANrange(14, "KrakensBus");
         this.cameraXPIDController = new PIDController(2, 0, 0);
-        this.cameraYPIDController = new PIDController(2.5, 0, 0.25);
+        this.cameraYPIDController = new PIDController(2.5, 0, 0);
         this.lidarXPIDController = new PIDController(4, 0, 0);
         this.lidarRotationPIDController = new PIDController(10, 0, 0);
         this.gyroRotationPIDController = new PIDController(4, 0, 0);
@@ -126,27 +126,27 @@ public class AlignVision extends SubsystemBase {
         rightRange.getConfigurator().apply(configuration);
         leftRange.getConfigurator().apply(configuration);
 
-        SmartDashboard.putNumber("AlignVision/PIDS/CameraXPID",
-                this.cameraXPIDController.getP());
-        SmartDashboard.putNumber("AlignVision/PIDS/CameraYPID",
-                this.cameraYPIDController.getP());
-        SmartDashboard.putNumber("AlignVision/PIDS/LidarXPID",
-                this.lidarXPIDController.getP());
-        SmartDashboard.putNumber("AlignVision/PIDS/LidarRotPID",
-                this.lidarRotationPIDController.getP());
-        SmartDashboard.putNumber("AlignVision/PIDS/GyroRotPID",
-                this.gyroRotationPIDController.getP());
+        // SmartDashboard.putNumber("AlignVision/PIDS/CameraXPID",
+        // this.cameraXPIDController.getP());
+        // SmartDashboard.putNumber("AlignVision/PIDS/CameraYPID",
+        // this.cameraYPIDController.getP());
+        // SmartDashboard.putNumber("AlignVision/PIDS/LidarXPID",
+        // this.lidarXPIDController.getP());
+        // SmartDashboard.putNumber("AlignVision/PIDS/LidarRotPID",
+        // this.lidarRotationPIDController.getP());
+        // SmartDashboard.putNumber("AlignVision/PIDS/GyroRotPID",
+        // this.gyroRotationPIDController.getP());
 
-        SmartDashboard.putNumber("AlignVision/PIDS/CameraXPID D",
-                this.cameraXPIDController.getD());
-        SmartDashboard.putNumber("AlignVision/PIDS/CameraYPID D",
-                this.cameraYPIDController.getD());
-        SmartDashboard.putNumber("AlignVision/PIDS/LidarXPID D",
-                this.lidarXPIDController.getD());
-        SmartDashboard.putNumber("AlignVision/PIDS/LidarRotPID D",
-                this.lidarRotationPIDController.getD());
-        SmartDashboard.putNumber("AlignVision/PIDS/GyroRotPID D",
-                this.gyroRotationPIDController.getD());
+        // SmartDashboard.putNumber("AlignVision/PIDS/CameraXPID D",
+        // this.cameraXPIDController.getD());
+        // SmartDashboard.putNumber("AlignVision/PIDS/CameraYPID D",
+        // this.cameraYPIDController.getD());
+        // SmartDashboard.putNumber("AlignVision/PIDS/LidarXPID D",
+        // this.lidarXPIDController.getD());
+        // SmartDashboard.putNumber("AlignVision/PIDS/LidarRotPID D",
+        // this.lidarRotationPIDController.getD());
+        // SmartDashboard.putNumber("AlignVision/PIDS/GyroRotPID D",
+        // this.gyroRotationPIDController.getD());
 
     }
 
@@ -256,49 +256,54 @@ public class AlignVision extends SubsystemBase {
         // Get the best result from the global vision
         finalResult = getBestResult(state);
 
-        this.cameraXPIDController.setP(SmartDashboard.getNumber("AlignVision/PIDS/CameraXPID",
-                this.cameraXPIDController.getP()));
-        this.cameraYPIDController.setP(SmartDashboard.getNumber("AlignVision/PIDS/CameraYPID",
-                this.cameraYPIDController.getP()));
-        this.lidarXPIDController.setP(SmartDashboard.getNumber("AlignVision/PIDS/LidarXPID",
-                this.lidarXPIDController.getP()));
-        this.lidarRotationPIDController.setP(SmartDashboard.getNumber("AlignVision/PIDS/LidarRotPID",
-                this.lidarRotationPIDController.getP()));
-        this.gyroRotationPIDController.setP(SmartDashboard.getNumber("AlignVision/PIDS/GyroRotPID",
-                this.gyroRotationPIDController.getP()));
+        // this.cameraXPIDController.setP(SmartDashboard.getNumber("AlignVision/PIDS/CameraXPID",
+        // this.cameraXPIDController.getP()));
+        // this.cameraYPIDController.setP(SmartDashboard.getNumber("AlignVision/PIDS/CameraYPID",
+        // this.cameraYPIDController.getP()));
+        // this.lidarXPIDController.setP(SmartDashboard.getNumber("AlignVision/PIDS/LidarXPID",
+        // this.lidarXPIDController.getP()));
+        // this.lidarRotationPIDController.setP(SmartDashboard.getNumber("AlignVision/PIDS/LidarRotPID",
+        // this.lidarRotationPIDController.getP()));
+        // this.gyroRotationPIDController.setP(SmartDashboard.getNumber("AlignVision/PIDS/GyroRotPID",
+        // this.gyroRotationPIDController.getP()));
 
-        this.cameraXPIDController.setD(SmartDashboard.getNumber("AlignVision/PIDS/CameraXPID D",
-                this.cameraXPIDController.getD()));
-        this.cameraYPIDController.setD(SmartDashboard.getNumber("AlignVision/PIDS/CameraYPID D",
-                this.cameraYPIDController.getD()));
-        this.lidarXPIDController.setD(SmartDashboard.getNumber("AlignVision/PIDS/LidarXPID D",
-                this.lidarXPIDController.getD()));
-        this.lidarRotationPIDController.setD(SmartDashboard.getNumber("AlignVision/PIDS/LidarRotPID D",
-                this.lidarRotationPIDController.getD()));
-        this.gyroRotationPIDController.setD(SmartDashboard.getNumber("AlignVision/PIDS/GyroRotPID D",
-                this.gyroRotationPIDController.getD()));
+        // this.cameraXPIDController.setD(SmartDashboard.getNumber("AlignVision/PIDS/CameraXPID
+        // D",
+        // this.cameraXPIDController.getD()));
+        // this.cameraYPIDController.setD(SmartDashboard.getNumber("AlignVision/PIDS/CameraYPID
+        // D",
+        // this.cameraYPIDController.getD()));
+        // this.lidarXPIDController.setD(SmartDashboard.getNumber("AlignVision/PIDS/LidarXPID
+        // D",
+        // this.lidarXPIDController.getD()));
+        // this.lidarRotationPIDController.setD(SmartDashboard.getNumber("AlignVision/PIDS/LidarRotPID
+        // D",
+        // this.lidarRotationPIDController.getD()));
+        // this.gyroRotationPIDController.setD(SmartDashboard.getNumber("AlignVision/PIDS/GyroRotPID
+        // D",
+        // this.gyroRotationPIDController.getD()));
 
-        SmartDashboard.putNumber("AlignVision/PIDS/CameraXPID",
-                this.cameraXPIDController.getP());
-        SmartDashboard.putNumber("AlignVision/PIDS/CameraYPID",
-                this.cameraYPIDController.getP());
-        SmartDashboard.putNumber("AlignVision/PIDS/LidarXPID",
-                this.lidarXPIDController.getP());
-        SmartDashboard.putNumber("AlignVision/PIDS/LidarRotPID",
-                this.lidarRotationPIDController.getP());
-        SmartDashboard.putNumber("AlignVision/PIDS/GyroRotPID",
-                this.gyroRotationPIDController.getP());
+        // SmartDashboard.putNumber("AlignVision/PIDS/CameraXPID",
+        // this.cameraXPIDController.getP());
+        // SmartDashboard.putNumber("AlignVision/PIDS/CameraYPID",
+        // this.cameraYPIDController.getP());
+        // SmartDashboard.putNumber("AlignVision/PIDS/LidarXPID",
+        // this.lidarXPIDController.getP());
+        // SmartDashboard.putNumber("AlignVision/PIDS/LidarRotPID",
+        // this.lidarRotationPIDController.getP());
+        // SmartDashboard.putNumber("AlignVision/PIDS/GyroRotPID",
+        // this.gyroRotationPIDController.getP());
 
-        SmartDashboard.putNumber("AlignVision/PIDS/CameraXPID D",
-                this.cameraXPIDController.getD());
-        SmartDashboard.putNumber("AlignVision/PIDS/CameraYPID D",
-                this.cameraYPIDController.getD());
-        SmartDashboard.putNumber("AlignVision/PIDS/LidarXPID D",
-                this.lidarXPIDController.getD());
-        SmartDashboard.putNumber("AlignVision/PIDS/LidarRotPID D",
-                this.lidarRotationPIDController.getD());
-        SmartDashboard.putNumber("AlignVision/PIDS/GyroRotPID D",
-                this.gyroRotationPIDController.getD());
+        // SmartDashboard.putNumber("AlignVision/PIDS/CameraXPID D",
+        // this.cameraXPIDController.getD());
+        // SmartDashboard.putNumber("AlignVision/PIDS/CameraYPID D",
+        // this.cameraYPIDController.getD());
+        // SmartDashboard.putNumber("AlignVision/PIDS/LidarXPID D",
+        // this.lidarXPIDController.getD());
+        // SmartDashboard.putNumber("AlignVision/PIDS/LidarRotPID D",
+        // this.lidarRotationPIDController.getD());
+        // SmartDashboard.putNumber("AlignVision/PIDS/GyroRotPID D",
+        // this.gyroRotationPIDController.getD());
 
         double ySpeed = 0;
         double xSpeed = 0;

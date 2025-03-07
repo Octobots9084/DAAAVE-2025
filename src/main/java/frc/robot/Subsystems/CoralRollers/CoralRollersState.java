@@ -5,8 +5,8 @@ public enum CoralRollersState {
     STOPPED(0),
     OUTPUT(10),
     LEVEL1(-10),
-    ALGAEINTAKING(10),
-    AlGAEOUTPUT(-10);
+    ALGAEINTAKING(-10),
+    AlGAEOUTPUT(10);
 
     public double voltage;
 

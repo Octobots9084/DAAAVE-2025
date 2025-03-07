@@ -14,6 +14,7 @@ import frc.robot.States.ReefTargetSide;
 import frc.robot.Commands.Climb.SetClimbState;
 import frc.robot.Commands.Climb.ZeroClimb;
 import frc.robot.Commands.complex.AlignSource;
+import frc.robot.Commands.complex.BargeAlgae;
 import frc.robot.Commands.complex.CancelAllCommands;
 import frc.robot.Commands.complex.ClearAlgae;
 import frc.robot.Commands.complex.CollectAlgaeStack;
@@ -71,30 +72,78 @@ public class ButtonConfig {
                 () -> {
                     return !CoralRollers.getInstance().HasCoral();
                 }));
-        // Score and Intake assistance buttons for right stick
-        driverLeft.button(2).onTrue(new CollectAlgaeStack());
-        
-        driverLeft.button(1).onTrue(new ClearAlgae());
+        driverRight.button(2).onFalse(new InstantCommand(() -> {
+            Swerve.getInstance().setDriveState(DriveState.Manual);
+        }));
+
+        // driverLeft.button(1).onTrue(new ClearAlgae());
+
+        driverButtons.button(1)
+                .onTrue(new EjectCoral());
+
+        driverButtons.button(2).onTrue(new SetAlgaeRollerState(CoralRollersState.AlGAEOUTPUT).onlyIf(
+                () -> {
+                    return !CoralRollers.getInstance().HasCoral();
+                }).withTimeout(1.5));
+
+        driverButtons.button(4).onTrue(new Intake().onlyIf(
+                () -> {
+                    return !CoralRollers.getInstance().HasCoral();
+                }));
 
         // Zero gyro button
         driverButtons.button(6).onTrue(new InstantCommand(() -> {
             Swerve.getInstance().zeroGyro();
         }));
 
-        coDriverButtons.button(3).onTrue(new SetAlgaeRollerState(CoralRollersState.AlGAEOUTPUT).onlyIf(
-            () -> {
-                return !CoralRollers.getInstance().HasCoral();
-            }
-        ).withTimeout(1.5));
-        coDriverButtons.button(2).onTrue(new EjectCoral());
-        coDriverButtons.button(4).onTrue(new PrepReefPlacement());
+        // driverButtons.button(2).onTrue(new RemoveAlgaeBottom().onlyIf(
+        // () -> {
+        // return !CoralRollers.getInstance().HasCoral();
+        // }));
+        // driverButtons.button(5).onTrue(new RemoveAlgaeTop().onlyIf(
+        // () -> {
+        // return !CoralRollers.getInstance().HasCoral();
+        // }));
 
-        coDriverButtons.button(5).onTrue(new Intake().onlyIf(
+        // driverButtons.button(17).whileTrue(new Elephantiasis().onlyIf(
+        // () -> {
+        // return !CoralRollers.getInstance().HasCoral();
+        // }));
+
+        // Climb mode active (Switch 20)
+        // driverButtons.button(14).and(driverButtons.button(20)).whileTrue(new
+        // SetClimbState(ClimbStates.Stored));
+        // driverButtons.button(16).and(driverButtons.button(20)).whileTrue(new
+        // SetClimbState(ClimbStates.Deployed));
+        // driverButtons.button(14).and(driverButtons.button(20)).onFalse(new
+        // SetClimbState(ClimbStates.Climbing));
+        // driverButtons.button(16).and(driverButtons.button(20)).onFalse(new
+        // SetClimbState(ClimbStates.Climbing));
+        // driverButtons.button(17).and(driverButtons.button(20)).whileTrue(new
+        // ZeroClimb());
+
+        coDriverButtons.button(1).onTrue(new EjectCoral());
+        coDriverButtons.button(4).onTrue(new Intake().onlyIf(
                 () -> {
                     return !CoralRollers.getInstance().HasCoral();
                 }));
+        coDriverButtons.button(2).onTrue(new RemoveAlgaeTop().onlyIf(
+                () -> {
+                    return !CoralRollers.getInstance().HasCoral();
+                }));
+        coDriverButtons.button(5).onTrue(new RemoveAlgaeBottom().onlyIf(
+                () -> {
+                    return !CoralRollers.getInstance().HasCoral();
+                }));
+        coDriverButtons.button(8).onTrue(new CollectAlgaeStack());
+        coDriverButtons.button(3).onTrue(new BargeAlgae());
+
+        coDriverButtons.button(6).onTrue(new PrepReefPlacement());
+
         // Return robot to a safe configuration
-        coDriverButtons.button(8).onTrue(new RobotSafeState());
+        // Score and Intake assistance buttons for right stick
+        coDriverButtons.button(7).onTrue(new RobotSafeState());
+
         coDriverButtons.button(9).onTrue(new RobotStop());
 
         // Reef mode active (Switch 20)
@@ -115,47 +164,6 @@ public class ButtonConfig {
         coDriverButtons.button(14).and(coDriverButtons.button(20)).onFalse(new SetClimbState(ClimbStates.Climbing));
         coDriverButtons.button(16).and(coDriverButtons.button(20)).onFalse(new SetClimbState(ClimbStates.Climbing));
         coDriverButtons.button(17).and(coDriverButtons.button(20)).whileTrue(new ZeroClimb());
-
-        // reef align
-        driverButtons.button(1).whileTrue(new InstantCommand(() -> Swerve.getInstance().setDriveState(DriveState.AlignReef)));
-        driverButtons.button(1).onFalse(new InstantCommand(() -> {
-            Swerve.getInstance().setDriveState(DriveState.Manual);
-        }));
-        driverButtons.button(2)
-                .onTrue(new EjectCoral());
-        driverButtons.button(5).onTrue(new PrepReefPlacement());
-        driverButtons.button(4).onTrue(new Intake().onlyIf(
-                () -> {
-                    return !CoralRollers.getInstance().HasCoral();
-                }));
-
-        driverButtons.button(8).onTrue(new RobotSafeState());
-        driverButtons.button(9).onTrue(new RobotStop());
-
-        driverButtons.button(3).onTrue(new RemoveAlgaeBottom().onlyIf(
-                () -> {
-                    return !CoralRollers.getInstance().HasCoral();
-                }
-        ));
-        driverButtons.button(7).onTrue(new RemoveAlgaeTop().onlyIf(
-                () -> {
-                    return !CoralRollers.getInstance().HasCoral();
-                }
-        ));
-        //coDriverButtons.button(11).onTrue(new ClearAlgae());
-        //coDriverButtons.button(11).onFalse(new AlgaeInterupted());
-
-        driverButtons.button(17).whileTrue(new Elephantiasis().onlyIf(
-                () -> {
-                    return !CoralRollers.getInstance().HasCoral();
-                }));
-
-        // Climb mode active (Switch 20)
-        driverButtons.button(14).and(driverButtons.button(20)).whileTrue(new SetClimbState(ClimbStates.Stored));
-        driverButtons.button(16).and(driverButtons.button(20)).whileTrue(new SetClimbState(ClimbStates.Deployed));
-        driverButtons.button(14).and(driverButtons.button(20)).onFalse(new SetClimbState(ClimbStates.Climbing));
-        driverButtons.button(16).and(driverButtons.button(20)).onFalse(new SetClimbState(ClimbStates.Climbing));
-        driverButtons.button(17).and(driverButtons.button(20)).whileTrue(new ZeroClimb());
 
     }
 }

@@ -18,81 +18,82 @@ import edu.wpi.first.wpilibj.CAN;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class CoralRollersIOSystems implements CoralRollersIO {
-  private final SparkFlex motor = new SparkFlex(13, MotorType.kBrushless);
-  private CANrange clawBackSensor = new CANrange(21, "KrakensBus");
-  private CANrange clawFrontSensor = new CANrange(22, "KrakensBus");
-  private CANrangeConfiguration configuration = new CANrangeConfiguration();
+    private final SparkFlex motor = new SparkFlex(13, MotorType.kBrushless);
+    private CANrange clawBackSensor = new CANrange(21, "KrakensBus");
+    private CANrange clawFrontSensor = new CANrange(22, "KrakensBus");
+    private CANrangeConfiguration configuration = new CANrangeConfiguration();
 
-  private SparkMaxConfig config;
+    private SparkMaxConfig config;
 
-  public CoralRollersIOSystems() {
-    config = new SparkMaxConfig();
-    config.inverted(false);
-    config.idleMode(IdleMode.kBrake);
-    config.smartCurrentLimit(30, 10);
-    motor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-    motor.setPeriodicFrameTimeout(30);
-    motor.setCANTimeout(30);
-    motor.setCANMaxRetries(5);
-    configuration.ProximityParams.withProximityThreshold(0.2);
-    clawBackSensor.getConfigurator().apply(configuration);
-    clawFrontSensor.getConfigurator().apply(configuration);
-  }
+    public CoralRollersIOSystems() {
+        config = new SparkMaxConfig();
+        config.inverted(false);
+        config.idleMode(IdleMode.kBrake);
+        config.smartCurrentLimit(20, 10);
+        motor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        motor.setPeriodicFrameTimeout(30);
+        motor.setCANTimeout(30);
+        motor.setCANMaxRetries(5);
+        configuration.ProximityParams.withProximityThreshold(0.2);
+        clawBackSensor.getConfigurator().apply(configuration);
+        clawFrontSensor.getConfigurator().apply(configuration);
+    }
 
-  @Override
-  public void updateInputs(CoralRollersIOInputs inputs) {
-    inputs.velocityRPM = motor.getEncoder().getVelocity();
-    inputs.appliedVolts = motor.getAppliedOutput() * motor.getBusVoltage();
-    inputs.currentAmps = motor.getOutputCurrent();
-    // TODO change 100
-    inputs.isIntaking = this.IsIntaking();
-    inputs.hasCoral = this.HasCoral();
+    @Override
+    public void updateInputs(CoralRollersIOInputs inputs) {
+        inputs.velocityRPM = motor.getEncoder().getVelocity();
+        inputs.appliedVolts = motor.getAppliedOutput() * motor.getBusVoltage();
+        inputs.currentAmps = motor.getOutputCurrent();
+        // TODO change 100
+        inputs.isIntaking = this.IsIntaking();
+        inputs.hasCoral = this.HasCoral();
 
-    inputs.coralMeasureDist = clawFrontSensor.getDistance().getValueAsDouble();
-  }
+        inputs.coralMeasureDist = clawFrontSensor.getDistance().getValueAsDouble();
+    }
 
-  @Override
-  public void setVoltage(double voltage) {
-    motor.setVoltage(voltage);
-  }
+    @Override
+    public void setVoltage(double voltage) {
+        motor.setVoltage(voltage);
+    }
 
-  @Override
-  public void rotateBy(double movement) {
-    // TODO - make a PID controller
-    motor.getClosedLoopController().setReference(motor.getAbsoluteEncoder().getPosition() + movement,
-        ControlType.kPosition);
-  }
+    @Override
+    public void rotateBy(double movement) {
+        // TODO - make a PID controller
+        motor.getClosedLoopController().setReference(motor.getAbsoluteEncoder().getPosition() + movement,
+                ControlType.kPosition);
+    }
 
-  public void getVoltage(double voltage) {
-    motor.getBusVoltage();
-  }
+    public void getVoltage(double voltage) {
+        motor.getBusVoltage();
+    }
 
-  // TODO - Actually change these values
-  @Override
-  public boolean IsIntaking() {
-    boolean intaking = clawBackSensor.getIsDetected().getValue();
-    return intaking;
-  }
+    // TODO - Actually change these values
+    @Override
+    public boolean IsIntaking() {
+        boolean intaking = clawBackSensor.getIsDetected().getValue();
+        return intaking;
+    }
 
-  @Override
-  public boolean HasCoral() {
-    boolean coral = clawFrontSensor.getDistance().getValueAsDouble() < 0.1;
-    SmartDashboard.putBoolean("HasCoral", coral);
-    return coral;
-  }
+    @Override
+    public boolean HasCoral() {
+        boolean coral = clawFrontSensor.getDistance().getValueAsDouble() < 0.1;
+        SmartDashboard.putBoolean("HasCoral", coral);
+        return coral;
+    }
 
-  @Override
-  public boolean clawFrontSensorTriggered() {
-    return clawFrontSensor.getDistance().getValueAsDouble() < 0.1;
-  }
+    @Override
+    public boolean clawFrontSensorTriggered() {
+        return clawFrontSensor.getDistance().getValueAsDouble() < 0.1;
+    }
 
-  @Override
-  public boolean clawBackSensorTriggered() {
-    return clawBackSensor.getDistance().getValueAsDouble() < 0.1;
-  }
-  @Override
-  public boolean isStalled() {
-    return motor.getWarnings().stall;
-  }
+    @Override
+    public boolean clawBackSensorTriggered() {
+        return clawBackSensor.getDistance().getValueAsDouble() < 0.1;
+    }
+
+    @Override
+    public boolean isStalled() {
+        return motor.getWarnings().stall;
+    }
 
 }
