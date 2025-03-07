@@ -159,9 +159,12 @@ public class ButtonConfig {
         coDriverRight.button(1).onTrue(new SetOrientation(0));
         coDriverRight.button(2).onTrue(new SetOrientation(1));
         // Climb mode active (Switch 20)
-        coDriverButtons.button(14).and(coDriverButtons.button(20)).whileTrue(new SetClimbState(ClimbStates.Stored));
-        coDriverButtons.button(16).and(coDriverButtons.button(20)).whileTrue(new SetClimbState(ClimbStates.Deployed));
-        coDriverButtons.button(14).and(coDriverButtons.button(20)).onFalse(new SetClimbState(ClimbStates.Climbing));
+        coDriverButtons.button(14).and(coDriverButtons.button(20))
+                .whileTrue(new SetWristState(WristStates.L1, ClosedLoopSlot.kSlot0).andThen(new SetClimbState(ClimbStates.Stored)));
+        coDriverButtons.button(16).and(coDriverButtons.button(20))
+                .whileTrue(new SetWristState(WristStates.L1, ClosedLoopSlot.kSlot0).andThen(new SetClimbState(ClimbStates.Deployed)));
+        coDriverButtons.button(14).and(coDriverButtons.button(20))
+                .onFalse(new SetClimbState(ClimbStates.Climbing));
         coDriverButtons.button(16).and(coDriverButtons.button(20)).onFalse(new SetClimbState(ClimbStates.Climbing));
         coDriverButtons.button(17).and(coDriverButtons.button(20)).whileTrue(new ZeroClimb());
 
