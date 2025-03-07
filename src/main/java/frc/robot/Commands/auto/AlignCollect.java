@@ -12,13 +12,14 @@ import frc.robot.Commands.complex.Intake;
 import frc.robot.Subsystems.CoralRollers.CoralRollers;
 import frc.robot.Subsystems.Swerve.Swerve;
 import frc.robot.Subsystems.Swerve.Swerve.DriveState;
-import frc.robot.Subsystems.Vision.RangeAlignSource;
+import frc.robot.Subsystems.Vision.AlignSourceAuto;
 
 public class AlignCollect extends Command {
     private Debouncer debouncer;
     private boolean shouldTakeControlFromDrivers = false;
+
     public AlignCollect() {
-         debouncer = new Debouncer(0.5);
+        debouncer = new Debouncer(0.5);
     }
 
     @Override
@@ -29,11 +30,12 @@ public class AlignCollect extends Command {
 
     @Override
     public void execute() {
-        shouldTakeControlFromDrivers = debouncer.calculate(RangeAlignSource.getInstance().wrenchControlFromDriversForSourceAlign());
+        shouldTakeControlFromDrivers = debouncer.calculate(AlignSourceAuto.getInstance().wrenchControlFromDriversForSourceAlign());
         if (shouldTakeControlFromDrivers) {
-            Swerve.getInstance().driveRobotRelative(RangeAlignSource.getInstance().getAlignChassisSpeeds());
+            Swerve.getInstance().driveRobotRelative(AlignSourceAuto.getInstance().getAlignChassisSpeeds());
         }
     }
+
     @Override
     public boolean isFinished() {
         if (Constants.currentMode == Constants.simMode) {
@@ -41,9 +43,9 @@ public class AlignCollect extends Command {
         }
         return CoralRollers.getInstance().HasCoral();
     }
- 
+
     @Override
-    public void end (boolean interrupted) {
+    public void end(boolean interrupted) {
         Swerve.getInstance().setDriveState(DriveState.Manual);
     }
 }

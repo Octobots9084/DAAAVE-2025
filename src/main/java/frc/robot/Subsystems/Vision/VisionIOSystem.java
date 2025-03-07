@@ -24,7 +24,6 @@ public class VisionIOSystem implements VisionIO {
             VisionConstants.transformMiddleLeftToRobot);
     public final VisionCamera backCamera = new VisionCamera("Back", VisionConstants.transformBackToRobot);
 
-    public StdDevs stdDevsCalculation;
     private final Notifier allNotifier = new Notifier(
             () -> {
                 frontLeftCamera.run();
@@ -39,7 +38,6 @@ public class VisionIOSystem implements VisionIO {
 
         allNotifier.setName("runAll");
         allNotifier.startPeriodic(0.02);
-        stdDevsCalculation = new StdDevs();
     }
 
     public void closeNotifiers() {
@@ -92,8 +90,6 @@ public class VisionIOSystem implements VisionIO {
     public void addVisionReading(String cameraName, EstimatedRobotPose pose, Matrix<N3, N1> stdDevs) {
         if (pose != null && stdDevs != null) {
             Pose2d pose2d = pose.estimatedPose.toPose2d();
-            stdDevsCalculation.update(pose2d.getX(), pose2d.getY(), pose2d.getRotation().getRadians());
-
             swerve.addVisionReading(pose2d, pose.timestampSeconds, stdDevs);
         }
     }
