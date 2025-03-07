@@ -92,7 +92,7 @@ public class CoralRollersIOSystems implements CoralRollersIO {
   }
   @Override
   public boolean isStalled() {
-    return motor.getWarnings().overcurrent;
+    return motor.getWarnings().stall;
   }
 
 }
