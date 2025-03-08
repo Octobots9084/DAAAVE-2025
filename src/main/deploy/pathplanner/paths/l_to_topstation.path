@@ -4,24 +4,24 @@
     {
       "anchor": {
         "x": 3.656,
-        "y": 5.116482984511297
+        "y": 5.068
       },
       "prevControl": null,
       "nextControl": {
         "x": 3.319362002665295,
-        "y": 5.5955255681818175
+        "y": 5.54704258367052
       },
       "isLocked": false,
       "linkedName": "l"
     },
     {
       "anchor": {
-        "x": 1.798,
-        "y": 7.17307169441734
+        "x": 1.558,
+        "y": 6.822
       },
       "prevControl": {
-        "x": 2.2068352272727276,
-        "y": 6.834037603508248
+        "x": 1.9668352272727276,
+        "y": 6.482965909090908
       },
       "nextControl": null,
       "isLocked": false,
@@ -31,7 +31,14 @@
   "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "PrepCollect",
+      "waypointRelativePos": 0.28,
+      "endWaypointRelativePos": null,
+      "command": null
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 6.0,
     "maxAcceleration": 4.0,
@@ -41,7 +48,7 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 0,
+    "velocity": 0.5,
     "rotation": -55.0
   },
   "reversed": false,

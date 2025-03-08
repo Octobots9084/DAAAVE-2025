@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.798,
-        "y": 7.17307169441734
+        "x": 1.558,
+        "y": 6.822
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.1170909090909094,
-        "y": 6.5548330580537035
+        "x": 1.8770909090909094,
+        "y": 6.203761363636364
       },
       "isLocked": false,
       "linkedName": "topstation"
@@ -17,11 +17,11 @@
     {
       "anchor": {
         "x": 2.589,
-        "y": 4.5
+        "y": 4.676
       },
       "prevControl": {
         "x": 2.258096352936895,
-        "y": 5.541506093738465
+        "y": 5.717506093738465
       },
       "nextControl": null,
       "isLocked": false,
@@ -31,7 +31,20 @@
   "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "InitalWristPos",
+      "waypointRelativePos": 0.5,
+      "endWaypointRelativePos": null,
+      "command": null
+    },
+    {
+      "name": "BringUpElevator",
+      "waypointRelativePos": 0.83,
+      "endWaypointRelativePos": null,
+      "command": null
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 6.0,
     "maxAcceleration": 4.0,
