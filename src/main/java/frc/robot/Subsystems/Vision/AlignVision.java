@@ -34,6 +34,7 @@ import frc.robot.Subsystems.Lights.LightsIO;
 import frc.robot.Subsystems.Swerve.Swerve;
 import frc.robot.Subsystems.Swerve.Swerve.DriveState;
 
+import java.io.Console;
 import java.util.Optional;
 
 import org.littletonrobotics.junction.Logger;
@@ -245,193 +246,177 @@ public class AlignVision extends SubsystemBase {
     }
 
     public ChassisSpeeds getAlignChassisSpeeds(AlignState state) {
-        this.finalAngles = Constants.isBlueAlliance ? blueAlignAngles : redAlignAngles;
-
-        if (swerve.getPreviousDriveState() != DriveState.AlignReef || swerve.getPreviousDriveState() != DriveState.AlignSource
-                || swerve.getPreviousDriveState() != DriveState.AlignProcessor) {
-            isFirstTime = true;
-            cameraXPIDController.reset();
-            cameraYPIDController.reset();
-            lidarXPIDController.reset();
-            lidarRotationPIDController.reset();
-            gyroRotationPIDController.reset();
-
-        } else {
-            isFirstTime = false;
-        }
-
-        // Find the Turn Angle for the robot to align with the target.
-        turnAngle = handleTurnAngle(state);
-
-        // Get the best result from the global vision
-        finalResult = getBestResult(state);
-
-        // this.cameraXPIDController.setP(SmartDashboard.getNumber("AlignVision/PIDS/CameraXPID",
-        // this.cameraXPIDController.getP()));
-        // this.cameraYPIDController.setP(SmartDashboard.getNumber("AlignVision/PIDS/CameraYPID",
-        // this.cameraYPIDController.getP()));
-        // this.lidarXPIDController.setP(SmartDashboard.getNumber("AlignVision/PIDS/LidarXPID",
-        // this.lidarXPIDController.getP()));
-        // this.lidarRotationPIDController.setP(SmartDashboard.getNumber("AlignVision/PIDS/LidarRotPID",
-        // this.lidarRotationPIDController.getP()));
-        // this.gyroRotationPIDController.setP(SmartDashboard.getNumber("AlignVision/PIDS/GyroRotPID",
-        // this.gyroRotationPIDController.getP()));
-
-        // this.cameraXPIDController.setD(SmartDashboard.getNumber("AlignVision/PIDS/CameraXPID
-        // D",
-        // this.cameraXPIDController.getD()));
-        // this.cameraYPIDController.setD(SmartDashboard.getNumber("AlignVision/PIDS/CameraYPID
-        // D",
-        // this.cameraYPIDController.getD()));
-        // this.lidarXPIDController.setD(SmartDashboard.getNumber("AlignVision/PIDS/LidarXPID
-        // D",
-        // this.lidarXPIDController.getD()));
-        // this.lidarRotationPIDController.setD(SmartDashboard.getNumber("AlignVision/PIDS/LidarRotPID
-        // D",
-        // this.lidarRotationPIDController.getD()));
-        // this.gyroRotationPIDController.setD(SmartDashboard.getNumber("AlignVision/PIDS/GyroRotPID
-        // D",
-        // this.gyroRotationPIDController.getD()));
-
-        // SmartDashboard.putNumber("AlignVision/PIDS/CameraXPID",
-        // this.cameraXPIDController.getP());
-        // SmartDashboard.putNumber("AlignVision/PIDS/CameraYPID",
-        // this.cameraYPIDController.getP());
-        // SmartDashboard.putNumber("AlignVision/PIDS/LidarXPID",
-        // this.lidarXPIDController.getP());
-        // SmartDashboard.putNumber("AlignVision/PIDS/LidarRotPID",
-        // this.lidarRotationPIDController.getP());
-        // SmartDashboard.putNumber("AlignVision/PIDS/GyroRotPID",
-        // this.gyroRotationPIDController.getP());
-
-        // SmartDashboard.putNumber("AlignVision/PIDS/CameraXPID D",
-        // this.cameraXPIDController.getD());
-        // SmartDashboard.putNumber("AlignVision/PIDS/CameraYPID D",
-        // this.cameraYPIDController.getD());
-        // SmartDashboard.putNumber("AlignVision/PIDS/LidarXPID D",
-        // this.lidarXPIDController.getD());
-        // SmartDashboard.putNumber("AlignVision/PIDS/LidarRotPID D",
-        // this.lidarRotationPIDController.getD());
-        // SmartDashboard.putNumber("AlignVision/PIDS/GyroRotPID D",
-        // this.gyroRotationPIDController.getD());
-
-        double ySpeed = 0;
-        double xSpeed = 0;
-        double turnSpeed = 0;
-        double targetDistance = 0;
-        double aveLidarDist = (this.getRightLidarDistance() + this.getLeftLidarDistance()) / 2;
-        double diffLidarDist = this.getRightLidarDistance() - this.getLeftLidarDistance() - 0.01;
-        Pose3d refPosition = null;
-
-        // Calculate the offset index for the reef per poll, side, and orientation
-        int currentOffsetIndex = state == AlignState.Reef
-                ? calcOrientationOffset(selectedReefOrientation, selectedPoleSide, selectedLevel)
-                : 0;
-
-        // If the final result is null, then use global pose to get to the target
-        // without hitting the obstacles on the field
-        if (finalResult == null) {
-            // Get the robot's current position
-            Pose3d fieldPosition = new Pose3d(swerve.getPose());
-
-            // Get the tag position from builtin tag layout
-            Optional<Pose3d> tagPos = VisionConstants.kTagLayout.getTagPose(finalTagID);
-
-            // If the tag position is present, then get the relative position of the robot
-            // to the tag
-            if (tagPos.isPresent()) {
-                Pose3d tagRelativeToField = fieldPosition.relativeTo(tagPos.get());
-
-                // Makes sure the robot has space to drive to the target, if not don't move
-                // robot
-                if (tagRelativeToField.getX() > 0.3) {
-                    refPosition = tagPos.get().relativeTo(fieldPosition);
-                }
-            }
-        } else { // If the final result is not null, then use the front cameras to get to the
-                 // target
-            refPosition = this.getReferenceRobotPosition(finalResult, transformCameraToRobot);
-        }
-
-        // Get the current offset index for the reef calibration offsets
-        AlignOffset currentOffset = state == AlignState.Reef ? AlignOffset.values()[currentOffsetIndex] : null;
-
         try {
-            // If the reference position is not null and the turn angle is not the max
-            // value, then starts the calculations of the speeds
-            if (refPosition != null && turnAngle != Integer.MAX_VALUE) {
-                if (Constants.isBlueAlliance && currentOffset != null) { // If the robot is on the blue alliance, then add the blue offset value to the
-                                                                         // target distance
-                    targetDistance += currentOffset.getBlueOffsetValue();
-                } else if (!Constants.isBlueAlliance && currentOffset != null) { // If the robot is on the red alliance, then add the red offset value to the
-                                                                                 // target distance
-                    targetDistance += currentOffset.getRedOffsetValue();
-                }
+            this.finalAngles = Constants.isBlueAlliance ? blueAlignAngles : redAlignAngles;
 
-                if (state == AlignState.Reef) { // If the state is reef, then add the distance to the pole to the target
-                                                // distance
-                    if (selectedPoleSide == ReefTargetSide.LEFT) { // If the pole side is left, then add the distance to the pole to the target
-                                                                   // distance
-                        targetDistance -= VisionConstants.distanceToPole;
-                    } else if (selectedPoleSide == ReefTargetSide.RIGHT) { // If the pole side is right, then subtract the distance to the pole from the
-                                                                           // target distance
-                        targetDistance += VisionConstants.distanceToPole;
-                    } else {
+            if (swerve.getPreviousDriveState() != DriveState.AlignReef || swerve.getPreviousDriveState() != DriveState.AlignSource
+                    || swerve.getPreviousDriveState() != DriveState.AlignProcessor) {
+                isFirstTime = true;
+                cameraXPIDController.reset();
+                cameraYPIDController.reset();
+                lidarXPIDController.reset();
+                lidarRotationPIDController.reset();
+                gyroRotationPIDController.reset();
+
+            } else {
+                isFirstTime = false;
+            }
+
+            // Find the Turn Angle for the robot to align with the target.
+            turnAngle = handleTurnAngle(state);
+
+            // Get the best result from the global vision
+            finalResult = getBestResult(state);
+
+            // this.cameraXPIDController.setP(SmartDashboard.getNumber("AlignVision/PIDS/CameraXPID",
+            // this.cameraXPIDController.getP()));
+            // this.cameraYPIDController.setP(SmartDashboard.getNumber("AlignVision/PIDS/CameraYPID",
+            // this.cameraYPIDController.getP()));
+            // this.lidarXPIDController.setP(SmartDashboard.getNumber("AlignVision/PIDS/LidarXPID",
+            // this.lidarXPIDController.getP()));
+            // this.lidarRotationPIDController.setP(SmartDashboard.getNumber("AlignVision/PIDS/LidarRotPID",
+            // this.lidarRotationPIDController.getP()));
+            // this.gyroRotationPIDController.setP(SmartDashboard.getNumber("AlignVision/PIDS/GyroRotPID",
+            // this.gyroRotationPIDController.getP()));
+
+            // this.cameraXPIDController.setD(SmartDashboard.getNumber("AlignVision/PIDS/CameraXPID
+            // D",
+            // this.cameraXPIDController.getD()));
+            // this.cameraYPIDController.setD(SmartDashboard.getNumber("AlignVision/PIDS/CameraYPID
+            // D",
+            // this.cameraYPIDController.getD()));
+            // this.lidarXPIDController.setD(SmartDashboard.getNumber("AlignVision/PIDS/LidarXPID
+            // D",
+            // this.lidarXPIDController.getD()));
+            // this.lidarRotationPIDController.setD(SmartDashboard.getNumber("AlignVision/PIDS/LidarRotPID
+            // D",
+            // this.lidarRotationPIDController.getD()));
+            // this.gyroRotationPIDController.setD(SmartDashboard.getNumber("AlignVision/PIDS/GyroRotPID
+            // D",
+            // this.gyroRotationPIDController.getD()));
+
+            // SmartDashboard.putNumber("AlignVision/PIDS/CameraXPID",
+            // this.cameraXPIDController.getP());
+            // SmartDashboard.putNumber("AlignVision/PIDS/CameraYPID",
+            // this.cameraYPIDController.getP());
+            // SmartDashboard.putNumber("AlignVision/PIDS/LidarXPID",
+            // this.lidarXPIDController.getP());
+            // SmartDashboard.putNumber("AlignVision/PIDS/LidarRotPID",
+            // this.lidarRotationPIDController.getP());
+            // SmartDashboard.putNumber("AlignVision/PIDS/GyroRotPID",
+            // this.gyroRotationPIDController.getP());
+
+            // SmartDashboard.putNumber("AlignVision/PIDS/CameraXPID D",
+            // this.cameraXPIDController.getD());
+            // SmartDashboard.putNumber("AlignVision/PIDS/CameraYPID D",
+            // this.cameraYPIDController.getD());
+            // SmartDashboard.putNumber("AlignVision/PIDS/LidarXPID D",
+            // this.lidarXPIDController.getD());
+            // SmartDashboard.putNumber("AlignVision/PIDS/LidarRotPID D",
+            // this.lidarRotationPIDController.getD());
+            // SmartDashboard.putNumber("AlignVision/PIDS/GyroRotPID D",
+            // this.gyroRotationPIDController.getD());
+
+            double ySpeed = 0;
+            double xSpeed = 0;
+            double turnSpeed = 0;
+            double targetDistance = 0;
+            double aveLidarDist = (this.getRightLidarDistance() + this.getLeftLidarDistance()) / 2;
+            double diffLidarDist = this.getRightLidarDistance() - this.getLeftLidarDistance() - 0.01;
+            Pose3d refPosition = null;
+
+            // If the final result is null, then use global pose to get to the target
+            // without hitting the obstacles on the field
+            if (finalResult == null) {
+                // Get the robot's current position
+                Pose3d fieldPosition = new Pose3d(swerve.getPose());
+
+                // Get the tag position from builtin tag layout
+                Optional<Pose3d> tagPos = VisionConstants.kTagLayout.getTagPose(finalTagID);
+
+                // If the tag position is present, then get the relative position of the robot
+                // to the tag
+                if (tagPos.isPresent()) {
+                    Pose3d tagRelativeToField = fieldPosition.relativeTo(tagPos.get());
+
+                    // Makes sure the robot has space to drive to the target, if not don't move
+                    // robot
+                    if (tagRelativeToField.getX() > 0.3) {
+                        refPosition = tagPos.get().relativeTo(fieldPosition);
+                    }
+                }
+            } else { // If the final result is not null, then use the front cameras to get to the
+                     // target
+                refPosition = this.getReferenceRobotPosition(finalResult, transformCameraToRobot);
+            }
+
+            try {
+                // If the reference position is not null and the turn angle is not the max
+                // value, then starts the calculations of the speeds
+                if (refPosition != null && turnAngle != Integer.MAX_VALUE) {
+
+                    if (state == AlignState.Reef) { // If the state is reef, then add the distance to the pole to the target
+                                                    // distance
+                        if (selectedPoleSide == ReefTargetSide.LEFT) { // If the pole side is left, then add the distance to the pole to the target
+                                                                       // distance
+                            targetDistance -= VisionConstants.distanceToPole;
+                        } else if (selectedPoleSide == ReefTargetSide.RIGHT) { // If the pole side is right, then subtract the distance to the pole from the
+                                                                               // target distance
+                            targetDistance += VisionConstants.distanceToPole;
+                        } else {
+                            targetDistance = 0;
+                        }
+                    } else { // If the state is not reef, then add the distance to the pole to the target
+                             // distance
                         targetDistance = 0;
                     }
-                } else { // If the state is not reef, then add the distance to the pole to the target
-                         // distance
-                    targetDistance = 0;
-                }
 
-                if (isFirstTime) { // If it is the first time, then set the x, y, and turn speeds to 0
-                    ySetpoint = new TrapezoidProfile.State(refPosition.getY(), 0);
-                    yGoal = new TrapezoidProfile.State(targetDistance, 0);
-                }
+                    if (isFirstTime) { // If it is the first time, then set the x, y, and turn speeds to 0
+                        ySetpoint = new TrapezoidProfile.State(refPosition.getY(), 0);
+                        yGoal = new TrapezoidProfile.State(targetDistance, 0);
+                    }
 
-                // Check if the robot y position is in tolerance for the target y rotation
-                Logger.recordOutput("Vision/RefX", refPosition.getX());
-                Logger.recordOutput("Vision/RefY", refPosition.getY());
-                Logger.recordOutput("Vision/TargetY", targetDistance);
-                yInTolerance = MathUtil.isNear(refPosition.getY(), targetDistance, 0.03);
-                ySetpoint = yProfile.calculate(deltaTime, ySetpoint, yGoal);
-                Logger.recordOutput("Vision/SetPointY", ySetpoint.position);
+                    // Check if the robot y position is in tolerance for the target y rotation
+                    Logger.recordOutput("Vision/RefX", refPosition.getX());
+                    Logger.recordOutput("Vision/RefY", refPosition.getY());
+                    Logger.recordOutput("Vision/TargetY", targetDistance);
+                    yInTolerance = MathUtil.isNear(refPosition.getY(), targetDistance, 0.03);
+                    ySetpoint = yProfile.calculate(deltaTime, ySetpoint, yGoal);
+                    Logger.recordOutput("Vision/SetPointY", ySetpoint.position);
 
-                // Calculate the speeds for the robot to align with the target
-                ySpeed = -cameraYPIDController.calculate(refPosition.getY(), targetDistance);
+                    // Calculate the speeds for the robot to align with the target
+                    ySpeed = -cameraYPIDController.calculate(refPosition.getY(), targetDistance);
 
-                // Calculate the x and turn speeds for the robot to align with the target
-                xSpeed = this.calculateXSpeed(aveLidarDist, refPosition);
-                turnSpeed = this.calculateTurnSpeed(diffLidarDist, refPosition);
+                    // Calculate the x and turn speeds for the robot to align with the target
+                    xSpeed = this.calculateXSpeed(aveLidarDist, refPosition);
+                    turnSpeed = this.calculateTurnSpeed(diffLidarDist, refPosition);
 
-                // If the turn speed is not a number, then set the x, y, and turn speeds to 0
-                if (Double.isNaN(turnSpeed)) {
+                    // If the turn speed is not a number, then set the x, y, and turn speeds to 0
+                    if (Double.isNaN(turnSpeed)) {
+                        ySpeed = 0;
+                        xSpeed = 0;
+                        turnSpeed = 0;
+                    }
+
+                } else { // If the reference position is null or the turn angle is the max value, then
+                         // set the x, y, and turn speeds to 0
                     ySpeed = 0;
                     xSpeed = 0;
                     turnSpeed = 0;
                 }
 
-            } else { // If the reference position is null or the turn angle is the max value, then
-                     // set the x, y, and turn speeds to 0
+            } catch (Exception e) { // If everything breaks then set the x, y, and turn speeds to 0
                 ySpeed = 0;
                 xSpeed = 0;
                 turnSpeed = 0;
             }
 
-        } catch (Exception e) { // If everything breaks then set the x, y, and turn speeds to 0
-            ySpeed = 0;
-            xSpeed = 0;
-            turnSpeed = 0;
+            // Return the calculated speeds for the robot to align with the target
+            return new ChassisSpeeds(xSpeed, ySpeed, turnSpeed);
+        } catch (Exception exception) {
+            System.out.println(exception.toString());
+            return new ChassisSpeeds();
         }
-
-        // Return the calculated speeds for the robot to align with the target
-        return new ChassisSpeeds(xSpeed, ySpeed, turnSpeed);
-        // return new ChassisSpeeds(0, ySpeed, 0);
-    }
-
-    private int calcOrientationOffset(ReefTargetOrientation orientation, ReefTargetSide side, ElevatorStates level) {
-
-        return (6 * orientation.ordinal()) + (3 * side.ordinal()) + level.ordinal() - 1;
     }
 
     public int handleTurnAngle(AlignState state) {
