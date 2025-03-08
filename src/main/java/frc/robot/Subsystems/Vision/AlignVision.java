@@ -369,6 +369,7 @@ public class AlignVision extends SubsystemBase {
                     } else { // If the state is not reef, then add the distance to the pole to the target
                              // distance
                         targetDistance = 0;
+
                     }
 
                     if (isFirstTime) { // If it is the first time, then set the x, y, and turn speeds to 0
