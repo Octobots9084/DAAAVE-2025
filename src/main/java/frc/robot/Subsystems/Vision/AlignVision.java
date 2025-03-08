@@ -366,6 +366,7 @@ public class AlignVision extends SubsystemBase {
                         } else {
                             targetDistance = 0;
                         }
+
                     } else { // If the state is not reef, then add the distance to the pole to the target
                              // distance
                         targetDistance = 0;

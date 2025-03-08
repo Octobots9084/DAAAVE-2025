@@ -1,22 +1,13 @@
 package frc.robot;
 
 import com.revrobotics.spark.ClosedLoopSlot;
-import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
-import frc.robot.Constants.OperatorConstants;
-import frc.robot.States.ReefTargetLevel;
-import frc.robot.States.ReefTargetOrientation;
-import frc.robot.States.ReefTargetSide;
 import frc.robot.Commands.Climb.SetClimbState;
 import frc.robot.Commands.Climb.ZeroClimb;
+import frc.robot.Commands.complex.AlignReef;
 import frc.robot.Commands.complex.AlignSource;
 import frc.robot.Commands.complex.BargeAlgae;
-import frc.robot.Commands.complex.CancelAllCommands;
-import frc.robot.Commands.complex.ClearAlgae;
 import frc.robot.Commands.complex.CollectAlgaeStack;
 import frc.robot.Commands.complex.EjectCoral;
 import frc.robot.Commands.complex.Elephantiasis;
@@ -28,30 +19,15 @@ import frc.robot.Commands.complex.RemoveAlgaeTop;
 import frc.robot.Commands.complex.RobotSafeState;
 import frc.robot.Commands.complex.RobotStop;
 import frc.robot.Commands.complex.ScoreCoral;
-import frc.robot.Commands.complex.collectCoral.WaitForCoralDetected;
-import frc.robot.Commands.Elevator.SetElevatorState;
-import frc.robot.Commands.Elevator.SetElevatorStateTolerance;
-// import frc.robot.Commands.ManualControl.AlgaeInterupted;
-import frc.robot.Commands.ManualControl.WristManualControl;
-import frc.robot.Commands.CoralRollers.LoadCoral;
-import frc.robot.Commands.CoralRollers.OutputCoral;
-import frc.robot.Commands.CoralRollers.ReverseRollersWileTrue;
 import frc.robot.Commands.CoralRollers.SetAlgaeRollerState;
-import frc.robot.Commands.CoralRollers.SetCoralRollersState;
 import frc.robot.Commands.ReefSelection.ReefLevelSelection;
 import frc.robot.Commands.ReefSelection.SetOrientation;
-import frc.robot.Commands.Wrist.PrepCoral;
 import frc.robot.Commands.Wrist.SetWristState;
-import frc.robot.Commands.Wrist.SetWristStateTolerance;
-import frc.robot.Commands.auto.AlignCollect;
 import frc.robot.Subsystems.Climb.ClimbStates;
 import frc.robot.Subsystems.CoralRollers.CoralRollers;
 import frc.robot.Subsystems.CoralRollers.CoralRollersState;
-import frc.robot.Subsystems.Elevator.Elevator;
-import frc.robot.Subsystems.Elevator.ElevatorStates;
 import frc.robot.Subsystems.Swerve.Swerve;
 import frc.robot.Subsystems.Swerve.Swerve.DriveState;
-import frc.robot.Subsystems.Vision.AlignVision;
 import frc.robot.Subsystems.Wrist.WristStates;
 
 public class ButtonConfig {
@@ -130,11 +106,11 @@ public class ButtonConfig {
         coDriverButtons.button(2).onTrue(new RemoveAlgaeTop().onlyIf(
                 () -> {
                     return !CoralRollers.getInstance().HasCoral();
-                }));
+                })).whileTrue(new AlignReef());
         coDriverButtons.button(5).onTrue(new RemoveAlgaeBottom().onlyIf(
                 () -> {
                     return !CoralRollers.getInstance().HasCoral();
-                }));
+                })).whileTrue(new AlignReef());
         coDriverButtons.button(8).onTrue(new CollectAlgaeStack());
         coDriverButtons.button(3).onTrue(new BargeAlgae());
 
