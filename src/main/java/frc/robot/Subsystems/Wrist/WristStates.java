@@ -17,7 +17,9 @@ public enum WristStates {
     BARGEALGAE(0.90),
     TUNING(0.7561), // TODO actually set this value
     TOPALGAEINTAKE(00000000),
-    BOTTOMALGAEINTAKE(00000000);
+    BOTTOMALGAEINTAKE(00000000),
+    QUICKALGAEREMOVALLOW(0.575),
+    QUICKALGAEREMOVALHIGH(0.575);
 
     public double wristPosition;
 

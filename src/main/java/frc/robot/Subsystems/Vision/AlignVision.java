@@ -384,7 +384,7 @@ public class AlignVision extends SubsystemBase {
                     Logger.recordOutput("Vision/TargetY", targetDistance);
                     yInTolerance = MathUtil.isNear(refPosition.getY(), targetDistance, 0.03);
                     ySetpoint = yProfile.calculate(deltaTime, ySetpoint, yGoal);
-                    Logger.recordOutput("Vision/SetPointY", ySetpoint.position);
+                    // Logger.recordOutput("Vision/SetPointY", ySetpoint.position);
 
                     // Calculate the speeds for the robot to align with the target
                     ySpeed = -cameraYPIDController.calculate(refPosition.getY(), targetDistance);
@@ -547,14 +547,17 @@ public class AlignVision extends SubsystemBase {
     }
 
     public double getRightLidarDistance() {
+        Logger.recordOutput("Vision/FrontRightLidarDistance", rightRange.getDistance().getValueAsDouble());
         return rightRange.getDistance().getValueAsDouble();
     }
 
     public double getLeftLidarDistance() {
+        Logger.recordOutput("Vision/FrontLeftLidarDistance", leftRange.getDistance().getValueAsDouble());
         return leftRange.getDistance().getValueAsDouble();
     }
 
     public double getBackLidarDistance() {
+        Logger.recordOutput("Vision/BackLidarDistance", backRange.getDistance().getValueAsDouble());
         return backRange.getDistance().getValueAsDouble();
     }
 

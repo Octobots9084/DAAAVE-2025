@@ -1,10 +1,14 @@
 package frc.robot;
 
 import com.revrobotics.spark.ClosedLoopSlot;
+
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import frc.robot.Commands.Climb.SetClimbState;
 import frc.robot.Commands.Climb.ZeroClimb;
+import frc.robot.Commands.complex.AlgaeFlickBottom;
+import frc.robot.Commands.complex.AlgaeFlickTop;
 import frc.robot.Commands.complex.AlignReef;
 import frc.robot.Commands.complex.AlignSource;
 import frc.robot.Commands.complex.BargeAlgae;
@@ -20,12 +24,15 @@ import frc.robot.Commands.complex.RobotSafeState;
 import frc.robot.Commands.complex.RobotStop;
 import frc.robot.Commands.complex.ScoreCoral;
 import frc.robot.Commands.CoralRollers.SetAlgaeRollerState;
+import frc.robot.Commands.Elevator.SetElevatorState;
 import frc.robot.Commands.ReefSelection.ReefLevelSelection;
 import frc.robot.Commands.ReefSelection.SetOrientation;
 import frc.robot.Commands.Wrist.SetWristState;
+import frc.robot.Commands.Wrist.SetWristStateTolerance;
 import frc.robot.Subsystems.Climb.ClimbStates;
 import frc.robot.Subsystems.CoralRollers.CoralRollers;
 import frc.robot.Subsystems.CoralRollers.CoralRollersState;
+import frc.robot.Subsystems.Elevator.ElevatorStates;
 import frc.robot.Subsystems.Swerve.Swerve;
 import frc.robot.Subsystems.Swerve.Swerve.DriveState;
 import frc.robot.Subsystems.Wrist.WristStates;
@@ -44,11 +51,13 @@ public class ButtonConfig {
                 () -> {
                     return CoralRollers.getInstance().HasCoral();
                 }));
-        driverRight.button(2).whileTrue(new AlignSource().onlyIf(
+        driverRight.button(2).whileTrue(new AlignReef());
+
+        driverButtons.button(2).whileTrue(new AlignSource().onlyIf(
                 () -> {
                     return !CoralRollers.getInstance().HasCoral();
                 }));
-        driverRight.button(2).onFalse(new InstantCommand(() -> {
+        driverButtons.button(2).onFalse(new InstantCommand(() -> {
             Swerve.getInstance().setDriveState(DriveState.Manual);
         }));
 
@@ -56,11 +65,6 @@ public class ButtonConfig {
 
         driverButtons.button(1)
                 .onTrue(new EjectCoral());
-
-        driverButtons.button(2).onTrue(new SetAlgaeRollerState(CoralRollersState.AlGAEOUTPUT).onlyIf(
-                () -> {
-                    return !CoralRollers.getInstance().HasCoral();
-                }).withTimeout(1.5));
 
         driverButtons.button(4).onTrue(new Intake().onlyIf(
                 () -> {
@@ -103,18 +107,20 @@ public class ButtonConfig {
                 () -> {
                     return !CoralRollers.getInstance().HasCoral();
                 }));
-        coDriverButtons.button(2).onTrue(new RemoveAlgaeTop().onlyIf(
+        coDriverButtons.button(2).onTrue(new ConditionalCommand(new AlgaeFlickTop(), new RemoveAlgaeTop().onlyIf(
                 () -> {
                     return !CoralRollers.getInstance().HasCoral();
-                })).whileTrue(new AlignReef());
-        coDriverButtons.button(5).onTrue(new RemoveAlgaeBottom().onlyIf(
+                }), coDriverButtons.button(19)));
+        coDriverButtons.button(5).onTrue(new ConditionalCommand(new AlgaeFlickBottom(), new RemoveAlgaeBottom().onlyIf(
                 () -> {
                     return !CoralRollers.getInstance().HasCoral();
-                })).whileTrue(new AlignReef());
+                }), coDriverButtons.button(19)));
+
         coDriverButtons.button(8).onTrue(new CollectAlgaeStack());
         coDriverButtons.button(3).onTrue(new BargeAlgae());
 
         coDriverButtons.button(6).onTrue(new PrepReefPlacement());
+        coDriverButtons.button(15).onTrue(new SetElevatorState(ElevatorStates.LEVEL4).andThen(new SetWristStateTolerance(WristStates.BARGEALGAE, 1, ClosedLoopSlot.kSlot0)));
 
         // Return robot to a safe configuration
         // Score and Intake assistance buttons for right stick
@@ -125,25 +131,20 @@ public class ButtonConfig {
         // Reef mode active (Switch 20)
         // Reef selection
         coDriverButtons.button(20).onTrue(new SetWristState(WristStates.L1, ClosedLoopSlot.kSlot0));
-        coDriverButtons.button(10).and(coDriverButtons.button(20).negate()).onTrue(new ReefLevelSelection(4));
-        coDriverButtons.button(12).and(coDriverButtons.button(20).negate()).onTrue(new ReefLevelSelection(3));
-        coDriverButtons.button(14).and(coDriverButtons.button(20).negate()).onTrue(new ReefLevelSelection(2));
-        coDriverButtons.button(16).and(coDriverButtons.button(20).negate()).onTrue(new ReefLevelSelection(1));
-        coDriverButtons.button(17).and(coDriverButtons.button(20).negate()).whileTrue(new Elephantiasis().onlyIf(
-                () -> {
-                    return !CoralRollers.getInstance().HasCoral();
-                }));
+        coDriverButtons.button(10).onTrue(new ReefLevelSelection(4));
+        coDriverButtons.button(12).onTrue(new ReefLevelSelection(3));
+        coDriverButtons.button(14).onTrue(new ReefLevelSelection(2));
+        coDriverButtons.button(16)
+                .onTrue(new ConditionalCommand(new InstantCommand(), new ReefLevelSelection(1), coDriverButtons.button(20)));
+        coDriverButtons.button(16).onTrue(new ConditionalCommand(new SetClimbState(ClimbStates.Deployed), new InstantCommand(), coDriverButtons.button(20)));
+        coDriverButtons.button(17).onTrue(new ConditionalCommand(new SetClimbState(ClimbStates.Climbing), new InstantCommand(), coDriverButtons.button(20)));
+        coDriverButtons.button(16).onFalse(new ConditionalCommand(new SetClimbState(ClimbStates.Stored), new InstantCommand(), coDriverButtons.button(20)));
+
+        coDriverButtons.button(17).onFalse(new ConditionalCommand(new SetClimbState(ClimbStates.Stored), new InstantCommand(), coDriverButtons.button(20)));
+
         coDriverRight.button(1).onTrue(new SetOrientation(0));
         coDriverRight.button(2).onTrue(new SetOrientation(1));
         // Climb mode active (Switch 20)
-        coDriverButtons.button(14).and(coDriverButtons.button(20))
-                .whileTrue(new SetWristState(WristStates.L1, ClosedLoopSlot.kSlot0).andThen(new SetClimbState(ClimbStates.Stored)));
-        coDriverButtons.button(16).and(coDriverButtons.button(20))
-                .whileTrue(new SetWristState(WristStates.L1, ClosedLoopSlot.kSlot0).andThen(new SetClimbState(ClimbStates.Deployed)));
-        coDriverButtons.button(14).and(coDriverButtons.button(20))
-                .onFalse(new SetClimbState(ClimbStates.Climbing));
-        coDriverButtons.button(16).and(coDriverButtons.button(20)).onFalse(new SetClimbState(ClimbStates.Climbing));
-        coDriverButtons.button(17).and(coDriverButtons.button(20)).whileTrue(new ZeroClimb());
 
     }
 }
