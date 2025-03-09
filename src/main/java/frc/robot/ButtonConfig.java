@@ -25,6 +25,7 @@ import frc.robot.Commands.complex.RobotStop;
 import frc.robot.Commands.complex.ScoreCoral;
 import frc.robot.Commands.CoralRollers.SetAlgaeRollerState;
 import frc.robot.Commands.Elevator.SetElevatorState;
+import frc.robot.Commands.Elevator.SetElevatorStateTolerance;
 import frc.robot.Commands.ReefSelection.ReefLevelSelection;
 import frc.robot.Commands.ReefSelection.SetOrientation;
 import frc.robot.Commands.Wrist.SetWristState;
@@ -144,6 +145,8 @@ public class ButtonConfig {
 
         coDriverRight.button(1).onTrue(new SetOrientation(0));
         coDriverRight.button(2).onTrue(new SetOrientation(1));
+        coDriverButtons.button(13).onTrue(new SetWristStateTolerance(WristStates.PREP, 0.01, ClosedLoopSlot.kSlot0)
+                .andThen(new SetElevatorStateTolerance(ElevatorStates.CLIMB, 1.5).andThen(new SetWristState(WristStates.TUNING, ClosedLoopSlot.kSlot0))));
         // Climb mode active (Switch 20)
 
     }
