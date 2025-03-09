@@ -83,6 +83,7 @@ public class AlignVision extends SubsystemBase {
     private static ReefTargetOrientation selectedReefOrientation = ReefTargetOrientation.AB;
     private static ReefTargetSide selectedPoleSide = ReefTargetSide.RIGHT;
     private static ElevatorStates selectedLevel = ElevatorStates.LEVEL1;
+    public static boolean isCollecting = false;
     private PhotonTrackedTarget bestTarget = new PhotonTrackedTarget();
     private Transform3d transformCameraToRobot;
 
@@ -111,7 +112,7 @@ public class AlignVision extends SubsystemBase {
 
         this.leftRange = new CANrange(13, "KrakensBus");
         this.rightRange = new CANrange(14, "KrakensBus");
-        this.backRange = new CANrange(23);
+        this.backRange = new CANrange(23, "KrakensBus");
 
         this.cameraXPIDController = new PIDController(2, 0, 0);
         this.cameraYPIDController = new PIDController(2.5, 0, 0);

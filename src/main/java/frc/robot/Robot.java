@@ -109,6 +109,9 @@ public class Robot extends LoggedRobot {
     public void robotInit() {
         robotContainer = new RobotContainer();
         Swerve.getInstance().zeroGyro();
+        Elevator.getInstance().setTargetState(ElevatorStates.LEVEL1);
+        Elevator.getInstance().setState(ElevatorStates.LEVEL1);
+        Wrist.getInstance().setState(WristStates.INTAKE, ClosedLoopSlot.kSlot0);
 
     }
 
@@ -123,9 +126,6 @@ public class Robot extends LoggedRobot {
     public void disabledInit() {
         if (Constants.currentMode == Constants.realMode)
             Light.getInstance().candleOff();
-        Elevator.getInstance().setTargetState(ElevatorStates.LEVEL1);
-        Elevator.getInstance().setState(ElevatorStates.LEVEL1);
-        Wrist.getInstance().setState(WristStates.INTAKE, ClosedLoopSlot.kSlot0);
 
     }
 

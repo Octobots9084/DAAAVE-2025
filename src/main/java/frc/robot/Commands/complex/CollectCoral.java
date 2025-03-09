@@ -1,5 +1,6 @@
 package frc.robot.Commands.complex;
 
+import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Commands.CoralRollers.SetCoralRollersState;
@@ -12,7 +13,8 @@ public class CollectCoral extends SequentialCommandGroup {
     public CollectCoral() {
         addCommands(
                 new SetCoralRollersState(CoralRollersState.INTAKING),
-                new WaitForClawFrontSensor(),
+                new ParallelDeadlineGroup(new WaitForClawFrontSensor(), new TriggerSourceLight()),
+
                 new WaitCommand(0),
                 new SetCoralRollersState(CoralRollersState.STOPPED));
     }
