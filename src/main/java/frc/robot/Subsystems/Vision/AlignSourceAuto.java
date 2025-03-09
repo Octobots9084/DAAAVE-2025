@@ -44,21 +44,26 @@ public class AlignSourceAuto extends SubsystemBase {
     }
 
     // From Nate :)
-    // This should return whether the robot is close enough to the source to take control
+    // This should return whether the robot is close enough to the source to take
+    // control
     // from the drivers and align.
     public boolean wrenchControlFromDriversForSourceAlign() {
-        return alignVision.getBackLidarDetect();
+        return alignVision.getBackLidarDistance() < 2.0;
     }
 
     public ChassisSpeeds getAlignChassisSpeeds() {
         double poseAngle = Swerve.getInstance().getPose().getRotation().getRadians();
 
         // if (!Constants.isBlueAlliance) {
-        //     distanceToLeftSide = swerve.getPose().getTranslation().getDistance(new Translation2d(14.225, 4.7));
-        //     distanceToRightSide = swerve.getPose().getTranslation().getDistance(new Translation2d(14.225, 3.35));
+        // distanceToLeftSide = swerve.getPose().getTranslation().getDistance(new
+        // Translation2d(14.225, 4.7));
+        // distanceToRightSide = swerve.getPose().getTranslation().getDistance(new
+        // Translation2d(14.225, 3.35));
         // } else {
-        //     distanceToLeftSide = swerve.getPose().getTranslation().getDistance(new Translation2d(3.325, 3.35));
-        //     distanceToRightSide = swerve.getPose().getTranslation().getDistance(new Translation2d(3.325, 4.7));
+        // distanceToLeftSide = swerve.getPose().getTranslation().getDistance(new
+        // Translation2d(3.325, 3.35));
+        // distanceToRightSide = swerve.getPose().getTranslation().getDistance(new
+        // Translation2d(3.325, 4.7));
         // }
 
         double sourceAngle = Math.toRadians(alignVision.handleTurnAngle(alignVision.getAlignSourceSide()));
