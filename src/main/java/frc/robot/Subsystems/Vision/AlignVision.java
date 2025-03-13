@@ -344,7 +344,7 @@ public class AlignVision extends SubsystemBase {
                     if (Swerve.getInstance().getDriveState() == DriveState.AlignBarge)
                     {
                         Pose3d temp = new Pose3d(0, tagPos.get().getY(), tagPos.get().getZ(), tagPos.get().getRotation());
-                        tagRelativeToField = temp;
+                        tagRelativeToField = fieldPosition.relativeTo(temp);
                     }
 
                     // Makes sure the robot has space to drive to the target, if not don't move
