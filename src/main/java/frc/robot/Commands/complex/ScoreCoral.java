@@ -60,7 +60,7 @@ public class ScoreCoral extends Command {
         }
 
         // wristState1 is to stop it from constantly setting
-        if (isAligned && !wristInPosition && elevatorWiderInPosition && isWristPrepped) {
+        if (!wristInPosition && elevatorWiderInPosition && isWristPrepped) {
             wrist.setState(targetElevatorState, ClosedLoopSlot.kSlot0);// TODO do slot (remove? make actual slot? idk)
         }
 
