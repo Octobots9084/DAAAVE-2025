@@ -16,6 +16,7 @@ package frc.robot;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -57,6 +58,7 @@ import com.revrobotics.spark.ClosedLoopSlot;
 public class Robot extends LoggedRobot {
     private Command m_autonomousCommand;
     private RobotContainer robotContainer;
+    private Timer timer;
 
     public Robot() {
         // Record metadata
@@ -102,6 +104,8 @@ public class Robot extends LoggedRobot {
 
         // Start AdvantageKit logger
         Logger.start();
+
+        timer = new Timer(); 
 
     }
 
@@ -171,6 +175,8 @@ public class Robot extends LoggedRobot {
 
         Constants.isInAuto = false;
         Swerve.getInstance().setDriveState(DriveState.Manual);
+        timer.reset();
+        timer.start();
     }
 
     /** This function is called periodically during operator control. */
@@ -179,6 +185,7 @@ public class Robot extends LoggedRobot {
         ShowSelection.displayReefSelection();
         if (Constants.currentMode == Constants.realMode)
             Light.getInstance().lights();
+        SmartDashboard.putString("Match Time",(int)(150-timer.get())/60+" : "+(int)((150-timer.get())%60));
     }
 
     /** This function is called once when test mode is enabled. */
