@@ -388,10 +388,13 @@ public class AlignVision extends SubsystemBase {
                     // Logger.recordOutput("Vision/SetPointY", ySetpoint.position);
 
                     // Calculate the speeds for the robot to align with the target
-                    ySpeed = -cameraYPIDController.calculate(refPosition.getY(), targetDistance);
-
+                    if (AlignState.SourceLeft == state || AlignState.SourceRight == state) {
+                        ySpeed = cameraYPIDController.calculate(refPosition.getY(), targetDistance);
+                    } else {
+                        ySpeed = -cameraYPIDController.calculate(refPosition.getY(), targetDistance);
+                    }
                     // Calculate the x and turn speeds for the robot to align with the target
-                    xSpeed = this.calculateXSpeed(aveLidarDist, refPosition);
+                    xSpeed = this.calculateXSpeed(aveLidarDist, refPosition, state);
                     turnSpeed = this.calculateTurnSpeed(diffLidarDist, refPosition);
 
                     // If the turn speed is not a number, then set the x, y, and turn speeds to 0
@@ -469,7 +472,7 @@ public class AlignVision extends SubsystemBase {
         }
     }
 
-    private double calculateXSpeed(double aveLidarDist, Pose3d refPosition) {
+    private double calculateXSpeed(double aveLidarDist, Pose3d refPosition, AlignState state) {
         // If both lidars are valid, then use the lidar distance to calculate the x
         // speed
         if (this.areBothLidarsValid()) {
@@ -484,7 +487,7 @@ public class AlignVision extends SubsystemBase {
             xInTolerance = MathUtil.isNear(this.getBackLidarDistance(), VisionConstants.maxBackLidarDepthDistance, 0.03);
 
             // Calculate the x speed for the robot to align with the target
-            return -lidarXPIDController.calculate(this.getBackLidarDistance(), VisionConstants.maxBackLidarDepthDistance);
+            return lidarXPIDController.calculate(this.getBackLidarDistance(), VisionConstants.maxBackLidarDepthDistance);
 
         } else { // If both lidars are not valid, then use the camera distance to calculate the x
                  // speed
@@ -492,8 +495,11 @@ public class AlignVision extends SubsystemBase {
             xInTolerance = MathUtil.isNear(refPosition.getX(), VisionConstants.maxCameraDepthDistance, 0.03);
 
             // Calculate the x speed for the robot to align with the target
-            return -cameraXPIDController.calculate(refPosition.getX(), VisionConstants.maxCameraDepthDistance);
-
+            if (AlignState.SourceLeft == state || AlignState.SourceRight == state) {
+                return cameraXPIDController.calculate(refPosition.getX(), VisionConstants.maxCameraDepthDistance);
+            } else {
+                return -cameraXPIDController.calculate(refPosition.getX(), VisionConstants.maxCameraDepthDistance);
+            }
         }
     }
 

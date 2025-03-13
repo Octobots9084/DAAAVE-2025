@@ -54,13 +54,12 @@ public class ButtonConfig {
                 () -> {
                     return CoralRollers.getInstance().HasCoral();
                 }));
-        driverRight.button(2).whileTrue(new AlignReef());
 
-        driverButtons.button(2).whileTrue(new AlignSource().onlyIf(
+        driverRight.button(2).whileTrue(new AlignSource().onlyIf(
                 () -> {
                     return !CoralRollers.getInstance().HasCoral();
                 }));
-        driverButtons.button(2).onFalse(new InstantCommand(() -> {
+        driverRight.button(2).onFalse(new InstantCommand(() -> {
             Swerve.getInstance().setDriveState(DriveState.Manual);
         }));
 
@@ -68,6 +67,13 @@ public class ButtonConfig {
 
         driverButtons.button(1)
                 .onTrue(new EjectCoral());
+
+        driverButtons.button(2).onTrue(new InstantCommand(() -> {
+            Swerve.getInstance().setDriveState(DriveState.AlignReef);
+        }));
+        driverButtons.button(2).onFalse(new InstantCommand(() -> {
+            Swerve.getInstance().setDriveState(DriveState.Manual);
+        }));
 
         driverButtons.button(4).onTrue(new Intake().onlyIf(
                 () -> {
