@@ -41,6 +41,7 @@ import frc.robot.States.ReefTargetOrientation;
 import frc.robot.States.ReefTargetSide;
 import frc.robot.Subsystems.Elevator.ElevatorStates;
 import frc.robot.Subsystems.Vision.AlignVision;
+import frc.robot.Subsystems.Wrist.Wrist;
 import frc.robot.Subsystems.Wrist.WristStates;
 
 import java.util.Optional;
@@ -143,8 +144,22 @@ public class Swerve extends SubsystemBase {
                     new testPlace(ElevatorStates.LEVEL4, ReefTargetSide.RIGHT, ReefTargetOrientation.CD));
             NamedCommands.registerCommand("placeEF",
                     new testPlace(ElevatorStates.LEVEL4, ReefTargetSide.LEFT, ReefTargetOrientation.EF));
-            NamedCommands.registerCommand("InitalWristPos", new SetWristState(WristStates.PREP, ClosedLoopSlot.kSlot0));
-            new EventTrigger("PrepWristPosition").onTrue(new SetWristState(WristStates.PREP, ClosedLoopSlot.kSlot0));
+            NamedCommands.registerCommand("placeI",
+                    new testPlace(ElevatorStates.LEVEL4, ReefTargetSide.LEFT, ReefTargetOrientation.IJ));
+            NamedCommands.registerCommand("placeJ",
+                    new testPlace(ElevatorStates.LEVEL4, ReefTargetSide.RIGHT, ReefTargetOrientation.IJ));
+            NamedCommands.registerCommand("placeK",
+                    new testPlace(ElevatorStates.LEVEL4, ReefTargetSide.LEFT, ReefTargetOrientation.KL));
+            NamedCommands.registerCommand("placeL",
+                    new testPlace(ElevatorStates.LEVEL4, ReefTargetSide.RIGHT, ReefTargetOrientation.KL));
+            NamedCommands.registerCommand("placeA",
+                    new testPlace(ElevatorStates.LEVEL4, ReefTargetSide.LEFT, ReefTargetOrientation.AB));
+            NamedCommands.registerCommand("InitalWristPos", new InstantCommand(() -> {
+                Wrist.getInstance().setState(WristStates.PREP, ClosedLoopSlot.kSlot0);
+            }));
+            new EventTrigger("PrepWristPosition").onTrue(new InstantCommand(() -> {
+                Wrist.getInstance().setState(WristStates.PREP, ClosedLoopSlot.kSlot0);
+            }));
             new EventTrigger("BringUpElevator").onTrue(new SetElevatorState(ElevatorStates.LEVEL4));
             NamedCommands.registerCommand("AlignCollect", new AlignCollect());
             new EventTrigger("PrepCollect").onTrue(new PrepCollect());

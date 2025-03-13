@@ -5,9 +5,21 @@
     "data": {
       "commands": [
         {
+          "type": "named",
+          "data": {
+            "name": "InitalWristPos"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "initial_to_j"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "placeJ"
           }
         },
         {
@@ -17,9 +29,21 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "AlignCollect"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "topstation_to_k"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "placeK"
           }
         },
         {
@@ -29,9 +53,21 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "AlignCollect"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "topstation_to_l"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "placeL"
           }
         },
         {
@@ -41,9 +77,27 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "AlignCollect"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "topstation_to_a"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "placeA"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "a_to_topstation"
           }
         }
       ]

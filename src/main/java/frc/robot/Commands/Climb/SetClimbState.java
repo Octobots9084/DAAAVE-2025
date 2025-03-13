@@ -15,4 +15,5 @@ public class SetClimbState extends InstantCommand {
     public void initialize() {
         Climb.getInstance().setState(targetState);
     }
+
 }

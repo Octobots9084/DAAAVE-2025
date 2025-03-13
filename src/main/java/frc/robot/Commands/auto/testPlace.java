@@ -72,7 +72,7 @@ public class testPlace extends Command {
     @Override
     public void end(boolean interrupted) {
         CommandScheduler.getInstance()
-                .schedule(new SetWristStateTolerance(WristStates.PREP, 0.01, ClosedLoopSlot.kSlot0).andThen(new SetElevatorState(ElevatorStates.INTAKE)));
+                .schedule(new SetWristStateTolerance(WristStates.PREP, 0.01, ClosedLoopSlot.kSlot0));
         Swerve.getInstance().driveRobotRelative(new ChassisSpeeds());
     }
 

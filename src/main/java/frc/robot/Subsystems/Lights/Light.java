@@ -7,6 +7,7 @@ import com.ctre.phoenix.led.CANdle;
 
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Commands.ReefSelection.manager;
@@ -20,14 +21,16 @@ import frc.robot.Subsystems.Wrist.Wrist;
 import frc.robot.Subsystems.Wrist.WristStates;
 
 import org.littletonrobotics.junction.Logger;
-//link to CANdle documentation: https://api.ctr-electronics.com/phoenix/release/java/com/ctre/phoenix/led/CANdle.html
-//need to set up advantage kit or sumthin, idk
+// link to CANdle documentation:
+// https://api.ctr-electronics.com/phoenix/release/java/com/ctre/phoenix/led/CANdle.html
+// need to set up advantage kit or sumthin, idk
 
 public class Light extends SubsystemBase {
-    private static Light instance;   
-    private final LightsIO io; 
+    private static Light instance;
+    private final LightsIO io;
     double start = 0;
     int targetTagID;
+
     public static Light getInstance() {
         if (instance == null) {
             throw new IllegalStateException("Light instance not set");
@@ -44,8 +47,8 @@ public class Light extends SubsystemBase {
         io.getcandle().configBrightnessScalar(0.5);
     }
 
-    public void candleOff(){
-        io.getcandle().setLEDs(0,0,0);
+    public void candleOff() {
+        io.getcandle().setLEDs(0, 0, 0);
     }
 
     public void lights() {
@@ -56,7 +59,7 @@ public class Light extends SubsystemBase {
                 break;
             case CD:
                 targetTagID = Constants.isBlueAlliance ? 17 : 8;
-                break;   
+                break;
             case EF:
                 targetTagID = Constants.isBlueAlliance ? 22 : 9;
                 break;
@@ -71,22 +74,29 @@ public class Light extends SubsystemBase {
                 break;
             case NONE:
                 targetTagID = -1;
-            break;
+                break;
         }
-        if(Elevator.getInstance().getTargetState() == ElevatorStates.INTAKE && Wrist.getInstance().getState() == WristStates.INTAKE && CoralRollers.getInstance().getState() == CoralRollersState.INTAKING){
+        if (AlignVision.isCollecting) {
             candleOff();
-            io.getcandle().setLEDs(148,0,211);
-        }else{
+            SmartDashboard.putNumber("test", (AlignVision.getInstance().getBackLidarDistance()));
+            io.getcandle().setLEDs(0, 0,
+                    (int) Math.floor(255 * Math.min(1, (0.7 - (AlignVision.getInstance().getBackLidarDistance() - 0.2)) / 0.7)));
+        } else if (Elevator.getInstance().getTargetState() == ElevatorStates.INTAKE && Wrist.getInstance().getState() == WristStates.INTAKE
+                && CoralRollers.getInstance().getState() == CoralRollersState.INTAKING) {
             candleOff();
-            if(AlignVision.getInstance().TagIsInView(targetTagID)){
-                io.getcandle().setLEDs(0,255,0);
-            }else{
-                io.getcandle().setLEDs(255,0,0);
+            io.getcandle().setLEDs(148, 0, 211);
+        } else {
+            candleOff();
+            if (AlignVision.getInstance().TagIsInView(targetTagID)) {
+                io.getcandle().setLEDs(0, 255, 0);
+            } else {
+                io.getcandle().setLEDs(255, 0, 0);
 
             }
+
         }
 
         // io.playAnimation();
     }
-    
+
 }

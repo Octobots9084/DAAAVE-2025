@@ -16,14 +16,14 @@ import frc.robot.Subsystems.Wrist.WristStates;
 public class EjectCoral extends SequentialCommandGroup {
     public EjectCoral() {
         BooleanSupplier wristAtL1 = () -> (Wrist.getInstance()
-                .isAtState(WristStates.L1, 0.1));
+                .isAtState(WristStates.L1, 0.1) && CoralRollers.getInstance().HasCoral());
         addCommands(
                 new ConditionalCommand(new InstantCommand(() -> {
                     CoralRollers.getInstance().setState(CoralRollersState.LEVEL1);
-                }), 
-                new InstantCommand(() -> {
-                    CoralRollers.getInstance().setState(CoralRollersState.OUTPUT);
-                }), wristAtL1),
+                }),
+                        new InstantCommand(() -> {
+                            CoralRollers.getInstance().setState(CoralRollersState.OUTPUT);
+                        }), wristAtL1),
 
                 new WaitCommand(0.5),
                 new InstantCommand(() -> {

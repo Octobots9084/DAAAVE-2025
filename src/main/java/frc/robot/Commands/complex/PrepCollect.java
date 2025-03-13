@@ -19,18 +19,22 @@ import frc.robot.Subsystems.Wrist.WristStates;
 
 public class PrepCollect extends SequentialCommandGroup {
     public PrepCollect() {
-                    
+
         addCommands(
-            new ConditionalCommand(
-                new SetWristStateTolerance(WristStates.PREP, 0.05, ClosedLoopSlot.kSlot0),
-                new InstantCommand(),
-                () -> { return Elevator.getInstance().getPosition() > Elevator.BOT_CROSSBAR_POS; }),
+                new ConditionalCommand(
+                        new SetWristStateTolerance(WristStates.PREP, 0.05, ClosedLoopSlot.kSlot0),
+                        new InstantCommand(),
+                        () -> {
+                            return Elevator.getInstance().getPosition() > Elevator.BOT_CROSSBAR_POS;
+                        }),
 
-            new SetElevatorStateTolerance(ElevatorStates.INTAKE, 1.5).withTimeout(5),
+                new SetElevatorStateTolerance(ElevatorStates.INTAKE, 1.5).withTimeout(5),
 
-            new ConditionalCommand(
-                new SetWristStateTolerance(WristStates.INTAKE, 0.05, ClosedLoopSlot.kSlot0),
-                new InstantCommand(),
-                () -> { return Elevator.getInstance().isAtState(ElevatorStates.INTAKE, 1.5); }));//TODO(SetWristStateTolerance) timeout
+                new ConditionalCommand(
+                        new SetWristStateTolerance(WristStates.INTAKE, 0.05, ClosedLoopSlot.kSlot0),
+                        new InstantCommand(),
+                        () -> {
+                            return Elevator.getInstance().isAtState(ElevatorStates.INTAKE, 1.5);
+                        }));// TODO(SetWristStateTolerance) timeout
     }
 }

@@ -3,38 +3,51 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.7151136363636363,
-        "y": 7.3405539772727275
+        "x": 1.354610655737705,
+        "y": 7.0878586065573765
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.0342045454545454,
-        "y": 6.722315340909091
+        "x": 1.673701564828614,
+        "y": 6.46961997019374
       },
       "isLocked": false,
       "linkedName": "topstation"
     },
     {
       "anchor": {
-        "x": 3.0313636363636363,
-        "y": 4.448792613636363
+        "x": 2.589,
+        "y": 4.676
       },
       "prevControl": {
-        "x": 2.6025852272727277,
-        "y": 5.515752840909091
+        "x": 2.258096352936895,
+        "y": 5.717506093738465
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "a_end_top"
+      "linkedName": "a_skid"
     }
   ],
   "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "InitalWristPos",
+      "waypointRelativePos": 0.5,
+      "endWaypointRelativePos": null,
+      "command": null
+    },
+    {
+      "name": "BringUpElevator",
+      "waypointRelativePos": 0.83,
+      "endWaypointRelativePos": null,
+      "command": null
+    }
+  ],
   "globalConstraints": {
-    "maxVelocity": 2.0,
-    "maxAcceleration": 1.0,
+    "maxVelocity": 6.0,
+    "maxAcceleration": 6.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 10.0,
@@ -48,7 +61,7 @@
   "folder": "topstation_to_place",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -42.05989977621661
+    "rotation": -55.0
   },
   "useDefaultConstraints": true
 }

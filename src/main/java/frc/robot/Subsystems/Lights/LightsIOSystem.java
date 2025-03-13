@@ -15,7 +15,7 @@ public class LightsIOSystem implements LightsIO {
     private TimedAnimation animation;
 
     public LightsIOSystem() {
-        this.candle = new CANdle(24,"KrakensBus");
+        this.candle = new CANdle(24, "KrakensBus");
     }
 
     public void setAnimation(TimedAnimation animations) {
@@ -29,19 +29,19 @@ public class LightsIOSystem implements LightsIO {
     }
 
     @Override
-    public TimedAnimation getAnimation(){
+    public TimedAnimation getAnimation() {
         return this.animation;
     }
 
     @Override
-    public void playAnimation(){
+    public void playAnimation() {
         // ErrorCode error = candle.animate(this.animation.animation);
         this.candle.setLEDs(1, 1, 1);
     }
 
     @Override
     public void updateInputs(LightsIOInputs inputs) {
-        
+
     }
 
     public CANdle getcandle() {

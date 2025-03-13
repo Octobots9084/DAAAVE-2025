@@ -16,13 +16,13 @@ import frc.robot.Subsystems.Wrist.WristStates;
 
 public class PrepReefPlacement extends InstantCommand {
 
-  @Override
-  public void initialize() {
-    CommandScheduler.getInstance().schedule(new SequentialCommandGroup(
-        new SetWristStateTolerance(WristStates.PREP,
-            0.05,
-            ClosedLoopSlot.kSlot0),
-        new SetElevatorStateTolerance(manager.level, 1.5).withTimeout(5),
-        new SetWristStateTolerance(manager.level, 0.001, ClosedLoopSlot.kSlot0)));
-  }
+    @Override
+    public void initialize() {
+        CommandScheduler.getInstance().schedule(new SequentialCommandGroup(
+                new SetWristStateTolerance(WristStates.PREP,
+                        0.05,
+                        ClosedLoopSlot.kSlot0),
+                new SetElevatorStateTolerance(manager.level, 5).withTimeout(5),
+                new SetWristStateTolerance(manager.level, 0.001, ClosedLoopSlot.kSlot0)));
+    }
 }

@@ -37,10 +37,10 @@ public final class Constants {
     public static final Mode simMode = Mode.SIM;
     public static final Mode realMode = Mode.REAL;
     public static final Mode currentMode = RobotBase.isReal() ? Mode.REAL : simMode;
+    public static boolean isInAuto = true;
     public static boolean isBlueAlliance = true;
     public static int NUM_LEDS;
     public static double LOOP_TIME = 0.02;
-
 
     public static enum Mode {
         /** Running on a real robot. */
@@ -77,17 +77,19 @@ public final class Constants {
 
         // Transform Camera Coordinates to Robot Coordinates. Based on camera mounting
         // position.
-        public static final Transform3d transformFrontLeftToRobot = new Transform3d(0.13, 0.32, 0.2921,
+        public static final Transform3d transformFrontLeftToRobot = new Transform3d(0.13, 0.31, 0.28,
                 new Rotation3d(0, 0, Math.toRadians(-25)));
 
-        public static final Transform3d transformFrontRightToRobot = new Transform3d(0.13, -0.32, 0.2921,
+        public static final Transform3d transformFrontRightToRobot = new Transform3d(0.13, -0.31, 0.28,
                 new Rotation3d(0, 0, Math.toRadians(25)));
 
-        public static final Transform3d transformMiddleRightToRobot = new Transform3d(0.08, -0.255, 0.59,
+        public static final Transform3d transformMiddleRightToRobot = new Transform3d(0.0762, -0.273, 0.609,
                 new Rotation3d(0, 0, Math.toRadians(-90)));
 
-        public static final Transform3d transformMiddleLeftToRobot = new Transform3d(0.08, 0.255, 0.59,
+        public static final Transform3d transformMiddleLeftToRobot = new Transform3d(0.0762, 0.273, 0.609,
                 new Rotation3d(0, 0, Math.toRadians(90)));
+
+        public static final Transform3d transformBackToRobot = new Transform3d(0.0, 0.0, 1.0, new Rotation3d(0, 0, Math.toRadians(180)));
 
         // Position of the AprilTag in Tag Coordinates.
         public static final Pose3d referenceTagPosition = Pose3d.kZero;
@@ -95,8 +97,11 @@ public final class Constants {
         // Constant Distance from Tag to Pole (6in in meters)
         public static final double distanceToPole = 0.164;
 
-        // Max Depth Distance of Lidar from Tag (Meters)
-        public static final double maxLidarDepthDistance = 0.22;
+        // Max Depth Distance of Front Lidar from Tag (Meters)
+        public static final double maxFrontLidarDepthDistance = 0.22;
+
+        // Max Depth Distance of Back Lidar from Tag (Meters)
+        public static final double maxBackLidarDepthDistance = 0.55;
 
         // Max Depth Distance of Camera from Tag (Meters)
         public static final double maxCameraDepthDistance = 0.65;
@@ -114,8 +119,8 @@ public final class Constants {
         // The standard deviations of our vision estimated poses, which affect
         // correction rate
         // (Fake values. Experiment and determine estimation noise on an actual robot.)
-        public static final Matrix<N3, N1> kSingleTagStdDevs = VecBuilder.fill(1, 1, 1);
-        public static final Matrix<N3, N1> kMultiTagStdDevs = VecBuilder.fill(0.2, 0.2, 0.5);
+        public static final Matrix<N3, N1> kSingleTagStdDevs = VecBuilder.fill(4, 4, 8);
+        public static final Matrix<N3, N1> kMultiTagStdDevs = VecBuilder.fill(0.5, 0.5, 1);
 
     }
 }
