@@ -6,6 +6,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.States.ReefTargetOrientation;
 import frc.robot.States.ReefTargetSide;
+import frc.robot.Subsystems.CoralRollers.CoralRollers;
+import frc.robot.Subsystems.CoralRollers.CoralRollersState;
 import frc.robot.Subsystems.Elevator.Elevator;
 import frc.robot.Subsystems.Elevator.ElevatorStates;
 import frc.robot.Subsystems.Swerve.Swerve;
@@ -26,7 +28,7 @@ public class PrepAlgaeRemoval extends Command {
     public void initialize() {
       targetOrientation = Swerve.getInstance().getReefTargetOrientation();
       Swerve.getInstance().setReefTargetSide(ReefTargetSide.ALGAE);
-      CommandScheduler.getInstance().schedule(new AlignReef());
+      Swerve.getInstance().setDriveState(DriveState.AlignReef);
       if (targetOrientation == ReefTargetOrientation.AB || targetOrientation == ReefTargetOrientation.EF || targetOrientation == ReefTargetOrientation.IJ) {
         targetElevatorState = ElevatorStates.TOPALGAE;
         targetWristState = WristStates.ALGAEREMOVAL;
@@ -49,7 +51,8 @@ public class PrepAlgaeRemoval extends Command {
 
     @Override
     public void end (boolean interrupted) {
-      Swerve.getInstance().setDriveState(DriveState.Manual);
+        Swerve.getInstance().setDriveState(DriveState.Manual);
+        CoralRollers.getInstance().setState(CoralRollersState.ALGAEINTAKING);
     }
 
 }
