@@ -13,9 +13,8 @@ import frc.robot.Subsystems.Wrist.WristStates;
 public class IntakeAlgaeTop extends SequentialCommandGroup {
     public IntakeAlgaeTop() {
         addCommands(
-            new SetWristStateTolerance(WristStates.TOPALGAEINTAKE, 0.05, ClosedLoopSlot.kSlot0),
-            // new SetElevatorStateTolerance(ElevatorStates.TOPALGAEINTAKE, 1.5),
-            new SetCoralRollersState(CoralRollersState.AlGAEINTAKING)
-        );
+                new SetWristStateTolerance(WristStates.TOPALGAEINTAKE, 0.05, ClosedLoopSlot.kSlot0),
+                // new SetElevatorStateTolerance(ElevatorStates.TOPALGAEINTAKE, 1.5),
+                new SetCoralRollersState(CoralRollersState.ALGAEINTAKING));
     }
 }
