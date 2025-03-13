@@ -22,63 +22,66 @@ import frc.robot.Commands.ReefSelection.manager;
 import frc.robot.Subsystems.Wrist.WristStates;
 
 public class ScoreCoral extends Command {
-  public boolean elevatorInPosition = false;
-  public boolean wristInPosition = false;
-  public boolean isAligned = false;
-  private Swerve swerve;
-  private CoralRollers coralRollers = CoralRollers.getInstance();
-  private Elevator elevator = Elevator.getInstance();
-  private Wrist wrist = Wrist.getInstance();
-  private ElevatorStates targetElevatorState;
-  private ReefTargetSide targetSide;
-  private ReefTargetOrientation targetOrientation;
-  private AlignVision alignVision = AlignVision.getInstance();
+    public boolean elevatorInPosition = false;
+    public boolean elevatorWiderInPosition = false;
+
+    public boolean wristInPosition = false;
+    public boolean isAligned = false;
+    private Swerve swerve;
+    private CoralRollers coralRollers = CoralRollers.getInstance();
+    private Elevator elevator = Elevator.getInstance();
+    private Wrist wrist = Wrist.getInstance();
+    private ElevatorStates targetElevatorState;
+    private ReefTargetSide targetSide;
+    private ReefTargetOrientation targetOrientation;
+    private AlignVision alignVision = AlignVision.getInstance();
 
     @Override
     public void initialize() {
         targetElevatorState = manager.level;
         swerve = Swerve.getInstance();
         swerve.setDriveState(DriveState.AlignReef);
-        if(!wrist.isAtState(targetElevatorState, 0.02)) {
+        if (!wrist.isAtState(targetElevatorState, 0.02)) {
             Wrist.getInstance().setState(WristStates.PREP, ClosedLoopSlot.kSlot0);
         }
     }
 
-  @Override
-  public void execute() {
-    elevatorInPosition = elevator.isAtState(targetElevatorState, 1.5);
-    wristInPosition = wrist.isAtState(targetElevatorState, 0.02);
-    boolean isWristPrepped = wrist.isAtState(WristStates.PREP, 0.02);
-    isAligned = alignVision.isAligned();
+    @Override
+    public void execute() {
+        elevatorInPosition = elevator.isAtState(targetElevatorState, 1.5);
+        elevatorWiderInPosition = elevator.isAtState(targetElevatorState, 3);
 
-    if (!elevatorInPosition && isWristPrepped) {
-      Elevator.getInstance().setState(targetElevatorState);
-    }
+        wristInPosition = wrist.isAtState(targetElevatorState, 0.02);
+        boolean isWristPrepped = wrist.isAtState(WristStates.PREP, 0.02);
+        isAligned = alignVision.isAligned();
 
-    //wristState1 is to stop it from constantly setting 
-    if (isAligned && !wristInPosition && elevatorInPosition && isWristPrepped) {
-      wrist.setState(targetElevatorState, ClosedLoopSlot.kSlot0);//TODO do slot (remove? make actual slot? idk)
+        if (!elevatorInPosition && isWristPrepped) {
+            Elevator.getInstance().setState(targetElevatorState);
+        }
+
+        // wristState1 is to stop it from constantly setting
+        if (isAligned && !wristInPosition && elevatorWiderInPosition && isWristPrepped) {
+            wrist.setState(targetElevatorState, ClosedLoopSlot.kSlot0);// TODO do slot (remove? make actual slot? idk)
+        }
+
+        if (elevatorInPosition
+                && wristInPosition
+                && isAligned
+                && (coralRollers.getState() != CoralRollersState.OUTPUT))
+            CommandScheduler.getInstance()
+                    .schedule(new EjectCoral());
     }
-    
-    
-    if (elevatorInPosition
-            && wristInPosition
-            && isAligned
-            && (coralRollers.getState() != CoralRollersState.OUTPUT))
-        CommandScheduler.getInstance()
-            .schedule(new EjectCoral());
-  }
 
     @Override
     public boolean isFinished() {
         if ((!coralRollers.clawBackSensorTriggered() && targetElevatorState != ElevatorStates.LEVEL1)
-            || (!coralRollers.clawFrontSensorTriggered() && targetElevatorState == ElevatorStates.LEVEL1))
+                || (!coralRollers.clawFrontSensorTriggered() && targetElevatorState == ElevatorStates.LEVEL1))
             return true;
         return false;
     }
 
     @Override
     public void end(boolean interrupted) {
-        Swerve.getInstance().setDriveState(DriveState.Manual);        
+        Swerve.getInstance().setDriveState(DriveState.Manual);
     }
 }
