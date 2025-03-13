@@ -11,10 +11,7 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Commands.CoralRollers.CoralRollersManual;
-import frc.robot.Commands.Elevator.ElevatorManual;
 import frc.robot.Commands.ManualControl.ElevatorManualControl;
-import frc.robot.Commands.Wrist.WristManual;
 import frc.robot.Commands.complex.AutoCollectCoral;
 import frc.robot.Commands.complex.CollectCoral;
 import frc.robot.Commands.swerve.drivebase.TeleopDrive;
@@ -70,10 +67,6 @@ public class RobotContainer {
     private AlignVision alignVision;
     private Climb climb;
     private Light lights;
-
-    private CoralRollersManual coralRollersManual;
-    private ElevatorManual elevatorManual;
-    private WristManual wristManual;
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
