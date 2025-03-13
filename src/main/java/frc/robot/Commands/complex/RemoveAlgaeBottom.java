@@ -18,7 +18,7 @@ public class RemoveAlgaeBottom extends SequentialCommandGroup {
         addCommands(
                 new InstantCommand(() -> AlignVision.setPoleSide(ReefTargetSide.ALGAE)),
                 new SetWristStateTolerance(WristStates.ALGAEREMOVAL, 0.05, ClosedLoopSlot.kSlot0),
-                new SetElevatorStateTolerance(ElevatorStates.LOW, 1.5),
+                new SetElevatorStateTolerance(ElevatorStates.BOTTOMALGAE, 1.5),
                 new SetCoralRollersState(CoralRollersState.ALGAEINTAKING));
     }
 }
