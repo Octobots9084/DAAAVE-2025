@@ -82,6 +82,9 @@ public class TeleopDrive extends Command {
                     swerveInstance.driveRobotRelative(alignInstance.getAlignChassisSpeeds(alignInstance.getAlignSourceSide()));
                 }
                 break;
+            case AlignBarge:
+                swerveInstance.driveRobotRelative(alignInstance.getAlignChassisSpeeds(AlignState.Barge));
+                break;
             default:
                 Swerve.getInstance()
                         .driveFieldRelative(

@@ -86,6 +86,7 @@ public class States {
         Processor,
         SourceRight,
         SourceLeft,
+        Barge,
         Manual
     }
 }

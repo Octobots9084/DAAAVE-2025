@@ -94,8 +94,8 @@ public class AlignVision extends SubsystemBase {
      * The first six are for the reef, the seventh is for the processor, the eighth
      * is for the right source, and the ninth is for the left source.
      */
-    private final int[] blueAlignAngles = { 0, 60, 120, 180, -120, -60, -90, 45, -45 };
-    private final int[] redAlignAngles = { 180, 240, 300, 0, 60, 120, 90, -135, 135 };
+    private final int[] blueAlignAngles = { 0, 60, 120, 180, -120, -60, -90, 45, -45, 0 };
+    private final int[] redAlignAngles = { 180, 240, 300, 0, 60, 120, 90, -135, 135, 180 };
 
     int[] finalAngles = null;
 
@@ -250,8 +250,10 @@ public class AlignVision extends SubsystemBase {
         try {
             this.finalAngles = Constants.isBlueAlliance ? blueAlignAngles : redAlignAngles;
 
-            if (swerve.getPreviousDriveState() != DriveState.AlignReef || swerve.getPreviousDriveState() != DriveState.AlignSource
-                    || swerve.getPreviousDriveState() != DriveState.AlignProcessor) {
+            if (swerve.getPreviousDriveState() != DriveState.AlignReef 
+        || swerve.getPreviousDriveState() != DriveState.AlignSource
+        || swerve.getPreviousDriveState() != DriveState.AlignProcessor 
+        || swerve.getPreviousDriveState() != DriveState.AlignBarge) {
                 isFirstTime = true;
                 cameraXPIDController.reset();
                 cameraYPIDController.reset();
@@ -339,6 +341,11 @@ public class AlignVision extends SubsystemBase {
                 // to the tag
                 if (tagPos.isPresent()) {
                     Pose3d tagRelativeToField = fieldPosition.relativeTo(tagPos.get());
+                    if (Swerve.getInstance().getDriveState() == DriveState.AlignBarge)
+                    {
+                        Pose3d temp = new Pose3d(0, tagPos.get().getY(), tagPos.get().getZ(), tagPos.get().getRotation());
+                        tagRelativeToField = temp;
+                    }
 
                     // Makes sure the robot has space to drive to the target, if not don't move
                     // robot
@@ -467,6 +474,11 @@ public class AlignVision extends SubsystemBase {
             // Sets the correct tag ID and angles of alignment based on the alliance for
             // SourceLeft
             return finalAngles[8];
+        } else if (state == AlignState.Barge) {
+            finalTagID = Constants.isBlueAlliance ? 14 : 5;
+            //Sets the correct tag ID and angles of alignment based on the alliance for
+            // Barge
+            return finalAngles[9];
         } else {
             return Integer.MAX_VALUE;
         }
@@ -475,6 +487,8 @@ public class AlignVision extends SubsystemBase {
     private double calculateXSpeed(double aveLidarDist, Pose3d refPosition, AlignState state) {
         // If both lidars are valid, then use the lidar distance to calculate the x
         // speed
+        
+        
         if (this.areBothLidarsValid()) {
             // Check if the robot x position is in tolerance for the target x position
             xInTolerance = MathUtil.isNear(aveLidarDist, VisionConstants.maxFrontLidarDepthDistance, 0.03);

@@ -62,6 +62,7 @@ public class Swerve extends SubsystemBase {
         AlignReef,
         AlignProcessor,
         AlignSource,
+        AlignBarge,
         Reverse
     };
 
