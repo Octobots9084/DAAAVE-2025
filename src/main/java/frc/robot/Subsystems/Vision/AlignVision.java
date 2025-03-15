@@ -348,6 +348,7 @@ public class AlignVision extends SubsystemBase {
                 }
             } else { // If the final result is not null, then use the front cameras to get to the
                      // target
+
                 refPosition = this.getReferenceRobotPosition(finalResult, transformCameraToRobot);
             }
 
@@ -487,7 +488,7 @@ public class AlignVision extends SubsystemBase {
             xInTolerance = MathUtil.isNear(this.getBackLidarDistance(), VisionConstants.maxBackLidarDepthDistance, 0.03);
 
             // Calculate the x speed for the robot to align with the target
-            return lidarXPIDController.calculate(this.getBackLidarDistance(), VisionConstants.maxBackLidarDepthDistance);
+            return -lidarXPIDController.calculate(this.getBackLidarDistance(), VisionConstants.maxBackLidarDepthDistance);
 
         } else { // If both lidars are not valid, then use the camera distance to calculate the x
                  // speed
