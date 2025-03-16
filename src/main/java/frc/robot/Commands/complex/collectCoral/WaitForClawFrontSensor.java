@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.Subsystems.CoralRollers.CoralRollers;
 import frc.robot.Subsystems.CoralRollers.CoralRollersState;
+import frc.robot.Subsystems.Vision.AlignVision;
 
 public class WaitForClawFrontSensor extends Command {
     CoralRollers coralRollers;
@@ -26,6 +27,7 @@ public class WaitForClawFrontSensor extends Command {
     }
 
     public boolean isFinished() {
+        AlignVision.isCollecting = false;
         return coralRollers.clawFrontSensorTriggered();
     }
 
