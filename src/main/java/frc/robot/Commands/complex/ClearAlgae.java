@@ -26,8 +26,8 @@ public class ClearAlgae extends SequentialCommandGroup {
                 new SetDriveState(DriveState.AlignReef),
 
                 new ConditionalCommand(
-                        new SetElevatorStateTolerance(ElevatorStates.TOPALGAE, 1.5).withTimeout(5),
-                        new SetElevatorStateTolerance(ElevatorStates.BOTTOMALGAE, 1.5).withTimeout(5),
+                        new RemoveAlgaeTop(),
+                        new RemoveAlgaeBottom(),
                         () -> {
                             ReefTargetOrientation targetOrientation = Swerve.getInstance().getReefTargetOrientation();
                             return (targetOrientation == ReefTargetOrientation.AB || targetOrientation == ReefTargetOrientation.EF

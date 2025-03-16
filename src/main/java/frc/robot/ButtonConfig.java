@@ -13,6 +13,7 @@ import frc.robot.Commands.complex.AlignReef;
 import frc.robot.Commands.complex.AlgaeInOut;
 import frc.robot.Commands.complex.AlignSource;
 import frc.robot.Commands.complex.BargeAlgae;
+import frc.robot.Commands.complex.ClearAlgae;
 import frc.robot.Commands.complex.BargeAlgae;
 import frc.robot.Commands.complex.CollectAlgaeStack;
 import frc.robot.Commands.complex.EjectCoral;
@@ -83,6 +84,12 @@ public class ButtonConfig {
         // Zero gyro button
         driverButtons.button(6).onTrue(new InstantCommand(() -> {
             Swerve.getInstance().zeroGyro();
+        }));
+
+        driverButtons.button(7).whileTrue(new ClearAlgae());
+
+        driverButtons.button(7).onFalse(new InstantCommand(() -> {
+            Swerve.getInstance().setDriveState(DriveState.Manual);
         }));
 
         // driverButtons.button(2).onTrue(new RemoveAlgaeBottom().onlyIf(
