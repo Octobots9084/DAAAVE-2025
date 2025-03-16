@@ -64,4 +64,8 @@ public class CoralRollers extends SubsystemBase {
     io.updateSim();
   }
 
+  public boolean isStalled() {
+    return io.isStalled();
+  }
+
 }
