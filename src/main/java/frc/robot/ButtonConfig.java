@@ -111,7 +111,7 @@ public class ButtonConfig {
         // driverButtons.button(17).and(driverButtons.button(20)).whileTrue(new
         // ZeroClimb());
 
-        coDriverButtons.button(1).onTrue(new EjectCoral());
+        coDriverButtons.button(1).onTrue(new EjectCoral().andThen(new RobotStop()));
         coDriverButtons.button(4).onTrue(new Intake().onlyIf(
                 () -> {
                     return !CoralRollers.getInstance().HasCoral();
