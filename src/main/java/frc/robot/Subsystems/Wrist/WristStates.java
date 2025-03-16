@@ -3,7 +3,7 @@ package frc.robot.Subsystems.Wrist;
 public enum WristStates {
     // TODO edit these to the actual positions
     INTAKE(0.375),
-    ELEPHANTIASIS(0.40),
+    ELEPHANTIASIS(0.425),
     L1(0.547),
     L2(0.828),
     L3(0.828),

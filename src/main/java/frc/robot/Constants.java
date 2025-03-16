@@ -102,7 +102,7 @@ public final class Constants {
         public static final double maxFrontLidarDepthDistance = 0.22;
 
         // Max Depth Distance of Back Lidar from Tag (Meters)
-        public static final double maxBackLidarDepthDistance = 0.55;
+        public static final double maxBackLidarDepthDistance = 0.65;
 
         // Max Depth Distance of Camera from Tag (Meters)
         public static final double maxBackCameraDepthDistance = -0.75;

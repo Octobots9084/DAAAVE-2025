@@ -70,6 +70,7 @@ public class AlignVision extends SubsystemBase {
     private PIDController cameraXPIDController;
     private PIDController backCameraXPIDController;
     private PIDController cameraYPIDController;
+    private PIDController cameraYPIDControllerSource;
 
     private PIDController lidarXPIDController;
     private PIDController backLidarXPIDController;
@@ -129,7 +130,8 @@ public class AlignVision extends SubsystemBase {
         this.backCameraXPIDController = new PIDController(3.5, 0, 0);
 
         this.cameraYPIDController = new PIDController(2.5, 0, 0);
-
+        this.cameraYPIDControllerSource = new PIDController(2.5, 0, 0);
+        
         this.lidarXPIDController = new PIDController(4, 0, 0);
         this.backLidarXPIDController = new PIDController(5.5, 0, 0);
 
@@ -261,6 +263,7 @@ public class AlignVision extends SubsystemBase {
 
                 cameraXPIDController.reset();
                 cameraYPIDController.reset();
+                cameraYPIDControllerSource.reset();
                 backCameraXPIDController.reset();
                 lidarXPIDController.reset();
                 backLidarXPIDController.reset();
@@ -349,7 +352,7 @@ public class AlignVision extends SubsystemBase {
                     // Logger.recordOutput("Vision/SetPointY", ySetpoint.position);
 
                     // Calculate the speeds for the robot to align with the target
-                    ySpeed = -cameraYPIDController.calculate(refPosition.getY(), targetDistance);
+                    ySpeed = Swerve.getInstance().getDriveState() == DriveState.AlignSource ? -cameraYPIDControllerSource.calculate(refPosition.getY(), targetDistance) : -cameraYPIDController.calculate(refPosition.getY(), targetDistance);
 
                     SmartDashboard.putBoolean("AlignVision/UsingGlobalVision", usingGlobalVision);
 
