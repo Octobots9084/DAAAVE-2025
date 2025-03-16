@@ -16,6 +16,7 @@ import frc.robot.Commands.complex.BargeAlgae;
 import frc.robot.Commands.complex.ClearAlgae;
 import frc.robot.Commands.complex.BargeAlgae;
 import frc.robot.Commands.complex.CollectAlgaeStack;
+import frc.robot.Commands.complex.CoralPlaceAndAlgaeReefClear;
 import frc.robot.Commands.complex.EjectCoral;
 import frc.robot.Commands.complex.Elephantiasis;
 // import frc.robot.Commands.complex.ClearAlgae;
@@ -26,6 +27,7 @@ import frc.robot.Commands.complex.RemoveAlgaeTop;
 import frc.robot.Commands.complex.RobotSafeState;
 import frc.robot.Commands.complex.RobotStop;
 import frc.robot.Commands.complex.ScoreCoral;
+import frc.robot.Commands.swerve.drivebase.SetDriveState;
 import frc.robot.Commands.CoralRollers.SetAlgaeRollerState;
 import frc.robot.Commands.Elevator.SetElevatorState;
 import frc.robot.Commands.Elevator.SetElevatorStateTolerance;
@@ -163,6 +165,7 @@ public class ButtonConfig {
         coDriverButtons.button(13).onTrue(new SetWristStateTolerance(WristStates.PREP, 0.01, ClosedLoopSlot.kSlot0)
                 .andThen(new SetElevatorStateTolerance(ElevatorStates.CLIMB, 1.5).andThen(new SetWristState(WristStates.TUNING, ClosedLoopSlot.kSlot0))));
         // Climb mode active (Switch 20)
+        driverButtons.button(15).whileTrue(new CoralPlaceAndAlgaeReefClear()).onFalse(new SetDriveState(DriveState.Manual));
 
     }
 }

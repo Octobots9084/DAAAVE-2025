@@ -10,7 +10,6 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Commands.Elevator.SetElevatorStateTolerance;
 import frc.robot.Commands.Wrist.SetWristState;
 import frc.robot.Commands.Wrist.SetWristStateTolerance;
-import frc.robot.Commands.complex.collectCoral.WaitForCoralDetected;
 import frc.robot.Subsystems.CoralRollers.CoralRollers;
 import frc.robot.Subsystems.CoralRollers.CoralRollersState;
 import frc.robot.Subsystems.Elevator.Elevator;
