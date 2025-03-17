@@ -42,8 +42,8 @@ public class ClearAlgae extends SequentialCommandGroup {
                 new InstantCommand(() -> {
                     Swerve.getInstance().setDriveState(DriveState.Reverse);
                 }),
-                new SetWristState(WristStates.PREP,ClosedLoopSlot.kSlot0),
                 new SetElevatorState(ElevatorStates.LOW),
+                new SetWristState(WristStates.PREP,ClosedLoopSlot.kSlot0),
                 new WaitCommand(0.1),
                 new InstantCommand(() -> {
                     Swerve.getInstance().setDriveState(DriveState.Manual);
