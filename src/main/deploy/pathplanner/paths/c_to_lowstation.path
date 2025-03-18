@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 1.354610655737705,
-        "y": 0.9621413934426232
+        "x": 3.6442622950819668,
+        "y": 2.0170594262295083
       },
       "prevControl": {
-        "x": 1.594698337232314,
-        "y": 1.169767762888156
+        "x": 3.8843499765765763,
+        "y": 2.2246857956750405
       },
       "nextControl": null,
       "isLocked": false,
@@ -34,7 +34,7 @@
   "eventMarkers": [
     {
       "name": "PrepCollect",
-      "waypointRelativePos": 0.2268737339635407,
+      "waypointRelativePos": 0.0,
       "endWaypointRelativePos": null,
       "command": null
     }

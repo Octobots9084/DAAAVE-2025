@@ -7,12 +7,14 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.States.AlignState;
 import frc.robot.Constants;
+import frc.robot.Commands.complex.AlignSource;
 import frc.robot.Commands.complex.CollectCoral;
 import frc.robot.Commands.complex.Intake;
 import frc.robot.Subsystems.CoralRollers.CoralRollers;
 import frc.robot.Subsystems.Swerve.Swerve;
 import frc.robot.Subsystems.Swerve.Swerve.DriveState;
 import frc.robot.Subsystems.Vision.AlignSourceAuto;
+import frc.robot.Subsystems.Vision.AlignVision;
 
 public class AlignCollect extends Command {
     private Debouncer debouncer;
@@ -30,10 +32,10 @@ public class AlignCollect extends Command {
 
     @Override
     public void execute() {
-        shouldTakeControlFromDrivers = debouncer.calculate(AlignSourceAuto.getInstance().wrenchControlFromDriversForSourceAlign());
-        if (shouldTakeControlFromDrivers) {
-            Swerve.getInstance().driveRobotRelative(AlignSourceAuto.getInstance().getAlignChassisSpeeds());
-        }
+        // shouldTakeControlFromDrivers = debouncer.calculate(AlignSourceAuto.getInstance().wrenchControlFromDriversForSourceAlign());
+        // if (shouldTakeControlFromDrivers) {
+        Swerve.getInstance().driveRobotRelative(AlignVision.getInstance().getAlignChassisSpeeds(AlignVision.getInstance().getAlignSourceSide()));
+        // }
     }
 
     @Override
@@ -41,6 +43,7 @@ public class AlignCollect extends Command {
         if (Constants.currentMode == Constants.simMode) {
             return true;
         }
+        // return AlignVision.getInstance().isAligned();
         return CoralRollers.getInstance().clawFrontSensorTriggered();
     }
 
