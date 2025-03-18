@@ -11,7 +11,7 @@ public class CoralPlaceAndAlgaeReefClear extends SequentialCommandGroup{
             new ScoreCoral(),
             new InstantCommand(() -> {
                     Swerve.getInstance().setDriveState(DriveState.Reverse);
-                }),
+                }).withTimeout(0.25),
             new ClearAlgae()
         );
     }
