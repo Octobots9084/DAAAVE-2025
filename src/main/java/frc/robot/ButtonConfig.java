@@ -88,9 +88,9 @@ public class ButtonConfig {
             Swerve.getInstance().zeroGyro();
         }));
 
-        driverButtons.button(7).whileTrue(new ClearAlgae());
+        driverLeft.button(1).whileTrue(new ClearAlgae());
 
-        driverButtons.button(7).onFalse(new InstantCommand(() -> {
+        driverLeft.button(1).onFalse(new InstantCommand(() -> {
             Swerve.getInstance().setDriveState(DriveState.Manual);
         }));
 

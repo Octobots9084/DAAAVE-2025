@@ -1,5 +1,7 @@
 package frc.robot.Commands.complex;
 
+import java.util.function.BooleanSupplier;
+
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -13,7 +15,7 @@ import frc.robot.Subsystems.Swerve.Swerve.DriveState;
 
 public class CoralPlaceAndAlgaeReefClear extends SequentialCommandGroup{
     public CoralPlaceAndAlgaeReefClear(){
-        ElevatorStates isTop = (Swerve.getInstance().getReefTargetOrientation() == States.ReefTargetOrientation.AB || Swerve.getInstance().getReefTargetOrientation() == States.ReefTargetOrientation.EF || Swerve.getInstance().getReefTargetOrientation() == States.ReefTargetOrientation.IJ) ? ElevatorStates.TOPALGAE : ElevatorStates.BOTTOMALGAE;
+        BooleanSupplier isTop =  () -> Swerve.getInstance().getReefTargetOrientation() == States.ReefTargetOrientation.AB || Swerve.getInstance().getReefTargetOrientation() == States.ReefTargetOrientation.EF || Swerve.getInstance().getReefTargetOrientation() == States.ReefTargetOrientation.IJ;
         addCommands(
             new InstantCommand(() -> {
                 Swerve.getInstance().setDriveState(DriveState.AlignReef);
@@ -23,7 +25,7 @@ public class CoralPlaceAndAlgaeReefClear extends SequentialCommandGroup{
                     Swerve.getInstance().setDriveState(DriveState.Reverse);
                 }),
             new WaitCommand(.25),
-            new SetElevatorState(isTop),
+            new ConditionalCommand(new SetElevatorState(ElevatorStates.TOPALGAE),new SetElevatorState(ElevatorStates.BOTTOMALGAE),isTop),
             new WaitCommand(0.15),
             new InstantCommand(() -> {
                 Swerve.getInstance().setDriveState(DriveState.Manual);
