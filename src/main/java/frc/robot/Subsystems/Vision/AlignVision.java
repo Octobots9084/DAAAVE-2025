@@ -6,6 +6,8 @@ import com.ctre.phoenix6.hardware.CANrange;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.Matrix;
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
@@ -16,6 +18,8 @@ import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.numbers.N1;
+import edu.wpi.first.math.numbers.N4;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -38,6 +42,7 @@ import java.io.Console;
 import java.util.Optional;
 
 import org.littletonrobotics.junction.Logger;
+import org.opencv.core.Mat;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
@@ -57,13 +62,19 @@ public class AlignVision extends SubsystemBase {
 
     private CANrangeConfiguration configuration;
     private FovParamsConfigs paramsConfigs;
+
     private CANrange rightRange;
     private CANrange leftRange;
     private CANrange backRange;
 
-    private PIDController cameraYPIDController;
-    private PIDController lidarXPIDController;
     private PIDController cameraXPIDController;
+    private PIDController backCameraXPIDController;
+    private PIDController cameraYPIDController;
+    private PIDController cameraYPIDControllerSource;
+
+    private PIDController lidarXPIDController;
+    private PIDController backLidarXPIDController;
+
     private PIDController gyroRotationPIDController;
     private PIDController lidarRotationPIDController;
 
@@ -73,6 +84,7 @@ public class AlignVision extends SubsystemBase {
     public static TrapezoidProfile.State ySetpoint = new TrapezoidProfile.State();
 
     private boolean isFirstTime = false;
+    private boolean usingGlobalVision = false;
 
     private double deltaTime = 0.02;
 
@@ -115,8 +127,14 @@ public class AlignVision extends SubsystemBase {
         this.backRange = new CANrange(23, "KrakensBus");
 
         this.cameraXPIDController = new PIDController(2, 0, 0);
+        this.backCameraXPIDController = new PIDController(3.5, 0, 0);
+
         this.cameraYPIDController = new PIDController(2.5, 0, 0);
+        this.cameraYPIDControllerSource = new PIDController(2.5, 0, 0);
+
         this.lidarXPIDController = new PIDController(4, 0, 0);
+        this.backLidarXPIDController = new PIDController(5.5, 0, 0);
+
         this.lidarRotationPIDController = new PIDController(10, 0, 0);
         this.gyroRotationPIDController = new PIDController(4, 0, 0);
         this.gyroRotationPIDController.enableContinuousInput(0, 2 * Math.PI);
@@ -133,28 +151,6 @@ public class AlignVision extends SubsystemBase {
         rightRange.getConfigurator().apply(configuration);
         leftRange.getConfigurator().apply(configuration);
         backRange.getConfigurator().apply(configuration);
-
-        // SmartDashboard.putNumber("AlignVision/PIDS/CameraXPID",
-        // this.cameraXPIDController.getP());
-        // SmartDashboard.putNumber("AlignVision/PIDS/CameraYPID",
-        // this.cameraYPIDController.getP());
-        // SmartDashboard.putNumber("AlignVision/PIDS/LidarXPID",
-        // this.lidarXPIDController.getP());
-        // SmartDashboard.putNumber("AlignVision/PIDS/LidarRotPID",
-        // this.lidarRotationPIDController.getP());
-        // SmartDashboard.putNumber("AlignVision/PIDS/GyroRotPID",
-        // this.gyroRotationPIDController.getP());
-
-        // SmartDashboard.putNumber("AlignVision/PIDS/CameraXPID D",
-        // this.cameraXPIDController.getD());
-        // SmartDashboard.putNumber("AlignVision/PIDS/CameraYPID D",
-        // this.cameraYPIDController.getD());
-        // SmartDashboard.putNumber("AlignVision/PIDS/LidarXPID D",
-        // this.lidarXPIDController.getD());
-        // SmartDashboard.putNumber("AlignVision/PIDS/LidarRotPID D",
-        // this.lidarRotationPIDController.getD());
-        // SmartDashboard.putNumber("AlignVision/PIDS/GyroRotPID D",
-        // this.gyroRotationPIDController.getD());
 
     }
 
@@ -177,6 +173,10 @@ public class AlignVision extends SubsystemBase {
         PhotonPipelineResult leftCamResult = globalVision.inputs.frontLeftResult;
         PhotonPipelineResult backCamResult = globalVision.inputs.backMiddleResult;
 
+        // rightCamResult.getBestTarget().toString();
+        // leftCamResult.getBestTarget().toString();
+        // backCamResult.getBestTarget();
+
         // Initialize the best target for each camera to null.
         Transform3d rightBestTransform = null;
         Transform3d leftBestTransform = null;
@@ -185,6 +185,7 @@ public class AlignVision extends SubsystemBase {
         // transform
         if (state == AlignState.Reef || state == AlignState.Processor) {
             // If the right camera is not null, has a target and the target is the final tag
+
             if (rightCamResult != null && rightCamResult.hasTargets() && rightCamResult.getBestTarget().getFiducialId() == finalTagID) {
                 rightBestTransform = rightCamResult.getBestTarget().getBestCameraToTarget();
             }
@@ -214,7 +215,8 @@ public class AlignVision extends SubsystemBase {
                 return null;
             }
 
-        } else if (backCamResult != null && (state == AlignState.SourceLeft || state == AlignState.SourceRight)) {
+        } else if (backCamResult != null && backCamResult.hasTargets() && backCamResult.getBestTarget().getFiducialId() == finalTagID
+                && (state == AlignState.SourceLeft || state == AlignState.SourceRight)) {
             // If the back camera is not null, has a target and the target is the final tag
             transformCameraToRobot = VisionConstants.transformBackToRobot;
             return backCamResult;
@@ -226,20 +228,25 @@ public class AlignVision extends SubsystemBase {
 
     private Pose3d getReferenceRobotPosition(PhotonPipelineResult result, Transform3d transformCameraToRobot) {
         // Transform Tag Coordinates to Camera Coordinates from photonvision.
-        Transform3d transformTagToCamera;
+        Transform3d transformCameraToTag;
 
         if (result != null && result.getBestTarget() != null
                 && this.isValidAlignTag(result.getBestTarget().getFiducialId())) {
             // Position of the AprilTag in Robot Coordinates.
-            Pose3d referenceRobotPosition;
+            Matrix<N4, N1> referenceRobotPosition;
 
             // Get transformation matrix from photonvision
             bestTarget = result.getBestTarget();
-            transformTagToCamera = bestTarget.getBestCameraToTarget();
+            transformCameraToTag = bestTarget.getBestCameraToTarget();
 
             // Transform Tag Position into Robot Coordinates
-            referenceRobotPosition = VisionConstants.referenceTagPosition.transformBy(transformTagToCamera.inverse()).transformBy(transformCameraToRobot.inverse());
-            return referenceRobotPosition;
+            // referenceRobotPosition = VisionConstants.referenceTagPosition.transformBy(transformCameraToTag);
+            referenceRobotPosition = transformCameraToTag.toMatrix().times(VisionConstants.referenceTagPosition);
+            // referenceRobotPosition = referenceRobotPosition.transformBy(transformCameraToRobot);
+            referenceRobotPosition = transformCameraToRobot.toMatrix().times(referenceRobotPosition);
+
+            return new Pose3d(referenceRobotPosition.get(0, 0), referenceRobotPosition.get(1, 0), referenceRobotPosition.get(2, 0),
+                    new Rotation3d());
 
         } else {
             return Pose3d.kZero;
@@ -250,14 +257,18 @@ public class AlignVision extends SubsystemBase {
         try {
             this.finalAngles = Constants.isBlueAlliance ? blueAlignAngles : redAlignAngles;
 
-            if (swerve.getPreviousDriveState() != DriveState.AlignReef 
-        || swerve.getPreviousDriveState() != DriveState.AlignSource
-        || swerve.getPreviousDriveState() != DriveState.AlignProcessor 
-        || swerve.getPreviousDriveState() != DriveState.AlignBarge) {
+            if (swerve.getPreviousDriveState() != DriveState.AlignReef
+                    || swerve.getPreviousDriveState() != DriveState.AlignSource
+                    || swerve.getPreviousDriveState() != DriveState.AlignProcessor
+                    || swerve.getPreviousDriveState() != DriveState.AlignBarge) {
                 isFirstTime = true;
+
                 cameraXPIDController.reset();
                 cameraYPIDController.reset();
+                cameraYPIDControllerSource.reset();
+                backCameraXPIDController.reset();
                 lidarXPIDController.reset();
+                backLidarXPIDController.reset();
                 lidarRotationPIDController.reset();
                 gyroRotationPIDController.reset();
 
@@ -271,55 +282,6 @@ public class AlignVision extends SubsystemBase {
             // Get the best result from the global vision
             finalResult = getBestResult(state);
 
-            // this.cameraXPIDController.setP(SmartDashboard.getNumber("AlignVision/PIDS/CameraXPID",
-            // this.cameraXPIDController.getP()));
-            // this.cameraYPIDController.setP(SmartDashboard.getNumber("AlignVision/PIDS/CameraYPID",
-            // this.cameraYPIDController.getP()));
-            // this.lidarXPIDController.setP(SmartDashboard.getNumber("AlignVision/PIDS/LidarXPID",
-            // this.lidarXPIDController.getP()));
-            // this.lidarRotationPIDController.setP(SmartDashboard.getNumber("AlignVision/PIDS/LidarRotPID",
-            // this.lidarRotationPIDController.getP()));
-            // this.gyroRotationPIDController.setP(SmartDashboard.getNumber("AlignVision/PIDS/GyroRotPID",
-            // this.gyroRotationPIDController.getP()));
-
-            // this.cameraXPIDController.setD(SmartDashboard.getNumber("AlignVision/PIDS/CameraXPID
-            // D",
-            // this.cameraXPIDController.getD()));
-            // this.cameraYPIDController.setD(SmartDashboard.getNumber("AlignVision/PIDS/CameraYPID
-            // D",
-            // this.cameraYPIDController.getD()));
-            // this.lidarXPIDController.setD(SmartDashboard.getNumber("AlignVision/PIDS/LidarXPID
-            // D",
-            // this.lidarXPIDController.getD()));
-            // this.lidarRotationPIDController.setD(SmartDashboard.getNumber("AlignVision/PIDS/LidarRotPID
-            // D",
-            // this.lidarRotationPIDController.getD()));
-            // this.gyroRotationPIDController.setD(SmartDashboard.getNumber("AlignVision/PIDS/GyroRotPID
-            // D",
-            // this.gyroRotationPIDController.getD()));
-
-            // SmartDashboard.putNumber("AlignVision/PIDS/CameraXPID",
-            // this.cameraXPIDController.getP());
-            // SmartDashboard.putNumber("AlignVision/PIDS/CameraYPID",
-            // this.cameraYPIDController.getP());
-            // SmartDashboard.putNumber("AlignVision/PIDS/LidarXPID",
-            // this.lidarXPIDController.getP());
-            // SmartDashboard.putNumber("AlignVision/PIDS/LidarRotPID",
-            // this.lidarRotationPIDController.getP());
-            // SmartDashboard.putNumber("AlignVision/PIDS/GyroRotPID",
-            // this.gyroRotationPIDController.getP());
-
-            // SmartDashboard.putNumber("AlignVision/PIDS/CameraXPID D",
-            // this.cameraXPIDController.getD());
-            // SmartDashboard.putNumber("AlignVision/PIDS/CameraYPID D",
-            // this.cameraYPIDController.getD());
-            // SmartDashboard.putNumber("AlignVision/PIDS/LidarXPID D",
-            // this.lidarXPIDController.getD());
-            // SmartDashboard.putNumber("AlignVision/PIDS/LidarRotPID D",
-            // this.lidarRotationPIDController.getD());
-            // SmartDashboard.putNumber("AlignVision/PIDS/GyroRotPID D",
-            // this.gyroRotationPIDController.getD());
-
             double ySpeed = 0;
             double xSpeed = 0;
             double turnSpeed = 0;
@@ -331,6 +293,7 @@ public class AlignVision extends SubsystemBase {
             // If the final result is null, then use global pose to get to the target
             // without hitting the obstacles on the field
             if (finalResult == null) {
+                usingGlobalVision = true;
                 // Get the robot's current position
                 Pose3d fieldPosition = new Pose3d(swerve.getPose());
 
@@ -341,8 +304,7 @@ public class AlignVision extends SubsystemBase {
                 // to the tag
                 if (tagPos.isPresent()) {
                     Pose3d tagRelativeToField = fieldPosition.relativeTo(tagPos.get());
-                    if (Swerve.getInstance().getDriveState() == DriveState.AlignBarge)
-                    {
+                    if (Swerve.getInstance().getDriveState() == DriveState.AlignBarge) {
                         Pose3d temp = new Pose3d(0, tagPos.get().getY(), tagPos.get().getZ(), tagPos.get().getRotation());
                         tagRelativeToField = fieldPosition.relativeTo(temp);
                     }
@@ -355,6 +317,7 @@ public class AlignVision extends SubsystemBase {
                 }
             } else { // If the final result is not null, then use the front cameras to get to the
                      // target
+                usingGlobalVision = false;
                 refPosition = this.getReferenceRobotPosition(finalResult, transformCameraToRobot);
             }
 
@@ -387,21 +350,22 @@ public class AlignVision extends SubsystemBase {
                     }
 
                     // Check if the robot y position is in tolerance for the target y rotation
-                    Logger.recordOutput("Vision/RefX", refPosition.getX());
-                    Logger.recordOutput("Vision/RefY", refPosition.getY());
-                    Logger.recordOutput("Vision/TargetY", targetDistance);
+                    SmartDashboard.putNumber("Vision/RefX", refPosition.getX());
+                    SmartDashboard.putNumber("Vision/RefY", refPosition.getY());
+                    SmartDashboard.putNumber("Vision/TargetY", targetDistance);
                     yInTolerance = MathUtil.isNear(refPosition.getY(), targetDistance, 0.03);
                     ySetpoint = yProfile.calculate(deltaTime, ySetpoint, yGoal);
                     // Logger.recordOutput("Vision/SetPointY", ySetpoint.position);
 
                     // Calculate the speeds for the robot to align with the target
-                    if (AlignState.SourceLeft == state || AlignState.SourceRight == state) {
-                        ySpeed = cameraYPIDController.calculate(refPosition.getY(), targetDistance);
-                    } else {
-                        ySpeed = -cameraYPIDController.calculate(refPosition.getY(), targetDistance);
-                    }
-                    // Calculate the x and turn speeds for the robot to align with the target
+                    ySpeed = Swerve.getInstance().getDriveState() == DriveState.AlignSource ? -cameraYPIDControllerSource.calculate(refPosition.getY(), targetDistance)
+                            : -cameraYPIDController.calculate(refPosition.getY(), targetDistance);
+
+                    SmartDashboard.putBoolean("AlignVision/UsingGlobalVision", usingGlobalVision);
+
                     xSpeed = this.calculateXSpeed(aveLidarDist, refPosition, state);
+
+                    // Calculate the x and turn speeds for the robot to align with the target
                     turnSpeed = this.calculateTurnSpeed(diffLidarDist, refPosition);
 
                     // If the turn speed is not a number, then set the x, y, and turn speeds to 0
@@ -423,6 +387,10 @@ public class AlignVision extends SubsystemBase {
                 xSpeed = 0;
                 turnSpeed = 0;
             }
+
+            SmartDashboard.putNumber("AlignVision/XSpeed", xSpeed);
+            SmartDashboard.putNumber("AlignVision/YSpeed", ySpeed);
+            SmartDashboard.putNumber("AlignVision/TurnSpeed", turnSpeed);
 
             // Return the calculated speeds for the robot to align with the target
             return new ChassisSpeeds(xSpeed, ySpeed, turnSpeed);
@@ -487,33 +455,43 @@ public class AlignVision extends SubsystemBase {
     private double calculateXSpeed(double aveLidarDist, Pose3d refPosition, AlignState state) {
         // If both lidars are valid, then use the lidar distance to calculate the x
         // speed
-        
-        
-        if (this.areBothLidarsValid()) {
+        if (state == AlignState.Reef && this.areBothLidarsValid()) {
+            isCollecting = false;
+
             // Check if the robot x position is in tolerance for the target x position
             xInTolerance = MathUtil.isNear(aveLidarDist, VisionConstants.maxFrontLidarDepthDistance, 0.03);
 
             // Calculate the x speed for the robot to align with the target
             return -lidarXPIDController.calculate(aveLidarDist, VisionConstants.maxFrontLidarDepthDistance);
 
-        } else if (this.getBackLidarDetect()) {
+        } else if ((state == AlignState.SourceLeft || state == AlignState.SourceRight)) {
+            if (this.getBackLidarDetect()) {
+                isCollecting = true;
+
+                // Check if the robot x position is in tolerance for the target x position
+                xInTolerance = MathUtil.isNear(this.getBackLidarDistance(), VisionConstants.maxBackLidarDepthDistance, 0.03);
+
+                // Calculate the x speed for the robot to align with the target
+                return backLidarXPIDController.calculate(this.getBackLidarDistance(), VisionConstants.maxBackLidarDepthDistance);
+
+            } else {
+                isCollecting = false;
+
+                // Check if the robot x position is in tolerance for the target x position
+                xInTolerance = MathUtil.isNear(refPosition.getX(), VisionConstants.maxBackCameraDepthDistance, 0.03);
+
+                // Calculate the x speed for the robot to align with the target
+                return -backCameraXPIDController.calculate(refPosition.getX(), VisionConstants.maxBackCameraDepthDistance);
+            }
+
+        } else { // If no lidars are valid, then use the camera distance to calculate the x speed
+            isCollecting = false;
+
             // Check if the robot x position is in tolerance for the target x position
-            xInTolerance = MathUtil.isNear(this.getBackLidarDistance(), VisionConstants.maxBackLidarDepthDistance, 0.03);
-
-            // Calculate the x speed for the robot to align with the target
-            return lidarXPIDController.calculate(this.getBackLidarDistance(), VisionConstants.maxBackLidarDepthDistance);
-
-        } else { // If both lidars are not valid, then use the camera distance to calculate the x
-                 // speed
-                 // Check if the robot x position is in tolerance for the target x position
             xInTolerance = MathUtil.isNear(refPosition.getX(), VisionConstants.maxCameraDepthDistance, 0.03);
 
             // Calculate the x speed for the robot to align with the target
-            if (AlignState.SourceLeft == state || AlignState.SourceRight == state) {
-                return cameraXPIDController.calculate(refPosition.getX(), VisionConstants.maxCameraDepthDistance);
-            } else {
-                return -cameraXPIDController.calculate(refPosition.getX(), VisionConstants.maxCameraDepthDistance);
-            }
+            return -cameraXPIDController.calculate(refPosition.getX(), VisionConstants.maxCameraDepthDistance);
         }
     }
 

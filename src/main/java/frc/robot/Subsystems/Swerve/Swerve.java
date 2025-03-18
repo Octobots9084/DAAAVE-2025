@@ -32,7 +32,6 @@ import frc.robot.Commands.auto.AlignCollect;
 import frc.robot.Commands.auto.testPlace;
 import frc.robot.Commands.complex.CollectCoral;
 import frc.robot.Commands.complex.PrepCollect;
-import frc.robot.Commands.complex.collectCoral.WaitForCoralDetected;
 import frc.robot.States.ReefTargetLevel;
 import frc.robot.States.ReefTargetOrientation;
 import frc.robot.States.ReefTargetSide;

@@ -13,8 +13,10 @@ import frc.robot.Commands.complex.AlignReef;
 import frc.robot.Commands.complex.AlgaeInOut;
 import frc.robot.Commands.complex.AlignSource;
 import frc.robot.Commands.complex.BargeAlgae;
+import frc.robot.Commands.complex.ClearAlgae;
 import frc.robot.Commands.complex.BargeAlgae;
 import frc.robot.Commands.complex.CollectAlgaeStack;
+import frc.robot.Commands.complex.CoralPlaceAndAlgaeReefClear;
 import frc.robot.Commands.complex.EjectCoral;
 import frc.robot.Commands.complex.Elephantiasis;
 // import frc.robot.Commands.complex.ClearAlgae;
@@ -25,6 +27,7 @@ import frc.robot.Commands.complex.RemoveAlgaeTop;
 import frc.robot.Commands.complex.RobotSafeState;
 import frc.robot.Commands.complex.RobotStop;
 import frc.robot.Commands.complex.ScoreCoral;
+import frc.robot.Commands.swerve.drivebase.SetDriveState;
 import frc.robot.Commands.CoralRollers.SetAlgaeRollerState;
 import frc.robot.Commands.Elevator.SetElevatorState;
 import frc.robot.Commands.Elevator.SetElevatorStateTolerance;
@@ -85,6 +88,12 @@ public class ButtonConfig {
             Swerve.getInstance().zeroGyro();
         }));
 
+        driverButtons.button(7).whileTrue(new ClearAlgae());
+
+        driverButtons.button(7).onFalse(new InstantCommand(() -> {
+            Swerve.getInstance().setDriveState(DriveState.Manual);
+        }));
+
         // driverButtons.button(2).onTrue(new RemoveAlgaeBottom().onlyIf(
         // () -> {
         // return !CoralRollers.getInstance().HasCoral();
@@ -111,7 +120,7 @@ public class ButtonConfig {
         // driverButtons.button(17).and(driverButtons.button(20)).whileTrue(new
         // ZeroClimb());
 
-        coDriverButtons.button(1).onTrue(new EjectCoral());
+        coDriverButtons.button(1).onTrue(new EjectCoral().andThen(new RobotStop()));
         coDriverButtons.button(4).onTrue(new Intake().onlyIf(
                 () -> {
                     return !CoralRollers.getInstance().HasCoral();
@@ -156,6 +165,7 @@ public class ButtonConfig {
         coDriverButtons.button(13).onTrue(new SetWristStateTolerance(WristStates.PREP, 0.01, ClosedLoopSlot.kSlot0)
                 .andThen(new SetElevatorStateTolerance(ElevatorStates.CLIMB, 1.5).andThen(new SetWristState(WristStates.TUNING, ClosedLoopSlot.kSlot0))));
         // Climb mode active (Switch 20)
+        driverLeft.button(2).whileTrue(new CoralPlaceAndAlgaeReefClear()).onFalse(new SetDriveState(DriveState.Manual));
 
     }
 }

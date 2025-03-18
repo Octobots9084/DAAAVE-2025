@@ -3,7 +3,7 @@ package frc.robot.Subsystems.Wrist;
 public enum WristStates {
     // TODO edit these to the actual positions
     INTAKE(0.375),
-    ELEPHANTIASIS(0.40),
+    ELEPHANTIASIS(0.425),
     L1(0.547),
     L2(0.828),
     L3(0.828),
@@ -14,7 +14,7 @@ public enum WristStates {
     TOPALGAEREMOVAL(0.678),
 
     ALAGESTACKREMOVAL(0.610),
-    BARGEALGAE(0.90),
+    BARGEALGAE(0.83),
     TUNING(0.7561), // TODO actually set this value
     TOPALGAEINTAKE(00000000),
     BOTTOMALGAEINTAKE(00000000),

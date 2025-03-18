@@ -23,6 +23,7 @@ import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
+import edu.wpi.first.math.numbers.N4;
 import edu.wpi.first.wpilibj.RobotBase;
 import java.util.List;
 
@@ -92,7 +93,7 @@ public final class Constants {
         public static final Transform3d transformBackToRobot = new Transform3d(0.0, 0.0, 1.0, new Rotation3d(0, 0, Math.toRadians(180)));
 
         // Position of the AprilTag in Tag Coordinates.
-        public static final Pose3d referenceTagPosition = Pose3d.kZero;
+        public static final Matrix<N4, N1> referenceTagPosition = new Matrix<N4, N1>(VecBuilder.fill(0, 0, 0, 1));
 
         // Constant Distance from Tag to Pole (6in in meters)
         public static final double distanceToPole = 0.164;
@@ -101,7 +102,10 @@ public final class Constants {
         public static final double maxFrontLidarDepthDistance = 0.22;
 
         // Max Depth Distance of Back Lidar from Tag (Meters)
-        public static final double maxBackLidarDepthDistance = 0.55;
+        public static final double maxBackLidarDepthDistance = 0.65;
+
+        // Max Depth Distance of Camera from Tag (Meters)
+        public static final double maxBackCameraDepthDistance = -0.75;
 
         // Max Depth Distance of Camera from Tag (Meters)
         public static final double maxCameraDepthDistance = 0.65;
