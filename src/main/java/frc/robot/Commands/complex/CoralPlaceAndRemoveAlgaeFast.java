@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.States;
 import frc.robot.Commands.CoralRollers.SetCoralRollersState;
 import frc.robot.Commands.Elevator.SetElevatorState;
@@ -33,6 +34,7 @@ public class CoralPlaceAndRemoveAlgaeFast extends SequentialCommandGroup{
             new InstantCommand(() -> {
                 AlignVision.setPoleSide(ReefTargetSide.ALGAE);
             }),
+            new WaitUntilCommand(() -> AlignVision.getInstance().isAligned()),
             new SetDriveState(DriveState.AlignReef),
             new SetWristState(WristStates.ALAGESTACKREMOVAL,ClosedLoopSlot.kSlot0),
             new ConditionalCommand(new SetElevatorState(ElevatorStates.TOPALGAE),new SetElevatorState(ElevatorStates.BOTTOMALGAE),isTop),
