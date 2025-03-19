@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.4372173687706895,
-        "y": 2.2978764810788177
+        "x": 3.75696247232685,
+        "y": 2.609382107785361
       },
       "isLocked": false,
       "linkedName": "d"
@@ -20,12 +20,12 @@
         "y": 2.029037905092592
       },
       "prevControl": {
-        "x": 4.007851912255229,
-        "y": 2.836659438549058
+        "x": 3.2846311475409835,
+        "y": 2.2448258196721316
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "lowstation"
+      "linkedName": "mid"
     }
   ],
   "rotationTargets": [],
@@ -48,7 +48,7 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 2.0,
+    "velocity": 3.0,
     "rotation": 55.0
   },
   "reversed": false,

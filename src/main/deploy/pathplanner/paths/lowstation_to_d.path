@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.0448488136574063,
-        "y": 2.029037905092592
+        "x": 1.4505122950819673,
+        "y": 0.8182889344262299
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.652943051272171,
-        "y": 2.6125380353315952
+        "x": 1.7621926229508194,
+        "y": 0.9861168032786896
       },
       "isLocked": false,
       "linkedName": "lowstation"
     },
     {
       "anchor": {
-        "x": 3.4884221311475407,
-        "y": 2.304764344262295
+        "x": 3.6802254098360656,
+        "y": 2.4486168032786884
       },
       "prevControl": {
-        "x": 3.2796959234784304,
-        "y": 2.1213878151255963
+        "x": 3.3445696721311475,
+        "y": 2.2568135245901635
       },
       "nextControl": null,
       "isLocked": false,
@@ -40,7 +40,7 @@
     },
     {
       "name": "BringUpElevator",
-      "waypointRelativePos": 0.6644159351789372,
+      "waypointRelativePos": 0.6103983794733318,
       "endWaypointRelativePos": null,
       "command": null
     }
