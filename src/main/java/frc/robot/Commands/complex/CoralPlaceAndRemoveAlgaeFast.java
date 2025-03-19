@@ -34,10 +34,11 @@ public class CoralPlaceAndRemoveAlgaeFast extends SequentialCommandGroup{
             new InstantCommand(() -> {
                 AlignVision.setPoleSide(ReefTargetSide.ALGAE);
             }),
+            new WaitCommand(0.2),
             new WaitUntilCommand(() -> AlignVision.getInstance().isAligned()),
             new SetDriveState(DriveState.AlignReef),
             new SetWristState(WristStates.ALAGESTACKREMOVAL,ClosedLoopSlot.kSlot0),
-            new ConditionalCommand(new SetElevatorState(ElevatorStates.TOPALGAE),new SetElevatorState(ElevatorStates.BOTTOMALGAE),isTop),
+            new ConditionalCommand(new SetElevatorState(ElevatorStates.TOPALGAEFAST),new SetElevatorState(ElevatorStates.BOTTOMALGAEFAST),isTop),
             new SetCoralRollersState(CoralRollersState.ALGAEINTAKING),
             new InstantCommand(() -> {
                 Swerve.getInstance().setDriveState(DriveState.Reverse);
