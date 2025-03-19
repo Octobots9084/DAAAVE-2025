@@ -266,9 +266,11 @@ public class AlignVision extends SubsystemBase {
                 cameraXPIDController.reset();
                 cameraYPIDController.reset();
                 cameraYPIDControllerSource.reset();
+
                 backCameraXPIDController.reset();
                 lidarXPIDController.reset();
                 backLidarXPIDController.reset();
+
                 lidarRotationPIDController.reset();
                 gyroRotationPIDController.reset();
 
@@ -304,10 +306,10 @@ public class AlignVision extends SubsystemBase {
                 // to the tag
                 if (tagPos.isPresent()) {
                     Pose3d tagRelativeToField = fieldPosition.relativeTo(tagPos.get());
-                    if (Swerve.getInstance().getDriveState() == DriveState.AlignBarge) {
-                        Pose3d temp = new Pose3d(0, tagPos.get().getY(), tagPos.get().getZ(), tagPos.get().getRotation());
-                        tagRelativeToField = fieldPosition.relativeTo(temp);
-                    }
+                    // if (Swerve.getInstance().getDriveState() == DriveState.AlignBarge) {
+                    //     Pose3d temp = new Pose3d(0, tagPos.get().getY(), tagPos.get().getZ(), tagPos.get().getRotation());
+                    //     tagRelativeToField = fieldPosition.relativeTo(temp);
+                    // }
 
                     // Makes sure the robot has space to drive to the target, if not don't move
                     // robot
@@ -350,22 +352,13 @@ public class AlignVision extends SubsystemBase {
                     }
 
                     // Check if the robot y position is in tolerance for the target y rotation
-                    SmartDashboard.putNumber("Vision/RefX", refPosition.getX());
-                    SmartDashboard.putNumber("Vision/RefY", refPosition.getY());
-                    SmartDashboard.putNumber("Vision/TargetY", targetDistance);
-                    yInTolerance = MathUtil.isNear(refPosition.getY(), targetDistance, 0.03);
                     ySetpoint = yProfile.calculate(deltaTime, ySetpoint, yGoal);
+
                     // Logger.recordOutput("Vision/SetPointY", ySetpoint.position);
 
                     // Calculate the speeds for the robot to align with the target
-                    ySpeed = Swerve.getInstance().getDriveState() == DriveState.AlignSource ? -cameraYPIDControllerSource.calculate(refPosition.getY(), targetDistance)
-                            : -cameraYPIDController.calculate(refPosition.getY(), targetDistance);
-
-                    SmartDashboard.putBoolean("AlignVision/UsingGlobalVision", usingGlobalVision);
-
                     xSpeed = this.calculateXSpeed(aveLidarDist, refPosition, state);
-
-                    // Calculate the x and turn speeds for the robot to align with the target
+                    ySpeed = this.calculateYSpeed(targetDistance, refPosition, state);
                     turnSpeed = this.calculateTurnSpeed(diffLidarDist, refPosition);
 
                     // If the turn speed is not a number, then set the x, y, and turn speeds to 0
@@ -393,7 +386,7 @@ public class AlignVision extends SubsystemBase {
             SmartDashboard.putNumber("AlignVision/TurnSpeed", turnSpeed);
 
             // Return the calculated speeds for the robot to align with the target
-            return new ChassisSpeeds(xSpeed, ySpeed, turnSpeed);
+            return new ChassisSpeeds(0, 0, turnSpeed);
         } catch (Exception exception) {
             System.out.println(exception.toString());
             return new ChassisSpeeds();
@@ -484,6 +477,14 @@ public class AlignVision extends SubsystemBase {
                 return -backCameraXPIDController.calculate(refPosition.getX(), VisionConstants.maxBackCameraDepthDistance);
             }
 
+        } else if (state == AlignState.Barge) {
+            isCollecting = false;
+
+            // Check if the robot x position is in tolerance for the target x position
+            xInTolerance = MathUtil.isNear(refPosition.getX(), VisionConstants.maxBackCameraDepthDistance, 0.03);
+
+            // Calculate the x speed for the robot to align with the target
+            return -cameraXPIDController.calculate(refPosition.getX(), VisionConstants.maxBackCameraDepthDistance);
         } else { // If no lidars are valid, then use the camera distance to calculate the x speed
             isCollecting = false;
 
@@ -492,6 +493,26 @@ public class AlignVision extends SubsystemBase {
 
             // Calculate the x speed for the robot to align with the target
             return -cameraXPIDController.calculate(refPosition.getX(), VisionConstants.maxCameraDepthDistance);
+        }
+    }
+
+    private double calculateYSpeed(double targetDistance, Pose3d refPosition, AlignState state) {
+        // If both lidars are valid, then use the lidar distance to calculate the x
+        // speed
+        if (state == AlignState.SourceRight || state == AlignState.SourceLeft) {
+            yInTolerance = MathUtil.isNear(refPosition.getY(), targetDistance, 0.03);
+
+            return -cameraYPIDControllerSource.calculate(refPosition.getY(), targetDistance);
+
+        } else if (state == AlignState.Barge) {
+            yInTolerance = true;
+
+            return 0;
+
+        } else {
+            yInTolerance = MathUtil.isNear(refPosition.getY(), targetDistance, 0.03);
+
+            return -cameraYPIDController.calculate(refPosition.getY(), targetDistance);
         }
     }
 

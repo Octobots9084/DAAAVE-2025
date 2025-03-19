@@ -5,14 +5,13 @@ import frc.robot.Subsystems.Swerve.Swerve;
 import frc.robot.Subsystems.Swerve.Swerve.DriveState;
 import frc.robot.Subsystems.Vision.AlignVision;
 
-public class AlignReef extends Command {
+public class AlignBarge extends Command {
     private Swerve swerve = Swerve.getInstance();
+    // TODO implement this using vlaues from elevator and swerve
 
     @Override
     public void initialize() {
-        swerve.setDriveState(DriveState.AlignReef);
-
-        // CommandScheduler.getInstance().schedule(new PrepReefPlacement(elevatorState, wristState));
+        swerve.setDriveState(DriveState.AlignBarge);
     }
 
     @Override

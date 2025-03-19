@@ -2,6 +2,7 @@ package frc.robot;
 
 import com.revrobotics.spark.ClosedLoopSlot;
 
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
@@ -11,6 +12,7 @@ import frc.robot.Commands.complex.AlgaeFlickBottom;
 import frc.robot.Commands.complex.AlgaeFlickTop;
 import frc.robot.Commands.complex.AlignReef;
 import frc.robot.Commands.complex.AlgaeInOut;
+import frc.robot.Commands.complex.AlignBarge;
 import frc.robot.Commands.complex.AlignSource;
 import frc.robot.Commands.complex.BargeAlgae;
 import frc.robot.Commands.complex.ClearAlgae;
@@ -93,6 +95,8 @@ public class ButtonConfig {
         driverButtons.button(7).onFalse(new InstantCommand(() -> {
             Swerve.getInstance().setDriveState(DriveState.Manual);
         }));
+
+        driverButtons.button(8).whileTrue(new AlignBarge());
 
         // driverButtons.button(2).onTrue(new RemoveAlgaeBottom().onlyIf(
         // () -> {
