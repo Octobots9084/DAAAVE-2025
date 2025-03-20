@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 5.714,
-        "y": 5.157
+        "x": 5.43,
+        "y": 5.192
       },
       "prevControl": {
-        "x": 6.033090909090911,
-        "y": 5.097170454545454
+        "x": 5.74909090909091,
+        "y": 5.132170454545454
       },
       "nextControl": null,
       "isLocked": false,
@@ -40,7 +40,7 @@
     },
     {
       "name": "BringUpElevator",
-      "waypointRelativePos": 0.67,
+      "waypointRelativePos": 0.7,
       "endWaypointRelativePos": null,
       "command": null
     }
@@ -54,7 +54,7 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 1.0,
+    "velocity": 0.5,
     "rotation": -119.89890183861456
   },
   "reversed": false,
