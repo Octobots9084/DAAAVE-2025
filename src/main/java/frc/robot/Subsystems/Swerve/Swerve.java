@@ -71,7 +71,7 @@ public class Swerve extends SubsystemBase {
     public boolean isAlignedToCoralLeft;
     public boolean isAlignedToProcessor;
     public boolean isAlignedCenterReef; // TODO check if the algae removal needs to be centered on the reef
-    private ReefTargetSide targetSide;
+    private ReefTargetSide targetSide = ReefTargetSide.LEFT;
     private ReefTargetOrientation targetOrientation = ReefTargetOrientation.AB;
     public static DriveState previousDriveState;
 
@@ -156,7 +156,7 @@ public class Swerve extends SubsystemBase {
             new EventTrigger("PrepWristPosition").onTrue(new InstantCommand(() -> {
                 Wrist.getInstance().setState(WristStates.PREP, ClosedLoopSlot.kSlot0);
             }));
-            new EventTrigger("BringUpElevator").onTrue(new SetElevatorStateTolerance(ElevatorStates.LEVEL4,5).andThen(new SetWristState(WristStates.L4, ClosedLoopSlot.kSlot0)));
+            new EventTrigger("BringUpElevator").onTrue(new SetElevatorStateTolerance(ElevatorStates.LEVEL4, 5).andThen(new SetWristState(WristStates.L4, ClosedLoopSlot.kSlot0)));
             NamedCommands.registerCommand("AlignCollect", new AlignCollect());
             new EventTrigger("PrepCollect").onTrue(new PrepCollect());
 

@@ -1,7 +1,7 @@
 package frc.robot.Subsystems.CoralRollers;
 
 public enum CoralRollersState {
-    INTAKING(-10),
+    INTAKING(-4.7),
     STOPPED(0),
     OUTPUT(10),
     LEVEL1(-10),
