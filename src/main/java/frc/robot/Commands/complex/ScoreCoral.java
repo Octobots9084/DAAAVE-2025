@@ -26,6 +26,7 @@ public class ScoreCoral extends Command {
     public boolean elevatorWiderInPosition = false;
 
     public boolean wristInPosition = false;
+    public boolean wristWiderInPosition = false;
     public boolean isAligned = false;
     private Swerve swerve;
     private CoralRollers coralRollers = CoralRollers.getInstance();
@@ -40,6 +41,8 @@ public class ScoreCoral extends Command {
     public void initialize() {
         targetElevatorState = manager.level;
         swerve = Swerve.getInstance();
+        targetSide = swerve.getReefTargetSide();
+
         swerve.setDriveState(DriveState.AlignReef);
         if (!wrist.isAtState(targetElevatorState, 0.02)) {
             Wrist.getInstance().setState(WristStates.PREP, ClosedLoopSlot.kSlot0);
@@ -49,9 +52,11 @@ public class ScoreCoral extends Command {
     @Override
     public void execute() {
         elevatorInPosition = elevator.isAtState(targetElevatorState, 1.5);
-        elevatorWiderInPosition = elevator.isAtState(targetElevatorState, 3);
+        elevatorWiderInPosition = elevator.isAtState(targetElevatorState, 20);
 
         wristInPosition = wrist.isAtState(targetElevatorState, 0.02);
+        wristWiderInPosition = wrist.isAtState(targetElevatorState, 0.2);
+
         boolean isWristPrepped = wrist.isAtState(WristStates.PREP, 0.02);
         isAligned = alignVision.isAligned();
 
@@ -65,7 +70,7 @@ public class ScoreCoral extends Command {
         }
 
         if (elevatorInPosition
-                && wristInPosition
+                && wristWiderInPosition
                 && isAligned
                 && (coralRollers.getState() != CoralRollersState.OUTPUT))
             CommandScheduler.getInstance()
