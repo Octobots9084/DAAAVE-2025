@@ -1,5 +1,6 @@
 package frc.robot;
 
+import com.ctre.phoenix6.swerve.SwerveModuleConstants.DriveMotorArrangement;
 import com.revrobotics.spark.ClosedLoopSlot;
 
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
@@ -28,6 +29,7 @@ import frc.robot.Commands.complex.RemoveAlgaeTop;
 import frc.robot.Commands.complex.RobotSafeState;
 import frc.robot.Commands.complex.RobotStop;
 import frc.robot.Commands.complex.ScoreCoral;
+import frc.robot.Commands.complex.ScoreCoralAndBackOff;
 import frc.robot.Commands.swerve.drivebase.SetDriveState;
 import frc.robot.Commands.CoralRollers.SetAlgaeRollerState;
 import frc.robot.Commands.Elevator.SetElevatorState;
@@ -54,10 +56,10 @@ public class ButtonConfig {
 
     public void initTeleop() {
         // Score and Intake assistance buttons for right stick
-        driverRight.button(1).whileTrue(new ScoreCoral().onlyIf(
+        driverRight.button(1).whileTrue(new ScoreCoralAndBackOff().onlyIf(
                 () -> {
                     return CoralRollers.getInstance().HasCoral();
-                }));
+                })).onFalse(new SetDriveState(DriveState.Manual));
 
         driverRight.button(2).whileTrue(new AlignSource().onlyIf(
                 () -> {
@@ -166,7 +168,8 @@ public class ButtonConfig {
         coDriverButtons.button(13).onTrue(new SetWristStateTolerance(WristStates.PREP, 0.01, ClosedLoopSlot.kSlot0)
                 .andThen(new SetElevatorStateTolerance(ElevatorStates.CLIMB, 1.5).andThen(new SetWristState(WristStates.TUNING, ClosedLoopSlot.kSlot0))));
         // Climb mode active (Switch 20)
-        driverLeft.button(2).whileTrue(new ConditionalCommand(new CoralPlaceAndAlgaeReefClear(), new ClearAlgae(),() -> CoralRollers.getInstance().HasCoral())).onFalse(new SetDriveState(DriveState.Manual));
+        driverLeft.button(2).whileTrue(new ConditionalCommand(new CoralPlaceAndAlgaeReefClear(), new ClearAlgae(), () -> CoralRollers.getInstance().HasCoral()))
+                .onFalse(new SetDriveState(DriveState.Manual));
 
     }
 }
