@@ -16,16 +16,16 @@
     },
     {
       "anchor": {
-        "x": 1.354610655737705,
-        "y": 7.0878586065573765
+        "x": 3.045,
+        "y": 5.971
       },
       "prevControl": {
-        "x": 1.6537583830104319,
-        "y": 6.728881333830103
+        "x": 3.344147727272727,
+        "y": 5.612022727272726
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "topstation"
+      "linkedName": "mid_high"
     }
   ],
   "rotationTargets": [],
@@ -34,7 +34,7 @@
   "eventMarkers": [
     {
       "name": "PrepCollect",
-      "waypointRelativePos": 0.3,
+      "waypointRelativePos": 0.0,
       "endWaypointRelativePos": null,
       "command": null
     }
@@ -48,7 +48,7 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 0.5,
+    "velocity": 2.0,
     "rotation": -55.0
   },
   "reversed": false,
