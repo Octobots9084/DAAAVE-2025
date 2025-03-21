@@ -1,0 +1,25 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Drive"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "placeG"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": "stack",
+  "choreoAuto": false
+}
