@@ -161,7 +161,8 @@ public class Swerve extends SubsystemBase {
             new EventTrigger("BringUpElevator").onTrue(new SetElevatorStateTolerance(ElevatorStates.LEVEL4, 5).andThen(new SetWristState(WristStates.L4, ClosedLoopSlot.kSlot0)));
             NamedCommands.registerCommand("AlignCollect", new AlignCollect());
             new EventTrigger("PrepCollect").onTrue(new PrepCollect());
-            NamedCommands.registerCommand("CoralPlaceAndAlgaeRemovalAutoEdition", new CoralPlaceAndAlgaeRemovalAutoEdition(ElevatorStates.LEVEL4, ReefTargetSide.RIGHT,ReefTargetOrientation.KL));
+            NamedCommands.registerCommand("CoralAlgaeAtL", new CoralPlaceAndAlgaeRemovalAutoEdition(ElevatorStates.LEVEL4, ReefTargetSide.RIGHT,ReefTargetOrientation.KL));
+            NamedCommands.registerCommand("CoralAlgaeAtC", new CoralPlaceAndAlgaeRemovalAutoEdition(ElevatorStates.LEVEL4, ReefTargetSide.LEFT,ReefTargetOrientation.CD));
 
             RobotConfig config = RobotConfig.fromGUISettings();
 
