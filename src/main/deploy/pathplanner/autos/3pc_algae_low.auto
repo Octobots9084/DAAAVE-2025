@@ -67,7 +67,13 @@
         {
           "type": "named",
           "data": {
-            "name": "CoralAlgaeAtC"
+            "name": "placeC"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "testAlgaeC"
           }
         }
       ]
