@@ -25,6 +25,7 @@ import frc.robot.Commands.ReefSelection.ShowSelection;
 import frc.robot.States.ReefTargetOrientation;
 import frc.robot.States.ReefTargetSide;
 import frc.robot.Subsystems.CoralRollers.CoralRollers;
+import frc.robot.Subsystems.CoralRollers.CoralRollersState;
 import frc.robot.Subsystems.Elevator.*;
 import frc.robot.Subsystems.Lights.Light;
 import frc.robot.Subsystems.Swerve.Swerve;
@@ -171,6 +172,7 @@ public class Robot extends LoggedRobot {
 
         Constants.isInAuto = false;
         Swerve.getInstance().setDriveState(DriveState.Manual);
+        CoralRollers.getInstance().setState(CoralRollersState.STOPPED);
     }
 
     /** This function is called periodically during operator control. */
