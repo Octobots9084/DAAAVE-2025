@@ -47,6 +47,7 @@ public class ScoreCoral extends Command {
         if (!wrist.isAtState(targetElevatorState, 0.02)) {
             Wrist.getInstance().setState(WristStates.PREP, ClosedLoopSlot.kSlot0);
         }
+        alignVision.resetTolerances();
     }
 
     @Override

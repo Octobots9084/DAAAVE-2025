@@ -131,7 +131,7 @@ public class AlignVision extends SubsystemBase {
 
         this.cameraYPIDController = new PIDController(2.75, 0, 0);
         this.cameraYPIDControllerSource = new PIDController(2, 0, 0);
-        
+
         this.lidarXPIDController = new PIDController(4, 0, 0);
         this.backLidarXPIDController = new PIDController(5.5, 0, 0);
 
@@ -240,9 +240,11 @@ public class AlignVision extends SubsystemBase {
             transformCameraToTag = bestTarget.getBestCameraToTarget();
 
             // Transform Tag Position into Robot Coordinates
-            // referenceRobotPosition = VisionConstants.referenceTagPosition.transformBy(transformCameraToTag);
+            // referenceRobotPosition =
+            // VisionConstants.referenceTagPosition.transformBy(transformCameraToTag);
             referenceRobotPosition = transformCameraToTag.toMatrix().times(VisionConstants.referenceTagPosition);
-            // referenceRobotPosition = referenceRobotPosition.transformBy(transformCameraToRobot);
+            // referenceRobotPosition =
+            // referenceRobotPosition.transformBy(transformCameraToRobot);
             referenceRobotPosition = transformCameraToRobot.toMatrix().times(referenceRobotPosition);
 
             return new Pose3d(referenceRobotPosition.get(0, 0), referenceRobotPosition.get(1, 0), referenceRobotPosition.get(2, 0),
@@ -352,7 +354,8 @@ public class AlignVision extends SubsystemBase {
                     // Logger.recordOutput("Vision/SetPointY", ySetpoint.position);
 
                     // Calculate the speeds for the robot to align with the target
-                    ySpeed = ((state == AlignState.SourceLeft) || state == AlignState.SourceRight ) ? -cameraYPIDControllerSource.calculate(refPosition.getY(), targetDistance) : -cameraYPIDController.calculate(refPosition.getY(), targetDistance);
+                    ySpeed = ((state == AlignState.SourceLeft) || state == AlignState.SourceRight) ? -cameraYPIDControllerSource.calculate(refPosition.getY(), targetDistance)
+                            : -cameraYPIDController.calculate(refPosition.getY(), targetDistance);
 
                     SmartDashboard.putBoolean("AlignVision/UsingGlobalVision", usingGlobalVision);
 
@@ -391,6 +394,12 @@ public class AlignVision extends SubsystemBase {
             System.out.println(exception.toString());
             return new ChassisSpeeds();
         }
+    }
+
+    public void resetTolerances() {
+        xInTolerance = false;
+        yInTolerance = false;
+        rotInTolerance = false;
     }
 
     public int handleTurnAngle(AlignState state) {
