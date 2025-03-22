@@ -37,7 +37,6 @@ public class ClearAlgae extends SequentialCommandGroup {
                 new SetDriveState(DriveState.AlignReef),
                 new WaitCommand(0.2),
                 new WaitUntilCommand(() -> CoralRollers.getInstance().isStalled()),
-                new WaitCommand(0.5),
 
                 new InstantCommand(() -> {
                     Swerve.getInstance().setDriveState(DriveState.Reverse);

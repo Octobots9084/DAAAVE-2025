@@ -94,7 +94,7 @@ public class CoralRollersIOSystems implements CoralRollersIO {
 
     @Override
     public boolean isStalled() {
-        return motor.getOutputCurrent() > 25;
+        return motor.getOutputCurrent() > 30;
     }
 
 }
