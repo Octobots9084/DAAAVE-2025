@@ -31,6 +31,7 @@ import frc.robot.Commands.complex.RobotStop;
 import frc.robot.Commands.complex.ScoreCoral;
 import frc.robot.Commands.complex.ScoreCoralAndBackOff;
 import frc.robot.Commands.swerve.drivebase.SetDriveState;
+import frc.robot.States.ReefTargetSide;
 import frc.robot.Commands.CoralRollers.SetAlgaeRollerState;
 import frc.robot.Commands.Elevator.SetElevatorState;
 import frc.robot.Commands.Elevator.SetElevatorStateTolerance;
@@ -44,6 +45,7 @@ import frc.robot.Subsystems.CoralRollers.CoralRollersState;
 import frc.robot.Subsystems.Elevator.ElevatorStates;
 import frc.robot.Subsystems.Swerve.Swerve;
 import frc.robot.Subsystems.Swerve.Swerve.DriveState;
+import frc.robot.Subsystems.Vision.AlignVision;
 import frc.robot.Subsystems.Wrist.WristStates;
 
 public class ButtonConfig {
@@ -156,7 +158,9 @@ public class ButtonConfig {
         coDriverButtons.button(12).onTrue(new ReefLevelSelection(3));
         coDriverButtons.button(14).onTrue(new ReefLevelSelection(2));
         coDriverButtons.button(16)
-                .onTrue(new ConditionalCommand(new InstantCommand(), new ReefLevelSelection(1), coDriverButtons.button(20)));
+                .onTrue(new ConditionalCommand(new InstantCommand(), new ReefLevelSelection(1).andThen(new InstantCommand(() -> {
+                    AlignVision.setPoleSide(ReefTargetSide.ALGAE);
+                })), coDriverButtons.button(20)));
         coDriverButtons.button(16).onTrue(new ConditionalCommand(new SetClimbState(ClimbStates.Deployed), new InstantCommand(), coDriverButtons.button(20)));
         coDriverButtons.button(17).onTrue(new ConditionalCommand(new SetClimbState(ClimbStates.Climbing), new InstantCommand(), coDriverButtons.button(20)));
         coDriverButtons.button(16).onFalse(new ConditionalCommand(new SetClimbState(ClimbStates.Stored), new InstantCommand(), coDriverButtons.button(20)));
