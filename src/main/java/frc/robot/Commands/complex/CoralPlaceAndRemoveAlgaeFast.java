@@ -1,5 +1,7 @@
 package frc.robot.Commands.complex;
 
+import java.util.function.BooleanSupplier;
+
 import com.revrobotics.spark.ClosedLoopSlot;
 
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
@@ -19,7 +21,7 @@ import frc.robot.Subsystems.Wrist.WristStates;
 public class CoralPlaceAndRemoveAlgaeFast extends SequentialCommandGroup{
     public CoralPlaceAndRemoveAlgaeFast(){
         Swerve swerve = Swerve.getInstance();
-        Boolean isHighAlgae = swerve.getReefTargetOrientation() == States.ReefTargetOrientation.AB || swerve.getReefTargetOrientation() == States.ReefTargetOrientation.EF || swerve.getReefTargetOrientation() == States.ReefTargetOrientation.IJ;
+        BooleanSupplier isHighAlgae = () -> swerve.getReefTargetOrientation() == States.ReefTargetOrientation.AB || swerve.getReefTargetOrientation() == States.ReefTargetOrientation.EF || swerve.getReefTargetOrientation() == States.ReefTargetOrientation.IJ;
         addCommands(
             new InstantCommand(() -> {
                 AlignVision.setReefOrientation(swerve.getReefTargetOrientation());
@@ -40,7 +42,7 @@ public class CoralPlaceAndRemoveAlgaeFast extends SequentialCommandGroup{
             new WaitCommand(0.2),
             new WaitUntilCommand(() -> AlignVision.getInstance().isAligned()),
             // new SetWristState(WristStates.QUICKALGAEREMOVAL, ClosedLoopSlot.kSlot0),
-            new ConditionalCommand(new SetElevatorState(ElevatorStates.TOPALGAEFAST), new SetElevatorState(ElevatorStates.BOTTOMALGAEFAST), () -> isHighAlgae),
+            new ConditionalCommand(new SetElevatorState(ElevatorStates.TOPALGAEFAST), new SetElevatorState(ElevatorStates.BOTTOMALGAEFAST), isHighAlgae),
             new InstantCommand(() -> {
                 swerve.setDriveState(DriveState.Reverse);
             }),
