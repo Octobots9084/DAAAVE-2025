@@ -39,7 +39,7 @@ public class ClimbIOSystems implements ClimbIO {
         sparkConfig.voltageCompensation(10);
         sparkConfig.smartCurrentLimit(60, 60);
 
-        sparkConfig.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder).pid(0.05, 0.0, 0, ClosedLoopSlot.kSlot0);
+        sparkConfig.closedLoop.feedbackSensor(FeedbackSensor.kAbsoluteEncoder).pid(0.05, 0.0, 0, ClosedLoopSlot.kSlot0);
 
         sparkMax.configure(sparkConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         sparkMax.setPeriodicFrameTimeout(30);
@@ -99,5 +99,10 @@ public class ClimbIOSystems implements ClimbIO {
     @Override
     public void setTalonVoltage(double voltage) {
         talonFXS.setVoltage(voltage);
+    }
+
+    @Override
+    public boolean talonIsStalled() {
+        return talonFXS.getMotorStallCurrent().getValueAsDouble() < talonFXS.getStatorCurrent().getValueAsDouble();
     }
 }

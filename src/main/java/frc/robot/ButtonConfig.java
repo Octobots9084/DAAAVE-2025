@@ -3,9 +3,12 @@ package frc.robot;
 import com.ctre.phoenix6.swerve.SwerveModuleConstants.DriveMotorArrangement;
 import com.revrobotics.spark.ClosedLoopSlot;
 
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
+import frc.robot.Commands.Climb.RunClimbRollers;
 import frc.robot.Commands.Climb.SetClimbState;
 import frc.robot.Commands.Climb.ZeroClimb;
 import frc.robot.Commands.complex.AlgaeFlickBottom;
@@ -39,6 +42,7 @@ import frc.robot.Commands.ReefSelection.ReefLevelSelection;
 import frc.robot.Commands.ReefSelection.SetOrientation;
 import frc.robot.Commands.Wrist.SetWristState;
 import frc.robot.Commands.Wrist.SetWristStateTolerance;
+import frc.robot.Subsystems.Climb.Climb;
 import frc.robot.Subsystems.Climb.ClimbStates;
 import frc.robot.Subsystems.CoralRollers.CoralRollers;
 import frc.robot.Subsystems.CoralRollers.CoralRollersState;
@@ -153,7 +157,7 @@ public class ButtonConfig {
 
         // Reef mode active (Switch 20)
         // Reef selection
-        coDriverButtons.button(20).onTrue(new SetWristState(WristStates.L1, ClosedLoopSlot.kSlot0));
+        coDriverButtons.button(20).onTrue(new SetWristState(WristStates.L1, ClosedLoopSlot.kSlot0)).whileTrue(new RunClimbRollers());
         coDriverButtons.button(10).onTrue(new ReefLevelSelection(4));
         coDriverButtons.button(12).onTrue(new ReefLevelSelection(3));
         coDriverButtons.button(14).onTrue(new ReefLevelSelection(2));
@@ -161,10 +165,11 @@ public class ButtonConfig {
                 .onTrue(new ConditionalCommand(new InstantCommand(), new ReefLevelSelection(1).andThen(new InstantCommand(() -> {
                     AlignVision.setPoleSide(ReefTargetSide.ALGAE);
                 })), coDriverButtons.button(20)));
+
         coDriverButtons.button(16).onTrue(new ConditionalCommand(new SetClimbState(ClimbStates.Deployed), new InstantCommand(), coDriverButtons.button(20)));
-        coDriverButtons.button(17).onTrue(new ConditionalCommand(new SetClimbState(ClimbStates.Climbing), new InstantCommand(), coDriverButtons.button(20)));
         coDriverButtons.button(16).onFalse(new ConditionalCommand(new SetClimbState(ClimbStates.Stored), new InstantCommand(), coDriverButtons.button(20)));
 
+        coDriverButtons.button(17).onTrue(new ConditionalCommand(new SetClimbState(ClimbStates.Climbing), new InstantCommand(), coDriverButtons.button(20)));
         coDriverButtons.button(17).onFalse(new ConditionalCommand(new SetClimbState(ClimbStates.Stored), new InstantCommand(), coDriverButtons.button(20)));
 
         coDriverRight.button(1).onTrue(new SetOrientation(0));

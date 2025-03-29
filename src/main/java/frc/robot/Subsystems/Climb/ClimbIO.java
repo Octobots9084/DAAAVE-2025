@@ -29,4 +29,7 @@ public interface ClimbIO {
 
     public default void setTalonVoltage(double voltage) {};
 
+    public default boolean talonIsStalled() {
+        return false;
+    }
 }

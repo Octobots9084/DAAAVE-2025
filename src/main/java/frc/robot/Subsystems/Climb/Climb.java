@@ -1,5 +1,6 @@
 package frc.robot.Subsystems.Climb;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import org.littletonrobotics.junction.Logger;
 
@@ -35,17 +36,20 @@ public class Climb extends SubsystemBase {
         climbState = state;
         if (state == ClimbStates.Deployed) {
             io.setVoltage(10);
-            io.setTalonVoltage(-10);
+            // io.setTalonVoltage(-10);
         } else if (state == ClimbStates.Climbing) {
             io.setVoltage(-10);
-            io.setTalonVoltage(10);
-
+            // io.setTalonVoltage(10);
         } else {
             io.setVoltage(0);
-            io.setTalonVoltage(0);
+            // io.setTalonVoltage(0);
         }
         // DELETE above code when using positions once again
         // io.setPosition(state.position);
+    }
+
+    public void setTalonVoltage(double voltage) {
+        io.setTalonVoltage(voltage);
     }
 
     public ClimbStates getState() {
@@ -62,5 +66,13 @@ public class Climb extends SubsystemBase {
 
     public void setVoltage(double voltage) {
         io.setVoltage(voltage);
+    }
+
+    public boolean talonIsStalled() {
+        return io.talonIsStalled();
+    }
+
+    public boolean isAtState(ClimbStates state) {
+        return MathUtil.isNear(io.getPosition(), state.position, 0.02);
     }
 }
