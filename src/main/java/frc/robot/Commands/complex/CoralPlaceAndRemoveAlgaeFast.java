@@ -46,8 +46,8 @@ public class CoralPlaceAndRemoveAlgaeFast extends SequentialCommandGroup{
             new InstantCommand(() -> {
                 swerve.setDriveState(DriveState.Reverse);
             }),
+            new WaitCommand(0.1),
             new SetWristState(WristStates.PREP, ClosedLoopSlot.kSlot0),
-            new WaitCommand(0.25),
             new InstantCommand(() -> {
                 swerve.setDriveState(DriveState.Manual);
             })
