@@ -27,6 +27,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Commands.Elevator.SetElevatorState;
 import frc.robot.Commands.Elevator.SetElevatorStateTolerance;
+import frc.robot.Commands.ReefSelection.manager;
 import frc.robot.Commands.Wrist.SetWristState;
 import frc.robot.Commands.auto.AlignCollect;
 import frc.robot.Commands.auto.testPlace;
@@ -88,8 +89,14 @@ public class Swerve extends SubsystemBase {
     }
 
     public void setReefTargetSide(ReefTargetSide side) {
-        targetSide = side;
-        AlignVision.setPoleSide(side);
+
+        if (manager.level == ElevatorStates.LEVEL1) {
+            targetSide = ReefTargetSide.ALGAE;
+            AlignVision.setPoleSide(ReefTargetSide.ALGAE);
+        } else {
+            targetSide = side;
+            AlignVision.setPoleSide(side);
+        }
     }
 
     public Optional<Pose2d> getSimPose() {
