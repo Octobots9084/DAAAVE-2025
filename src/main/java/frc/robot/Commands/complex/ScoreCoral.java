@@ -2,6 +2,7 @@ package frc.robot.Commands.complex;
 
 import com.revrobotics.spark.ClosedLoopSlot;
 
+import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -24,6 +25,7 @@ import frc.robot.Subsystems.Wrist.WristStates;
 public class ScoreCoral extends Command {
     public boolean elevatorInPosition = false;
     public boolean elevatorWiderInPosition = false;
+    private Debouncer debouncer;
 
     public boolean wristInPosition = false;
     public boolean wristWiderInPosition = false;
@@ -39,6 +41,7 @@ public class ScoreCoral extends Command {
 
     @Override
     public void initialize() {
+        debouncer = new Debouncer(0.5);
         targetElevatorState = manager.level;
         swerve = Swerve.getInstance();
         targetSide = manager.selectedReefSide;
@@ -69,15 +72,12 @@ public class ScoreCoral extends Command {
 
         // wristState1 is to stop it from constantly setting
         if (!wristInPosition && elevatorWiderInPosition && isWristPrepped) {
-            wrist.setState(targetElevatorState, ClosedLoopSlot.kSlot0);// TODO do slot (remove? make actual slot? idk)
+            wrist.setState(targetElevatorState, ClosedLoopSlot.kSlot0); // TODO do slot (remove? make actual slot? idk)
         }
 
-        if (elevatorInPosition
-                && wristWiderInPosition
-                && isAligned
-                && (coralRollers.getState() != CoralRollersState.OUTPUT))
-            CommandScheduler.getInstance()
-                    .schedule(new EjectCoral());
+        if (debouncer.calculate(elevatorInPosition && wristWiderInPosition && isAligned && (coralRollers.getState() != CoralRollersState.OUTPUT))) {
+            CommandScheduler.getInstance().schedule(new EjectCoral());
+        }
     }
 
     @Override
