@@ -56,7 +56,7 @@ public class ScoreCoral extends Command {
         elevatorWiderInPosition = elevator.isAtState(targetElevatorState, 20);
 
         wristInPosition = wrist.isAtState(targetElevatorState, 0.02);
-        wristWiderInPosition = wrist.isAtState(targetElevatorState, 0.2);
+        wristWiderInPosition = wrist.isAtState(targetElevatorState, 0.05);
 
         boolean isWristPrepped = wrist.isAtState(WristStates.PREP, 0.02);
         isAligned = alignVision.isAligned();

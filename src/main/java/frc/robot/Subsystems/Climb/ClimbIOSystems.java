@@ -53,17 +53,13 @@ public class ClimbIOSystems implements ClimbIO {
         talonFXSConfig.Commutation.MotorArrangement = MotorArrangementValue.Minion_JST;
 
         talonFXSConfig.Voltage.PeakForwardVoltage = 10;
-        talonFXSConfig.Voltage.PeakForwardVoltage = 10;
+        talonFXSConfig.Voltage.PeakReverseVoltage = 10;
 
-        talonFXSConfig.CurrentLimits.SupplyCurrentLimit = 60;
+        talonFXSConfig.CurrentLimits.SupplyCurrentLimit = 30;
         talonFXSConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
 
-        talonFXSConfig.CurrentLimits.StatorCurrentLimit = 60;
+        talonFXSConfig.CurrentLimits.StatorCurrentLimit = 30;
         talonFXSConfig.CurrentLimits.StatorCurrentLimitEnable = true;
-
-        talonFXSConfig.Slot0.kP = 0.05;
-        talonFXSConfig.Slot0.kI = 0.0;
-        talonFXSConfig.Slot0.kD = 0.0;
 
         talonFXS.getConfigurator().apply(talonFXSConfig);
 
