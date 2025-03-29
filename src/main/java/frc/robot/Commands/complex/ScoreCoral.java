@@ -41,7 +41,9 @@ public class ScoreCoral extends Command {
     public void initialize() {
         targetElevatorState = manager.level;
         swerve = Swerve.getInstance();
-        targetSide = swerve.getReefTargetSide();
+        targetSide = manager.selectedReefSide;
+
+        swerve.setReefTargetSide(targetSide);
 
         swerve.setDriveState(DriveState.AlignReef);
         if (!wrist.isAtState(targetElevatorState, 0.02)) {
