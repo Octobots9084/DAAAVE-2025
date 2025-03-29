@@ -10,41 +10,47 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.States;
-import frc.robot.Commands.CoralRollers.SetCoralRollersState;
 import frc.robot.Commands.Elevator.SetElevatorState;
-import frc.robot.Subsystems.CoralRollers.CoralRollersState;
-import frc.robot.Subsystems.Elevator.Elevator;
+import frc.robot.Commands.Wrist.SetWristState;
 import frc.robot.Subsystems.Elevator.ElevatorStates;
 import frc.robot.Subsystems.Swerve.Swerve;
 import frc.robot.Subsystems.Swerve.Swerve.DriveState;
 import frc.robot.Subsystems.Vision.AlignVision;
-import frc.robot.Commands.Wrist.SetWristState;
-import frc.robot.Commands.swerve.drivebase.SetDriveState;
-import frc.robot.States.ReefTargetSide;
-import frc.robot.Subsystems.Wrist.*;
+import frc.robot.Subsystems.Wrist.WristStates;
 
 public class CoralPlaceAndRemoveAlgaeFast extends SequentialCommandGroup{
     public CoralPlaceAndRemoveAlgaeFast(){
-        BooleanSupplier isTop =  () -> Swerve.getInstance().getReefTargetOrientation() == States.ReefTargetOrientation.AB || Swerve.getInstance().getReefTargetOrientation() == States.ReefTargetOrientation.EF || Swerve.getInstance().getReefTargetOrientation() == States.ReefTargetOrientation.IJ;
+        Swerve swerve = Swerve.getInstance();
+        BooleanSupplier isHighAlgae = () -> swerve.getReefTargetOrientation() == States.ReefTargetOrientation.AB || swerve.getReefTargetOrientation() == States.ReefTargetOrientation.EF || swerve.getReefTargetOrientation() == States.ReefTargetOrientation.IJ;
         addCommands(
             new InstantCommand(() -> {
-                Swerve.getInstance().setDriveState(DriveState.AlignReef);
+                AlignVision.setReefOrientation(swerve.getReefTargetOrientation());
+            }),
+            new InstantCommand(() -> {
+                AlignVision.setPoleSide(swerve.getReefTargetSide());
+            }),
+            new InstantCommand(() -> {
+                swerve.setDriveState(DriveState.AlignReef);
             }),
             new ScoreCoral(),
             new InstantCommand(() -> {
-                AlignVision.setPoleSide(ReefTargetSide.ALGAE);
+                AlignVision.setPoleSide(States.ReefTargetSide.ALGAE);
+            }),
+            new InstantCommand(() -> {
+                swerve.setDriveState(DriveState.AlignReef);
             }),
             new WaitCommand(0.2),
             new WaitUntilCommand(() -> AlignVision.getInstance().isAligned()),
-            new SetDriveState(DriveState.AlignReef),
-            new SetWristState(WristStates.ALAGESTACKREMOVAL,ClosedLoopSlot.kSlot0),
-            new ConditionalCommand(new SetElevatorState(ElevatorStates.TOPALGAEFAST),new SetElevatorState(ElevatorStates.BOTTOMALGAEFAST),isTop),
-            new SetCoralRollersState(CoralRollersState.ALGAEINTAKING),
+            // new SetWristState(WristStates.QUICKALGAEREMOVAL, ClosedLoopSlot.kSlot0),
+            new ConditionalCommand(new SetElevatorState(ElevatorStates.TOPALGAEFAST), new SetElevatorState(ElevatorStates.BOTTOMALGAEFAST), isHighAlgae),
             new InstantCommand(() -> {
-                Swerve.getInstance().setDriveState(DriveState.Reverse);
+                swerve.setDriveState(DriveState.Reverse);
             }),
-            new SetWristState(WristStates.PREP,ClosedLoopSlot.kSlot0),
-            new SetElevatorState(ElevatorStates.LOW)
+            new SetWristState(WristStates.PREP, ClosedLoopSlot.kSlot0),
+            new WaitCommand(0.25),
+            new InstantCommand(() -> {
+                swerve.setDriveState(DriveState.Manual);
+            })
         );
     }
 }
