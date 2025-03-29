@@ -15,6 +15,7 @@ import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.CAN;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class CoralRollersIOSystems implements CoralRollersIO {
@@ -24,6 +25,8 @@ public class CoralRollersIOSystems implements CoralRollersIO {
     private CANrangeConfiguration configuration = new CANrangeConfiguration();
 
     private SparkMaxConfig config;
+    private double currentTime = 0.0;
+    private boolean isStalled = false;
 
     public CoralRollersIOSystems() {
         config = new SparkMaxConfig();
@@ -48,8 +51,18 @@ public class CoralRollersIOSystems implements CoralRollersIO {
         inputs.isIntaking = this.IsIntaking();
         inputs.hasCoral = this.HasCoral();
         inputs.temperature = motor.getMotorTemperature();
+        inputs.isStalled = this.isStalled;
 
         inputs.coralMeasureDist = clawFrontSensor.getDistance().getValueAsDouble();
+
+        if (motor.getOutputCurrent() < 30) {
+            currentTime = Timer.getFPGATimestamp();
+            this.isStalled = false;
+        } else if (motor.getOutputCurrent() > 30 && Timer.getFPGATimestamp() - currentTime > 1) {
+            this.isStalled = true;
+        } else {
+            this.isStalled = false;
+        }
     }
 
     @Override
@@ -94,7 +107,7 @@ public class CoralRollersIOSystems implements CoralRollersIO {
 
     @Override
     public boolean isStalled() {
-        return motor.getOutputCurrent() > 30;
+        return this.isStalled;
     }
 
 }

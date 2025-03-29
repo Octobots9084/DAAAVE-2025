@@ -14,6 +14,7 @@ public interface CoralRollersIO {
         public boolean isIntaking = false;
         public double coralMeasureDist = 0;
         public double temperature = 0;
+        public boolean isStalled = false;
     }
 
     public default void updateInputs(CoralRollersIOInputs inputs) {}
