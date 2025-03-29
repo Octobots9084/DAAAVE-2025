@@ -44,9 +44,9 @@ public class ScoreCoral extends Command {
         targetSide = swerve.getReefTargetSide();
 
         swerve.setDriveState(DriveState.AlignReef);
-        if (!wrist.isAtState(targetElevatorState, 0.02)) {
-            Wrist.getInstance().setState(WristStates.PREP, ClosedLoopSlot.kSlot0);
-        }
+        // if (!wrist.isAtState(targetElevatorState, 0.02)) {
+        Wrist.getInstance().setState(WristStates.PREP, ClosedLoopSlot.kSlot0);
+        // }
         alignVision.resetTolerances();
     }
 
