@@ -1,29 +1,26 @@
 package frc.robot.Commands.Climb;
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.Subsystems.Climb.Climb;
 import frc.robot.Subsystems.Climb.ClimbStates;
 
-public class DeployClimb extends InstantCommand {
+public class ClimbBreakFree extends InstantCommand {
     Climb climbInstance;
     double startTime;
     
-    public DeployClimb() {
+    public ClimbBreakFree() {
         climbInstance = Climb.getInstance();
     }
 
     @Override
-    public void initialize() {
-        climbInstance.setState(ClimbStates.Deployed);
-    }
+    public void initialize() {}
 
     @Override
     public void execute() {}
 
     @Override
     public boolean isFinished() {
-        return climbInstance.isAtState(ClimbStates.Deployed);
+        return climbInstance.isAtState(ClimbStates.BreakFree);
     }
 
     @Override

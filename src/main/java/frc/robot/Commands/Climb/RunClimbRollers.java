@@ -6,7 +6,7 @@ import frc.robot.Subsystems.Climb.ClimbStates;
 
 public class RunClimbRollers extends InstantCommand {
     ClimbStates targetState;
-    double stalledCylces = 0;
+    double stalledCylces;
     Climb climbInstance;
 
     public RunClimbRollers() {
@@ -15,7 +15,8 @@ public class RunClimbRollers extends InstantCommand {
 
     @Override
     public void initialize() {
-        climbInstance.setTalonVoltage(10);
+        climbInstance.setTalonVoltage(-5);
+        stalledCylces = 0;
     }
 
     @Override
@@ -29,7 +30,7 @@ public class RunClimbRollers extends InstantCommand {
 
     @Override
     public boolean isFinished() {
-        return stalledCylces > 250;
+        return stalledCylces > 50;
     }
 
     @Override

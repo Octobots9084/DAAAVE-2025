@@ -36,13 +36,10 @@ public class Climb extends SubsystemBase {
         climbState = state;
         if (state == ClimbStates.Deployed) {
             io.setVoltage(10);
-            // io.setTalonVoltage(-10);
         } else if (state == ClimbStates.Climbing) {
             io.setVoltage(-10);
-            // io.setTalonVoltage(10);
         } else {
             io.setVoltage(0);
-            // io.setTalonVoltage(0);
         }
         // DELETE above code when using positions once again
         // io.setPosition(state.position);

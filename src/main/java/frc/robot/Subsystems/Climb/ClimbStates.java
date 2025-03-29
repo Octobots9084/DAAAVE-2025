@@ -2,7 +2,8 @@ package frc.robot.Subsystems.Climb;
 
 public enum ClimbStates {
   // TODO change position values
-  Deployed(-575),
+  BreakFree(0),
+  Deployed(0),
   Climbing(0),
   Stored(0);
 

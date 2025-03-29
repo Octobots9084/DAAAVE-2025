@@ -1,5 +1,6 @@
 package frc.robot.Subsystems.Climb;
 
+import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.configs.TalonFXSConfiguration;
 import com.ctre.phoenix6.hardware.TalonFXS;
 import com.ctre.phoenix6.signals.AdvancedHallSupportValue;
@@ -17,6 +18,7 @@ import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
 import edu.wpi.first.hal.FRCNetComm.tInstances;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.revrobotics.spark.config.SparkMaxConfig;
 
@@ -41,7 +43,7 @@ public class ClimbIOSystems implements ClimbIO {
 
         sparkConfig.closedLoop.feedbackSensor(FeedbackSensor.kAbsoluteEncoder).pid(0.05, 0.0, 0, ClosedLoopSlot.kSlot0);
 
-        sparkMax.configure(sparkConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        sparkMax.configure(sparkConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters).toString();
         sparkMax.setPeriodicFrameTimeout(30);
         sparkMax.setCANTimeout(30);
         sparkMax.setCANMaxRetries(5);
@@ -58,10 +60,10 @@ public class ClimbIOSystems implements ClimbIO {
         talonFXSConfig.CurrentLimits.SupplyCurrentLimit = 30;
         talonFXSConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
 
-        talonFXSConfig.CurrentLimits.StatorCurrentLimit = 30;
+        talonFXSConfig.CurrentLimits.StatorCurrentLimit = 10;
         talonFXSConfig.CurrentLimits.StatorCurrentLimitEnable = true;
 
-        talonFXS.getConfigurator().apply(talonFXSConfig);
+        SmartDashboard.putString("ClimbTalonError", talonFXS.getConfigurator().apply(talonFXSConfig).toString());
 
     }
 
@@ -72,8 +74,11 @@ public class ClimbIOSystems implements ClimbIO {
         inputs.appliedVolts = sparkMax.getAppliedOutput();
         inputs.busVoltage = sparkMax.getBusVoltage();
         inputs.currentAmps = sparkMax.getOutputCurrent();
+        SmartDashboard.putNumber("ClimbTalonSupplyCurrent", talonFXS.getSupplyCurrent().getValueAsDouble());
+        SmartDashboard.putNumber("ClimbTalonStatorCurrent", talonFXS.getStatorCurrent().getValueAsDouble());
+        SmartDashboard.putBoolean("ClimbTalonStallCurrent", talonFXS.getFault_StatorCurrLimit().getValue());
     }
-
+    
     @Override
     public double getPosition() {
         return sparkMax.getEncoder().getPosition();
@@ -103,6 +108,6 @@ public class ClimbIOSystems implements ClimbIO {
 
     @Override
     public boolean talonIsStalled() {
-        return talonFXS.getMotorStallCurrent().getValueAsDouble() < talonFXS.getStatorCurrent().getValueAsDouble();
+        return talonFXS.getFault_StatorCurrLimit().getValue();
     }
 }
