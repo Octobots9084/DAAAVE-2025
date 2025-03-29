@@ -15,7 +15,7 @@ import frc.robot.Subsystems.Swerve.Swerve.DriveState;
 
 public class CoralPlaceAndAlgaeReefClear extends SequentialCommandGroup{
     public CoralPlaceAndAlgaeReefClear(){
-        BooleanSupplier isTop =  () -> Swerve.getInstance().getReefTargetOrientation() == States.ReefTargetOrientation.AB || Swerve.getInstance().getReefTargetOrientation() == States.ReefTargetOrientation.EF || Swerve.getInstance().getReefTargetOrientation() == States.ReefTargetOrientation.IJ;
+        BooleanSupplier isTop = () -> Swerve.getInstance().getReefTargetOrientation() == States.ReefTargetOrientation.AB || Swerve.getInstance().getReefTargetOrientation() == States.ReefTargetOrientation.EF || Swerve.getInstance().getReefTargetOrientation() == States.ReefTargetOrientation.IJ;
         addCommands(
             new InstantCommand(() -> {
                 Swerve.getInstance().setDriveState(DriveState.AlignReef);

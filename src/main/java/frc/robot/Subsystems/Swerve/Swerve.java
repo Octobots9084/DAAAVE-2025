@@ -34,6 +34,7 @@ import frc.robot.Commands.auto.testPlace;
 import frc.robot.Commands.complex.CollectCoral;
 import frc.robot.Commands.complex.CoralPlaceAndAlgaeReefClear;
 import frc.robot.Commands.complex.PrepCollect;
+import frc.robot.Commands.complex.RemoveAlgaeInAuto;
 import frc.robot.States.ReefTargetLevel;
 import frc.robot.States.ReefTargetOrientation;
 import frc.robot.States.ReefTargetSide;
@@ -164,6 +165,9 @@ public class Swerve extends SubsystemBase {
             NamedCommands.registerCommand("testAlgaeL", new testAlgae(ReefTargetOrientation.KL));
             NamedCommands.registerCommand("testAlgaeC", new testAlgae(ReefTargetOrientation.CD));
 
+            NamedCommands.registerCommand("RemoveAlgaeInAutoL", new RemoveAlgaeInAuto(ReefTargetOrientation.KL));
+            NamedCommands.registerCommand("RemoveAlgaeInAutoC", new RemoveAlgaeInAuto(ReefTargetOrientation.CD));
+            
             RobotConfig config = RobotConfig.fromGUISettings();
 
             // Configure AutoBuilder

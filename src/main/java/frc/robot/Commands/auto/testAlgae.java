@@ -22,4 +22,9 @@ public class testAlgae extends Command{
     public void execute() {
         Swerve.getInstance().driveRobotRelative(AlignVision.getInstance().getAlignChassisSpeeds(AlignState.Reef));
     }
+
+    @Override
+    public boolean isFinished() {
+        return AlignVision.getInstance().isAligned();
+    }
 }
