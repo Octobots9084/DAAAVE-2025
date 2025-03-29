@@ -145,6 +145,22 @@ public class MathUtil {
         return new double[] { x * scaleRatio, y * scaleRatio };
     }
 
+    /**
+     * Takes a ChassisSpeeds object and caps the x and y acceleration components at the max acceleration.
+     * Does not preserve the vector magnitude of the vector.
+     *
+     * @param targetChassisSpeeds
+     *            The target speeds from the PID controller.
+     * @param currentChassisSpeeds
+     *           The current speeds of the robot.
+     * @param maxAccelerationX
+     *           The maximum acceleration in the x direction.
+     * @param maxAccelerationY
+     *          The maximum acceleration in the y direction.
+     * @param loopTime
+     *         The time between each loop iteration of the robot calculations.
+     * @return The capped ChassisSpeeds object.
+     */
     public static ChassisSpeeds limitXAndYAcceleration(ChassisSpeeds targetChassisSpeeds,
             ChassisSpeeds currentChassisSpeeds, double maxAccelerationX, double maxAccelerationY, double loopTime) {
         double targetAccelerationX = (targetChassisSpeeds.vxMetersPerSecond - currentChassisSpeeds.vxMetersPerSecond)
@@ -166,6 +182,20 @@ public class MathUtil {
 
     }
 
+    /**
+     * Takes a ChassisSpeeds object and caps the acceleration vector magnitude at the max acceleration.
+     * Does preserve the vector magnitude of the vector.
+     * 
+     * @param targetChassisSpeeds
+     *           The target speeds from the PID controller.
+     * @param currentChassisSpeeds
+     *          The current speeds of the robot.
+     * @param maxAcceleration
+     *        The maximum acceleration of the robot.
+     * @param loopTime
+     *      The time between each loop iteration of the robot calculations.
+     * @return The capped ChassisSpeeds object.
+    */
     public static ChassisSpeeds limitVectorAcceleration(
             ChassisSpeeds targetChassisSpeeds,
             ChassisSpeeds currentChassisSpeeds,
