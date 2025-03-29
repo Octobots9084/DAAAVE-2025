@@ -13,23 +13,20 @@ public interface ClimbIO {
     }
 
     /** Updates the set of loggable inputs. */
-    public default void updateInputs(ClimbIOInputs inputs) {
-    }
+    public default void updateInputs(ClimbIOInputs inputs) {}
 
-    public default void setPosition(double newPosition) {
-    }
+    public default void setPosition(double newPosition) {}
 
     public default double getPosition() {
         return 0;
     }
 
-    public default void updateSim() {
-    }
+    public default void updateSim() {}
 
-    public default void zeroEncoder() {
-    };
+    public default void zeroEncoder() {};
 
-    public default void setVoltage(double voltage) {
-    };
+    public default void setVoltage(double voltage) {};
+
+    public default void setTalonVoltage(double voltage) {};
 
 }
