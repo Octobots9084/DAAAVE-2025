@@ -13,43 +13,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "initial_to_e"
+            "pathName": "initial_to_j"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "placeEF"
+            "name": "placeJ"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "e_to_lowstation"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "AlignCollect"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "lowstation_to_d"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "placeD"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "d_to_lowstation"
+            "pathName": "j_to_topstation"
           }
         },
         {
@@ -61,19 +37,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "lowstation_to_c"
+            "pathName": "topstation_to_k"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "placeC"
+            "name": "placeK"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "c_to_lowstation"
+            "pathName": "k_to_topstation"
           }
         },
         {
@@ -85,19 +61,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "lowstation_to_b"
+            "pathName": "topstation_to_l"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "placeB"
+            "name": "placeL"
           }
         },
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "b_to_lowstation"
+            "name": "RemoveAlgaeInAutoL"
           }
         }
       ]

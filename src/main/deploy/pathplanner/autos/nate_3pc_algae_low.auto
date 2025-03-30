@@ -5,45 +5,27 @@
     "data": {
       "commands": [
         {
+          "type": "named",
+          "data": {
+            "name": "InitalWristPos"
+          }
+        },
+        {
           "type": "path",
           "data": {
-            "pathName": "initial_to_i"
+            "pathName": "initial_to_e_opt"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "placeI"
+            "name": "placeEF"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "i_to_topstation"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "AlignCollect"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "topstation_to_j"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "placeJ"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "j_to_topstation"
+            "pathName": "e_to_lowstation"
           }
         },
         {
@@ -55,19 +37,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "topstation_to_k"
+            "pathName": "lowstation_to_d"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "placeK"
+            "name": "placeD"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "k_to_topstation"
+            "pathName": "d_to_lowstation"
           }
         },
         {
@@ -79,13 +61,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "topstation_to_l"
+            "pathName": "lowstation_to_c"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "placeL"
+            "name": "placeC"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "RemoveAlgaeInAutoC"
           }
         }
       ]
