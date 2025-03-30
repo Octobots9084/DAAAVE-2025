@@ -32,7 +32,7 @@ public class WristIOSparkMax implements WristIO {
         config.idleMode(IdleMode.kBrake);
         config.voltageCompensation(10);
         config.smartCurrentLimit(60, 60);
-        config.closedLoop.feedbackSensor(FeedbackSensor.kAbsoluteEncoder).pid(1.6, 0.005, 75, ClosedLoopSlot.kSlot0);
+        config.closedLoop.feedbackSensor(FeedbackSensor.kAbsoluteEncoder).pid(1.75, 0.005, 75, ClosedLoopSlot.kSlot0);
         config.closedLoop.iZone(0.03);
         wristMotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         wristMotor.setPeriodicFrameTimeout(30);

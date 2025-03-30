@@ -129,8 +129,8 @@ public class AlignVision extends SubsystemBase {
         this.cameraXPIDController = new PIDController(2, 0, 0);
         this.backCameraXPIDController = new PIDController(3.5, 0, 0);
 
-        this.cameraYPIDController = new PIDController(2.75, 0, 0);
-        this.cameraYPIDControllerSource = new PIDController(2, 0, 0);
+        this.cameraYPIDController = new PIDController(5, 0, 0);
+        this.cameraYPIDControllerSource = new PIDController(5, 0, 0);
 
         this.lidarXPIDController = new PIDController(4, 0, 0);
         this.backLidarXPIDController = new PIDController(5.5, 0, 0);

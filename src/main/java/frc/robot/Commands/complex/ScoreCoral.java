@@ -41,7 +41,7 @@ public class ScoreCoral extends Command {
 
     @Override
     public void initialize() {
-        debouncer = new Debouncer(0.5);
+        debouncer = new Debouncer(0.05);
         targetElevatorState = manager.level;
         swerve = Swerve.getInstance();
         targetSide = manager.selectedReefSide;
@@ -60,10 +60,10 @@ public class ScoreCoral extends Command {
         elevatorInPosition = elevator.isAtState(targetElevatorState, 1.5);
         elevatorWiderInPosition = elevator.isAtState(targetElevatorState, 20);
 
-        wristInPosition = wrist.isAtState(targetElevatorState, 0.02);
+        wristInPosition = wrist.isAtState(targetElevatorState, 0.04);
         wristWiderInPosition = wrist.isAtState(targetElevatorState, 0.05);
 
-        boolean isWristPrepped = wrist.isAtState(WristStates.PREP, 0.02);
+        boolean isWristPrepped = wrist.isAtState(WristStates.PREP, 0.04);
         isAligned = alignVision.isAligned();
 
         if (!elevatorInPosition && isWristPrepped) {

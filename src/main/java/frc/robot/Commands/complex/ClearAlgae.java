@@ -20,12 +20,12 @@ import frc.robot.Subsystems.CoralRollers.CoralRollersState;
 import frc.robot.Subsystems.Elevator.ElevatorStates;
 import frc.robot.Subsystems.Swerve.Swerve;
 import frc.robot.Subsystems.Swerve.Swerve.DriveState;
+import frc.robot.Subsystems.Wrist.Wrist;
 import frc.robot.Subsystems.Wrist.WristStates;
 
 public class ClearAlgae extends SequentialCommandGroup {
     public ClearAlgae() {
         addCommands(
-                new SetWristStateTolerance(WristStates.PREP, 0.05, ClosedLoopSlot.kSlot0),
                 new ConditionalCommand(
                         new RemoveAlgaeTop(),
                         new RemoveAlgaeBottom(),

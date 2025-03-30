@@ -60,7 +60,7 @@ public class ClimbIOSystems implements ClimbIO {
         talonFXSConfig.CurrentLimits.SupplyCurrentLimit = 30;
         talonFXSConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
 
-        talonFXSConfig.CurrentLimits.StatorCurrentLimit = 10;
+        talonFXSConfig.CurrentLimits.StatorCurrentLimit = 20;
         talonFXSConfig.CurrentLimits.StatorCurrentLimitEnable = true;
 
         SmartDashboard.putString("ClimbTalonError", talonFXS.getConfigurator().apply(talonFXSConfig).toString());
@@ -79,7 +79,7 @@ public class ClimbIOSystems implements ClimbIO {
         SmartDashboard.putBoolean("ClimbTalonStallCurrent", talonFXS.getFault_StatorCurrLimit().getValue());
 
     }
-    
+
     @Override
     public double getPosition() {
         return sparkMax.getAbsoluteEncoder().getPosition();
