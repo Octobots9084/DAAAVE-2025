@@ -41,7 +41,7 @@ public class ClimbIOSystems implements ClimbIO {
         sparkConfig.voltageCompensation(10);
         sparkConfig.smartCurrentLimit(60, 60);
 
-        sparkConfig.closedLoop.feedbackSensor(FeedbackSensor.kAbsoluteEncoder).pid(0.05, 0.0, 0, ClosedLoopSlot.kSlot0);
+        sparkConfig.closedLoop.feedbackSensor(FeedbackSensor.kAbsoluteEncoder).pid(1, 0.0, 0, ClosedLoopSlot.kSlot0);
 
         sparkMax.configure(sparkConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters).toString();
         sparkMax.setPeriodicFrameTimeout(30);
@@ -69,19 +69,20 @@ public class ClimbIOSystems implements ClimbIO {
 
     @Override
     public void updateInputs(ClimbIOInputs inputs) {
-        inputs.positionRotations = sparkMax.getEncoder().getPosition();
-        inputs.velocityRPM = sparkMax.getEncoder().getVelocity();
+        inputs.positionRotations = this.getPosition();
+        inputs.velocityRPM = sparkMax.getAbsoluteEncoder().getVelocity();
         inputs.appliedVolts = sparkMax.getAppliedOutput();
         inputs.busVoltage = sparkMax.getBusVoltage();
         inputs.currentAmps = sparkMax.getOutputCurrent();
         SmartDashboard.putNumber("ClimbTalonSupplyCurrent", talonFXS.getSupplyCurrent().getValueAsDouble());
         SmartDashboard.putNumber("ClimbTalonStatorCurrent", talonFXS.getStatorCurrent().getValueAsDouble());
         SmartDashboard.putBoolean("ClimbTalonStallCurrent", talonFXS.getFault_StatorCurrLimit().getValue());
+
     }
     
     @Override
     public double getPosition() {
-        return sparkMax.getEncoder().getPosition();
+        return sparkMax.getAbsoluteEncoder().getPosition();
     }
 
     @Override
@@ -92,8 +93,9 @@ public class ClimbIOSystems implements ClimbIO {
     }
 
     @Override
-    public void zeroEncoder() {
-        sparkMax.getEncoder().setPosition(0);
+    public void allStop() {
+        sparkMax.getClosedLoopController().setReference(sparkMax.getAbsoluteEncoder().getPosition(), ControlType.kPosition, ClosedLoopSlot.kSlot0, feedForward);
+
     }
 
     @Override

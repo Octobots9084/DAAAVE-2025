@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import frc.robot.Commands.Climb.ClimbSequence;
 import frc.robot.Commands.Climb.RunClimbRollers;
 import frc.robot.Commands.Climb.SetClimbState;
-import frc.robot.Commands.Climb.ZeroClimb;
 import frc.robot.Commands.complex.AlgaeFlickBottom;
 import frc.robot.Commands.complex.AlgaeFlickTop;
 import frc.robot.Commands.complex.AlignReef;
@@ -128,7 +127,6 @@ public class ButtonConfig {
         // driverButtons.button(16).and(driverButtons.button(20)).onFalse(new
         // SetClimbState(ClimbStates.Climbing));
         // driverButtons.button(17).and(driverButtons.button(20)).whileTrue(new
-        // ZeroClimb());
 
         coDriverButtons.button(1).onTrue(new EjectCoral().andThen(new RobotStop()));
         coDriverButtons.button(4).onTrue(new Intake().onlyIf(
@@ -148,7 +146,7 @@ public class ButtonConfig {
         coDriverButtons.button(3).onTrue(new BargeAlgae());
 
         coDriverButtons.button(6).onTrue(new PrepReefPlacement());
-        coDriverButtons.button(15).onTrue(new SetElevatorState(ElevatorStates.LEVEL4).andThen(new SetWristStateTolerance(WristStates.BARGEALGAE, 1, ClosedLoopSlot.kSlot0)));
+        // coDriverButtons.button(15).onTrue(new SetElevatorState(ElevatorStates.LEVEL4).andThen(new SetWristStateTolerance(WristStates.BARGEALGAE, 1, ClosedLoopSlot.kSlot0)));
 
         // Return robot to a safe configuration
         // Score and Intake assistance buttons for right stick
@@ -168,10 +166,10 @@ public class ButtonConfig {
                 })), coDriverButtons.button(20)));
 
         coDriverButtons.button(16).onTrue(new ConditionalCommand(new SetClimbState(ClimbStates.Deployed), new InstantCommand(), coDriverButtons.button(20)));
-        coDriverButtons.button(16).onFalse(new ConditionalCommand(new SetClimbState(ClimbStates.Stored), new InstantCommand(), coDriverButtons.button(20)));
+        // coDriverButtons.button(16).onFalse(new ConditionalCommand(new SetClimbState(ClimbStates.Stored), new InstantCommand(), coDriverButtons.button(20)));
 
         coDriverButtons.button(17).onTrue(new ConditionalCommand(new SetClimbState(ClimbStates.Climbing), new InstantCommand(), coDriverButtons.button(20)));
-        coDriverButtons.button(17).onFalse(new ConditionalCommand(new SetClimbState(ClimbStates.Stored), new InstantCommand(), coDriverButtons.button(20)));
+        // coDriverButtons.button(17).onFalse(new ConditionalCommand(new SetClimbState(ClimbStates.Stored), new InstantCommand(), coDriverButtons.button(20)));
 
         coDriverRight.button(1).onTrue(new SetOrientation(0));
         coDriverRight.button(2).onTrue(new SetOrientation(1));

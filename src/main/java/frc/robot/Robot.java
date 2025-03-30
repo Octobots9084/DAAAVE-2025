@@ -24,6 +24,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Commands.ReefSelection.ShowSelection;
 import frc.robot.States.ReefTargetOrientation;
 import frc.robot.States.ReefTargetSide;
+import frc.robot.Subsystems.Climb.Climb;
 import frc.robot.Subsystems.CoralRollers.CoralRollers;
 import frc.robot.Subsystems.CoralRollers.CoralRollersState;
 import frc.robot.Subsystems.Elevator.*;
@@ -172,6 +173,8 @@ public class Robot extends LoggedRobot {
 
         Constants.isInAuto = false;
         Swerve.getInstance().setDriveState(DriveState.Manual);
+        Climb climb = Climb.getInstance();
+        climb.allStop();
         CoralRollers.getInstance().setState(CoralRollersState.STOPPED);
     }
 
