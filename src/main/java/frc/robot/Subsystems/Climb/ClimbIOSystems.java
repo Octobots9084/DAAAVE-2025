@@ -43,7 +43,7 @@ public class ClimbIOSystems implements ClimbIO {
 
         sparkConfig.closedLoop.feedbackSensor(FeedbackSensor.kAbsoluteEncoder).pid(1, 0.0, 0, ClosedLoopSlot.kSlot0);
 
-        sparkMax.configure(sparkConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters).toString();
+        sparkMax.configure(sparkConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         sparkMax.setPeriodicFrameTimeout(30);
         sparkMax.setCANTimeout(30);
         sparkMax.setCANMaxRetries(5);
