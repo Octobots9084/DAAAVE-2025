@@ -19,7 +19,7 @@ public class Wrist extends SubsystemBase {
     private static Wrist instance;
     public final double MaxAngle = 0.668;
     public final double MinAngle = 0;
-    public final double UnderCrossbarAngle = 0.261;
+    public final double UnderCrossbarAngle = 0.646;
     double horizonAngle = 0.70;
 
     public double getHorizonAngle() {
