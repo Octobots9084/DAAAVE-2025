@@ -13,6 +13,7 @@ import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.ControlMap;
 import frc.robot.Subsystems.Wrist.Wrist;
 
 import com.revrobotics.spark.config.SparkMaxConfig;
@@ -105,6 +106,10 @@ public class ElevatorIOSparkMax implements ElevatorIO {
 
     @Override
     public void setPosition(double position) {
+        if (ControlMap.CO_DRIVER_BUTTONS.button(20).getAsBoolean()) {
+            return;
+        }
+
         if (position < 0) {
             position = 0;
         }
