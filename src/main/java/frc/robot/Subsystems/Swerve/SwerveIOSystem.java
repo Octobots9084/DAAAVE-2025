@@ -122,7 +122,7 @@ public class SwerveIOSystem implements SwerveIO {
     }
 
     public double getMaxAccelerationFromElevatorHeight() {
-        return (1.0 - (Elevator.getInstance().getPosition() / ElevatorStates.LEVEL4.position)) * 12.0 + 5.5;
+        return (1.0 - (Elevator.getInstance().getPosition() / ElevatorStates.LEVEL4.position)) * 8.0 + 5.5;
     }
 
     public SwerveModuleState[] getModuleStates() {

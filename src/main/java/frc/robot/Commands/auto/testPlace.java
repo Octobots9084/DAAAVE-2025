@@ -42,7 +42,7 @@ public class testPlace extends Command {
         this.targetLevel = targetLevel;
         this.targetSide = targetSide;
         this.targetOrientation = targetOrientation;
-        debouncer = new Debouncer(0.1);
+        debouncer = new Debouncer(0.2);
 
     }
 
@@ -66,11 +66,11 @@ public class testPlace extends Command {
         if (Constants.currentMode == Mode.SIM) {
             return true;
         }
-        if (AlignVision.getInstance().isAligned() && Elevator.getInstance().isAtState(ElevatorStates.LEVEL4, 1.5)
-                && Wrist.getInstance().isAtState(ElevatorStates.LEVEL4, 0.01)) {
+        if (debouncer.calculate(AlignVision.getInstance().isAligned() && Elevator.getInstance().isAtState(ElevatorStates.LEVEL4, 1.5)
+                && Wrist.getInstance().isAtState(ElevatorStates.LEVEL4, 0.01))) {
             CoralRollers.getInstance().setState(CoralRollersState.OUTPUT);
         }
-        return debouncer.calculate(AlignVision.getInstance().isAligned() && !CoralRollers.getInstance().HasCoral());
+        return AlignVision.getInstance().isAligned() && !CoralRollers.getInstance().HasCoral();
     }
 
     @Override
