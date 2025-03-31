@@ -158,7 +158,7 @@ public class ButtonConfig {
 
         // Reef mode active (Switch 20)
         // Reef selection
-        coDriverButtons.button(20).onTrue(new SetWristState(WristStates.L1, ClosedLoopSlot.kSlot0)).whileTrue(new RunClimbRollers()); // new ClimbSequence());
+        coDriverButtons.button(20).onTrue(new SetWristState(WristStates.ALGAEREMOVAL, ClosedLoopSlot.kSlot0)).whileTrue(new RunClimbRollers()); // new ClimbSequence());
         coDriverButtons.button(10).onTrue(new ReefLevelSelection(4));
         coDriverButtons.button(12).onTrue(new ReefLevelSelection(3));
         coDriverButtons.button(14).onTrue(new ReefLevelSelection(2));
@@ -167,12 +167,12 @@ public class ButtonConfig {
                     AlignVision.setPoleSide(ReefTargetSide.ALGAE);
                 })), coDriverButtons.button(20)));
 
-        coDriverButtons.button(16).onTrue(new ConditionalCommand(new SetClimbState(ClimbStates.Deployed), new InstantCommand(), coDriverButtons.button(20)));
+        coDriverButtons.button(16).onTrue(new ConditionalCommand(new SetClimbState(ClimbStates.Deployed, ClosedLoopSlot.kSlot1), new InstantCommand(), coDriverButtons.button(20)));
         // coDriverButtons.button(16).onFalse(new ConditionalCommand(new
         // SetClimbState(ClimbStates.Stored), new InstantCommand(),
         // coDriverButtons.button(20)));
 
-        coDriverButtons.button(17).onTrue(new ConditionalCommand(new SetClimbState(ClimbStates.Climbing), new InstantCommand(), coDriverButtons.button(20)));
+        coDriverButtons.button(17).onTrue(new ConditionalCommand(new SetClimbState(ClimbStates.Climbing, ClosedLoopSlot.kSlot0), new InstantCommand(), coDriverButtons.button(20)));
         // coDriverButtons.button(17).onFalse(new ConditionalCommand(new
         // SetClimbState(ClimbStates.Stored), new InstantCommand(),
         // coDriverButtons.button(20)));

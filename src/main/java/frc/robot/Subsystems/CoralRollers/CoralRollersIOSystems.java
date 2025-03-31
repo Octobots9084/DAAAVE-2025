@@ -58,7 +58,7 @@ public class CoralRollersIOSystems implements CoralRollersIO {
         if (motor.getOutputCurrent() < 30) {
             currentTime = Timer.getFPGATimestamp();
             this.isStalled = false;
-        } else if (motor.getOutputCurrent() > 30 && Timer.getFPGATimestamp() - currentTime > 0.1) {
+        } else if (motor.getOutputCurrent() > 30 && Timer.getFPGATimestamp() - currentTime > 0.4) {
             this.isStalled = true;
         } else {
             this.isStalled = false;

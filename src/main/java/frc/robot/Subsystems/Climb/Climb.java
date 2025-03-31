@@ -4,6 +4,8 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import org.littletonrobotics.junction.Logger;
 
+import com.revrobotics.spark.ClosedLoopSlot;
+
 public class Climb extends SubsystemBase {
     public final ClimbIO io;
     private static Climb instance = null;
@@ -32,8 +34,8 @@ public class Climb extends SubsystemBase {
         Logger.processInputs("ClimbInputs", inputs);
     }
 
-    public void setState(ClimbStates state) {
-        io.setPosition(state.position);
+    public void setState(ClimbStates state, ClosedLoopSlot slot) {
+        io.setPosition(state.position, slot);
     }
 
     public void setTalonVoltage(double voltage) {

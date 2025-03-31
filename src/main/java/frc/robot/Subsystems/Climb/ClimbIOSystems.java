@@ -41,8 +41,13 @@ public class ClimbIOSystems implements ClimbIO {
         sparkConfig.voltageCompensation(10);
         sparkConfig.smartCurrentLimit(60, 60);
 
-        sparkConfig.closedLoop.feedbackSensor(FeedbackSensor.kAbsoluteEncoder).pid(1, 0.0, 0, ClosedLoopSlot.kSlot0);
+        sparkConfig.closedLoop.feedbackSensor(FeedbackSensor.kAbsoluteEncoder).pid(30, 0.0001, 0, ClosedLoopSlot.kSlot0);
+        sparkConfig.closedLoop.pid(2, 0.00, 0, ClosedLoopSlot.kSlot1);
 
+        sparkConfig.closedLoop.iZone(0.01);
+        sparkConfig.closedLoop.iMaxAccum(3.5);
+        sparkConfig.closedLoop.positionWrappingEnabled(true);
+        sparkConfig.closedLoop.positionWrappingInputRange(0, 1);
         sparkMax.configure(sparkConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         sparkMax.setPeriodicFrameTimeout(30);
         sparkMax.setCANTimeout(30);
@@ -57,10 +62,10 @@ public class ClimbIOSystems implements ClimbIO {
         talonFXSConfig.Voltage.PeakForwardVoltage = 10;
         talonFXSConfig.Voltage.PeakReverseVoltage = 10;
 
-        talonFXSConfig.CurrentLimits.SupplyCurrentLimit = 30;
+        talonFXSConfig.CurrentLimits.SupplyCurrentLimit = 40;
         talonFXSConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
 
-        talonFXSConfig.CurrentLimits.StatorCurrentLimit = 20;
+        talonFXSConfig.CurrentLimits.StatorCurrentLimit = 40;
         talonFXSConfig.CurrentLimits.StatorCurrentLimitEnable = true;
 
         SmartDashboard.putString("ClimbTalonError", talonFXS.getConfigurator().apply(talonFXSConfig).toString());
@@ -86,15 +91,15 @@ public class ClimbIOSystems implements ClimbIO {
     }
 
     @Override
-    public void setPosition(double newPosition) {
+    public void setPosition(double newPosition, ClosedLoopSlot slot) {
         sparkMax
                 .getClosedLoopController()
-                .setReference(newPosition, ControlType.kPosition, ClosedLoopSlot.kSlot0, feedForward);
+                .setReference(newPosition, ControlType.kPosition, slot, feedForward);
     }
 
     @Override
     public void allStop() {
-        sparkMax.getClosedLoopController().setReference(sparkMax.getAbsoluteEncoder().getPosition(), ControlType.kPosition, ClosedLoopSlot.kSlot0, feedForward);
+        sparkMax.setVoltage(0);
 
     }
 

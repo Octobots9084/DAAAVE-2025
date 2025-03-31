@@ -41,7 +41,7 @@ public class ScoreCoral extends Command {
 
     @Override
     public void initialize() {
-        debouncer = new Debouncer(0.05);
+        debouncer = new Debouncer(0.1);
         targetElevatorState = manager.level;
         swerve = Swerve.getInstance();
         targetSide = manager.selectedReefSide;

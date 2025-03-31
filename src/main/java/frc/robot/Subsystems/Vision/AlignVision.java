@@ -126,10 +126,10 @@ public class AlignVision extends SubsystemBase {
         this.rightRange = new CANrange(14, "KrakensBus");
         this.backRange = new CANrange(23, "KrakensBus");
 
-        this.cameraXPIDController = new PIDController(2, 0, 0);
-        this.backCameraXPIDController = new PIDController(3.5, 0, 0);
+        this.cameraXPIDController = new PIDController(1.5, 0, 0);
+        this.backCameraXPIDController = new PIDController(2, 0, 0);
 
-        this.cameraYPIDController = new PIDController(5, 0, 0);
+        this.cameraYPIDController = new PIDController(3.5, 0, 0);
         this.cameraYPIDControllerSource = new PIDController(5, 0, 0);
 
         this.lidarXPIDController = new PIDController(4, 0, 0);
