@@ -7,7 +7,6 @@ import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import frc.robot.Commands.Climb.SetClimbState;
-import frc.robot.Commands.Climb.ZeroClimb;
 import frc.robot.Commands.complex.AlgaeFlickBottom;
 import frc.robot.Commands.complex.AlgaeFlickTop;
 import frc.robot.Commands.complex.AlignReef;
@@ -161,11 +160,15 @@ public class ButtonConfig {
                 .onTrue(new ConditionalCommand(new InstantCommand(), new ReefLevelSelection(1).andThen(new InstantCommand(() -> {
                     AlignVision.setPoleSide(ReefTargetSide.ALGAE);
                 })), coDriverButtons.button(20)));
-        coDriverButtons.button(16).onTrue(new ConditionalCommand(new SetClimbState(ClimbStates.Deployed), new InstantCommand(), coDriverButtons.button(20)));
-        coDriverButtons.button(17).onTrue(new ConditionalCommand(new SetClimbState(ClimbStates.Climbing), new InstantCommand(), coDriverButtons.button(20)));
-        coDriverButtons.button(16).onFalse(new ConditionalCommand(new SetClimbState(ClimbStates.Stored), new InstantCommand(), coDriverButtons.button(20)));
+        coDriverButtons.button(16).onTrue(new ConditionalCommand(new SetClimbState(ClimbStates.Deployed, ClosedLoopSlot.kSlot1), new InstantCommand(), coDriverButtons.button(20)));
+        // coDriverButtons.button(16).onFalse(new ConditionalCommand(new
+        // SetClimbState(ClimbStates.Stored), new InstantCommand(),
+        // coDriverButtons.button(20)));
 
-        coDriverButtons.button(17).onFalse(new ConditionalCommand(new SetClimbState(ClimbStates.Stored), new InstantCommand(), coDriverButtons.button(20)));
+        coDriverButtons.button(17).onTrue(new ConditionalCommand(new SetClimbState(ClimbStates.Climbing, ClosedLoopSlot.kSlot0), new InstantCommand(), coDriverButtons.button(20)));
+        // coDriverButtons.button(17).onFalse(new ConditionalCommand(new
+        // SetClimbState(ClimbStates.Stored), new InstantCommand(),
+        // coDriverButtons.button(20)));
 
         coDriverRight.button(1).onTrue(new SetOrientation(0));
         coDriverRight.button(2).onTrue(new SetOrientation(1));

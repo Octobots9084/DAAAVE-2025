@@ -32,6 +32,7 @@ import frc.robot.Commands.auto.AlignCollect;
 import frc.robot.Commands.auto.testPlace;
 import frc.robot.Commands.complex.CollectCoral;
 import frc.robot.Commands.complex.PrepCollect;
+import frc.robot.Commands.auto.RemoveAlgaeInAuto;
 import frc.robot.States.ReefTargetLevel;
 import frc.robot.States.ReefTargetOrientation;
 import frc.robot.States.ReefTargetSide;
@@ -155,6 +156,9 @@ public class Swerve extends SubsystemBase {
             NamedCommands.registerCommand("InitalWristPos", new InstantCommand(() -> {
                 Wrist.getInstance().setState(WristStates.PREP, ClosedLoopSlot.kSlot0);
             }));
+
+            NamedCommands.registerCommand("RemoveAlgaeInAutoL", new RemoveAlgaeInAuto(ReefTargetOrientation.KL));
+            NamedCommands.registerCommand("RemoveAlgaeInAutoC", new RemoveAlgaeInAuto(ReefTargetOrientation.CD));
             new EventTrigger("PrepWristPosition").onTrue(new InstantCommand(() -> {
                 Wrist.getInstance().setState(WristStates.PREP, ClosedLoopSlot.kSlot0);
             }));
