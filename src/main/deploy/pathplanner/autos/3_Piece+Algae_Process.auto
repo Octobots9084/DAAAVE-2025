@@ -5,9 +5,15 @@
     "data": {
       "commands": [
         {
+          "type": "named",
+          "data": {
+            "name": "InitalWristPos"
+          }
+        },
+        {
           "type": "path",
           "data": {
-            "pathName": "initial_to_f"
+            "pathName": "initial_to_e_opt"
           }
         },
         {
@@ -19,7 +25,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "f_to_lowstation"
+            "pathName": "e_to_lowstation"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "AlignCollect"
           }
         },
         {
@@ -31,13 +43,19 @@
         {
           "type": "named",
           "data": {
-            "name": "placeCD"
+            "name": "placeD"
           }
         },
         {
           "type": "path",
           "data": {
             "pathName": "d_to_lowstation"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "AlignCollect"
           }
         },
         {
@@ -49,13 +67,19 @@
         {
           "type": "named",
           "data": {
-            "name": "placeCD"
+            "name": "placeC"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "RemoveAlgaeInAutoC"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "21pt",
+  "folder": null,
   "choreoAuto": false
 }

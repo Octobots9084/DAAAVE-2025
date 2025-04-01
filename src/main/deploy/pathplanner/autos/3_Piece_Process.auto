@@ -13,7 +13,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "initial_to_e"
+            "pathName": "initial_to_e_opt"
           }
         },
         {
@@ -104,6 +104,6 @@
     }
   },
   "resetOdom": true,
-  "folder": "28pt",
+  "folder": null,
   "choreoAuto": false
 }

@@ -71,39 +71,15 @@
           }
         },
         {
-          "type": "path",
-          "data": {
-            "pathName": "l_to_topstation"
-          }
-        },
-        {
           "type": "named",
           "data": {
-            "name": "AlignCollect"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "topstation_to_a"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "placeA"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "a_to_topstation"
+            "name": "RemoveAlgaeInAutoL"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "28pt",
+  "folder": null,
   "choreoAuto": false
 }

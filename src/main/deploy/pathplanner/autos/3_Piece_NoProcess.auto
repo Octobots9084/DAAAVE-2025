@@ -5,87 +5,105 @@
     "data": {
       "commands": [
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "initial_to_g"
+            "name": "InitalWristPos"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "g_to_lowstation"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "lowstation_to_c"
+            "pathName": "initial_to_j"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "placeCD"
+            "name": "placeJ"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "c_to_lowstation"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "lowstation_to_c"
+            "pathName": "j_to_topstation"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "placeCD"
+            "name": "AlignCollect"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "c_to_lowstation"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "lowstation_to_c"
+            "pathName": "topstation_to_k"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "placeCD"
+            "name": "placeK"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "c_to_lowstation"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "lowstation_to_c"
+            "pathName": "k_to_topstation"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "placeCD"
+            "name": "AlignCollect"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "topstation_to_l"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "placeL"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "l_to_topstation"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "AlignCollect"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "topstation_to_a"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "placeA"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "a_to_topstation"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "stack",
+  "folder": null,
   "choreoAuto": false
 }
