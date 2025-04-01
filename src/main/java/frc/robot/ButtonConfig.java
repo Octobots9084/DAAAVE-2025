@@ -6,6 +6,7 @@ import com.revrobotics.spark.ClosedLoopSlot;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
+import frc.robot.Commands.Climb.RunClimbRollers;
 import frc.robot.Commands.Climb.SetClimbState;
 import frc.robot.Commands.complex.AlgaeFlickBottom;
 import frc.robot.Commands.complex.AlgaeFlickTop;
@@ -13,7 +14,6 @@ import frc.robot.Commands.complex.AlignReef;
 import frc.robot.Commands.complex.AlgaeInOut;
 import frc.robot.Commands.complex.AlignSource;
 import frc.robot.Commands.complex.BargeAlgae;
-import frc.robot.Commands.complex.ClearAlgae;
 import frc.robot.Commands.complex.BargeAlgae;
 import frc.robot.Commands.complex.CollectAlgaeStack;
 import frc.robot.Commands.complex.CoralPlaceAndAlgaeReefClear;
@@ -38,6 +38,7 @@ import frc.robot.Commands.ReefSelection.ReefLevelSelection;
 import frc.robot.Commands.ReefSelection.SetOrientation;
 import frc.robot.Commands.Wrist.SetWristState;
 import frc.robot.Commands.Wrist.SetWristStateTolerance;
+import frc.robot.Commands.complex.ClearAlgae;
 import frc.robot.Subsystems.Climb.ClimbStates;
 import frc.robot.Subsystems.CoralRollers.CoralRollers;
 import frc.robot.Subsystems.CoralRollers.CoralRollersState;
@@ -152,7 +153,7 @@ public class ButtonConfig {
 
         // Reef mode active (Switch 20)
         // Reef selection
-        coDriverButtons.button(20).onTrue(new SetWristState(WristStates.L1, ClosedLoopSlot.kSlot0));
+        coDriverButtons.button(20).onTrue(new SetWristState(WristStates.ALGAEREMOVAL, ClosedLoopSlot.kSlot0)).whileTrue(new RunClimbRollers()); // new ClimbSequence());
         coDriverButtons.button(10).onTrue(new ReefLevelSelection(4));
         coDriverButtons.button(12).onTrue(new ReefLevelSelection(3));
         coDriverButtons.button(14).onTrue(new ReefLevelSelection(2));

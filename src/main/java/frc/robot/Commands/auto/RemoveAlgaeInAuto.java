@@ -2,31 +2,40 @@ package frc.robot.Commands.auto;
 
 import java.util.function.BooleanSupplier;
 
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import com.revrobotics.spark.ClosedLoopSlot;
+
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.States;
 import frc.robot.States.ReefTargetOrientation;
 import frc.robot.Commands.Elevator.SetElevatorState;
-import frc.robot.Commands.auto.testAlgae;
+import frc.robot.Commands.Wrist.SetWristState;
+import frc.robot.Commands.Wrist.SetWristStateTolerance;
 import frc.robot.Commands.complex.RemoveAlgaeBottom;
+import frc.robot.Commands.complex.RemoveAlgaeTop;
+import frc.robot.Subsystems.CoralRollers.CoralRollers;
 import frc.robot.Subsystems.Elevator.ElevatorStates;
-import frc.robot.Subsystems.Swerve.Swerve;
+import frc.robot.Subsystems.Wrist.WristStates;
 
 public class RemoveAlgaeInAuto extends SequentialCommandGroup {
     public RemoveAlgaeInAuto(ReefTargetOrientation targetOrientation) {
         BooleanSupplier isTop = () -> targetOrientation == States.ReefTargetOrientation.AB || targetOrientation == States.ReefTargetOrientation.EF
                 || targetOrientation == States.ReefTargetOrientation.IJ;
         addCommands(
-                new InstantCommand(() -> {
-                    Swerve.getInstance().driveRobotRelative(new ChassisSpeeds(-1.2, 0, 0));
-                }),
-                new WaitCommand(0.1),
-                new ConditionalCommand(new SetElevatorState(ElevatorStates.TOPALGAE), new SetElevatorState(ElevatorStates.BOTTOMALGAE), isTop),
-                new WaitCommand(0.1),
+                new DriveBack().withTimeout(0.4),
+                new SetWristStateTolerance(WristStates.PREP, 0.05, ClosedLoopSlot.kSlot0),
+                new ConditionalCommand(
+                        new RemoveAlgaeTop(),
+                        new RemoveAlgaeBottom(),
+                        isTop),
                 new testAlgae(targetOrientation),
-                new RemoveAlgaeBottom());
+                new WaitCommand(0.2),
+                new WaitUntilCommand(() -> CoralRollers.getInstance().isStalled()),
+
+                new DriveBack().withTimeout(0.1),
+                new SetElevatorState(ElevatorStates.LOW),
+                new SetWristState(WristStates.PREP, ClosedLoopSlot.kSlot0));
     }
 }

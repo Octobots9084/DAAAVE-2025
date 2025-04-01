@@ -22,8 +22,8 @@ public class RemoveAlgaeTop extends SequentialCommandGroup {
                     return Wrist.getInstance().IsInsideRobot();
                 }),
                 new InstantCommand(() -> AlignVision.setPoleSide(ReefTargetSide.ALGAE)),
-                new SetWristStateTolerance(WristStates.TOPALGAEREMOVAL, 0.05, ClosedLoopSlot.kSlot0),
                 new SetElevatorStateTolerance(ElevatorStates.TOPALGAE, 1.5),
+                new SetWristStateTolerance(WristStates.TOPALGAEREMOVAL, 0.05, ClosedLoopSlot.kSlot0),
                 new SetCoralRollersState(CoralRollersState.ALGAEINTAKING));
     }
 }

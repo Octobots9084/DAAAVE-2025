@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Commands.ReefSelection.manager;
 import frc.robot.States.ReefTargetOrientation;
+import frc.robot.Subsystems.Climb.Climb;
 import frc.robot.Subsystems.CoralRollers.CoralRollers;
 import frc.robot.Subsystems.CoralRollers.CoralRollersState;
 import frc.robot.Subsystems.Elevator.*;
@@ -76,11 +77,13 @@ public class Light extends SubsystemBase {
                 targetTagID = -1;
                 break;
         }
-        if (AlignVision.isCollecting) {
+        if (Climb.getInstance().talonIsStalled()) {
+            io.getcandle().setLEDs(0, 0, 255);
+        } else if (AlignVision.isCollecting) {
             candleOff();
             SmartDashboard.putNumber("test", (AlignVision.getInstance().getBackLidarDistance()));
             io.getcandle().setLEDs(0, 0, 255);
-        } else if (Elevator.getInstance().getTargetState() == ElevatorStates.INTAKE && 
+        } else if (Elevator.getInstance().getTargetState() == ElevatorStates.INTAKE &&
                 (Wrist.getInstance().getState() == WristStates.INTAKE || Wrist.getInstance().getState() == WristStates.ELEPHANTIASIS)
                 && CoralRollers.getInstance().getState() == CoralRollersState.INTAKING) {
             candleOff();
