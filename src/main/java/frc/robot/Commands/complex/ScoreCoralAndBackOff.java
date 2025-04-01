@@ -22,7 +22,6 @@ public class ScoreCoralAndBackOff extends SequentialCommandGroup {
                 new InstantCommand(() -> {
                     Swerve.getInstance().setDriveState(DriveState.Reverse);
                 }),
-
                 new ParallelCommandGroup(new WaitCommand(.25).andThen(new InstantCommand(() -> {
                     CommandScheduler.getInstance().schedule(new Intake());
                 })), new WaitCommand(0.5).andThen(new InstantCommand(() -> {
