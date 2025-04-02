@@ -362,7 +362,7 @@ public class AlignVision extends SubsystemBase {
                     xSpeed = this.calculateXSpeed(aveLidarDist, refPosition, state);
 
                     // Calculate the x and turn speeds for the robot to align with the target
-                    turnSpeed = this.calculateTurnSpeed(diffLidarDist, refPosition);
+                    turnSpeed = this.calculateTurnSpeed(diffLidarDist);
 
                     // If the turn speed is not a number, then set the x, y, and turn speeds to 0
                     if (Double.isNaN(turnSpeed)) {
@@ -410,7 +410,7 @@ public class AlignVision extends SubsystemBase {
 
             double diffLidarDist = this.getRightLidarDistance() - this.getLeftLidarDistance() - 0.01;
 
-            return this.calculateTurnSpeed(diffLidarDist, new Pose3d());
+            return this.calculateTurnSpeed(diffLidarDist);
         } catch (Exception e) {
             return 0;
         }
@@ -522,7 +522,7 @@ public class AlignVision extends SubsystemBase {
         }
     }
 
-    private double calculateTurnSpeed(double diffLidarDist, Pose3d refPosition) {
+    private double calculateTurnSpeed(double diffLidarDist) {
         // If both lidars are valid, then use the lidar distance to calculate the turn
         // speed
         if (this.areBothLidarsValid()) {
