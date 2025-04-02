@@ -515,17 +515,19 @@ public class AlignVision extends SubsystemBase {
     }
 
     public double getRotationLockSpeed() {
+        double xDiff;
+        double yDiff;
+
         if (Constants.isBlueAlliance) {
-            var xDiff = 4.49 - swerve.getPose().getX();
-            var yDiff = 4.03 - swerve.getPose().getY();
-
-            return MathUtil.clamp(Math.atan2(yDiff, xDiff), 0, 2 * Math.PI);
+            xDiff = 4.49 - swerve.getPose().getX();
+            yDiff = 4.03 - swerve.getPose().getY();
         } else {
-            var xDiff = 13.06 - swerve.getPose().getX();
-            var yDiff = 4.03 - swerve.getPose().getY();
-
-            return MathUtil.clamp(Math.atan2(yDiff, xDiff), 0, 2 * Math.PI);
+            xDiff = 13.06 - swerve.getPose().getX();
+            yDiff = 4.03 - swerve.getPose().getY();
         }
+
+        return MathUtil.clamp(Math.atan2(yDiff, xDiff), 0, 2 * Math.PI);
+
     }
 
     public double[] getDistanceToSources() {
