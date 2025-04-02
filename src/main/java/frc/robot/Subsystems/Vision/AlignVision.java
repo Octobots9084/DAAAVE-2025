@@ -106,8 +106,8 @@ public class AlignVision extends SubsystemBase {
      * The first six are for the reef, the seventh is for the processor, the eighth
      * is for the right source, and the ninth is for the left source.
      */
-    private final int[] blueAlignAngles = { 0, 60, 120, 180, -120, -60, -90, 45, -45 };
-    private final int[] redAlignAngles = { 180, 240, 300, 0, 60, 120, 90, -135, 135 };
+    private final int[] blueAlignAngles = { 0, 60, 120, 180, -120, -60, -90, 36, -36 };
+    private final int[] redAlignAngles = { 180, 240, 300, 0, 60, 120, 90, -144, 144 };
 
     int[] finalAngles = null;
 
@@ -415,6 +415,21 @@ public class AlignVision extends SubsystemBase {
             return 0;
         }
 
+    }
+
+    public double getGlobalRotLockSpeed() {
+        double xDiff;
+        double yDiff;
+
+        if (Constants.isBlueAlliance) {
+            xDiff = 4.49 - swerve.getPose().getX();
+            yDiff = 4.03 - swerve.getPose().getY();
+        } else {
+            xDiff = 13.06 - swerve.getPose().getX();
+            yDiff = 4.03 - swerve.getPose().getY();
+        }
+
+        return MathUtil.clamp(Math.atan2(yDiff, xDiff), 0, 2 * Math.PI);
     }
 
     public int handleTurnAngle(AlignState state) {

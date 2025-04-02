@@ -58,7 +58,7 @@ public class TeleopDrive extends Command {
                                     new ChassisSpeeds(
                                             negative * vX.getAsDouble() * swerveInstance.getIo().getMaxSpeed(),
                                             negative * vY.getAsDouble() * swerveInstance.getIo().getMaxSpeed(),
-                                            AlignVision.getInstance().getRotLockSpeed(AlignState.Reef)));
+                                            AlignVision.getInstance().getGlobalRotLockSpeed()));
                 } else {
                     Swerve.getInstance()
                             .driveFieldRelative(
