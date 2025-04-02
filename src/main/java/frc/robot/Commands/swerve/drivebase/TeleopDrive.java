@@ -56,7 +56,7 @@ public class TeleopDrive extends Command {
                                 new ChassisSpeeds(
                                         negative * vX.getAsDouble() * swerveInstance.getIo().getMaxSpeed(),
                                         negative * vY.getAsDouble() * swerveInstance.getIo().getMaxSpeed(),
-                                        alignInstance.getRotationLock() ? alignInstance.getRotationLockSpeed() : omega.getAsDouble() * swerveInstance.getIo().getMaxTurnSpeed()));
+                                        omega.getAsDouble() * swerveInstance.getIo().getMaxTurnSpeed()));
                 break;
             case Reverse:
                 swerveInstance.driveRobotRelative(new ChassisSpeeds(-1.2, 0, omega.getAsDouble() * swerveInstance.getIo().getMaxTurnSpeed()));
@@ -88,7 +88,7 @@ public class TeleopDrive extends Command {
                                 new ChassisSpeeds(
                                         negative * vX.getAsDouble() * swerveInstance.getIo().getMaxSpeed(),
                                         negative * vY.getAsDouble() * swerveInstance.getIo().getMaxSpeed(),
-                                        alignInstance.getRotationLock() ? alignInstance.getRotationLockSpeed() : omega.getAsDouble() * swerveInstance.getIo().getMaxTurnSpeed()));
+                                        omega.getAsDouble() * swerveInstance.getIo().getMaxTurnSpeed()));
                 break;
         }
 
