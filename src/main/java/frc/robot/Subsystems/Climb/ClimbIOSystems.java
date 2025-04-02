@@ -42,7 +42,7 @@ public class ClimbIOSystems implements ClimbIO {
         sparkConfig.smartCurrentLimit(60, 60);
 
         sparkConfig.closedLoop.feedbackSensor(FeedbackSensor.kAbsoluteEncoder).pid(30, 0.0001, 0, ClosedLoopSlot.kSlot0);
-        sparkConfig.closedLoop.pid(2, 0.00, 0, ClosedLoopSlot.kSlot1);
+        sparkConfig.closedLoop.pid(1, 0.00, 0, ClosedLoopSlot.kSlot1);
 
         sparkConfig.closedLoop.iZone(0.01);
         sparkConfig.closedLoop.iMaxAccum(3.5);

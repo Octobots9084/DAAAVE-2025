@@ -25,7 +25,6 @@ import frc.robot.Subsystems.Wrist.WristStates;
 public class ClearAlgae extends SequentialCommandGroup {
     public ClearAlgae() {
         addCommands(
-                new SetWristStateTolerance(WristStates.PREP, 0.05, ClosedLoopSlot.kSlot0),
                 new ConditionalCommand(
                         new RemoveAlgaeTop(),
                         new RemoveAlgaeBottom(),

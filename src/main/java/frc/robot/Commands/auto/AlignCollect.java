@@ -21,7 +21,7 @@ public class AlignCollect extends Command {
     private boolean shouldTakeControlFromDrivers = false;
 
     public AlignCollect() {
-        debouncer = new Debouncer(0.5);
+        debouncer = new Debouncer(0.05);
     }
 
     @Override
@@ -32,7 +32,8 @@ public class AlignCollect extends Command {
 
     @Override
     public void execute() {
-        // shouldTakeControlFromDrivers = debouncer.calculate(AlignSourceAuto.getInstance().wrenchControlFromDriversForSourceAlign());
+        // shouldTakeControlFromDrivers =
+        // debouncer.calculate(AlignSourceAuto.getInstance().wrenchControlFromDriversForSourceAlign());
         // if (shouldTakeControlFromDrivers) {
         Swerve.getInstance().driveRobotRelative(AlignVision.getInstance().getAlignChassisSpeeds(AlignVision.getInstance().getAlignSourceSide()));
         // }
@@ -44,7 +45,7 @@ public class AlignCollect extends Command {
             return true;
         }
         // return AlignVision.getInstance().isAligned();
-        return CoralRollers.getInstance().clawFrontSensorTriggered();
+        return debouncer.calculate(CoralRollers.getInstance().clawFrontSensorTriggered());
     }
 
     @Override

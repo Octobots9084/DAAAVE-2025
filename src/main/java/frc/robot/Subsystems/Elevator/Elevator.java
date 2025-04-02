@@ -12,12 +12,12 @@ import frc.robot.Subsystems.Wrist.Wrist;
 import org.littletonrobotics.junction.Logger;
 
 public class Elevator extends SubsystemBase {
-  private final ElevatorIO io;
-  private final ElevatorIOInputsAutoLogged inputs = new ElevatorIOInputsAutoLogged();
-  public static final double TOP_CROSSBAR_POS = 68.692;
-  public static final double BOT_CROSSBAR_POS = 47.666;
-  private ElevatorStates targetLevel = ElevatorStates.LOW;
-  public ElevatorStates driverDesiredElevatorStates;
+    private final ElevatorIO io;
+    private final ElevatorIOInputsAutoLogged inputs = new ElevatorIOInputsAutoLogged();
+    public static final double TOP_CROSSBAR_POS = 68.692;
+    public static final double BOT_CROSSBAR_POS = 47.666;
+    private ElevatorStates targetLevel = ElevatorStates.LOW;
+    public ElevatorStates driverDesiredElevatorStates;
 
     // TODO add actual input chanel
     public DigitalInput toplimitSwitch = new DigitalInput(0);
@@ -53,7 +53,7 @@ public class Elevator extends SubsystemBase {
     private Elevator(ElevatorIO io) {
         this.io = io;
 
-        this.elevatorProfile = new TrapezoidProfile(new TrapezoidProfile.Constraints(450, 900));
+        this.elevatorProfile = new TrapezoidProfile(new TrapezoidProfile.Constraints(900, 1300));
         this.elevatorCurrentPoint = new TrapezoidProfile.State(getPosition(), 0);
 
         // this.io.configurePID(0.7, 0, 0);

@@ -18,7 +18,7 @@ import frc.robot.Subsystems.Wrist.WristStates;
 public class RemoveAlgaeTop extends SequentialCommandGroup {
     public RemoveAlgaeTop() {
         addCommands(
-                new ConditionalCommand(new SetWristStateTolerance(WristStates.PREP, 0.05, ClosedLoopSlot.kSlot0), new InstantCommand(), () -> {
+                new ConditionalCommand(new SetWristStateTolerance(WristStates.TOPALGAEREMOVAL, 0.05, ClosedLoopSlot.kSlot0), new InstantCommand(), () -> {
                     return Wrist.getInstance().IsInsideRobot();
                 }),
                 new InstantCommand(() -> AlignVision.setPoleSide(ReefTargetSide.ALGAE)),
