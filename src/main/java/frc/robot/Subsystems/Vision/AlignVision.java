@@ -115,6 +115,8 @@ public class AlignVision extends SubsystemBase {
     boolean yInTolerance = false;
     boolean rotInTolerance = false;
 
+    private boolean rotationLock = false;
+
     public AlignVision() {
 
         this.swerve = Swerve.getInstance();
@@ -362,7 +364,7 @@ public class AlignVision extends SubsystemBase {
                     xSpeed = this.calculateXSpeed(aveLidarDist, refPosition, state);
 
                     // Calculate the x and turn speeds for the robot to align with the target
-                    turnSpeed = this.calculateTurnSpeed(diffLidarDist, refPosition);
+                    turnSpeed = this.calculateTurnSpeed(diffLidarDist);
 
                     // If the turn speed is not a number, then set the x, y, and turn speeds to 0
                     if (Double.isNaN(turnSpeed)) {
@@ -390,6 +392,7 @@ public class AlignVision extends SubsystemBase {
 
             // Return the calculated speeds for the robot to align with the target
             return new ChassisSpeeds(xSpeed, ySpeed, turnSpeed);
+
         } catch (Exception exception) {
             System.out.println(exception.toString());
             return new ChassisSpeeds();
@@ -492,7 +495,7 @@ public class AlignVision extends SubsystemBase {
         }
     }
 
-    private double calculateTurnSpeed(double diffLidarDist, Pose3d refPosition) {
+    private double calculateTurnSpeed(double diffLidarDist) {
         // If both lidars are valid, then use the lidar distance to calculate the turn
         // speed
         if (this.areBothLidarsValid()) {
@@ -509,6 +512,20 @@ public class AlignVision extends SubsystemBase {
             return gyroRotationPIDController.calculate(swerve.getPose().getRotation().getRadians(), Math.toRadians(turnAngle));
         }
 
+    }
+
+    public double getRotationLockSpeed() {
+        if (Constants.isBlueAlliance) {
+            var xDiff = 4.49 - swerve.getPose().getX();
+            var yDiff = 4.03 - swerve.getPose().getY();
+
+            return MathUtil.clamp(Math.atan2(yDiff, xDiff), 0, 2 * Math.PI);
+        } else {
+            var xDiff = 13.06 - swerve.getPose().getX();
+            var yDiff = 4.03 - swerve.getPose().getY();
+
+            return MathUtil.clamp(Math.atan2(yDiff, xDiff), 0, 2 * Math.PI);
+        }
     }
 
     public double[] getDistanceToSources() {
@@ -583,6 +600,14 @@ public class AlignVision extends SubsystemBase {
 
     public static void setPoleLevel(ElevatorStates level) {
         selectedLevel = level;
+    }
+
+    public boolean getRotationLock() {
+        return rotationLock;
+    }
+
+    public void setRotationLock(boolean lock) {
+        rotationLock = lock;
     }
 
     public boolean isAligned() {
