@@ -402,6 +402,21 @@ public class AlignVision extends SubsystemBase {
         rotInTolerance = false;
     }
 
+    public double getRotLockSpeed(AlignState state) {
+        try {
+            this.finalAngles = Constants.isBlueAlliance ? blueAlignAngles : redAlignAngles;
+
+            turnAngle = handleTurnAngle(state);
+
+            double diffLidarDist = this.getRightLidarDistance() - this.getLeftLidarDistance() - 0.01;
+
+            return this.calculateTurnSpeed(diffLidarDist, new Pose3d());
+        } catch (Exception e) {
+            return 0;
+        }
+
+    }
+
     public int handleTurnAngle(AlignState state) {
         SmartDashboard.putString("selectedReefOrientation", selectedReefOrientation.toString());
         if (state == AlignState.Reef) {
@@ -456,7 +471,7 @@ public class AlignVision extends SubsystemBase {
             isCollecting = false;
 
             // Check if the robot x position is in tolerance for the target x position
-            xInTolerance = MathUtil.isNear(aveLidarDist, VisionConstants.maxFrontLidarDepthDistance, 0.03);
+            xInTolerance = MathUtil.isNear(aveLidarDist, VisionConstants.maxFrontLidarDepthDistance, 0.05);
 
             // Calculate the x speed for the robot to align with the target
             return -lidarXPIDController.calculate(aveLidarDist, VisionConstants.maxFrontLidarDepthDistance);
@@ -466,7 +481,7 @@ public class AlignVision extends SubsystemBase {
                 isCollecting = true;
 
                 // Check if the robot x position is in tolerance for the target x position
-                xInTolerance = MathUtil.isNear(this.getBackLidarDistance(), VisionConstants.maxBackLidarDepthDistance, 0.03);
+                xInTolerance = MathUtil.isNear(this.getBackLidarDistance(), VisionConstants.maxBackLidarDepthDistance, 0.05);
 
                 // Calculate the x speed for the robot to align with the target
                 return backLidarXPIDController.calculate(this.getBackLidarDistance(), VisionConstants.maxBackLidarDepthDistance);
@@ -475,7 +490,7 @@ public class AlignVision extends SubsystemBase {
                 isCollecting = false;
 
                 // Check if the robot x position is in tolerance for the target x position
-                xInTolerance = MathUtil.isNear(refPosition.getX(), VisionConstants.maxBackCameraDepthDistance, 0.03);
+                xInTolerance = MathUtil.isNear(refPosition.getX(), VisionConstants.maxBackCameraDepthDistance, 0.05);
 
                 // Calculate the x speed for the robot to align with the target
                 return -backCameraXPIDController.calculate(refPosition.getX(), VisionConstants.maxBackCameraDepthDistance);
@@ -485,7 +500,7 @@ public class AlignVision extends SubsystemBase {
             isCollecting = false;
 
             // Check if the robot x position is in tolerance for the target x position
-            xInTolerance = MathUtil.isNear(refPosition.getX(), VisionConstants.maxCameraDepthDistance, 0.03);
+            xInTolerance = MathUtil.isNear(refPosition.getX(), VisionConstants.maxCameraDepthDistance, 0.05);
 
             // Calculate the x speed for the robot to align with the target
             return -cameraXPIDController.calculate(refPosition.getX(), VisionConstants.maxCameraDepthDistance);

@@ -99,6 +99,13 @@ public class ButtonConfig {
             Swerve.getInstance().setDriveState(DriveState.Manual);
         }));
 
+        driverButtons.button(20).onTrue(new InstantCommand(() -> {
+            Swerve.getInstance().rotLock = false;
+        }));
+        driverButtons.button(20).onFalse(new InstantCommand(() -> {
+            Swerve.getInstance().rotLock = true;
+        }));
+
         // driverButtons.button(2).onTrue(new RemoveAlgaeBottom().onlyIf(
         // () -> {
         // return !CoralRollers.getInstance().HasCoral();

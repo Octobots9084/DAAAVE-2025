@@ -120,16 +120,16 @@ public class SwerveIOSystem implements SwerveIO {
 
     public void driveFieldRelative(ChassisSpeeds fieldRelativeSpeeds) {
         double maxAcceleration = getMaxAccelerationFromElevatorHeight();
-        ChassisSpeeds limitedFieldRelativeSpeeds = MathUtil.limitXAndYAcceleration(fieldRelativeSpeeds,
+        ChassisSpeeds limitedFieldRelativeSpeeds = MathUtil.limitVectorAcceleration(fieldRelativeSpeeds,
                 swerveDrive.getFieldVelocity(),
-                maxAcceleration, maxAcceleration, 0.02);
+                maxAcceleration, 0.02);
 
         swerveDrive.driveFieldOriented(limitedFieldRelativeSpeeds);
     }
 
     public double getMaxAccelerationFromElevatorHeight() {
         if (MathUtil.isWithinTolerance(Elevator.getInstance().getPosition(), ElevatorStates.LOW.position, 0.5)) {
-            return 100;
+            return 14;
         }
         return (1.0 - (Elevator.getInstance().getPosition() / ElevatorStates.LEVEL4.position)) * 7.0 + 4.5;
     }

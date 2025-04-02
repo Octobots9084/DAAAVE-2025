@@ -8,6 +8,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.States.AlignState;
+import frc.robot.Subsystems.CoralRollers.CoralRollers;
 import frc.robot.Subsystems.Swerve.Swerve;
 import frc.robot.Subsystems.Vision.AlignVision;
 import frc.robot.Subsystems.Vision.AlignSourceAuto;
@@ -51,12 +52,22 @@ public class TeleopDrive extends Command {
             case Manual:
                 // double[] speeds = MathUtil.circleVectorFromSquare(vX.getAsDouble(),
                 // vY.getAsDouble(), swerveInstance.getIo().getMaxSpeed());
-                Swerve.getInstance()
-                        .driveFieldRelative(
-                                new ChassisSpeeds(
-                                        negative * vX.getAsDouble() * swerveInstance.getIo().getMaxSpeed(),
-                                        negative * vY.getAsDouble() * swerveInstance.getIo().getMaxSpeed(),
-                                        omega.getAsDouble() * swerveInstance.getIo().getMaxTurnSpeed()));
+                if (CoralRollers.getInstance().HasCoral() && Swerve.rotLock) {
+                    Swerve.getInstance()
+                            .driveFieldRelative(
+                                    new ChassisSpeeds(
+                                            negative * vX.getAsDouble() * swerveInstance.getIo().getMaxSpeed(),
+                                            negative * vY.getAsDouble() * swerveInstance.getIo().getMaxSpeed(),
+                                            AlignVision.getInstance().getRotLockSpeed(AlignState.Reef)));
+                } else {
+                    Swerve.getInstance()
+                            .driveFieldRelative(
+                                    new ChassisSpeeds(
+                                            negative * vX.getAsDouble() * swerveInstance.getIo().getMaxSpeed(),
+                                            negative * vY.getAsDouble() * swerveInstance.getIo().getMaxSpeed(),
+                                            omega.getAsDouble() * swerveInstance.getIo().getMaxTurnSpeed()));
+                }
+
                 break;
             case Reverse:
                 swerveInstance.driveRobotRelative(new ChassisSpeeds(-1.2, 0, omega.getAsDouble() * swerveInstance.getIo().getMaxTurnSpeed()));
@@ -66,18 +77,21 @@ public class TeleopDrive extends Command {
             case AlignProcessor:
                 break;
             case AlignSource:
-                // if (Constants.isInAuto && !AlignSourceAuto.getInstance().wrenchControlFromDriversForSourceAlign()) {
-                //     // swerveInstance.driveFieldRelative(
-                //     // new ChassisSpeeds(
-                //     // vX.getAsDouble() * swerveInstance.getIo().getMaxSpeed(),
-                //     // vY.getAsDouble() * swerveInstance.getIo().getMaxSpeed(),
-                //     // AlignSourceAuto.getInstance().getAlignChassisSpeeds().omegaRadiansPerSecond));
-                //     alignSourceAutoChassisSpeeds = AlignSourceAuto.getInstance().getAlignChassisSpeeds();
-                //     swerveInstance.driveRobotRelative(
-                //             new ChassisSpeeds(
-                //                     alignSourceAutoChassisSpeeds.vxMetersPerSecond,
-                //                     vY.getAsDouble() * swerveInstance.getIo().getMaxSpeed(),
-                //                     alignSourceAutoChassisSpeeds.omegaRadiansPerSecond));
+                // if (Constants.isInAuto &&
+                // !AlignSourceAuto.getInstance().wrenchControlFromDriversForSourceAlign()) {
+                // // swerveInstance.driveFieldRelative(
+                // // new ChassisSpeeds(
+                // // vX.getAsDouble() * swerveInstance.getIo().getMaxSpeed(),
+                // // vY.getAsDouble() * swerveInstance.getIo().getMaxSpeed(),
+                // //
+                // AlignSourceAuto.getInstance().getAlignChassisSpeeds().omegaRadiansPerSecond));
+                // alignSourceAutoChassisSpeeds =
+                // AlignSourceAuto.getInstance().getAlignChassisSpeeds();
+                // swerveInstance.driveRobotRelative(
+                // new ChassisSpeeds(
+                // alignSourceAutoChassisSpeeds.vxMetersPerSecond,
+                // vY.getAsDouble() * swerveInstance.getIo().getMaxSpeed(),
+                // alignSourceAutoChassisSpeeds.omegaRadiansPerSecond));
                 // } else {
                 swerveInstance.driveRobotRelative(alignInstance.getAlignChassisSpeeds(alignInstance.getAlignSourceSide()));
                 // }
