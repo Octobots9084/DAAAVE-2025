@@ -52,7 +52,7 @@ public class testPlace extends Command {
         AlignVision.setPoleSide(targetSide);
         AlignVision.setReefOrientation(targetOrientation);
         manager.level = ElevatorStates.LEVEL4;
-        CommandScheduler.getInstance().schedule(new PrepReefPlacement());
+        CommandScheduler.getInstance().schedule(new PrepReefPlacementAuto());
     }
 
     @Override

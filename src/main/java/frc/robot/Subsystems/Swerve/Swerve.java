@@ -180,7 +180,7 @@ public class Swerve extends SubsystemBase {
                     this::getPose,
                     this::resetPose,
                     this::getSpeeds,
-                    (speeds, feedforwards) -> driveRobotRelative(speeds),
+                    (speeds, feedforwards) -> driveRobotRelativeAuto(speeds),
                     new PPHolonomicDriveController(
                             Constants.Swerve.translationConstants, Constants.Swerve.rotationConstants),
                     config,
@@ -252,6 +252,10 @@ public class Swerve extends SubsystemBase {
 
     public void driveFieldRelative(ChassisSpeeds fieldRelativeSpeeds) {
         this.io.driveFieldRelative(fieldRelativeSpeeds);
+    }
+
+    public void driveRobotRelativeAuto(ChassisSpeeds fieldRelativeSpeeds) {
+        this.io.driveRobotRelativeAuto(fieldRelativeSpeeds);
     }
 
     public void driveRobotRelative(ChassisSpeeds robotRelativeSpeeds) {

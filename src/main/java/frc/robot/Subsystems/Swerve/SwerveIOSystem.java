@@ -111,6 +111,13 @@ public class SwerveIOSystem implements SwerveIO {
         swerveDrive.drive(limitedRobotRelativeSpeeds);
     }
 
+    public void driveRobotRelativeAuto(ChassisSpeeds robotRelativeSpeeds) {
+        double maxAcceleration = getMaxAccelerationFromElevatorHeight();
+        ChassisSpeeds limitedRobotRelativeSpeeds = MathUtil.limitXAndYAcceleration(robotRelativeSpeeds, getSpeeds(),
+                maxAcceleration, maxAcceleration, 0.02);
+        swerveDrive.drive(robotRelativeSpeeds);
+    }
+
     public void driveFieldRelative(ChassisSpeeds fieldRelativeSpeeds) {
         double maxAcceleration = getMaxAccelerationFromElevatorHeight();
         ChassisSpeeds limitedFieldRelativeSpeeds = MathUtil.limitXAndYAcceleration(fieldRelativeSpeeds,
@@ -121,6 +128,9 @@ public class SwerveIOSystem implements SwerveIO {
     }
 
     public double getMaxAccelerationFromElevatorHeight() {
+        if (MathUtil.isWithinTolerance(Elevator.getInstance().getPosition(), ElevatorStates.LOW.position, 0.5)) {
+            return 100;
+        }
         return (1.0 - (Elevator.getInstance().getPosition() / ElevatorStates.LEVEL4.position)) * 7.0 + 4.5;
     }
 

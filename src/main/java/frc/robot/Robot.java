@@ -173,7 +173,6 @@ public class Robot extends LoggedRobot {
 
         Constants.isInAuto = false;
         Swerve.getInstance().setDriveState(DriveState.Manual);
-        CoralRollers.getInstance().setState(CoralRollersState.STOPPED);
         Climb.getInstance().allStop();
     }
 
