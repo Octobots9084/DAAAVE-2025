@@ -59,13 +59,6 @@ public class TeleopDrive extends Command {
                                             negative * vX.getAsDouble() * swerveInstance.getIo().getMaxSpeed(),
                                             negative * vY.getAsDouble() * swerveInstance.getIo().getMaxSpeed(),
                                             alignInstance.getRotLockSpeed(AlignState.Reef)));
-                } else if (Swerve.rotLock) {
-                    Swerve.getInstance()
-                            .driveFieldRelative(
-                                    new ChassisSpeeds(
-                                            negative * vX.getAsDouble() * swerveInstance.getIo().getMaxSpeed(),
-                                            negative * vY.getAsDouble() * swerveInstance.getIo().getMaxSpeed(),
-                                            alignInstance.getGlobalRotLockSpeed()));
                 } else {
                     Swerve.getInstance()
                             .driveFieldRelative(
