@@ -48,6 +48,7 @@ public class ClimbIOSystems implements ClimbIO {
         sparkConfig.closedLoop.iMaxAccum(3.5);
         sparkConfig.closedLoop.positionWrappingEnabled(true);
         sparkConfig.closedLoop.positionWrappingInputRange(0, 1);
+        sparkConfig.inverted(true);
         sparkMax.configure(sparkConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         sparkMax.setPeriodicFrameTimeout(30);
         sparkMax.setCANTimeout(30);
