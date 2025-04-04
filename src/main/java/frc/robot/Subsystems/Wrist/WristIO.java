@@ -32,7 +32,7 @@ public interface WristIO {
 
     public default void setOffset(double offset) {}
 
-    public default SparkMax getWristMotor() {
+    public default SparkFlex getWristMotor() {
         return null;
     }
 
