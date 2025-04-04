@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.3066598360655735,
-        "y": 7.075870901639344
+        "x": 1.211,
+        "y": 7.025777202072538
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.914926881520119,
-        "y": 6.347944765275706
+        "x": 1.6905222446285857,
+        "y": 6.414395637984804
       },
       "isLocked": false,
       "linkedName": "topstation"
     },
     {
       "anchor": {
-        "x": 3.56,
-        "y": 5.42
+        "x": 3.3190414507772017,
+        "y": 5.25259067357513
       },
       "prevControl": {
-        "x": 3.131221590909091,
-        "y": 5.898636363636363
+        "x": 2.804642139977711,
+        "y": 5.638391592507432
       },
       "nextControl": null,
       "isLocked": false,
@@ -29,7 +29,21 @@
     }
   ],
   "rotationTargets": [],
-  "constraintZones": [],
+  "constraintZones": [
+    {
+      "name": "Constraints Zone",
+      "minWaypointRelativePos": 0.82,
+      "maxWaypointRelativePos": 1.0,
+      "constraints": {
+        "maxVelocity": 8.0,
+        "maxAcceleration": 4.5,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0,
+        "nominalVoltage": 10.0,
+        "unlimited": false
+      }
+    }
+  ],
   "pointTowardsZones": [],
   "eventMarkers": [
     {
@@ -40,7 +54,7 @@
     },
     {
       "name": "BringUpElevator",
-      "waypointRelativePos": 0.58,
+      "waypointRelativePos": 0.7691532258064478,
       "endWaypointRelativePos": null,
       "command": null
     }
