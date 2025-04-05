@@ -68,6 +68,13 @@ public class VisionCamera implements Runnable {
 
         if (!unreadResults.isEmpty()) {
             latestResult = unreadResults.get(unreadResults.size() - 1);
+            for (int i = 0; i < latestResult.targets.size(); i++) {
+                if (latestResult.targets.get(i).fiducialId == 14 || latestResult.targets.get(i).fiducialId == 15 || latestResult.targets.get(i).fiducialId == 4
+                        || latestResult.targets.get(i).fiducialId == 5) {
+                    latestResult.targets.remove(i);
+                }
+            }
+
             atomicPhotonResult.set(latestResult);
             visionEst = photonEstimator.update(latestResult);
             updateEstimationStdDevs(visionEst, latestResult.getTargets());
