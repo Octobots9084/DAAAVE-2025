@@ -150,7 +150,7 @@ public class ButtonConfig {
         coDriverButtons.button(3).onTrue(new BargeAlgae());
 
         coDriverButtons.button(6).onTrue(new PrepReefPlacement());
-        coDriverButtons.button(15).onTrue(new SetElevatorState(ElevatorStates.LEVEL4).andThen(new SetWristStateTolerance(WristStates.BARGEALGAE, 1, ClosedLoopSlot.kSlot0)));
+        coDriverButtons.button(11).onTrue(new SetElevatorState(ElevatorStates.LEVEL4).andThen(new SetWristStateTolerance(WristStates.BARGEALGAE, 1, ClosedLoopSlot.kSlot0)));
 
         // Return robot to a safe configuration
         // Score and Intake assistance buttons for right stick
@@ -168,7 +168,7 @@ public class ButtonConfig {
                 .onTrue(new ConditionalCommand(new InstantCommand(), new ReefLevelSelection(1).andThen(new InstantCommand(() -> {
                     AlignVision.setPoleSide(ReefTargetSide.ALGAE);
                 })), coDriverButtons.button(20)));
-        coDriverButtons.button(16).onTrue(new ConditionalCommand(new SetClimbState(ClimbStates.Deployed, ClosedLoopSlot.kSlot1), new InstantCommand(), coDriverButtons.button(20)));
+        coDriverButtons.button(15).onTrue(new ConditionalCommand(new SetClimbState(ClimbStates.Deployed, ClosedLoopSlot.kSlot1), new InstantCommand(), coDriverButtons.button(20)));
         // coDriverButtons.button(16).onFalse(new ConditionalCommand(new
         // SetClimbState(ClimbStates.Stored), new InstantCommand(),
         // coDriverButtons.button(20)));

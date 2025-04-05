@@ -4,7 +4,7 @@ public enum ClimbStates {
     // TODO change position values
     BreakFree(0),
     Deployed(0.741),
-    Climbing(0.049),
+    Climbing(0.03),
     Stored(0.08);
 
     public double position;
