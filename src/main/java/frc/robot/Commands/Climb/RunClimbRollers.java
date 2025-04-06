@@ -30,7 +30,7 @@ public class RunClimbRollers extends InstantCommand {
 
     @Override
     public boolean isFinished() {
-        return stalledCylces > 100;
+        return stalledCylces > 400;
     }
 
     @Override

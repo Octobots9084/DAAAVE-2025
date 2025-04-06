@@ -5,6 +5,7 @@ import com.revrobotics.spark.ClosedLoopSlot;
 
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import frc.robot.Commands.Climb.RunClimbRollers;
 import frc.robot.Commands.Climb.SetClimbState;
@@ -168,12 +169,14 @@ public class ButtonConfig {
                 .onTrue(new ConditionalCommand(new InstantCommand(), new ReefLevelSelection(1).andThen(new InstantCommand(() -> {
                     AlignVision.setPoleSide(ReefTargetSide.ALGAE);
                 })), coDriverButtons.button(20)));
-        coDriverButtons.button(15).onTrue(new ConditionalCommand(new SetClimbState(ClimbStates.Deployed, ClosedLoopSlot.kSlot1), new InstantCommand(), coDriverButtons.button(20)));
+        coDriverButtons.button(15).onTrue(new ConditionalCommand(new SequentialCommandGroup(new SetWristStateTolerance(WristStates.ALGAEREMOVAL, 0.1, ClosedLoopSlot.kSlot0),
+                new SetClimbState(ClimbStates.Deployed, ClosedLoopSlot.kSlot1)), new InstantCommand(), coDriverButtons.button(20)));
         // coDriverButtons.button(16).onFalse(new ConditionalCommand(new
         // SetClimbState(ClimbStates.Stored), new InstantCommand(),
         // coDriverButtons.button(20)));
 
-        coDriverButtons.button(17).onTrue(new ConditionalCommand(new SetClimbState(ClimbStates.Climbing, ClosedLoopSlot.kSlot0), new InstantCommand(), coDriverButtons.button(20)));
+        coDriverButtons.button(17).onTrue(new ConditionalCommand(new SequentialCommandGroup(new SetWristStateTolerance(WristStates.ALGAEREMOVAL, 0.1, ClosedLoopSlot.kSlot0),
+                new SetClimbState(ClimbStates.Climbing, ClosedLoopSlot.kSlot0)), new InstantCommand(), coDriverButtons.button(20)));
         // coDriverButtons.button(17).onFalse(new ConditionalCommand(new
         // SetClimbState(ClimbStates.Stored), new InstantCommand(),
         // coDriverButtons.button(20)));

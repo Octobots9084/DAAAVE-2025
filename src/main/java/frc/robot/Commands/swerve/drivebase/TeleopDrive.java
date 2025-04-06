@@ -4,6 +4,7 @@
 
 package frc.robot.Commands.swerve.drivebase;
 
+import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
@@ -11,6 +12,7 @@ import frc.robot.States.AlignState;
 import frc.robot.Subsystems.CoralRollers.CoralRollers;
 import frc.robot.Subsystems.Swerve.Swerve;
 import frc.robot.Subsystems.Vision.AlignVision;
+import frc.robot.Subsystems.Vision.VisionSubsystem;
 import frc.robot.Subsystems.Vision.AlignSourceAuto;
 
 import java.util.function.DoubleSupplier;
@@ -24,6 +26,7 @@ public class TeleopDrive extends Command {
     private ChassisSpeeds alignSourceAutoChassisSpeeds;
     private static Swerve swerveInstance = Swerve.getInstance();
     private static AlignVision alignInstance = AlignVision.getInstance();
+    private Debouncer debouncer = new Debouncer(0.2);
 
     /**
      * Creates a new ExampleCommand.
@@ -52,7 +55,7 @@ public class TeleopDrive extends Command {
             case Manual:
                 // double[] speeds = MathUtil.circleVectorFromSquare(vX.getAsDouble(),
                 // vY.getAsDouble(), swerveInstance.getIo().getMaxSpeed());
-                if (CoralRollers.getInstance().HasCoral() && Swerve.rotLock) {
+                if (CoralRollers.getInstance().HasCoral() && Swerve.rotLock && debouncer.calculate(AlignVision.getInstance().getBackLidarDistance() > 1)) {
                     Swerve.getInstance()
                             .driveFieldRelative(
                                     new ChassisSpeeds(
