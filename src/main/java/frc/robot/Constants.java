@@ -118,7 +118,7 @@ public final class Constants {
                 21, 22);
 
         // The layout of the AprilTags on the field
-        public static final AprilTagFieldLayout kTagLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2025Reefscape);
+        public static final AprilTagFieldLayout kTagLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2025ReefscapeWelded);
 
         // The standard deviations of our vision estimated poses, which affect
         // correction rate

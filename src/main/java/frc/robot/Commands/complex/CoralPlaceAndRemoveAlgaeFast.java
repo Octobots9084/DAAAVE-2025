@@ -13,7 +13,6 @@ import frc.robot.States;
 import frc.robot.Commands.CoralRollers.SetCoralRollersState;
 import frc.robot.Commands.Elevator.SetElevatorState;
 import frc.robot.Subsystems.CoralRollers.CoralRollersState;
-import frc.robot.Subsystems.Elevator.Elevator;
 import frc.robot.Subsystems.Elevator.ElevatorStates;
 import frc.robot.Subsystems.Swerve.Swerve;
 import frc.robot.Subsystems.Swerve.Swerve.DriveState;
@@ -27,24 +26,23 @@ public class CoralPlaceAndRemoveAlgaeFast extends SequentialCommandGroup{
     public CoralPlaceAndRemoveAlgaeFast(){
         BooleanSupplier isTop =  () -> Swerve.getInstance().getReefTargetOrientation() == States.ReefTargetOrientation.AB || Swerve.getInstance().getReefTargetOrientation() == States.ReefTargetOrientation.EF || Swerve.getInstance().getReefTargetOrientation() == States.ReefTargetOrientation.IJ;
         addCommands(
-            new InstantCommand(() -> {
-                Swerve.getInstance().setDriveState(DriveState.AlignReef);
-            }),
+            new SetDriveState(DriveState.AlignReef),
             new ScoreCoral(),
             new InstantCommand(() -> {
                 AlignVision.setPoleSide(ReefTargetSide.ALGAE);
             }),
-            new WaitCommand(0.2),
+            new WaitCommand(0.15),
             new WaitUntilCommand(() -> AlignVision.getInstance().isAligned()),
+            new WaitCommand(0.15),
+            new SetWristState(WristStates.PREP, ClosedLoopSlot.kSlot0),
             new SetDriveState(DriveState.AlignReef),
             new SetWristState(WristStates.ALAGESTACKREMOVAL,ClosedLoopSlot.kSlot0),
             new ConditionalCommand(new SetElevatorState(ElevatorStates.TOPALGAEFAST),new SetElevatorState(ElevatorStates.BOTTOMALGAEFAST),isTop),
             new SetCoralRollersState(CoralRollersState.ALGAEINTAKING),
-            new InstantCommand(() -> {
-                Swerve.getInstance().setDriveState(DriveState.Reverse);
-            }),
-            new SetWristState(WristStates.PREP,ClosedLoopSlot.kSlot0),
-            new SetElevatorState(ElevatorStates.LOW)
+            new WaitCommand(0.34),
+            new SetDriveState(DriveState.Reverse),
+            new SetElevatorState(ElevatorStates.LOW),
+            new SetWristState(WristStates.PREP,ClosedLoopSlot.kSlot0)
         );
     }
 }

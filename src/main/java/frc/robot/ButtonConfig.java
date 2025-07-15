@@ -183,7 +183,9 @@ public class ButtonConfig {
         coDriverButtons.button(13).onTrue(new SetWristStateTolerance(WristStates.PREP, 0.01, ClosedLoopSlot.kSlot0)
                 .andThen(new SetElevatorStateTolerance(ElevatorStates.CLIMB, 1.5).andThen(new SetWristState(WristStates.TUNING, ClosedLoopSlot.kSlot0))));
         // Climb mode active (Switch 20)
-        driverLeft.button(2).whileTrue(new ConditionalCommand(new CoralPlaceAndAlgaeReefClear(), new ClearAlgae(), () -> CoralRollers.getInstance().HasCoral()))
+
+
+        driverLeft.button(2).whileTrue(new ConditionalCommand(new CoralPlaceAndRemoveAlgaeFast(), new ClearAlgae(), () -> CoralRollers.getInstance().HasCoral()))
                 .onFalse(new SetDriveState(DriveState.Manual));
 
     }
