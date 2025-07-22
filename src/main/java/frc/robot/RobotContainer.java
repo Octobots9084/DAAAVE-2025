@@ -5,17 +5,25 @@
 package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
+
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
+import frc.robot.Commands.Elevator.SetElevatorState;
 import frc.robot.Commands.ManualControl.ElevatorManualControl;
+import frc.robot.Commands.auto.RemoveAlgaeInAuto;
 import frc.robot.Commands.complex.AutoCollectCoral;
+import frc.robot.Commands.complex.ClearAlgae;
 import frc.robot.Commands.complex.CollectCoral;
+// import frc.robot.Commands.complex.BargeThrow;
 import frc.robot.Commands.swerve.drivebase.TeleopDrive;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.States.ReefTargetOrientation;
 import frc.robot.Subsystems.Climb.Climb;
 import frc.robot.Subsystems.Climb.ClimbIO;
 import frc.robot.Subsystems.Climb.ClimbIOSystems;
@@ -23,11 +31,11 @@ import frc.robot.Subsystems.CoralRollers.CoralRollers;
 import frc.robot.Subsystems.CoralRollers.CoralRollersIO;
 import frc.robot.Subsystems.CoralRollers.CoralRollersIOSim;
 import frc.robot.Subsystems.CoralRollers.CoralRollersIOSystems;
-import frc.robot.Subsystems.CoralRollers.CoralRollersIOSystems;
 import frc.robot.Subsystems.Elevator.Elevator;
 import frc.robot.Subsystems.Elevator.ElevatorIO;
 import frc.robot.Subsystems.Elevator.ElevatorIOSim;
 import frc.robot.Subsystems.Elevator.ElevatorIOSparkMax;
+import frc.robot.Subsystems.Elevator.ElevatorStates;
 import frc.robot.Subsystems.Lights.Light;
 import frc.robot.Subsystems.Lights.LightsIOSystem;
 import frc.robot.Subsystems.Swerve.Swerve;
@@ -155,9 +163,10 @@ public class RobotContainer {
                 () -> MathUtil.applyDeadband(
                         -ButtonConfig.driverRight.getRawAxis(0), OperatorConstants.RIGHT_X_DEADBAND) / 2.0);
         swerve.setDefaultCommand(closedFieldRel);
-
+        registerNamedCommands();
         autoChooser = AutoBuilder.buildAutoChooser(); // Default auto will be `Commands.none()`
         SmartDashboard.putData("Auto Mode", autoChooser);
+        
         // VisionSubsystem.getInstance();
         ButtonConfig buttons = new ButtonConfig();
         buttons.initTeleop();
@@ -171,4 +180,16 @@ public class RobotContainer {
     public Command getAutonomousCommand() {
         return autoChooser.getSelected();
     }
+
+    public void registerNamedCommands () {
+        // NamedCommands.registerCommand("PlaceCoralAndGrabAlgae", new SUPER CYCLE());//change to SUPER CYCLE COMMAND by oliver
+        NamedCommands.registerCommand("BringUpElevator", new SetElevatorState(ElevatorStates.BARGE));
+        NamedCommands.registerCommand("BringDownElevator", new SetElevatorState(ElevatorStates.LOW));
+        // NamedCommands.registerCommand("ScoreAlgae", new BargeThrow());un comment when BargeThrow is pushed
+        NamedCommands.registerCommand("GrabAlgae", new ClearAlgae());//fix orientation
+    }
 }
+
+/*score algae command setup
+ * 
+ */

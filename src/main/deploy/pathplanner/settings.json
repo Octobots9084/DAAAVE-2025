@@ -3,6 +3,7 @@
   "robotLength": 0.89,
   "holonomicMode": true,
   "pathFolders": [
+    "temp",
     "initial_to_place",
     "lowstation_to_place",
     "place_to_lowstation",
@@ -12,7 +13,9 @@
     "start_to_algea",
     "topstation_to_place"
   ],
-  "autoFolders": [],
+  "autoFolders": [
+    "temp"
+  ],
   "defaultMaxVel": 8.0,
   "defaultMaxAccel": 8.0,
   "defaultMaxAngVel": 540.0,
