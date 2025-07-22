@@ -5,6 +5,7 @@ import com.revrobotics.spark.ClosedLoopSlot;
 
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import frc.robot.Commands.Climb.RunClimbRollers;
 import frc.robot.Commands.Climb.SetClimbState;
@@ -187,6 +188,9 @@ public class ButtonConfig {
 
         driverLeft.button(2).whileTrue(new ConditionalCommand(new CoralPlaceAndRemoveAlgaeFast(), new ClearAlgae(), () -> CoralRollers.getInstance().HasCoral()))
                 .onFalse(new SetDriveState(DriveState.Manual));
-
+        driverButtons.button(9).onTrue(new RobotStop());
+        driverButtons.button(8).onTrue(new RobotSafeState());
+        driverButtons.button(7).onTrue(new ParallelCommandGroup(new SetWristState(WristStates.GROUNDALGAE, ClosedLoopSlot.kSlot0),new SetAlgaeRollerState(CoralRollersState.ALGAEINTAKING)));
+        
     }
 }
