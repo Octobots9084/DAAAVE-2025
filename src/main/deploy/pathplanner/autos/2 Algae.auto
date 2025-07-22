@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "c1a1A-start"
+            "pathName": "Start to 4"
           }
         },
         {
@@ -19,7 +19,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "c1a1A-end"
+            "pathName": "GH to barge"
           }
         },
         {
@@ -56,6 +56,6 @@
     }
   },
   "resetOdom": true,
-  "folder": "temp",
+  "folder": null,
   "choreoAuto": false
 }

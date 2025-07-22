@@ -6,25 +6,16 @@ package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
-
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Commands.Elevator.SetElevatorState;
-import frc.robot.Commands.ManualControl.ElevatorManualControl;
-import frc.robot.Commands.auto.RemoveAlgaeInAuto;
-import frc.robot.Commands.complex.AutoCollectCoral;
 import frc.robot.Commands.complex.ClearAlgae;
-import frc.robot.Commands.complex.CollectCoral;
 import frc.robot.Commands.complex.CoralPlaceAndRemoveAlgaeFast;
 import frc.robot.Commands.complex.BargeThrow;
 import frc.robot.Commands.swerve.drivebase.TeleopDrive;
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.States.ReefTargetOrientation;
 import frc.robot.Subsystems.Climb.Climb;
 import frc.robot.Subsystems.Climb.ClimbIO;
 import frc.robot.Subsystems.Climb.ClimbIOSystems;
@@ -51,7 +42,6 @@ import frc.robot.Subsystems.Wrist.WristIO;
 import frc.robot.Subsystems.Wrist.WristIOSim;
 import frc.robot.Subsystems.Wrist.WristIOSparkMax;
 
-import java.util.Optional;
 import org.ironmaple.simulation.SimulatedArena;
 
 /**
@@ -168,6 +158,7 @@ public class RobotContainer {
         autoChooser = AutoBuilder.buildAutoChooser(); // Default auto will be `Commands.none()`
         SmartDashboard.putData("Auto Mode", autoChooser);
         
+        
         // VisionSubsystem.getInstance();
         ButtonConfig buttons = new ButtonConfig();
         buttons.initTeleop();
@@ -183,10 +174,13 @@ public class RobotContainer {
     }
 
     public void registerNamedCommands () {
+        /*
+        REMOVE AFTER TEST
         NamedCommands.registerCommand("PlaceCoralAndGrabAlgae", new CoralPlaceAndRemoveAlgaeFast());
         NamedCommands.registerCommand("BringUpElevator", new SetElevatorState(ElevatorStates.BARGE));
         NamedCommands.registerCommand("BringDownElevator", new SetElevatorState(ElevatorStates.LOW));
         NamedCommands.registerCommand("ScoreAlgae", new BargeThrow());
         NamedCommands.registerCommand("GrabAlgae", new ClearAlgae());//fix orientation?
+        */
     }
 }

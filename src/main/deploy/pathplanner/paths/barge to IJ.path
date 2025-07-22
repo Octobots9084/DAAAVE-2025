@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.568884810464644,
-        "y": 5.021278885785967
+        "x": 7.568884810464643,
+        "y": 5.021278885785968
       },
       "isLocked": false,
       "linkedName": "barge1"
@@ -52,7 +52,7 @@
     "rotation": -120.74926181202576
   },
   "reversed": false,
-  "folder": "temp",
+  "folder": "TEMP",
   "idealStartingState": {
     "velocity": 0,
     "rotation": 0.0

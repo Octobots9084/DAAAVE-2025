@@ -3,15 +3,15 @@
   "robotLength": 0.89,
   "holonomicMode": true,
   "pathFolders": [
-    "temp",
-    "initial_to_place",
-    "lowstation_to_place",
-    "place_to_lowstation",
-    "place_to_processor",
-    "place_to_topstation",
-    "push_paths",
-    "start_to_algea",
-    "topstation_to_place"
+    "TEMP",
+    "Initial to place",
+    "Lowstation to place",
+    "Place to lowstation",
+    "Place to processor",
+    "Place to topstation",
+    "Push paths",
+    "Start to algae",
+    "Topstation to place"
   ],
   "autoFolders": [
     "temp"

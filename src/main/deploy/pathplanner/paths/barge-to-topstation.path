@@ -52,7 +52,7 @@
     "rotation": 123.97654403625684
   },
   "reversed": false,
-  "folder": "temp",
+  "folder": "TEMP",
   "idealStartingState": {
     "velocity": 0,
     "rotation": 0.0
