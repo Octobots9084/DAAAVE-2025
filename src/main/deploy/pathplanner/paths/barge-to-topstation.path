@@ -1,0 +1,61 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 7.720081967213115,
+        "y": 4.82218237704918
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 5.430430327865584,
+        "y": 5.913381147533506
+      },
+      "isLocked": false,
+      "linkedName": "barge1"
+    },
+    {
+      "anchor": {
+        "x": 1.3066598360655735,
+        "y": 7.075870901639344
+      },
+      "prevControl": {
+        "x": 3.2966188524557447,
+        "y": 6.092879098353185
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "topstation"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [
+    {
+      "name": "BringDownElevator",
+      "waypointRelativePos": 0.12774256460263306,
+      "endWaypointRelativePos": null,
+      "command": null
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 8.0,
+    "maxAcceleration": 8.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 10.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 123.97654403625684
+  },
+  "reversed": false,
+  "folder": "temp",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 0.0
+  },
+  "useDefaultConstraints": true
+}

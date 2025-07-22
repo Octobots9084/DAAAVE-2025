@@ -1,0 +1,61 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "c1a1A-start"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PlaceCoralAndGrabAlgae"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "c1a1A-end"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ScoreAlgae"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "barge to IJ"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "GrabAlgae"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "IJ to barge"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ScoreAlgae"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": "temp",
+  "choreoAuto": false
+}
