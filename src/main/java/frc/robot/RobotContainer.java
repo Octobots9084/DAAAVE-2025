@@ -20,7 +20,8 @@ import frc.robot.Commands.auto.RemoveAlgaeInAuto;
 import frc.robot.Commands.complex.AutoCollectCoral;
 import frc.robot.Commands.complex.ClearAlgae;
 import frc.robot.Commands.complex.CollectCoral;
-// import frc.robot.Commands.complex.BargeThrow;
+import frc.robot.Commands.complex.CoralPlaceAndRemoveAlgaeFast;
+import frc.robot.Commands.complex.BargeThrow;
 import frc.robot.Commands.swerve.drivebase.TeleopDrive;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.States.ReefTargetOrientation;
@@ -182,14 +183,10 @@ public class RobotContainer {
     }
 
     public void registerNamedCommands () {
-        // NamedCommands.registerCommand("PlaceCoralAndGrabAlgae", new SUPER CYCLE());//change to SUPER CYCLE COMMAND by oliver
+        NamedCommands.registerCommand("PlaceCoralAndGrabAlgae", new CoralPlaceAndRemoveAlgaeFast());
         NamedCommands.registerCommand("BringUpElevator", new SetElevatorState(ElevatorStates.BARGE));
         NamedCommands.registerCommand("BringDownElevator", new SetElevatorState(ElevatorStates.LOW));
-        // NamedCommands.registerCommand("ScoreAlgae", new BargeThrow());un comment when BargeThrow is pushed
-        NamedCommands.registerCommand("GrabAlgae", new ClearAlgae());//fix orientation
+        NamedCommands.registerCommand("ScoreAlgae", new BargeThrow());
+        NamedCommands.registerCommand("GrabAlgae", new ClearAlgae());//fix orientation?
     }
 }
-
-/*score algae command setup
- * 
- */
