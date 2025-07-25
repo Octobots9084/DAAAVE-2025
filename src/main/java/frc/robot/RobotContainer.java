@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Commands.Elevator.SetElevatorState;
 import frc.robot.Commands.complex.ClearAlgae;
-import frc.robot.Commands.complex.CoralPlaceAndRemoveAlgaeFast;
+import frc.robot.Commands.complex.FastSuperCycle;
 import frc.robot.Commands.complex.BargeThrow;
 import frc.robot.Commands.swerve.drivebase.TeleopDrive;
 import frc.robot.Constants.OperatorConstants;
@@ -176,7 +176,7 @@ public class RobotContainer {
     public void registerNamedCommands () {
         /*
         REMOVE AFTER TEST
-        NamedCommands.registerCommand("PlaceCoralAndGrabAlgae", new CoralPlaceAndRemoveAlgaeFast());
+        NamedCommands.registerCommand("PlaceCoralAndGrabAlgae", new FastSuperCycle());
         NamedCommands.registerCommand("BringUpElevator", new SetElevatorState(ElevatorStates.BARGE));
         NamedCommands.registerCommand("BringDownElevator", new SetElevatorState(ElevatorStates.LOW));
         NamedCommands.registerCommand("ScoreAlgae", new BargeThrow());

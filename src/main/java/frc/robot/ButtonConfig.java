@@ -19,8 +19,7 @@ import frc.robot.Commands.complex.BargeAlgae;
 import frc.robot.Commands.complex.BargeThrow;
 import frc.robot.Commands.complex.BargeAlgae;
 import frc.robot.Commands.complex.CollectAlgaeStack;
-import frc.robot.Commands.complex.CoralPlaceAndAlgaeReefClear;
-import frc.robot.Commands.complex.CoralPlaceAndRemoveAlgaeFast;
+import frc.robot.Commands.complex.FastSuperCycle;
 import frc.robot.Commands.complex.EjectCoral;
 import frc.robot.Commands.complex.Elephantiasis;
 // import frc.robot.Commands.complex.ClearAlgae;
@@ -188,7 +187,7 @@ public class ButtonConfig {
         // Climb mode active (Switch 20)
 
 
-        driverLeft.button(2).whileTrue(new ConditionalCommand(new CoralPlaceAndRemoveAlgaeFast(), new ClearAlgae(), () -> CoralRollers.getInstance().HasCoral()))
+        driverLeft.button(2).whileTrue(new ConditionalCommand(new FastSuperCycle(), new ClearAlgae(), () -> CoralRollers.getInstance().HasCoral()))
                 .onFalse(new SetDriveState(DriveState.Manual));
         driverButtons.button(9).onTrue(new RobotStop());
         driverButtons.button(8).onTrue(new RobotSafeState());

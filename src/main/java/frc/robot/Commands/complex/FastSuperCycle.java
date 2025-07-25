@@ -21,8 +21,8 @@ import frc.robot.States.ReefTargetSide;
 import frc.robot.Subsystems.Wrist.*;
 
 //SUPER CYCLE for ctrl shift f
-public class CoralPlaceAndRemoveAlgaeFast extends SequentialCommandGroup{
-    public CoralPlaceAndRemoveAlgaeFast(){
+public class FastSuperCycle extends SequentialCommandGroup{
+    public FastSuperCycle(){
         BooleanSupplier isTop =  () -> Swerve.getInstance().getReefTargetOrientation() == States.ReefTargetOrientation.AB || Swerve.getInstance().getReefTargetOrientation() == States.ReefTargetOrientation.EF || Swerve.getInstance().getReefTargetOrientation() == States.ReefTargetOrientation.IJ;
         addCommands(
             new SetDriveState(DriveState.AlignReef),
