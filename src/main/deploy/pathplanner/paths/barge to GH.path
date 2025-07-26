@@ -3,42 +3,35 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.142725409836065,
-        "y": 5.157838114754097
+        "x": 7.1566598360655735,
+        "y": 3.923104508196721
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.9818647540983605,
-        "y": 5.061936475409836
+        "x": 6.634764743217892,
+        "y": 3.914864644081767
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 7.720081967213115,
-        "y": 4.82218237704918
+        "x": 6.221618852459016,
+        "y": 3.923104508196721
       },
       "prevControl": {
-        "x": 6.853406730495272,
-        "y": 4.852846532764285
+        "x": 6.861047346130808,
+        "y": 3.9189277399210187
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "barge1"
+      "linkedName": "1c+1a_s-r_end-pos"
     }
   ],
   "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [
-    {
-      "name": "BringUpElevator",
-      "waypointRelativePos": 0.25,
-      "endWaypointRelativePos": null,
-      "command": null
-    }
-  ],
+  "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 8.0,
     "maxAcceleration": 8.0,
@@ -49,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": 180.0
   },
   "reversed": false,
-  "folder": "STASH",
+  "folder": "michael stuff",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -120.3791260113684
+    "rotation": -179.30972280213493
   },
   "useDefaultConstraints": true
 }
