@@ -20,7 +20,7 @@ public enum WristStates {
     BOTTOMALGAEINTAKE(00000000),
     QUICKALGAEREMOVALLOW(0.575),
     QUICKALGAEREMOVALHIGH(0.575),
-    GROUNDALGAE(0.59);
+    GROUNDALGAE(0.565);
     public double wristPosition;
 
     WristStates(double totalPosition) {

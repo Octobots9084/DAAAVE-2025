@@ -15,6 +15,7 @@ import frc.robot.Commands.complex.AlignReef;
 import frc.robot.Commands.complex.AlgaeInOut;
 import frc.robot.Commands.complex.AlignSource;
 import frc.robot.Commands.complex.BargeAlgae;
+import frc.robot.Commands.complex.BargeThrow;
 import frc.robot.Commands.complex.BargeAlgae;
 import frc.robot.Commands.complex.CollectAlgaeStack;
 import frc.robot.Commands.complex.CoralPlaceAndAlgaeReefClear;
@@ -191,6 +192,7 @@ public class ButtonConfig {
         driverButtons.button(9).onTrue(new RobotStop());
         driverButtons.button(8).onTrue(new RobotSafeState());
         driverButtons.button(7).onTrue(new ParallelCommandGroup(new SetWristState(WristStates.GROUNDALGAE, ClosedLoopSlot.kSlot0),new SetAlgaeRollerState(CoralRollersState.ALGAEINTAKING)));
+        driverButtons.button(2).onTrue(new BargeThrow());
         
     }
 }
