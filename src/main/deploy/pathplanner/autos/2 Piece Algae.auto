@@ -29,6 +29,12 @@
           }
         },
         {
+          "type": "wait",
+          "data": {
+            "waitTime": 15.0
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "barge to IJ"
