@@ -5,15 +5,14 @@
 package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
+
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Commands.ManualControl.ElevatorManualControl;
-import frc.robot.Commands.complex.AutoCollectCoral;
-import frc.robot.Commands.complex.CollectCoral;
+import frc.robot.Commands.complex.*;
+import frc.robot.Commands.auto.*;
 import frc.robot.Commands.swerve.drivebase.TeleopDrive;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.Subsystems.Climb.Climb;
@@ -22,7 +21,6 @@ import frc.robot.Subsystems.Climb.ClimbIOSystems;
 import frc.robot.Subsystems.CoralRollers.CoralRollers;
 import frc.robot.Subsystems.CoralRollers.CoralRollersIO;
 import frc.robot.Subsystems.CoralRollers.CoralRollersIOSim;
-import frc.robot.Subsystems.CoralRollers.CoralRollersIOSystems;
 import frc.robot.Subsystems.CoralRollers.CoralRollersIOSystems;
 import frc.robot.Subsystems.Elevator.Elevator;
 import frc.robot.Subsystems.Elevator.ElevatorIO;
@@ -41,6 +39,8 @@ import frc.robot.Subsystems.Wrist.Wrist;
 import frc.robot.Subsystems.Wrist.WristIO;
 import frc.robot.Subsystems.Wrist.WristIOSim;
 import frc.robot.Subsystems.Wrist.WristIOSparkMax;
+import frc.robot.Commands.Elevator.SetElevatorState;
+import frc.robot.Subsystems.Elevator.ElevatorStates;
 
 import java.util.Optional;
 import org.ironmaple.simulation.SimulatedArena;
@@ -156,6 +156,7 @@ public class RobotContainer {
                         -ButtonConfig.driverRight.getRawAxis(0), OperatorConstants.RIGHT_X_DEADBAND) / 2.0);
         swerve.setDefaultCommand(closedFieldRel);
 
+        // registerNamedCommands();
         autoChooser = AutoBuilder.buildAutoChooser(); // Default auto will be `Commands.none()`
         SmartDashboard.putData("Auto Mode", autoChooser);
         // VisionSubsystem.getInstance();
@@ -170,5 +171,13 @@ public class RobotContainer {
      */
     public Command getAutonomousCommand() {
         return autoChooser.getSelected();
+    }
+
+    public void registerNamedCommands () {
+        NamedCommands.registerCommand("PlaceCoralAndGrabAlgae", new CoralPlaceAndRemoveAlgaeFast());//change to SUPER CYCLE COMMAND by oliver
+        NamedCommands.registerCommand("BringUpElevator", new SetElevatorState(ElevatorStates.BARGE));
+        NamedCommands.registerCommand("BringDownElevator", new SetElevatorState(ElevatorStates.LOW));
+        NamedCommands.registerCommand("ScoreAlgae", new BargeThrow());
+        NamedCommands.registerCommand("GrabAlgae", new ClearAlgae());//fix orientation
     }
 }
