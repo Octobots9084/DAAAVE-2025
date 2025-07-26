@@ -45,6 +45,9 @@ import frc.robot.Subsystems.Elevator.ElevatorStates;
 import java.util.Optional;
 import org.ironmaple.simulation.SimulatedArena;
 
+
+import frc.robot.States.ReefTargetOrientation;
+import frc.robot.States.ReefTargetSide;
 /**
  * This class is where the bulk of the robot should be declared. Since
  * Command-based is a
@@ -174,10 +177,10 @@ public class RobotContainer {
     }
 
     public void registerNamedCommands () {
-        NamedCommands.registerCommand("PlaceCoralAndGrabAlgae", new CoralPlaceAndRemoveAlgaeFast());//change to SUPER CYCLE COMMAND by oliver
-        NamedCommands.registerCommand("BringUpElevator", new SetElevatorState(ElevatorStates.BARGE));
-        NamedCommands.registerCommand("BringDownElevator", new SetElevatorState(ElevatorStates.LOW));
-        NamedCommands.registerCommand("ScoreAlgae", new BargeThrow());
-        NamedCommands.registerCommand("GrabAlgae", new ClearAlgae());//fix orientation
+        // NamedCommands.registerCommand("PlaceCoralAndGrabAlgae", new testCoralPlaceAlgaeGrab(ElevatorStates.LEVEL1, ReefTargetSide.RIGHT, ReefTargetOrientation.AB));//change to SUPER CYCLE COMMAND by oliver
+        // NamedCommands.registerCommand("BringUpElevator", new SetElevatorState(ElevatorStates.BARGE));
+        // NamedCommands.registerCommand("BringDownElevator", new SetElevatorState(ElevatorStates.LOW));
+        // NamedCommands.registerCommand("ScoreAlgae", new BargeThrow());
+        // NamedCommands.registerCommand("GrabAlgae", new ClearAlgae());//fix orientation
     }
 }

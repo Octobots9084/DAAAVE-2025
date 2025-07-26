@@ -170,7 +170,7 @@ public class Swerve extends SubsystemBase {
             new EventTrigger("PrepWristPosition").onTrue(new InstantCommand(() -> {
                 Wrist.getInstance().setState(WristStates.PREP, ClosedLoopSlot.kSlot0);
             }));
-            new EventTrigger("BringUpElevator").onTrue(new SetElevatorStateTolerance(ElevatorStates.LEVEL4, 5).andThen(new SetWristState(WristStates.L4, ClosedLoopSlot.kSlot0)));
+            // new EventTrigger("BringUpElevator").onTrue(new SetElevatorStateTolerance(ElevatorStates.LEVEL4, 5).andThen(new SetWristState(WristStates.L4, ClosedLoopSlot.kSlot0)));
             NamedCommands.registerCommand("AlignCollect", new AlignCollect());
             new EventTrigger("PrepCollect").onTrue(new PrepCollect());
 
