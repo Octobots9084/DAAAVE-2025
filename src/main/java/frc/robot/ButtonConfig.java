@@ -31,6 +31,7 @@ import frc.robot.Commands.complex.RobotSafeState;
 import frc.robot.Commands.complex.RobotStop;
 import frc.robot.Commands.complex.ScoreCoral;
 import frc.robot.Commands.complex.ScoreCoralAndBackOff;
+import frc.robot.Commands.complex.groundAlgae;
 import frc.robot.Commands.swerve.drivebase.SetDriveState;
 import frc.robot.States.ReefTargetSide;
 import frc.robot.Commands.CoralRollers.SetAlgaeRollerState;
@@ -191,7 +192,7 @@ public class ButtonConfig {
                 .onFalse(new SetDriveState(DriveState.Manual));
         driverButtons.button(9).onTrue(new RobotStop());
         driverButtons.button(8).onTrue(new RobotSafeState());
-        driverButtons.button(7).onTrue(new ParallelCommandGroup(new SetWristState(WristStates.GROUNDALGAE, ClosedLoopSlot.kSlot0),new SetAlgaeRollerState(CoralRollersState.ALGAEINTAKING)));
+        driverButtons.button(7).onTrue(new groundAlgae());
         driverButtons.button(2).onTrue(new BargeThrow());
         
     }
