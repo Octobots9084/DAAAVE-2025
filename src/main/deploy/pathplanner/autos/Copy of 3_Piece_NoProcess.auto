@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": null
+            "pathName": "initial_to_j"
           }
         },
         {
@@ -44,12 +44,6 @@
           "type": "path",
           "data": {
             "pathName": "topstation_to_a"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "a_to_topstation"
           }
         }
       ]

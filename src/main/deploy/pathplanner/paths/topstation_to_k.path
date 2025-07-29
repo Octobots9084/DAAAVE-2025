@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.9974146592905062,
-        "y": 6.545830678993548
+        "x": 2.435815467503355,
+        "y": 5.195780201082661
       },
       "isLocked": false,
       "linkedName": "topstation"
@@ -20,8 +20,8 @@
         "y": 5.551
       },
       "prevControl": {
-        "x": 3.154144978833158,
-        "y": 5.9270313007348046
+        "x": 2.738580222332799,
+        "y": 7.230445611536837
       },
       "nextControl": null,
       "isLocked": false,
