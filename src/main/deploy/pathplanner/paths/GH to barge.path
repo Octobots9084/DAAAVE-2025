@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.321298997092547,
-        "y": 4.425255829609745
+        "x": 7.283250000000001,
+        "y": 4.13225
       },
       "isLocked": false,
       "linkedName": "1c+1a_s-r"
@@ -20,8 +20,8 @@
         "y": 4.82218237704918
       },
       "prevControl": {
-        "x": 7.059112542241022,
-        "y": 4.851014254895154
+        "x": 7.53675,
+        "y": 4.24925
       },
       "nextControl": null,
       "isLocked": false,
@@ -29,7 +29,21 @@
     }
   ],
   "rotationTargets": [],
-  "constraintZones": [],
+  "constraintZones": [
+    {
+      "name": "Constraints Zone",
+      "minWaypointRelativePos": 0.7191881918819187,
+      "maxWaypointRelativePos": 1.0,
+      "constraints": {
+        "maxVelocity": 4.0,
+        "maxAcceleration": 4.5,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0,
+        "nominalVoltage": 10.0,
+        "unlimited": false
+      }
+    }
+  ],
   "pointTowardsZones": [],
   "eventMarkers": [
     {
@@ -48,14 +62,14 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 0,
+    "velocity": 0.0,
     "rotation": 0.0
   },
   "reversed": false,
   "folder": "michael stuff",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -179.01223960036026
+    "rotation": 180.0
   },
   "useDefaultConstraints": true
 }

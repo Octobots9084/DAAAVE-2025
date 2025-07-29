@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.568884810464643,
-        "y": 5.021278885785968
+        "x": 6.795750000000001,
+        "y": 5.24375
       },
       "isLocked": false,
       "linkedName": "barge1"
@@ -20,8 +20,8 @@
         "y": 5.33765368852459
       },
       "prevControl": {
-        "x": 5.7336444842177166,
-        "y": 4.9844483527476
+        "x": 6.025499999999999,
+        "y": 5.32175
       },
       "nextControl": null,
       "isLocked": false,
@@ -29,7 +29,21 @@
     }
   ],
   "rotationTargets": [],
-  "constraintZones": [],
+  "constraintZones": [
+    {
+      "name": "Constraints Zone",
+      "minWaypointRelativePos": 0.7132841328413282,
+      "maxWaypointRelativePos": 1.0,
+      "constraints": {
+        "maxVelocity": 4.0,
+        "maxAcceleration": 4.5,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0,
+        "nominalVoltage": 10.0,
+        "unlimited": false
+      }
+    }
+  ],
   "pointTowardsZones": [],
   "eventMarkers": [
     {

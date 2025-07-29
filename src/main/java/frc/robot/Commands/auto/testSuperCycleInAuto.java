@@ -22,17 +22,17 @@ import frc.robot.Subsystems.Vision.AlignVision;
 import frc.robot.Subsystems.Wrist.Wrist;
 import frc.robot.Subsystems.Wrist.WristStates;
 
-public class testCoralPlaceAlgaeGrab extends Command {
+public class testSuperCycleInAuto extends Command {
     ReefTargetOrientation targetOrientation;
     ElevatorStates targetLevel;
     ReefTargetSide targetSide;
     private Debouncer debouncer;
 
-    public testCoralPlaceAlgaeGrab(ElevatorStates targetLevel, ReefTargetSide targetSide, ReefTargetOrientation targetOrientation) {
+    public testSuperCycleInAuto(ElevatorStates targetLevel, ReefTargetSide targetSide, ReefTargetOrientation targetOrientation) {
         this.targetLevel = targetLevel;
         this.targetSide = targetSide;
         this.targetOrientation = targetOrientation;
-    }
+    }//PLACE CORAL -> GRAB ALGAE
 
     @Override
     public void initialize() {
@@ -58,8 +58,11 @@ public class testCoralPlaceAlgaeGrab extends Command {
         if (debouncer.calculate(AlignVision.getInstance().isAligned() && Elevator.getInstance().isAtState(ElevatorStates.LEVEL4, 1.5)
                 && Wrist.getInstance().isAtState(ElevatorStates.LEVEL4, 0.01))) {
             CoralRollers.getInstance().setState(CoralRollersState.OUTPUT);
+
+            //ALGAE
+            new RemoveAlgaeInAutoInSuperCycle(targetOrientation, targetSide);
         }
-        return CoralRollers.getInstance().isStalled() && AlignVision.getInstance().isAligned() && !CoralRollers.getInstance().HasCoral();
+        return CoralRollers.getInstance().isStalled() && !CoralRollers.getInstance().HasCoral();
     }
 
 

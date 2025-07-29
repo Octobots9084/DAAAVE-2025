@@ -159,8 +159,7 @@ public class RobotContainer {
                         -ButtonConfig.driverRight.getRawAxis(0), OperatorConstants.RIGHT_X_DEADBAND) / 2.0);
         swerve.setDefaultCommand(closedFieldRel);
 
-        // registerNamedCommands();
-        autoChooser = AutoBuilder.buildAutoChooser(); // Default auto will be `Commands.none()`
+        //NAMED COMMANDS IN SWERVE
         SmartDashboard.putData("Auto Mode", autoChooser);
         // VisionSubsystem.getInstance();
         ButtonConfig buttons = new ButtonConfig();
@@ -174,13 +173,5 @@ public class RobotContainer {
      */
     public Command getAutonomousCommand() {
         return autoChooser.getSelected();
-    }
-
-    public void registerNamedCommands () {
-        // NamedCommands.registerCommand("PlaceCoralAndGrabAlgae", new testCoralPlaceAlgaeGrab(ElevatorStates.LEVEL1, ReefTargetSide.RIGHT, ReefTargetOrientation.AB));//change to SUPER CYCLE COMMAND by oliver
-        // NamedCommands.registerCommand("BringUpElevator", new SetElevatorState(ElevatorStates.BARGE));
-        // NamedCommands.registerCommand("BringDownElevator", new SetElevatorState(ElevatorStates.LOW));
-        // NamedCommands.registerCommand("ScoreAlgae", new BargeThrow());
-        // NamedCommands.registerCommand("GrabAlgae", new ClearAlgae());//fix orientation
     }
 }
