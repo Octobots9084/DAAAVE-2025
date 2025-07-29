@@ -20,6 +20,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -52,6 +53,8 @@ import org.littletonrobotics.junction.Logger;
  * Basic simulation of a swerve subsystem with the methods needed by PathPlanner
  */
 public class Swerve extends SubsystemBase {
+    private SendableChooser<Command> autoChooser;
+
     SwerveIO io;
     private final SwerveIOInputsAutoLogged inputs = new SwerveIOInputsAutoLogged();
     private static Swerve INSTANCE = null;
@@ -170,6 +173,8 @@ public class Swerve extends SubsystemBase {
                         return false;
                     },
                     this);
+                    
+        autoChooser = AutoBuilder.buildAutoChooser();
 
         } catch (Exception e) {
             DriverStation.reportError(
@@ -250,6 +255,10 @@ public class Swerve extends SubsystemBase {
                 new EventTrigger("PrepCollect").onTrue(new PrepCollect());
             }
 
+            
+    public Command getAutonomousCommand() {
+        return autoChooser.getSelected();
+    }
 
     public SwerveIO getIo() {
         return io;

@@ -59,8 +59,6 @@ import frc.robot.States.ReefTargetSide;
  */
 public class RobotContainer {
 
-    private final SendableChooser<Command> autoChooser;
-
     // The robot's subsystems and commands are defined here...
     private CoralRollers coralRollers;
     private Elevator elevator;
@@ -160,7 +158,6 @@ public class RobotContainer {
         swerve.setDefaultCommand(closedFieldRel);
 
         //NAMED COMMANDS IN SWERVE
-        SmartDashboard.putData("Auto Mode", autoChooser);
         // VisionSubsystem.getInstance();
         ButtonConfig buttons = new ButtonConfig();
         buttons.initTeleop();
@@ -171,7 +168,4 @@ public class RobotContainer {
      *
      * @return the command to run in autonomous
      */
-    public Command getAutonomousCommand() {
-        return autoChooser.getSelected();
-    }
 }
