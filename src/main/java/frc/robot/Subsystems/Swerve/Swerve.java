@@ -6,6 +6,7 @@ package frc.robot.Subsystems.Swerve;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.pathplanner.lib.events.EventTrigger;
@@ -257,7 +258,11 @@ public class Swerve extends SubsystemBase {
 
             
     public Command getAutonomousCommand() {
-        return autoChooser.getSelected();
+        Command auto = autoChooser.getSelected();
+        if(auto == null){
+            return new PathPlannerAuto("Drive.auto");
+        }
+        return auto;
     }
 
     public SwerveIO getIo() {

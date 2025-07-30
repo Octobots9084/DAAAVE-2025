@@ -121,6 +121,9 @@ public class RobotContainer {
                 VisionSubsystem.setInstance(new VisionIOSim());
                 vision = VisionSubsystem.getInstance();
 
+                Climb.setInstance(new ClimbIOSystems());
+                climb = Climb.getInstance();
+
                 swerve.configurePathplanner();
 
                 SimulatedArena.getInstance().resetFieldForAuto();
