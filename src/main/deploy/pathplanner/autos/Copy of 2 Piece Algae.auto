@@ -11,6 +11,12 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "AlignGH"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "GH to barge"
@@ -20,6 +26,12 @@
           "type": "path",
           "data": {
             "pathName": "barge to IJ"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "AlignIJ"
           }
         },
         {

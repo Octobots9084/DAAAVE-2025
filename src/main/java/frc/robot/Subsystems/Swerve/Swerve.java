@@ -37,6 +37,7 @@ import frc.robot.Commands.complex.CollectCoral;
 import frc.robot.Commands.complex.PrepCollect;
 import frc.robot.Commands.complex.BargeThrow;
 import frc.robot.Commands.auto.RemoveAlgaeInAuto;
+import frc.robot.Commands.auto.testAlignInAuto;
 import frc.robot.Commands.auto.testSuperCycleInAuto;
 import frc.robot.States.ReefTargetLevel;
 import frc.robot.States.ReefTargetOrientation;
@@ -187,6 +188,7 @@ public class Swerve extends SubsystemBase {
             registerSuperCycle();
             registerCoralPlace();
             registerMisc();
+            registerTesting();
         }
 
             public void registerSuperCycle () {
@@ -254,6 +256,46 @@ public class Swerve extends SubsystemBase {
                 new EventTrigger("BringDownElevator").onTrue(new SetElevatorStateTolerance(ElevatorStates.LOW, 5).andThen(new SetWristState(WristStates.MANUAL, ClosedLoopSlot.kSlot0)));
                 NamedCommands.registerCommand("AlignCollect", new AlignCollect());
                 new EventTrigger("PrepCollect").onTrue(new PrepCollect());
+            }
+
+            public void registerTesting () {
+                NamedCommands.registerCommand("AlignB",
+                        new testAlignInAuto(ReefTargetSide.RIGHT, ReefTargetOrientation.AB, false));
+                NamedCommands.registerCommand("AlignC",
+                        new testAlignInAuto(ReefTargetSide.LEFT, ReefTargetOrientation.CD, false));
+                NamedCommands.registerCommand("AlignD",
+                        new testAlignInAuto(ReefTargetSide.RIGHT, ReefTargetOrientation.CD, false));
+                NamedCommands.registerCommand("AlignE",
+                        new testAlignInAuto(ReefTargetSide.LEFT, ReefTargetOrientation.EF, false));
+                NamedCommands.registerCommand("AlignF",
+                        new testAlignInAuto(ReefTargetSide.RIGHT, ReefTargetOrientation.EF, false));
+                NamedCommands.registerCommand("AlignG",
+                        new testAlignInAuto(ReefTargetSide.LEFT, ReefTargetOrientation.GH, false));
+                NamedCommands.registerCommand("AlignH",
+                        new testAlignInAuto(ReefTargetSide.RIGHT, ReefTargetOrientation.GH, false));
+                NamedCommands.registerCommand("AlignI",
+                        new testAlignInAuto(ReefTargetSide.LEFT, ReefTargetOrientation.IJ, false));
+                NamedCommands.registerCommand("AlignJ",
+                        new testAlignInAuto(ReefTargetSide.RIGHT, ReefTargetOrientation.IJ, false));
+                NamedCommands.registerCommand("AlignK",
+                        new testAlignInAuto(ReefTargetSide.LEFT, ReefTargetOrientation.KL, false));
+                NamedCommands.registerCommand("AlignL",
+                        new testAlignInAuto(ReefTargetSide.RIGHT, ReefTargetOrientation.KL, false));
+                NamedCommands.registerCommand("AlignA",
+                        new testAlignInAuto(ReefTargetSide.LEFT, ReefTargetOrientation.AB, false));
+
+                NamedCommands.registerCommand("AlignAB",
+                        new testAlignInAuto(ReefTargetSide.RIGHT, ReefTargetOrientation.GH, true));
+                NamedCommands.registerCommand("AlignCD",
+                        new testAlignInAuto(ReefTargetSide.LEFT, ReefTargetOrientation.IJ, true));
+                NamedCommands.registerCommand("AlignEF",
+                        new testAlignInAuto(ReefTargetSide.RIGHT, ReefTargetOrientation.IJ, true));
+                NamedCommands.registerCommand("AlignGH",
+                        new testAlignInAuto(ReefTargetSide.LEFT, ReefTargetOrientation.KL, true));
+                NamedCommands.registerCommand("AlignIJ",
+                        new testAlignInAuto(ReefTargetSide.RIGHT, ReefTargetOrientation.KL, true));
+                NamedCommands.registerCommand("AlignKL",
+                        new testAlignInAuto(ReefTargetSide.LEFT, ReefTargetOrientation.AB, true));
             }
 
             
