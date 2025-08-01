@@ -46,6 +46,9 @@ import org.littletonrobotics.junction.networktables.NT4Publisher;
 import org.littletonrobotics.junction.wpilog.WPILOGReader;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 
+import com.pathplanner.lib.commands.PathfindingCommand;
+import com.pathplanner.lib.pathfinding.Pathfinding;
+import com.pathplanner.lib.pathfinding.LocalADStar;
 import com.revrobotics.spark.ClosedLoopSlot;
 
 /**
@@ -111,6 +114,9 @@ public class Robot extends LoggedRobot {
     @Override
     public void robotInit() {
         robotContainer = new RobotContainer();
+
+        Pathfinding.setPathfinder(new LocalADStar());
+        PathfindingCommand.warmupCommand().schedule();
         Swerve.getInstance().zeroGyro();
         Elevator.getInstance().setTargetState(ElevatorStates.LEVEL1);
         Elevator.getInstance().setState(ElevatorStates.LEVEL1);
@@ -153,7 +159,8 @@ public class Robot extends LoggedRobot {
      */
     @Override
     public void autonomousInit() {
-        m_autonomousCommand = Swerve.getInstance().getAutonomousCommand();
+        Swerve.getInstance().zeroGyro();
+        m_autonomousCommand =  robotContainer.getAutonomousCommand();
 
         // schedule the autonomous command (example)
         if (m_autonomousCommand != null) {

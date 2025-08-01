@@ -55,7 +55,6 @@ import org.littletonrobotics.junction.Logger;
  * Basic simulation of a swerve subsystem with the methods needed by PathPlanner
  */
 public class Swerve extends SubsystemBase {
-    private SendableChooser<Command> autoChooser;
 
     SwerveIO io;
     private final SwerveIOInputsAutoLogged inputs = new SwerveIOInputsAutoLogged();
@@ -81,7 +80,7 @@ public class Swerve extends SubsystemBase {
     public boolean isAlignedToProcessor;
     public boolean isAlignedCenterReef; // TODO check if the algae removal needs to be centered on the reef
     private ReefTargetSide targetSide = ReefTargetSide.LEFT;
-    private ReefTargetOrientation targetOrientation = ReefTargetOrientation.AB;
+    private ReefTargetOrientation targetOrientation = ReefTargetOrientation.AB; // AB
     public static DriveState previousDriveState;
     public static boolean rotLock = true;
 
@@ -175,8 +174,6 @@ public class Swerve extends SubsystemBase {
                         return false;
                     },
                     this);
-                    
-        autoChooser = AutoBuilder.buildAutoChooser();
 
         } catch (Exception e) {
             DriverStation.reportError(
@@ -298,14 +295,6 @@ public class Swerve extends SubsystemBase {
                         new testAlignInAuto(ReefTargetSide.LEFT, ReefTargetOrientation.AB, true));
             }
 
-            
-    public Command getAutonomousCommand() {
-        Command auto = autoChooser.getSelected();
-        if(auto == null){
-            return new PathPlannerAuto("Drive.auto");
-        }
-        return auto;
-    }
 
     public SwerveIO getIo() {
         return io;
