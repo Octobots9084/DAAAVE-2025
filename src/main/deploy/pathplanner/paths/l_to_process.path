@@ -45,7 +45,7 @@
     "rotation": -90.0
   },
   "reversed": false,
-  "folder": "place_to_processor",
+  "folder": "Place to processor",
   "idealStartingState": {
     "velocity": 0,
     "rotation": -59.99999999999999

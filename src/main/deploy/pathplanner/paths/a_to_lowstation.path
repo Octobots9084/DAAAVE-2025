@@ -45,7 +45,7 @@
     "rotation": 55.0
   },
   "reversed": false,
-  "folder": "place_to_lowstation",
+  "folder": "Place to lowstation",
   "idealStartingState": {
     "velocity": 0,
     "rotation": 0.0

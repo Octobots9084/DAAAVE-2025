@@ -33,7 +33,7 @@ public class testSuperCycleInAuto extends Command {
         this.targetSide = targetSide;
         this.targetOrientation = targetOrientation;
     }//PLACE CORAL -> GRAB ALGAE
-
+//michae decide later if elevator goes up or down during 2 piece algae GH to barge
     @Override
     public void initialize() {
         debouncer = new Debouncer(0.05);

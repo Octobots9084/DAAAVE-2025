@@ -3,11 +3,15 @@ package frc.robot.Commands.auto;
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Constants;
 import frc.robot.Constants.Mode;
 import frc.robot.States.AlignState;
+import frc.robot.States.ReefTargetLevel;
 import frc.robot.States.ReefTargetOrientation;
 import frc.robot.States.ReefTargetSide;
+import frc.robot.Commands.ReefSelection.manager;
+import frc.robot.Subsystems.Elevator.ElevatorStates;
 import frc.robot.Subsystems.Swerve.Swerve;
 import frc.robot.Subsystems.Vision.AlignVision;
 
@@ -22,20 +26,35 @@ public class testAlignInAuto extends Command {
         this.targetOrientation = targetOrientation;
         this.alignAlgae = alignAlgae;
     }
-
+//TODO CHANGE CONSTRUCTOR BOOL -> TARGET
+//make make sense
     @Override
     public void initialize() {
         debouncer = new Debouncer(0.05);
 
-        AlignVision.setReefOrientation(targetOrientation);
-
+        AlignVision.setPoleLevel(ElevatorStates.LEVEL2);
         if (!alignAlgae) {
             AlignVision.setPoleSide(targetSide);
-        }//not sure if this is how i make it go to center, its 2 am
+        } else {
+            AlignVision.setPoleSide(ReefTargetSide.ALGAE);
+        }
+        AlignVision.setReefOrientation(targetOrientation);
+        
+        manager.level = ElevatorStates.LEVEL2;
+        CommandScheduler.getInstance().schedule(new PrepReefPlacementAuto());
     }
+    /*
+     
+        AlignVision.setPoleLevel(targetLevel);
+        AlignVision.setPoleSide(targetSide);
+        AlignVision.setReefOrientation(targetOrientation);
+        manager.level = ElevatorStates.LEVEL4;
+        CommandScheduler.getInstance().schedule(new PrepReefPlacementAuto());
+     */
 
     @Override
     public void execute() {
+
         Swerve.getInstance().driveRobotRelative(AlignVision.getInstance().getAlignChassisSpeeds(AlignState.Reef));
     }
 

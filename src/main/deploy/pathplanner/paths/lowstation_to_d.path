@@ -72,7 +72,7 @@
     "rotation": 59.99999999999999
   },
   "reversed": false,
-  "folder": "lowstation_to_place",
+  "folder": "Lowstation to place",
   "idealStartingState": {
     "velocity": 0,
     "rotation": 55.0

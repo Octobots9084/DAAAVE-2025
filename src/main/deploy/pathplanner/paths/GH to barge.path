@@ -3,16 +3,16 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.790061475409836,
-        "y": 4.019006147540983
+        "x": 5.814036885245901,
+        "y": 4.04298155737705
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.039030488128448,
-        "y": 4.482360268771158
+        "x": 7.063005897964514,
+        "y": 4.506335678607225
       },
       "isLocked": false,
-      "linkedName": "1c+1a_s-r"
+      "linkedName": "GH4_close"
     },
     {
       "anchor": {
@@ -32,7 +32,7 @@
   "constraintZones": [
     {
       "name": "Constraints Zone",
-      "minWaypointRelativePos": 0.7191881918819187,
+      "minWaypointRelativePos": 0.75,
       "maxWaypointRelativePos": 1.0,
       "constraints": {
         "maxVelocity": 4.0,
@@ -66,10 +66,10 @@
     "rotation": 0.0
   },
   "reversed": false,
-  "folder": "michael stuff",
+  "folder": "Place to barge",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": -179.5017883873863
   },
   "useDefaultConstraints": true
 }

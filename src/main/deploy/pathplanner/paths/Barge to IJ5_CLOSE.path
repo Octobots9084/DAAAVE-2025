@@ -8,42 +8,44 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.855020491803279,
-        "y": 5.33765368852459
+        "x": 6.474000000000001,
+        "y": 5.1365
       },
       "isLocked": false,
       "linkedName": "barge1"
     },
     {
       "anchor": {
-        "x": 1.3066598360655735,
-        "y": 7.075870901639344
+        "x": 5.142725409836065,
+        "y": 5.157838114754097
       },
       "prevControl": {
-        "x": 3.9679303278688525,
-        "y": 6.452510245901639
+        "x": 6.63,
+        "y": 5.117
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "topstation"
+      "linkedName": "IJ_close"
     }
   ],
-  "rotationTargets": [
+  "rotationTargets": [],
+  "constraintZones": [
     {
-      "waypointRelativePos": 0.6,
-      "rotationDegrees": -119.99999999999999
+      "name": "Constraints Zone",
+      "minWaypointRelativePos": 0.7559386973180074,
+      "maxWaypointRelativePos": 1.0,
+      "constraints": {
+        "maxVelocity": 2.0,
+        "maxAcceleration": 2.5,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0,
+        "nominalVoltage": 10.0,
+        "unlimited": false
+      }
     }
   ],
-  "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [
-    {
-      "name": "BringDownElevator",
-      "waypointRelativePos": 0.12774256460263306,
-      "endWaypointRelativePos": null,
-      "command": null
-    }
-  ],
+  "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 8.0,
     "maxAcceleration": 8.0,
@@ -54,10 +56,10 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 123.97654403625684
+    "rotation": -120.3791260113684
   },
   "reversed": false,
-  "folder": "michael stuff",
+  "folder": "Barge to place",
   "idealStartingState": {
     "velocity": 0,
     "rotation": 0.0
