@@ -75,11 +75,26 @@ public class VisionIOSystem implements VisionIO {
         Matrix<N3, N1> middleRightStdDevs = middleRightCamera.grabLatestStdDev();
         Matrix<N3, N1> backStdDevs = backCamera.grabLatestStdDev();
 
+        if (frontLeftStdDevs.get(0,0) > VisionConstants.kSingleTagStdDevs.get(0,0))
+        {
         addVisionReading("Front Left", frontLeftPose, frontLeftStdDevs);
+        }
+        if (frontRightStdDevs.get(0,0) > VisionConstants.kSingleTagStdDevs.get(0,0))
+        {
         addVisionReading("Front Right", frontRightPose, frontRightStdDevs);
+        }
+        if (middleLeftStdDevs.get(0,0) > VisionConstants.kSingleTagStdDevs.get(0,0))
+        {
         addVisionReading("Middle Left", middleLeftPose, middleLeftStdDevs);
+        }
+        if (middleRightStdDevs.get(0,0) > VisionConstants.kSingleTagStdDevs.get(0,0))
+        {
         addVisionReading("Middle Right", middleRightPose, middleRightStdDevs);
+        }
+        if (backStdDevs.get(0,0) > VisionConstants.kSingleTagStdDevs.get(0,0))
+        {
         addVisionReading("Back", backMiddlePose, backStdDevs);
+        }
     }
 
     public VisionCamera getFrontLeftCamera() {
