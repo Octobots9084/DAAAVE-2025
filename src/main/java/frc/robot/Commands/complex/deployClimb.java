@@ -28,3 +28,4 @@ public class deployClimb extends SequentialCommandGroup{
                 
     }
 
+//DIGITAL INPUTS -> 7, 9

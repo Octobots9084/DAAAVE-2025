@@ -13,6 +13,7 @@ public interface ClimbIO {
         public double appliedVolts;
         public double busVoltage;
         public double currentAmps;
+        public boolean climbClamped;
     }
 
     /** Updates the set of loggable inputs. */
@@ -33,6 +34,10 @@ public interface ClimbIO {
     public default void setTalonVoltage(double voltage) {};
 
     public default boolean talonIsStalled() {
+        return false;
+    }
+
+    public default boolean isClimbClamped () {
         return false;
     }
 }

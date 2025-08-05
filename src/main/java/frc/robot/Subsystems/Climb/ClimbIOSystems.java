@@ -18,6 +18,7 @@ import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
 import edu.wpi.first.hal.FRCNetComm.tInstances;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.revrobotics.spark.config.SparkMaxConfig;
@@ -30,6 +31,9 @@ public class ClimbIOSystems implements ClimbIO {
     private SparkMaxConfig sparkConfig;
     private TalonFXSConfiguration talonFXSConfig;
     private double feedForward = 0;
+    
+    public DigitalInput topLimitSwitch = new DigitalInput(9);
+    public DigitalInput bottomLimitSwitch = new DigitalInput(7);
 
     public ClimbIOSystems() {
         sparkConfig = new SparkMaxConfig();
@@ -117,5 +121,11 @@ public class ClimbIOSystems implements ClimbIO {
     @Override
     public boolean talonIsStalled() {
         return talonFXS.getFault_StatorCurrLimit().getValue();
+    }
+
+    @Override
+    public boolean isClimbClamped () {
+        return !topLimitSwitch.get() && !bottomLimitSwitch.get();
+        //limit switches true by default, false when pressed
     }
 }
