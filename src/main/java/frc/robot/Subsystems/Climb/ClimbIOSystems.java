@@ -87,7 +87,7 @@ public class ClimbIOSystems implements ClimbIO {
         SmartDashboard.putNumber("ClimbTalonSupplyCurrent", talonFXS.getSupplyCurrent().getValueAsDouble());
         SmartDashboard.putNumber("ClimbTalonStatorCurrent", talonFXS.getStatorCurrent().getValueAsDouble());
         SmartDashboard.putBoolean("ClimbTalonStallCurrent", talonFXS.getFault_StatorCurrLimit().getValue());
-
+        inputs.climbClamped = this.isClimbClamped();
     }
 
     @Override

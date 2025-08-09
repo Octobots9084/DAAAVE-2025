@@ -30,12 +30,12 @@ public class RunClimbRollers extends InstantCommand {
 
     @Override
     public boolean isFinished() {
-        return stalledCylces > 100;
+        return stalledCylces >= 0;
     }
 
     @Override
     public void end(boolean interrupted) {
-        climbInstance.setTalonVoltage(0);
+        // climbInstance.setTalonVoltage(0);
     }
 
 }

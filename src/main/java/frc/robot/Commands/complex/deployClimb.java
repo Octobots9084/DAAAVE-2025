@@ -5,10 +5,12 @@ import com.revrobotics.spark.ClosedLoopSlot;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.States.ReefTargetSide;
 import frc.robot.Commands.Climb.RunClimbRollers;
 import frc.robot.Commands.Climb.SetClimbState;
+import frc.robot.Commands.Climb.StopClimbTemporary;
 import frc.robot.Commands.ReefSelection.ReefLevelSelection;
 import frc.robot.Commands.Wrist.SetWristState;
 import frc.robot.Subsystems.Climb.Climb;
@@ -23,8 +25,9 @@ public class deployClimb extends SequentialCommandGroup{
             new RunClimbRollers(), 
             new SetClimbState(ClimbStates.Deployed, ClosedLoopSlot.kSlot1),
             new WaitUntilCommand(() -> Climb.getInstance().isClimbClamped()),
-            new WaitUntilCommand(3),
-            new SetClimbState(ClimbStates.Climbing, ClosedLoopSlot.kSlot0)
+            new WaitCommand(0.5),
+            new SetClimbState(ClimbStates.Climbing, ClosedLoopSlot.kSlot0),
+            new StopClimbTemporary()
         ); 
         }
                 
