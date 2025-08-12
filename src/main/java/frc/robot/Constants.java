@@ -101,6 +101,9 @@ public final class Constants {
         // Max Depth Distance of Front Lidar from Tag (Meters)
         public static final double maxFrontLidarDepthDistance = 0.22;
 
+        //Max Depth Distance of Front Lidar from Tag (Meters) while doing pre alignment
+        public static final double maxFrontLidarDepthDistancePreAlign = 0.5; //TODO
+
         // Max Depth Distance of Back Lidar from Tag (Meters)
         public static final double maxBackLidarDepthDistance = 0.55;
 

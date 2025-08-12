@@ -13,7 +13,8 @@ public class States {
     public enum ReefTargetSide {
         LEFT,
         RIGHT,
-        ALGAE
+        ALGAE,
+        PREALGAE
     }
 
     public enum ReefTargetOrientation {

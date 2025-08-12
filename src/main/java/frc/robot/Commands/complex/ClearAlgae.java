@@ -20,6 +20,7 @@ import frc.robot.Subsystems.CoralRollers.CoralRollersState;
 import frc.robot.Subsystems.Elevator.ElevatorStates;
 import frc.robot.Subsystems.Swerve.Swerve;
 import frc.robot.Subsystems.Swerve.Swerve.DriveState;
+import frc.robot.Subsystems.Vision.AlignVision;
 import frc.robot.Subsystems.Wrist.WristStates;
 
 public class ClearAlgae extends SequentialCommandGroup {
@@ -34,6 +35,15 @@ public class ClearAlgae extends SequentialCommandGroup {
                                     || targetOrientation == ReefTargetOrientation.IJ);
                         }),
                 new SetDriveState(DriveState.AlignReef),
+                new InstantCommand(() -> {
+                    AlignVision.setPoleSide(ReefTargetSide.PREALGAE);
+                }),
+                new WaitUntilCommand(() -> AlignVision.getInstance().isAligned()),
+                new WaitCommand(0.2),
+                new InstantCommand(() -> {
+                    AlignVision.setPoleSide(ReefTargetSide.ALGAE);
+                }),
+                new WaitUntilCommand(() -> AlignVision.getInstance().isAligned()),
                 new WaitCommand(0.2),
                 new WaitUntilCommand(() -> CoralRollers.getInstance().isStalled()),
 

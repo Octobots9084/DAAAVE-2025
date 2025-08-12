@@ -359,7 +359,7 @@ public class AlignVision extends SubsystemBase {
 
                     SmartDashboard.putBoolean("AlignVision/UsingGlobalVision", usingGlobalVision);
 
-                    xSpeed = this.calculateXSpeed(aveLidarDist, refPosition, state);
+                    xSpeed = this.calculateXSpeed(aveLidarDist, refPosition, state, selectedPoleSide);
 
                     // Calculate the x and turn speeds for the robot to align with the target
                     turnSpeed = this.calculateTurnSpeed(diffLidarDist);
@@ -479,17 +479,24 @@ public class AlignVision extends SubsystemBase {
         }
     }
 
-    private double calculateXSpeed(double aveLidarDist, Pose3d refPosition, AlignState state) {
+    private double calculateXSpeed(double aveLidarDist, Pose3d refPosition, AlignState state,ReefTargetSide targetSide) {
         // If both lidars are valid, then use the lidar distance to calculate the x
         // speed
         if (state == AlignState.Reef && this.areBothLidarsValid()) {
             isCollecting = false;
+            if(targetSide == ReefTargetSide.PREALGAE){
+                // Check if the robot x position is in tolerance for the target x position
+                xInTolerance = MathUtil.isNear(aveLidarDist, VisionConstants.maxFrontLidarDepthDistancePreAlign, 0.05);
 
-            // Check if the robot x position is in tolerance for the target x position
-            xInTolerance = MathUtil.isNear(aveLidarDist, VisionConstants.maxFrontLidarDepthDistance, 0.05);
+                // Calculate the x speed for the robot to align with the target
+                return -lidarXPIDController.calculate(aveLidarDist, VisionConstants.maxFrontLidarDepthDistancePreAlign);
+            }else{
+                // Check if the robot x position is in tolerance for the target x position
+                xInTolerance = MathUtil.isNear(aveLidarDist, VisionConstants.maxFrontLidarDepthDistance, 0.05);
 
-            // Calculate the x speed for the robot to align with the target
-            return -lidarXPIDController.calculate(aveLidarDist, VisionConstants.maxFrontLidarDepthDistance);
+                // Calculate the x speed for the robot to align with the target
+                return -lidarXPIDController.calculate(aveLidarDist, VisionConstants.maxFrontLidarDepthDistance);
+            }
 
         } else if ((state == AlignState.SourceLeft || state == AlignState.SourceRight)) {
             if (this.getBackLidarDetect()) {
