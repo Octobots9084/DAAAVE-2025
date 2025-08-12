@@ -149,6 +149,7 @@ public class Swerve extends SubsystemBase {
 
 
             registerNamedCommands();
+            //REGISTER NAMED COMMANDS
             
             RobotConfig config = RobotConfig.fromGUISettings();
 
@@ -282,17 +283,17 @@ public class Swerve extends SubsystemBase {
                         new testAlignInAuto(ReefTargetSide.LEFT, ReefTargetOrientation.AB, false));
 
                 NamedCommands.registerCommand("AlignAB",
-                        new testAlignInAuto(ReefTargetSide.RIGHT, ReefTargetOrientation.GH, true));
+                        new testAlignInAuto(ReefTargetSide.RIGHT, ReefTargetOrientation.AB, true));
                 NamedCommands.registerCommand("AlignCD",
-                        new testAlignInAuto(ReefTargetSide.LEFT, ReefTargetOrientation.IJ, true));
+                        new testAlignInAuto(ReefTargetSide.LEFT, ReefTargetOrientation.CD, true));
                 NamedCommands.registerCommand("AlignEF",
-                        new testAlignInAuto(ReefTargetSide.RIGHT, ReefTargetOrientation.IJ, true));
+                        new testAlignInAuto(ReefTargetSide.RIGHT, ReefTargetOrientation.EF, true));
                 NamedCommands.registerCommand("AlignGH",
-                        new testAlignInAuto(ReefTargetSide.LEFT, ReefTargetOrientation.KL, true));
+                        new testAlignInAuto(ReefTargetSide.LEFT, ReefTargetOrientation.GH, true));
                 NamedCommands.registerCommand("AlignIJ",
-                        new testAlignInAuto(ReefTargetSide.RIGHT, ReefTargetOrientation.KL, true));
+                        new testAlignInAuto(ReefTargetSide.RIGHT, ReefTargetOrientation.IJ, true));
                 NamedCommands.registerCommand("AlignKL",
-                        new testAlignInAuto(ReefTargetSide.LEFT, ReefTargetOrientation.AB, true));
+                        new testAlignInAuto(ReefTargetSide.LEFT, ReefTargetOrientation.KL, true));
             }
 
 

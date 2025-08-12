@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.776250000000001,
-        "y": 5.41925
+        "x": 6.448640025800941,
+        "y": 5.464039325534471
       },
       "isLocked": false,
       "linkedName": null
@@ -20,8 +20,8 @@
         "y": 5.43875
       },
       "prevControl": {
-        "x": 6.23025,
-        "y": 5.4485
+        "x": 6.064671807973044,
+        "y": 5.053933939854613
       },
       "nextControl": null,
       "isLocked": false,
@@ -45,7 +45,7 @@
     "rotation": -118.88658176691074
   },
   "reversed": false,
-  "folder": "start_to_algea",
+  "folder": "Start to algea",
   "idealStartingState": {
     "velocity": 0,
     "rotation": -89.19307054489762

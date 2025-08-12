@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 8.465880681818179,
-        "y": 1.3276846590909088
+        "x": 8.525001253893812,
+        "y": 1.3222079727969926
       },
       "isLocked": false,
       "linkedName": null
@@ -20,8 +20,8 @@
         "y": 1.3177130681818177
       },
       "prevControl": {
-        "x": 8.206619318181817,
-        "y": 1.2977698863636362
+        "x": 8.075314471426863,
+        "y": 1.313534154075498
       },
       "nextControl": null,
       "isLocked": false,
@@ -45,7 +45,7 @@
     "rotation": 180.0
   },
   "reversed": false,
-  "folder": "push_paths",
+  "folder": "Push paths",
   "idealStartingState": {
     "velocity": 0,
     "rotation": 180.0

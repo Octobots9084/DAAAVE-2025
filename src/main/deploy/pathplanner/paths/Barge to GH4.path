@@ -12,7 +12,7 @@
         "y": 3.89436755160305
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Start 1"
     },
     {
       "anchor": {
@@ -45,7 +45,20 @@
     }
   ],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "InitalWristPos",
+      "waypointRelativePos": 0,
+      "endWaypointRelativePos": null,
+      "command": null
+    },
+    {
+      "name": "BringUpElevator",
+      "waypointRelativePos": 0.4,
+      "endWaypointRelativePos": null,
+      "command": null
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 8.0,
     "maxAcceleration": 8.0,
@@ -59,7 +72,7 @@
     "rotation": 180.0
   },
   "reversed": false,
-  "folder": "michael stuff",
+  "folder": "Barge to place",
   "idealStartingState": {
     "velocity": 0,
     "rotation": 180.0

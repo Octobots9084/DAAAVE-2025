@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.9627356062996,
-        "y": 0.3830988538183493
+        "x": 5.7525,
+        "y": 0.7100000000000001
       },
       "isLocked": false,
       "linkedName": "Processor"
@@ -20,12 +20,12 @@
         "y": 1.00859375
       },
       "prevControl": {
-        "x": 4.736587566612149,
-        "y": 0.7838627437444948
+        "x": 4.6283643788260065,
+        "y": 0.7901023733438303
       },
       "nextControl": {
-        "x": 3.8871888046574625,
-        "y": 1.1318654648478834
+        "x": 3.9157168897665016,
+        "y": 1.1437446078517217
       },
       "isLocked": false,
       "linkedName": null
@@ -36,8 +36,8 @@
         "y": 0.9621413934426232
       },
       "prevControl": {
-        "x": 1.945393894026639,
-        "y": 2.1856855591056186
+        "x": 2.1307346593568157,
+        "y": 2.4105453419198763
       },
       "nextControl": null,
       "isLocked": false,
@@ -61,7 +61,7 @@
     "rotation": 55.0
   },
   "reversed": false,
-  "folder": "place_to_lowstation",
+  "folder": "Place to lowstation",
   "idealStartingState": {
     "velocity": 0,
     "rotation": -90.0
