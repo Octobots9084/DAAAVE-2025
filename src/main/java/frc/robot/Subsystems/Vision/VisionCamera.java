@@ -131,7 +131,7 @@ public class VisionCamera implements Runnable {
 
         } else {
             // Pose present. Start running Heuristic
-            var estStdDevs = VisionConstants.kMultiTagStdDevs;
+            var estStdDevs = VisionConstants.kSingleTagStdDevs;
             int numTags = 0;
             double avgDist = 0;
 
