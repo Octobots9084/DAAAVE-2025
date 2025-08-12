@@ -18,29 +18,24 @@ import frc.robot.Subsystems.Vision.AlignVision;
 public class testAlignInAuto extends Command {
     ReefTargetOrientation targetOrientation;
     ReefTargetSide targetSide;
-    boolean alignAlgae;
+    ElevatorStates targetLevel;
     private Debouncer debouncer;
 
-    public testAlignInAuto(ReefTargetSide targetSide, ReefTargetOrientation targetOrientation, boolean alignAlgae) {
+    public testAlignInAuto(ElevatorStates targetLevel, ReefTargetSide targetSide, ReefTargetOrientation targetOrientation) {
         this.targetSide = targetSide;
         this.targetOrientation = targetOrientation;
-        this.alignAlgae = alignAlgae;
+        this.targetLevel = targetLevel;
     }
-//TODO CHANGE CONSTRUCTOR BOOL -> TARGET
-//make make sense
+
     @Override
     public void initialize() {
         debouncer = new Debouncer(0.05);
 
-        AlignVision.setPoleLevel(ElevatorStates.LEVEL2);
-        if (!alignAlgae) {
-            AlignVision.setPoleSide(targetSide);
-        } else {
-            AlignVision.setPoleSide(ReefTargetSide.ALGAE);
-        }
+        AlignVision.setPoleLevel(targetLevel);
+        AlignVision.setPoleSide(targetSide);
         AlignVision.setReefOrientation(targetOrientation);
         
-        manager.level = ElevatorStates.LEVEL2;
+        manager.level = targetLevel;
         CommandScheduler.getInstance().schedule(new PrepReefPlacementAuto());
     }
     /*

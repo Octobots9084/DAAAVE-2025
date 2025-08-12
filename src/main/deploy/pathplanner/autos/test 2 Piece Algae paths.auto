@@ -7,7 +7,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Barge to GH4_CLOSE"
+            "pathName": "Barge to GH4"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "AlignGH"
           }
         },
         {
@@ -19,7 +25,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Barge to IJ5_CLOSE"
+            "pathName": "Barge to IJ5"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "AlignIJ"
           }
         },
         {
