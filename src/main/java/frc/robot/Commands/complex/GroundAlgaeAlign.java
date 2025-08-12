@@ -9,9 +9,13 @@ import frc.robot.Subsystems.CoralRollers.CoralRollers;
 import frc.robot.Subsystems.CoralRollers.CoralRollersState;
 import frc.robot.Subsystems.Swerve.Swerve;
 import frc.robot.Subsystems.Vision.PieceVisionCamera;
+import frc.robot.Subsystems.Vision.VisionIO;
+import frc.robot.Subsystems.Vision.VisionIOSystem;
+import frc.robot.Subsystems.Vision.VisionSubsystem;
+import frc.robot.Subsystems.Vision.VisionIO.VisionIOInputs;
 
 public class GroundAlgaeAlign extends Command{
-    private PieceVisionCamera algaeCamera =  new PieceVisionCamera("Velociraptor", new Transform3d()); //TODO rename the the new camera to be Velociraptor
+    private PieceVisionCamera algaeCamera  = VisionSubsystem.getInstance().io.getAlgaeCamera();
     private CommandScheduler commandScheduler = CommandScheduler.getInstance();
     @Override
     public void initialize() {

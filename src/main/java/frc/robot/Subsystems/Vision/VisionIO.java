@@ -31,7 +31,12 @@ public interface VisionIO {
 
         public double leftLidarDistance;
         public double rightLidarDistance;
+
+        public boolean algaeCameraHasTargets;
+        public double algaeCenterOffset;
     }
+
+    public PieceVisionCamera getAlgaeCamera();
 
     public default void updateInputs(VisionIOInputs inputs) {}
 

@@ -15,7 +15,7 @@ public class PieceVisionCamera{
 
     public PieceVisionCamera(String photonCameraName, Transform3d robotToCamera) {
         camera = new PhotonCamera(photonCameraName);
-        yawRotation = Math.abs(robotToCamera.getRotation().getZ());
+        yawRotation = robotToCamera.getRotation().getZ();
         xTransform = Math.abs(robotToCamera.getTranslation().getX());
     }
 
