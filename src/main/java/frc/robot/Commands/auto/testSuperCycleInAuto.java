@@ -49,7 +49,7 @@ public class testSuperCycleInAuto extends Command {
     public void execute() {
         Swerve.getInstance().driveRobotRelative(AlignVision.getInstance().getAlignChassisSpeeds(AlignState.Reef));
     }
-
+//TODO:supercycle make this + remove algae in auto in super cycle into sequential command?
     @Override
     public boolean isFinished() {
         if (Constants.currentMode == Mode.SIM) {
