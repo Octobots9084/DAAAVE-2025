@@ -6,7 +6,7 @@ import frc.robot.Constants.VisionConstants;
 import org.littletonrobotics.junction.Logger;
 
 public class VisionSubsystem extends SubsystemBase {
-    VisionIO io;
+    public VisionIO io;
     VisionIOInputsAutoLogged inputs = new VisionIOInputsAutoLogged();
 
     public static VisionSubsystem instance;
@@ -38,4 +38,6 @@ public class VisionSubsystem extends SubsystemBase {
             io.closeNotifiers();
         }
     }
+
+
 }

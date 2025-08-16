@@ -6,6 +6,7 @@ package frc.robot;
 public final class BuildConstants {
   public static final String MAVEN_GROUP = "";
   public static final String MAVEN_NAME = "DAAAVE-2025-1";
+  public static final String MAVEN_NAME = "DAAAVE-2025-1";
   public static final String VERSION = "unspecified";
   public static final int GIT_REVISION = 555;
   public static final String GIT_SHA = "cd21212ba958abb18013af26da436ec2a9c2c529";

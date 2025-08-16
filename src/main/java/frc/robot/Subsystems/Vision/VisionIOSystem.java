@@ -15,6 +15,7 @@ public class VisionIOSystem implements VisionIO {
     private final Swerve swerve;
     public static VisionIOSystem INSTANCE;
 
+    public final PieceVisionCamera algaeAlignCamera = new PieceVisionCamera("Velociraptor", VisionConstants.tranformCenterRobotToAlgaeCamera); //TODO change name to actual photon vision name to be velociraptor and update the transform 3d to the accurate one on robot.
     public final VisionCamera frontLeftCamera = new VisionCamera("FrontLeft", VisionConstants.transformFrontLeftToRobot);
     public final VisionCamera frontRightCamera = new VisionCamera("FrontRight",
             VisionConstants.transformFrontRightToRobot);
@@ -60,6 +61,9 @@ public class VisionIOSystem implements VisionIO {
 
         inputs.leftLidarDistance = AlignVision.getInstance().getLeftLidarDistance();
         inputs.rightLidarDistance = AlignVision.getInstance().getRightLidarDistance();
+
+        inputs.algaeCameraHasTargets = algaeAlignCamera.hasTargets();
+        inputs.algaeCenterOffset = algaeAlignCamera.getCenterOffset();
     }
 
     public void updatePose() {
@@ -84,6 +88,10 @@ public class VisionIOSystem implements VisionIO {
 
     public VisionCamera getFrontLeftCamera() {
         return frontLeftCamera;
+    }
+
+    public PieceVisionCamera getAlgaeCamera(){
+        return algaeAlignCamera;
     }
 
     @Override
