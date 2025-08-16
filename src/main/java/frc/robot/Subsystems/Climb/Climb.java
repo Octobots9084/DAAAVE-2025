@@ -1,8 +1,7 @@
 package frc.robot.Subsystems.Climb;
 
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import org.littletonrobotics.junction.Logger;
 
@@ -13,6 +12,7 @@ public class Climb extends SubsystemBase {
     private static Climb instance = null;
     private final ClimbIOInputsAutoLogged inputs = new ClimbIOInputsAutoLogged();
     private ClimbStates climbState = ClimbStates.Stored;
+    private Servo climbRelease = new Servo(9);
 
     public static Climb getInstance() {
         if (instance == null) {
@@ -28,6 +28,10 @@ public class Climb extends SubsystemBase {
 
     public Climb(ClimbIO io) {
         this.io = io;
+    }
+
+    public void releaseClimb() {
+        climbRelease.set(30);
     }
 
     @Override

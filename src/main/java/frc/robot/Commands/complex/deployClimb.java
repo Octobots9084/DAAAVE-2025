@@ -21,6 +21,10 @@ import frc.robot.Subsystems.Wrist.WristStates;
 public class deployClimb extends SequentialCommandGroup{
     public deployClimb(){
         addCommands(
+            new InstantCommand(() -> {
+                Climb.getInstance().releaseClimb();
+            }),
+            new WaitCommand(1),
             new SetWristState(WristStates.ALGAEREMOVAL, ClosedLoopSlot.kSlot0),
             new RunClimbRollers(), 
             new SetClimbState(ClimbStates.Deployed, ClosedLoopSlot.kSlot1),
