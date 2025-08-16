@@ -8,6 +8,7 @@ import org.photonvision.targeting.PhotonTrackedTarget;
 import org.photonvision.targeting.TargetCorner;
 
 import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Subsystems.Elevator.ElevatorIOSparkMax;
 
 public class PieceVisionCamera{
@@ -33,7 +34,9 @@ public class PieceVisionCamera{
             averageFov += Math.abs(corner.y*IFOV - yaw);
         }
         averageFov= corners.size();
-        return halfAlgae*Math.tan(averageFov);
+        double depth = halfAlgae*Math.tan(averageFov);
+        SmartDashboard.putNumber("algae depth", depth);
+        return depth;
     }
 
     public double calculateRobotRelativeYaw(PhotonTrackedTarget target){
