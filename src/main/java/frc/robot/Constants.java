@@ -102,7 +102,7 @@ public final class Constants {
         public static final double maxFrontLidarDepthDistance = 0.22;
 
         //Max Depth Distance of Front Lidar from Tag (Meters) while doing pre alignment
-        public static final double maxFrontLidarDepthDistancePreAlign = 0.5; //TODO
+        public static final double maxFrontLidarDepthDistancePreAlign = 0.6; //TODO
 
         // Max Depth Distance of Back Lidar from Tag (Meters)
         public static final double maxBackLidarDepthDistance = 0.55;
@@ -112,6 +112,8 @@ public final class Constants {
 
         // Max Depth Distance of Camera from Tag (Meters)
         public static final double maxCameraDepthDistance = 0.65;
+
+        public static final double maxCameraDepthDistancePreAlgae =  1.0;
 
         // Lidar Turn Angle Baseline (Might Be Radians)
         public static final double lidarTurnAngleBaseline = 0.605;

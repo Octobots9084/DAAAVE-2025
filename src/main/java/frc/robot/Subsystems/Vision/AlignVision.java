@@ -521,11 +521,19 @@ public class AlignVision extends SubsystemBase {
         } else { // If no lidars are valid, then use the camera distance to calculate the x speed
             isCollecting = false;
 
-            // Check if the robot x position is in tolerance for the target x position
-            xInTolerance = MathUtil.isNear(refPosition.getX(), VisionConstants.maxCameraDepthDistance, 0.05);
+            if(targetSide != ReefTargetSide.PREALGAE){
+                // Check if the robot x position is in tolerance for the target x position
+                xInTolerance = MathUtil.isNear(refPosition.getX(), VisionConstants.maxCameraDepthDistance, 0.05);
 
-            // Calculate the x speed for the robot to align with the target
-            return -cameraXPIDController.calculate(refPosition.getX(), VisionConstants.maxCameraDepthDistance);
+                // Calculate the x speed for the robot to align with the target
+                return -cameraXPIDController.calculate(refPosition.getX(), VisionConstants.maxCameraDepthDistance);
+            }else{
+                // Check if the robot x position is in tolerance for the target x position
+                xInTolerance = MathUtil.isNear(refPosition.getX(), VisionConstants.maxCameraDepthDistancePreAlgae, 0.05);
+
+                // Calculate the x speed for the robot to align with the target
+                return -cameraXPIDController.calculate(refPosition.getX(), VisionConstants.maxCameraDepthDistancePreAlgae);
+            }
         }
     }
 
