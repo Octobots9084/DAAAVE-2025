@@ -32,6 +32,7 @@ import frc.robot.Commands.complex.RobotSafeState;
 import frc.robot.Commands.complex.RobotStop;
 import frc.robot.Commands.complex.ScoreCoral;
 import frc.robot.Commands.complex.ScoreCoralAndBackOff;
+import frc.robot.Commands.complex.deployClimb;
 import frc.robot.Commands.complex.groundAlgae;
 import frc.robot.Commands.swerve.drivebase.SetDriveState;
 import frc.robot.States.ReefTargetSide;
@@ -164,7 +165,7 @@ public class ButtonConfig {
 
         // Reef mode active (Switch 20)
         // Reef selection
-        coDriverButtons.button(20).onTrue(new DeployClimb()); // new ClimbSequence());
+        coDriverButtons.button(20).onTrue(new deployClimb()); // new ClimbSequence());
        
         coDriverButtons.button(10).onTrue(new ReefLevelSelection(4));
         coDriverButtons.button(12).onTrue(new ReefLevelSelection(3));

@@ -1,6 +1,7 @@
 package frc.robot.Subsystems.Climb;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import org.littletonrobotics.junction.Logger;
 
@@ -11,6 +12,7 @@ public class Climb extends SubsystemBase {
     private static Climb instance = null;
     private final ClimbIOInputsAutoLogged inputs = new ClimbIOInputsAutoLogged();
     private ClimbStates climbState = ClimbStates.Stored;
+    private Servo climbRelease = new Servo(9);
 
     public static Climb getInstance() {
         if (instance == null) {
@@ -28,10 +30,16 @@ public class Climb extends SubsystemBase {
         this.io = io;
     }
 
+    public void releaseClimb() {
+        climbRelease.set(30);
+    }
+
     @Override
     public void periodic() {
         io.updateInputs(inputs);
         Logger.processInputs("ClimbInputs", inputs);
+        // SmartDashboard.putBoolean("ClimbTopLimitSwitch", topLimitSwitch.get());
+        // SmartDashboard.putBoolean("ClimbBottomLimitSwitch", bottomLimitSwitch.get());
     }
 
     public void setState(ClimbStates state, ClosedLoopSlot slot) {
@@ -64,5 +72,9 @@ public class Climb extends SubsystemBase {
 
     public boolean isAtState(ClimbStates state) {
         return MathUtil.isNear(io.getPosition(), state.position, 0.02);
+    }
+
+    public boolean isClimbClamped () {
+        return io.isClimbClamped();
     }
 }
