@@ -1,8 +1,11 @@
 package frc.robot.Subsystems.Vision;
 
+import java.util.List;
+
 import org.photonvision.PhotonCamera;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
+import org.photonvision.targeting.TargetCorner;
 
 import edu.wpi.first.math.geometry.Transform3d;
 import frc.robot.Subsystems.Elevator.ElevatorIOSparkMax;
@@ -12,6 +15,8 @@ public class PieceVisionCamera{
     private PhotonTrackedTarget target;
     private double yawRotation;
     private double xTransform;
+    private double IFOV = (Math.PI/2)/180;
+    private double halfAlgae = 413/2;
 
     public PieceVisionCamera(String photonCameraName, Transform3d robotToCamera) {
         camera = new PhotonCamera(photonCameraName);
@@ -21,7 +26,14 @@ public class PieceVisionCamera{
 
     public double getAlgaeDepthCameraRelative(PhotonTrackedTarget target){
         //TODO write this method based off of tested data.
-        return 0.0;
+        double yaw = target.getYaw();
+        double averageFov = 0;
+        List<TargetCorner> corners = target.getDetectedCorners();
+        for(TargetCorner corner: corners){
+            averageFov += Math.abs(corner.y*IFOV - yaw);
+        }
+        averageFov= corners.size();
+        return halfAlgae*Math.tan(averageFov);
     }
 
     public double calculateRobotRelativeYaw(PhotonTrackedTarget target){
