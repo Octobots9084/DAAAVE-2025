@@ -24,7 +24,7 @@ public class GroundAlgaeAlign extends Command{
 
     @Override
     public void execute() {
-        Swerve.getInstance().driveRobotRelative(new ChassisSpeeds(1,0, algaeCamera.getCenterOffset())); //TODO tune the exact turn and forward rates
+        Swerve.getInstance().driveRobotRelative(new ChassisSpeeds(0.75,0, (algaeCamera.getCenterOffset()-2.25)/5)); //TODO tune the exact turn and forward rates
     }
 
     @Override 

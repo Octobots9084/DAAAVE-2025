@@ -17,7 +17,7 @@ public class PieceVisionCamera{
     private double yawRotation;
     private double xTransform;
     private double IFOV = (Math.PI/2)/180;
-    private double halfAlgae = 413/2;
+    private double halfAlgae = 413/2; //413
 
     public PieceVisionCamera(String photonCameraName, Transform3d robotToCamera) {
         camera = new PhotonCamera(photonCameraName);
@@ -25,24 +25,35 @@ public class PieceVisionCamera{
         xTransform = Math.abs(robotToCamera.getTranslation().getX());
     }
 
-    public double getAlgaeDepthCameraRelative(PhotonTrackedTarget target){
-        //TODO write this method based off of tested data.
-        double yaw = target.getYaw();
-        double averageFov = 0;
+    public double getAlgaeDepthCameraRelative(PhotonTrackedTarget target) {
         List<TargetCorner> corners = target.getDetectedCorners();
-        for(TargetCorner corner: corners){
-            averageFov += Math.abs(corner.y*IFOV - yaw);
+        
+        if (corners.size() < 2) {
+            SmartDashboard.putNumber("algae depth", -1);
+            return -1;
         }
-        averageFov= corners.size();
-        double depth = halfAlgae*Math.tan(averageFov);
+    
+        double minX = Double.MAX_VALUE;
+        double maxX = -Double.MAX_VALUE;
+    
+        for (TargetCorner corner : corners) {
+            double xAngle = corner.x * IFOV;
+            minX = Math.min(minX, xAngle);
+            maxX = Math.max(maxX, xAngle);
+        }
+    
+        double angularWidth = Math.toRadians(maxX - minX);
+        double depth = halfAlgae / Math.tan(angularWidth / 2); 
+    
         SmartDashboard.putNumber("algae depth", depth);
         return depth;
     }
+    
 
     public double calculateRobotRelativeYaw(PhotonTrackedTarget target){
         //Positive is the far side of the camera and negative is the close side
-        double oppositeSide =  getAlgaeDepthCameraRelative(target)*Math.cos(yawRotation - target.getYaw());
-        double adjacentSide = getAlgaeDepthCameraRelative(target)*Math.sin(yawRotation - target.getYaw()) - xTransform;
+        double oppositeSide =  getAlgaeDepthCameraRelative(target)*Math.cos(yawRotation - target.getPitch()); //was yaw
+        double adjacentSide = getAlgaeDepthCameraRelative(target)*Math.sin(yawRotation - target.getPitch()) - xTransform; // was yaw
         return Math.atan2(oppositeSide,adjacentSide);
     }
 

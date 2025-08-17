@@ -121,6 +121,7 @@ public class Robot extends LoggedRobot {
         Elevator.getInstance().setTargetState(ElevatorStates.LEVEL1);
         Elevator.getInstance().setState(ElevatorStates.LEVEL1);
         Wrist.getInstance().setState(WristStates.INTAKE, ClosedLoopSlot.kSlot0);
+        VisionSubsystem.getInstance().io.getAlgaeCamera().getCenterOffset();
 
     }
 

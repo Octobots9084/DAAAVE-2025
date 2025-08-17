@@ -23,6 +23,7 @@ import frc.robot.Commands.complex.CoralPlaceAndAlgaeReefClear;
 import frc.robot.Commands.complex.CoralPlaceAndRemoveAlgaeFast;
 import frc.robot.Commands.complex.EjectCoral;
 import frc.robot.Commands.complex.Elephantiasis;
+import frc.robot.Commands.complex.GroundAlgaeAlign;
 // import frc.robot.Commands.complex.ClearAlgae;
 import frc.robot.Commands.complex.Intake;
 import frc.robot.Commands.complex.PrepReefPlacement;
@@ -79,6 +80,8 @@ public class ButtonConfig {
 
         driverButtons.button(1)
                 .onTrue(new EjectCoral());
+
+        driverButtons.button(5).onTrue(new GroundAlgaeAlign());
 
         driverButtons.button(2).onTrue(new InstantCommand(() -> {
             Swerve.getInstance().setDriveState(DriveState.AlignReef);

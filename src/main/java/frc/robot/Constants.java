@@ -90,7 +90,7 @@ public final class Constants {
         public static final Transform3d transformMiddleLeftToRobot = new Transform3d(0.0762, 0.273, 0.609,
                 new Rotation3d(0, 0, Math.toRadians(90)));
 
-        public static final Transform3d tranformCenterRobotToAlgaeCamera = new Transform3d(0,0,0,new Rotation3d(0,0,0)); //TODO - change this to the actual transform of the center of the robot to the camera.
+        public static final Transform3d tranformCenterRobotToAlgaeCamera = new Transform3d(0.13,0.31,0.4,new Rotation3d(0,0,Math.toRadians(25))); //TODO - change this to the actual transform of the center of the robot to the camera.
 
         public static final Transform3d transformBackToRobot = new Transform3d(0.0, 0.0, 1.0, new Rotation3d(0, 0, Math.toRadians(180)));
 
