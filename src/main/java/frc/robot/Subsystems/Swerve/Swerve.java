@@ -47,6 +47,7 @@ import frc.robot.Subsystems.Vision.AlignVision;
 import frc.robot.Subsystems.Wrist.Wrist;
 import frc.robot.Subsystems.Wrist.WristStates;
 
+import java.security.cert.TrustAnchor;
 import java.util.Optional;
 import java.util.function.DoubleSupplier;
 import org.littletonrobotics.junction.Logger;
@@ -69,7 +70,8 @@ public class Swerve extends SubsystemBase {
         AlignReef,
         AlignProcessor,
         AlignSource,
-        Reverse
+        Reverse,
+        AlignBarge
     };
 
     private DriveState driveState = DriveState.None;
@@ -127,6 +129,14 @@ public class Swerve extends SubsystemBase {
     public Swerve(SwerveIO io) {
         this.io = io;
 
+    }
+
+    public boolean ableToAlignBarge () {
+        if (Constants.isBlueAlliance) {// <7.6, red = > 10
+            return Swerve.getInstance().getPose().getTranslation().getMeasureX().magnitude() < 7.6;
+        }
+        return Swerve.getInstance().getPose().getTranslation().getMeasureX().magnitude() > 10;//red
+        
     }
 
     public void configurePathplanner() {

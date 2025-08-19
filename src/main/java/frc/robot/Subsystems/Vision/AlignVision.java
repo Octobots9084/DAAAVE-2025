@@ -66,6 +66,7 @@ public class AlignVision extends SubsystemBase {
     private CANrange rightRange;
     private CANrange leftRange;
     private CANrange backRange;
+    private CANrange bargeRange;
 
     private PIDController cameraXPIDController;
     private PIDController backCameraXPIDController;
@@ -73,6 +74,7 @@ public class AlignVision extends SubsystemBase {
     private PIDController cameraYPIDControllerSource;
 
     private PIDController lidarXPIDController;
+    private PIDController bargeXPIDController;
     private PIDController backLidarXPIDController;
 
     private PIDController gyroRotationPIDController;
@@ -125,6 +127,7 @@ public class AlignVision extends SubsystemBase {
         this.leftRange = new CANrange(13, "KrakensBus");
         this.rightRange = new CANrange(14, "KrakensBus");
         this.backRange = new CANrange(23, "KrakensBus");
+        this.bargeRange = new CANrange(-1, "KrakensBus");//TODO: set value
 
         this.cameraXPIDController = new PIDController(2, 0, 0);
         this.backCameraXPIDController = new PIDController(3.5, 0, 0);
@@ -133,6 +136,7 @@ public class AlignVision extends SubsystemBase {
         this.cameraYPIDControllerSource = new PIDController(2, 0.01, 0);
 
         this.lidarXPIDController = new PIDController(4, 0, 0);
+        this.bargeXPIDController = new PIDController(4, 0, 0);//TODO: setvalue
         this.backLidarXPIDController = new PIDController(5.5, 0, 0);
 
         this.lidarRotationPIDController = new PIDController(10, 0, 0);
@@ -151,6 +155,7 @@ public class AlignVision extends SubsystemBase {
         rightRange.getConfigurator().apply(configuration);
         leftRange.getConfigurator().apply(configuration);
         backRange.getConfigurator().apply(configuration);
+        bargeRange.getConfigurator().apply(configuration);
 
     }
 
@@ -255,6 +260,10 @@ public class AlignVision extends SubsystemBase {
         }
     }
 
+    public PIDController getGyroRotationPIDController () {
+        return gyroRotationPIDController;
+    }
+
     public ChassisSpeeds getAlignChassisSpeeds(AlignState state) {
         try {
             this.finalAngles = Constants.isBlueAlliance ? blueAlignAngles : redAlignAngles;
@@ -268,6 +277,7 @@ public class AlignVision extends SubsystemBase {
                 cameraYPIDControllerSource.reset();
                 backCameraXPIDController.reset();
                 lidarXPIDController.reset();
+                bargeXPIDController.reset();
                 backLidarXPIDController.reset();
                 lidarRotationPIDController.reset();
                 gyroRotationPIDController.reset();
@@ -354,8 +364,7 @@ public class AlignVision extends SubsystemBase {
                     // Logger.recordOutput("Vision/SetPointY", ySetpoint.position);
 
                     // Calculate the speeds for the robot to align with the target
-                    ySpeed = ((state == AlignState.SourceLeft) || state == AlignState.SourceRight) ? -cameraYPIDControllerSource.calculate(refPosition.getY(), targetDistance)
-                            : -cameraYPIDController.calculate(refPosition.getY(), targetDistance);
+                    ySpeed = 0;
 
                     SmartDashboard.putBoolean("AlignVision/UsingGlobalVision", usingGlobalVision);
 
@@ -587,6 +596,11 @@ public class AlignVision extends SubsystemBase {
         return backRange.getDistance().getValueAsDouble();
     }
 
+    public double getBargeLidarDistance() {
+        Logger.recordOutput("Vision/NEWLidarDistance", bargeRange.getDistance().getValueAsDouble());
+        return bargeRange.getDistance().getValueAsDouble();
+    }
+
     public boolean areBothLidarsValid() {
         return getRightLidarDetect() && getLeftLidarDetect();
     }
@@ -601,6 +615,10 @@ public class AlignVision extends SubsystemBase {
 
     public boolean getBackLidarDetect() {
         return backRange.getIsDetected().getValue();
+    }
+
+    public boolean getBargeLidarDetect() {
+        return bargeRange.getIsDetected().getValue();
     }
 
     public static void setReefOrientation(ReefTargetOrientation orientation) {
