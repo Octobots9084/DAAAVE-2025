@@ -7,10 +7,10 @@ import frc.robot.Subsystems.CoralRollers.CoralRollers;
 import frc.robot.Subsystems.Swerve.Swerve;
 import frc.robot.Subsystems.Vision.AlignVision;
 
-public class testAlgae extends Command {
+public class PlaceAlgaeInAuto extends Command {
     ReefTargetOrientation targetOrientation;
 
-    public testAlgae(ReefTargetOrientation targetOrientation) {
+    public PlaceAlgaeInAuto(ReefTargetOrientation targetOrientation) {
         this.targetOrientation = targetOrientation;
     }
 

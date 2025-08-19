@@ -1,6 +1,4 @@
-package frc.robot.Commands.auto;
-
-import java.nio.file.attribute.PosixFilePermission;
+package frc.robot.Commands.auto.testing;
 
 import com.revrobotics.spark.ClosedLoopSlot;
 
@@ -8,20 +6,17 @@ import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.Commands;
-import frc.robot.Commands.Elevator.SetElevatorState;
-import frc.robot.Commands.ReefSelection.manager;
-import frc.robot.Commands.Wrist.SetWristState;
-import frc.robot.Commands.Wrist.SetWristStateTolerance;
-import frc.robot.Commands.complex.Intake;
-import frc.robot.Commands.complex.EjectCoral;
-import frc.robot.Commands.complex.PrepReefPlacement;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
 import frc.robot.Constants.Mode;
 import frc.robot.States.AlignState;
 import frc.robot.States.ReefTargetLevel;
 import frc.robot.States.ReefTargetOrientation;
 import frc.robot.States.ReefTargetSide;
+import frc.robot.Commands.Elevator.SetElevatorStateTolerance;
+import frc.robot.Commands.ReefSelection.manager;
+import frc.robot.Commands.Wrist.SetWristStateTolerance;
+import frc.robot.Commands.auto.PrepReefPlacementAuto;
 import frc.robot.Subsystems.CoralRollers.CoralRollers;
 import frc.robot.Subsystems.CoralRollers.CoralRollersState;
 import frc.robot.Subsystems.Elevator.Elevator;
@@ -31,14 +26,17 @@ import frc.robot.Subsystems.Swerve.Swerve.DriveState;
 import frc.robot.Subsystems.Vision.AlignVision;
 import frc.robot.Subsystems.Wrist.Wrist;
 import frc.robot.Subsystems.Wrist.WristStates;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import frc.robot.Commands.Elevator.SetElevatorState;
+import frc.robot.Commands.Wrist.SetWristState;
 
-public class testPlace extends Command {
-    ElevatorStates targetLevel;
-    ReefTargetSide targetSide;
+public class TestAlignInAuto extends Command {
     ReefTargetOrientation targetOrientation;
+    ReefTargetSide targetSide;
+    ElevatorStates targetLevel;
     private Debouncer debouncer;
 
-    public testPlace(ElevatorStates targetLevel, ReefTargetSide targetSide, ReefTargetOrientation targetOrientation) {
+    public TestAlignInAuto(ElevatorStates targetLevel, ReefTargetSide targetSide, ReefTargetOrientation targetOrientation) {
         this.targetLevel = targetLevel;
         this.targetSide = targetSide;
         this.targetOrientation = targetOrientation;
@@ -51,8 +49,8 @@ public class testPlace extends Command {
         AlignVision.setPoleLevel(targetLevel);
         AlignVision.setPoleSide(targetSide);
         AlignVision.setReefOrientation(targetOrientation);
-        manager.level = ElevatorStates.LEVEL4;
-        CommandScheduler.getInstance().schedule(new PrepReefPlacementAuto());
+        // manager.level = ElevatorStates.LEVEL4;
+        // CommandScheduler.getInstance().schedule(new PrepReefPlacementAuto());//
     }
 
     @Override
@@ -66,18 +64,13 @@ public class testPlace extends Command {
         if (Constants.currentMode == Mode.SIM) {
             return true;
         }
-        if (debouncer.calculate(AlignVision.getInstance().isAligned() && Elevator.getInstance().isAtState(ElevatorStates.LEVEL4, 1.5)
-                && Wrist.getInstance().isAtState(ElevatorStates.LEVEL4, 0.01))) {
-            CoralRollers.getInstance().setState(CoralRollersState.OUTPUT);
-        }
-        return AlignVision.getInstance().isAligned() && !CoralRollers.getInstance().HasCoral();
+        return AlignVision.getInstance().isAligned();
     }
 
     @Override
     public void end(boolean interrupted) {
-        CommandScheduler.getInstance()
-                .schedule(new SetWristStateTolerance(WristStates.PREP, 0.01, ClosedLoopSlot.kSlot0));
+        // CommandScheduler.getInstance()
+        //         .schedule(new SetWristStateTolerance(WristStates.PREP, 0.01, ClosedLoopSlot.kSlot0));
         Swerve.getInstance().driveRobotRelative(new ChassisSpeeds());
     }
-
 }

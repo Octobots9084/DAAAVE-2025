@@ -22,13 +22,13 @@ import frc.robot.Subsystems.Vision.AlignVision;
 import frc.robot.Subsystems.Wrist.Wrist;
 import frc.robot.Subsystems.Wrist.WristStates;
 
-public class testSuperCycleInAuto extends Command {
+public class SuperCycleInAuto extends Command {
     ReefTargetOrientation targetOrientation;
     ElevatorStates targetLevel;
     ReefTargetSide targetSide;
     private Debouncer debouncer;
 
-    public testSuperCycleInAuto(ElevatorStates targetLevel, ReefTargetSide targetSide, ReefTargetOrientation targetOrientation) {
+    public SuperCycleInAuto(ElevatorStates targetLevel, ReefTargetSide targetSide, ReefTargetOrientation targetOrientation) {
         this.targetLevel = targetLevel;
         this.targetSide = targetSide;
         this.targetOrientation = targetOrientation;
