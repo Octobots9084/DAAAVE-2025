@@ -11,8 +11,8 @@ import frc.robot.States.ReefTargetOrientation;
 import frc.robot.Commands.Elevator.SetElevatorState;
 import frc.robot.Commands.Wrist.SetWristState;
 import frc.robot.Commands.Wrist.SetWristStateTolerance;
+import frc.robot.Commands.auto.testing.Algae.TestRemoveAlgaeBottom;
 import frc.robot.Commands.auto.testing.Algae.TestRemoveAlgaeTop;
-import frc.robot.Commands.complex.RemoveAlgaeBottom;
 import frc.robot.Subsystems.Elevator.ElevatorStates;
 import frc.robot.Subsystems.Wrist.WristStates;
 
@@ -25,7 +25,7 @@ public class RemoveAlgaeInAuto extends SequentialCommandGroup {
             new SetWristStateTolerance(WristStates.PREP, 0.05, ClosedLoopSlot.kSlot0),
             new ConditionalCommand(
                     new TestRemoveAlgaeTop(),
-                    new RemoveAlgaeBottom(),
+                    new TestRemoveAlgaeBottom(),
                     isTop),
             new PlaceAlgaeInAuto(targetOrientation),
             new SetElevatorState(ElevatorStates.LOW),

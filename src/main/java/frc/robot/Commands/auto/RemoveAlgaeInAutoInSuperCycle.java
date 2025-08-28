@@ -34,14 +34,18 @@ public class RemoveAlgaeInAutoInSuperCycle extends Command{
     @Override
     public void initialize() {
         BooleanSupplier isTop =  () -> targetOrientation == States.ReefTargetOrientation.AB || targetOrientation == States.ReefTargetOrientation.EF || targetOrientation == States.ReefTargetOrientation.IJ;
-        new InstantCommand(() -> {
-            AlignVision.setPoleSide(targetSide);
-        });
-        new WaitCommand(0.15);
-        Swerve.getInstance().driveRobotRelative(AlignVision.getInstance().getAlignChassisSpeeds(AlignState.Reef));
-        new WaitUntilCommand(() -> AlignVision.getInstance().isAligned());
+        // new InstantCommand(() -> {
+        //     AlignVision.setPoleSide(targetSide);
+        // });
+        // new WaitCommand(0.15);
+        // Swerve.getInstance().driveRobotRelative(AlignVision.getInstance().getAlignChassisSpeeds(AlignState.Reef));
+        // new WaitUntilCommand(() -> AlignVision.getInstance().isAligned());
         new SetWristState(WristStates.ALAGESTACKREMOVAL,ClosedLoopSlot.kSlot0);
-        new ConditionalCommand(new SetElevatorState(ElevatorStates.TOPALGAEFAST),new SetElevatorState(ElevatorStates.BOTTOMALGAEFAST),isTop);
+        new ConditionalCommand(
+            new SetElevatorState(ElevatorStates.TOPALGAEFAST),
+            new SetElevatorState(ElevatorStates.BOTTOMALGAEFAST),
+            isTop
+        );//NEED TO GO DOWN
         new SetCoralRollersState(CoralRollersState.ALGAEINTAKING);
         new WaitCommand(0.34);
         new ParallelCommandGroup(

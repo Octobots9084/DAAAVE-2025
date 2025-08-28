@@ -78,6 +78,7 @@ public class PlaceCoralInAuto extends Command {
         CommandScheduler.getInstance()
                 .schedule(new SetWristStateTolerance(WristStates.PREP, 0.01, ClosedLoopSlot.kSlot0));
         Swerve.getInstance().driveRobotRelative(new ChassisSpeeds());
+        CoralRollers.getInstance().setState(CoralRollersState.STOPPED);
     }
 
 }

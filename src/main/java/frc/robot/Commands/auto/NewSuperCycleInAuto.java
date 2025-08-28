@@ -39,17 +39,20 @@ public class NewSuperCycleInAuto extends SequentialCommandGroup {
         this.targetOrientation = targetOrientation;
         addCommands(
             new TestAlignInAuto(targetLevel, targetSide, targetOrientation),
-            new WaitUntilCommand(() -> AlignVision.getInstance().isAligned()),
+            new PlaceCoralInAuto(targetLevel, targetSide, targetOrientation).withTimeout(2),
+
+            new DriveBack().withTimeout(0.2),
+            // new WaitCommand(0.15),
             
-            new PlaceCoralInAuto(targetLevel, targetSide, targetOrientation),
-            new InstantCommand(() -> {
-                AlignVision.setPoleSide(ReefTargetSide.ALGAE);
-            }),
-            new WaitCommand(0.15),
-            
-            new TestAlignInAuto(targetLevel, targetSide, targetOrientation),
-            new WaitUntilCommand(() -> AlignVision.getInstance().isAligned()),
-            new RemoveAlgaeInAutoInSuperCycle(targetOrientation, targetSide)
+            new TestAlignInAuto(targetLevel, ReefTargetSide.ALGAE, targetOrientation),
+
+            new RemoveAlgaeInAutoInSuperCycle(targetOrientation, targetSide),
+            new WaitCommand(0.34),
+            new ParallelCommandGroup(
+                new SetDriveState(DriveState.Reverse),
+                new SetElevatorState(ElevatorStates.LOW),
+                new SetWristState(WristStates.PREP,ClosedLoopSlot.kSlot0)
+            )
         );
     }
 }//NEEDS TEST   

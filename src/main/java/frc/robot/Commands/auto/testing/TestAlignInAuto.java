@@ -45,12 +45,13 @@ public class TestAlignInAuto extends Command {
     @Override
     public void initialize() {
         debouncer = new Debouncer(0.05);
+        manager.orientation = targetOrientation;
+        manager.selectedReefSide = targetSide;
+        manager.level = targetLevel;
 
-        AlignVision.setPoleLevel(targetLevel);
-        AlignVision.setPoleSide(targetSide);
-        AlignVision.setReefOrientation(targetOrientation);
-        // manager.level = ElevatorStates.LEVEL4;
-        // CommandScheduler.getInstance().schedule(new PrepReefPlacementAuto());//
+        AlignVision.setPoleLevel(manager.level);
+        AlignVision.setPoleSide(manager.selectedReefSide);
+        AlignVision.setReefOrientation(manager.orientation);
     }
 
     @Override
@@ -73,4 +74,4 @@ public class TestAlignInAuto extends Command {
         //         .schedule(new SetWristStateTolerance(WristStates.PREP, 0.01, ClosedLoopSlot.kSlot0));
         Swerve.getInstance().driveRobotRelative(new ChassisSpeeds());
     }
-}
+}//WORKS
