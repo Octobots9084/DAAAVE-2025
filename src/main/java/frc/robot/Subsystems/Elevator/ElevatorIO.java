@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.ser.std.StdKeySerializers.Default;
 import com.revrobotics.spark.SparkMax;
 
 public interface ElevatorIO {
-  @AutoLog
+  @AutoLog 
   public static class ElevatorIOInputs {
     public double leftPositionRotations = 0.0;
     public double leftVelocityRPM = 0.0;
