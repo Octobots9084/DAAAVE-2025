@@ -1,75 +1,54 @@
 package frc.robot.Commands.auto;
 
+import java.util.function.BooleanSupplier;
 import com.revrobotics.spark.ClosedLoopSlot;
 
 import edu.wpi.first.math.filter.Debouncer;
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.Commands.ReefSelection.manager;
-import frc.robot.Commands.Wrist.SetWristStateTolerance;
-import frc.robot.Constants;
-import frc.robot.Constants.Mode;
-import frc.robot.States.AlignState;
-import frc.robot.States.ReefTargetOrientation;
-import frc.robot.States.ReefTargetSide;
-import frc.robot.Subsystems.CoralRollers.CoralRollers;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
+import frc.robot.States;
+import frc.robot.Commands.CoralRollers.SetCoralRollersState;
+import frc.robot.Commands.Elevator.SetElevatorState;
 import frc.robot.Subsystems.CoralRollers.CoralRollersState;
-import frc.robot.Subsystems.Elevator.Elevator;
 import frc.robot.Subsystems.Elevator.ElevatorStates;
 import frc.robot.Subsystems.Swerve.Swerve;
+import frc.robot.Subsystems.Swerve.Swerve.DriveState;
 import frc.robot.Subsystems.Vision.AlignVision;
-import frc.robot.Subsystems.Wrist.Wrist;
-import frc.robot.Subsystems.Wrist.WristStates;
+import frc.robot.Commands.Wrist.SetWristState;
+import frc.robot.Commands.auto.testing.TestAlignAnyInAuto;
+import frc.robot.Commands.auto.testing.TestAlignInAuto;
+import frc.robot.Commands.complex.ScoreCoral;
+import frc.robot.Commands.swerve.drivebase.SetDriveState;
+import frc.robot.States.ReefTargetOrientation;
+import frc.robot.States.ReefTargetSide;
+import frc.robot.Subsystems.Wrist.*;
 
-public class SuperCycleInAuto extends Command {
+public class SuperCycleInAuto extends SequentialCommandGroup {
     ReefTargetOrientation targetOrientation;
     ElevatorStates targetLevel;
     ReefTargetSide targetSide;
-    private Debouncer debouncer;
 
-    public SuperCycleInAuto(ElevatorStates targetLevel, ReefTargetSide targetSide, ReefTargetOrientation targetOrientation) {
+    public SuperCycleInAuto (ElevatorStates targetLevel, ReefTargetSide targetSide, ReefTargetOrientation targetOrientation) {
         this.targetLevel = targetLevel;
         this.targetSide = targetSide;
         this.targetOrientation = targetOrientation;
-    }//PLACE CORAL -> GRAB ALGAE
-//michae decide later if elevator goes up or down during 2 piece algae GH to barge
-    @Override
-    public void initialize() {
-        debouncer = new Debouncer(0.05);
+        addCommands(
+            new TestAlignInAuto(targetLevel, targetSide, targetOrientation),
+            new PlaceCoralInAuto(targetLevel, targetSide, targetOrientation).withTimeout(2),
+            // new WaitCommand(0.15),
+            new TestAlignInAuto(targetLevel, ReefTargetSide.ALGAE, targetOrientation),//works before this
 
-        AlignVision.setPoleLevel(targetLevel);
-        AlignVision.setPoleSide(targetSide);
-        AlignVision.setReefOrientation(targetOrientation);
-        manager.level = ElevatorStates.LEVEL4;
-        CommandScheduler.getInstance().schedule(new PrepReefPlacementAuto());
+            // new DriveBack().withTimeout(0.5),//works abive this
+
+            new RemoveAlgaeInAutoInSuperCycle(targetOrientation, ReefTargetSide.ALGAE)
+            // new WaitCommand(0.34)
+            // new DriveBack().withTimeout(0.2)//can get rid of this maybe
+        );
     }
-
-    @Override
-    public void execute() {
-        Swerve.getInstance().driveRobotRelative(AlignVision.getInstance().getAlignChassisSpeeds(AlignState.Reef));
-    }
-//TODO:supercycle make this + remove algae in auto in super cycle into sequential command?
-    @Override
-    public boolean isFinished() {
-        if (Constants.currentMode == Mode.SIM) {
-            return true;
-        }
-        if (debouncer.calculate(AlignVision.getInstance().isAligned() && Elevator.getInstance().isAtState(ElevatorStates.LEVEL4, 1.5)
-                && Wrist.getInstance().isAtState(ElevatorStates.LEVEL4, 0.01))) {
-            CoralRollers.getInstance().setState(CoralRollersState.OUTPUT);
-
-            //ALGAE
-            new RemoveAlgaeInAutoInSuperCycle(targetOrientation, targetSide);
-        }
-        return CoralRollers.getInstance().isStalled() && !CoralRollers.getInstance().HasCoral();
-    }
-
-
-    @Override
-    public void end(boolean interrupted) {
-        CommandScheduler.getInstance()
-                .schedule(new SetWristStateTolerance(WristStates.PREP, 0.01, ClosedLoopSlot.kSlot0));
-        Swerve.getInstance().driveRobotRelative(new ChassisSpeeds());
-    }
-}
+}//NEEDS TEST

@@ -14,7 +14,7 @@ public enum WristStates {
     TOPALGAEREMOVAL(0.678),
 
     ALAGESTACKREMOVAL(0.610),
-    BARGEALGAE(0.83),
+    BARGEALGAE(0.9),//TODO:make sure this is good
     TUNING(0.7561), // TODO actually set this value
     TOPALGAEINTAKE(00000000),
     BOTTOMALGAEINTAKE(00000000),

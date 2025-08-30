@@ -17,8 +17,11 @@ public class BargeThrow extends SequentialCommandGroup{
             new SetWristState(WristStates.PREP, ClosedLoopSlot.kSlot0),
             new SetElevatorState(ElevatorStates.LEVEL4),       
             new WaitCommand(0.7),
-            new SetWristState(WristStates.BARGEALGAE,ClosedLoopSlot.kSlot0),
-            new SetCoralRollersState(CoralRollersState.AlGAEOUTPUT)
+            // new SetWristState(WristStates.BARGEALGAE, ClosedLoopSlot.kSlot0),
+            new WaitCommand(0.5),
+            new SetCoralRollersState(CoralRollersState.AlGAEOUTPUT),
+            new WaitCommand(1),
+            new SetCoralRollersState(CoralRollersState.STOPPED).withTimeout(1)
         );
     }
 }

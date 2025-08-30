@@ -32,7 +32,7 @@ import frc.robot.Commands.Elevator.SetElevatorStateTolerance;
 import frc.robot.Commands.ReefSelection.manager;
 import frc.robot.Commands.Wrist.SetWristState;
 import frc.robot.Commands.auto.AlignCollect;
-import frc.robot.Commands.auto.NewSuperCycleInAuto;
+import frc.robot.Commands.auto.SuperCycleInAuto;
 import frc.robot.Commands.auto.PlaceCoralInAuto;
 import frc.robot.Commands.complex.CollectCoral;
 import frc.robot.Commands.complex.PrepCollect;
@@ -201,7 +201,7 @@ public class Swerve extends SubsystemBase {
             registerTesting();
 
             NamedCommands.registerCommand("TESTSUPERCYCLE",
-                        new NewSuperCycleInAuto(ElevatorStates.LEVEL4, ReefTargetSide.RIGHT, ReefTargetOrientation.GH));
+                        new SuperCycleInAuto(ElevatorStates.LEVEL4, ReefTargetSide.RIGHT, ReefTargetOrientation.IJ));
             NamedCommands.registerCommand("TESTALIGNANY",
                         new TestAlignAnyInAuto(ReefTargetSide.RIGHT));
         }
@@ -268,7 +268,8 @@ public class Swerve extends SubsystemBase {
                     Wrist.getInstance().setState(WristStates.PREP, ClosedLoopSlot.kSlot0);
                 }));
                 new EventTrigger("BringUpElevator").onTrue(new SetElevatorStateTolerance(ElevatorStates.LEVEL4, 5).andThen(new SetWristState(WristStates.L4, ClosedLoopSlot.kSlot0)));
-                new EventTrigger("BringDownElevator").onTrue(new SetElevatorStateTolerance(ElevatorStates.LOW, 5).andThen(new SetWristState(WristStates.MANUAL, ClosedLoopSlot.kSlot0)));
+                // new EventTrigger("BringDownElevator").onTrue(new SetElevatorStateTolerance(ElevatorStates.LOW, 5).andThen(new SetWristState(WristStates.MANUAL, ClosedLoopSlot.kSlot0)));
+                NamedCommands.registerCommand("BringDownElevator", new SetElevatorStateTolerance(ElevatorStates.LOW, 5));
                 NamedCommands.registerCommand("AlignCollect", new AlignCollect());
                 new EventTrigger("PrepCollect").onTrue(new PrepCollect());
             }

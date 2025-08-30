@@ -5,13 +5,19 @@
     "data": {
       "commands": [
         {
+          "type": "named",
+          "data": {
+            "name": "InitalWristPos"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "Barge to GH4"
           }
         },
         {
-          "type": "named",
+          "type": "O",
           "data": {
             "name": "SuperCycleH"
           }
@@ -26,6 +32,12 @@
           "type": "named",
           "data": {
             "name": "ScoreAlgae"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "BringDownElevator"
           }
         },
         {

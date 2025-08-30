@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.814036885245901,
-        "y": 4.04298155737705
+        "x": 6.257581967213115,
+        "y": 4.0549692622950815
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.063005897964514,
-        "y": 4.506335678607225
+        "x": 6.853404259503882,
+        "y": 4.624892162354918
       },
       "isLocked": false,
-      "linkedName": "GH4_close"
+      "linkedName": null
     },
     {
       "anchor": {
-        "x": 7.720081967213115,
-        "y": 4.82218237704918
+        "x": 7.815983606557377,
+        "y": 4.810194672131147
       },
       "prevControl": {
-        "x": 7.771795167295122,
-        "y": 4.345811437139624
+        "x": 7.9095196547721445,
+        "y": 4.464999309223848
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "barge1"
+      "linkedName": "iwet587wte5"
     }
   ],
   "rotationTargets": [],
@@ -63,7 +63,7 @@
   },
   "goalEndState": {
     "velocity": 0.0,
-    "rotation": 0.0
+    "rotation": 0.674036897984506
   },
   "reversed": false,
   "folder": "Place to barge",
