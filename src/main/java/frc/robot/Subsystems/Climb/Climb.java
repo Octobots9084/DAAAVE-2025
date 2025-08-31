@@ -12,7 +12,7 @@ public class Climb extends SubsystemBase {
     private static Climb instance = null;
     private final ClimbIOInputsAutoLogged inputs = new ClimbIOInputsAutoLogged();
     private ClimbStates climbState = ClimbStates.Stored;
-    private Servo climbRelease = new Servo(9);
+    private Servo climbRelease = new Servo(8);
 
     public static Climb getInstance() {
         if (instance == null) {
