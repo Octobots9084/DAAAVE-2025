@@ -4,6 +4,7 @@ import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Commands.CoralRollers.SetCoralRollersState;
 import frc.robot.Subsystems.CoralRollers.CoralRollers;
 import frc.robot.Subsystems.CoralRollers.CoralRollersState;
@@ -20,24 +21,19 @@ public class GroundAlgaeAlign extends Command{
     @Override
     public void initialize() {
         commandScheduler.schedule(new groundAlgae());
+        commandScheduler.schedule(new WaitCommand(0.5));
     }
 
     @Override
     public void execute() {
-        Swerve.getInstance().driveRobotRelative(new ChassisSpeeds(0.75,0, (algaeCamera.getCenterOffset()-2.25)/5)); //TODO tune the exact turn and forward rates
+        Swerve.getInstance().driveRobotRelative(new ChassisSpeeds((algaeCamera.getOffsetPitch()*0.1)+1,0, algaeCamera.getCenterOffset()/-10));
     }
 
     @Override 
     public boolean isFinished() {
-        if (!algaeCamera.hasTargets() || CoralRollers.getInstance().isStalled()){
+        if (!algaeCamera.hasTargets() && CoralRollers.getInstance().isStalled()){
             return true;
         }
         return false;
     }
-
-    @Override
-    public void end(boolean interrupted) {
-        commandScheduler.schedule(new SetCoralRollersState(CoralRollersState.ALGAEHOLD));
-    }
-    
 }

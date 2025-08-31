@@ -52,9 +52,9 @@ public class PieceVisionCamera{
 
     public double calculateRobotRelativeYaw(PhotonTrackedTarget target){
         //Positive is the far side of the camera and negative is the close side
-        double oppositeSide =  getAlgaeDepthCameraRelative(target)*Math.cos(yawRotation - target.getPitch()); //was yaw
-        double adjacentSide = getAlgaeDepthCameraRelative(target)*Math.sin(yawRotation - target.getPitch()) - xTransform; // was yaw
-        return Math.atan2(oppositeSide,adjacentSide);
+        double oppositeSide =  getAlgaeDepthCameraRelative(target)*Math.cos(yawRotation - target.getYaw()) -xTransform; //was yaw
+        double adjacentSide = getAlgaeDepthCameraRelative(target)*Math.sin(yawRotation - target.getYaw()); // was yaw
+        return (Math.PI/2)-Math.atan2(oppositeSide,adjacentSide);
     }
 
     public double getCenterOffset(){
@@ -62,7 +62,19 @@ public class PieceVisionCamera{
         
         if (result.hasTargets()){
             target = result.getBestTarget();
-            return calculateRobotRelativeYaw(target);
+            // return calculateRobotRelativeYaw(target);
+            return target.getYaw();
+        }
+        return 0;
+    }
+
+    public double getOffsetPitch(){
+        PhotonPipelineResult result = camera.getLatestResult();
+        
+        if (result.hasTargets()){
+            target = result.getBestTarget();
+            // return calculateRobotRelativeYaw(target);
+            return target.getPitch() + 12.5;
         }
         return 0;
     }
