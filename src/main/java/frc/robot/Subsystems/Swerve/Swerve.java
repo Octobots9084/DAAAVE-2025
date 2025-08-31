@@ -199,6 +199,7 @@ public class Swerve extends SubsystemBase {
             registerCoralPlace();
             registerMisc();
             registerTesting();
+            registerAlgaeRemoval();
 
             NamedCommands.registerCommand("TESTSUPERCYCLE",
                         new SuperCycleInAuto(ElevatorStates.LEVEL4, ReefTargetSide.RIGHT, ReefTargetOrientation.IJ));
@@ -206,6 +207,15 @@ public class Swerve extends SubsystemBase {
                         new TestAlignAnyInAuto(ReefTargetSide.RIGHT));
         }
 
+            public void registerAlgaeRemoval () {
+                NamedCommands.registerCommand("RemoveAlgaeAB", new RemoveAlgaeInAuto(ReefTargetOrientation.AB));
+                NamedCommands.registerCommand("RemoveAlgaeCD", new RemoveAlgaeInAuto(ReefTargetOrientation.CD));
+                NamedCommands.registerCommand("RemoveAlgaeEF", new RemoveAlgaeInAuto(ReefTargetOrientation.EF));
+                NamedCommands.registerCommand("RemoveAlgaeGH", new RemoveAlgaeInAuto(ReefTargetOrientation.GH));
+                NamedCommands.registerCommand("RemoveAlgaeIJ", new RemoveAlgaeInAuto(ReefTargetOrientation.IJ));
+                NamedCommands.registerCommand("RemoveAlgaeKL", new RemoveAlgaeInAuto(ReefTargetOrientation.KL));
+            }
+        
             public void registerSuperCycle () {
                 NamedCommands.registerCommand("SuperCycleB",
                         new SuperCycleInAuto(ElevatorStates.LEVEL4, ReefTargetSide.RIGHT, ReefTargetOrientation.AB));

@@ -39,6 +39,36 @@
           "data": {
             "name": "BringDownElevator"
           }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Barge to IJ5"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "RemoveAlgaeIJ"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "IJ to barge"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ScoreAlgae"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "BringDownElevator"
+          }
         }
       ]
     }
