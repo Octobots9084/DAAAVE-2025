@@ -18,7 +18,6 @@ import frc.robot.Commands.Elevator.SetElevatorState;
 import frc.robot.Commands.Elevator.SetElevatorStateTolerance;
 import frc.robot.Commands.Wrist.SetWristState;
 import frc.robot.Commands.Wrist.SetWristStateTolerance;
-import frc.robot.Commands.auto.testing.TestAlignInAuto;
 import frc.robot.Commands.auto.testing.Algae.TestRemoveAlgaeBottom;
 import frc.robot.Commands.auto.testing.Algae.TestRemoveAlgaeTop;
 import frc.robot.Subsystems.CoralRollers.CoralRollersState;
@@ -30,20 +29,25 @@ public class RemoveAlgaeInAuto extends SequentialCommandGroup {
         BooleanSupplier isTop =  () -> targetOrientation == States.ReefTargetOrientation.AB || targetOrientation == States.ReefTargetOrientation.EF || targetOrientation == States.ReefTargetOrientation.IJ;
 
         addCommands(
-            new TestAlignInAuto(ElevatorStates.LEVEL1, ReefTargetSide.ALGAE, targetOrientation),
+            new AlignInAuto(ElevatorStates.LEVEL1, ReefTargetSide.ALGAE, targetOrientation),
 
             new SetWristStateTolerance(WristStates.ALGAEREMOVAL, 0.05, ClosedLoopSlot.kSlot0),
+            new SetCoralRollersState(CoralRollersState.ALGAEINTAKING),
             new ConditionalCommand(
                 new SetElevatorState(ElevatorStates.TOPALGAEFAST),
                 new SetElevatorState(ElevatorStates.BOTTOMALGAEFAST),
                 isTop
             ),
-            new SetCoralRollersState(CoralRollersState.ALGAEINTAKING),
-            new WaitCommand(0.45),//make conditional; if top, its less time, if bottom, more to go down more
+            // new WaitCommand(0.45),//make conditional; if top, its less time, if bottom, more to go down more
+            new ConditionalCommand(
+                new WaitCommand(0.3),
+                new WaitCommand(0.4),
+                isTop),
             new ParallelCommandGroup(
+                new DriveBack().withTimeout(0.5),
                 new SetElevatorStateTolerance(ElevatorStates.LOW, 0.05),
                 new SetWristState(WristStates.PREP,ClosedLoopSlot.kSlot0)
-            ).withTimeout(2)
+            ).withTimeout(1)
         );
     }
 }

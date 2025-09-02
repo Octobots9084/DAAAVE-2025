@@ -22,7 +22,7 @@ import frc.robot.Subsystems.Swerve.Swerve.DriveState;
 import frc.robot.Subsystems.Vision.AlignVision;
 import frc.robot.Commands.Wrist.SetWristState;
 import frc.robot.Commands.auto.testing.TestAlignAnyInAuto;
-import frc.robot.Commands.auto.testing.TestAlignInAuto;
+import frc.robot.Commands.auto.testing.TestPlaceCoralInAuto;
 import frc.robot.Commands.complex.ScoreCoral;
 import frc.robot.Commands.swerve.drivebase.SetDriveState;
 import frc.robot.States.ReefTargetOrientation;
@@ -39,10 +39,10 @@ public class SuperCycleInAuto extends SequentialCommandGroup {
         this.targetSide = targetSide;
         this.targetOrientation = targetOrientation;
         addCommands(
-            new TestAlignInAuto(targetLevel, targetSide, targetOrientation),
-            new PlaceCoralInAuto(targetLevel, targetSide, targetOrientation).withTimeout(2),
+            new AlignInAuto(targetLevel, targetSide, targetOrientation),
+            new TestPlaceCoralInAuto().withTimeout(2),
             // new WaitCommand(0.15),
-            new TestAlignInAuto(targetLevel, ReefTargetSide.ALGAE, targetOrientation),//works before this
+            new AlignInAuto(targetLevel, ReefTargetSide.ALGAE, targetOrientation),//works before this
 
             // new DriveBack().withTimeout(0.5),//works abive this
 

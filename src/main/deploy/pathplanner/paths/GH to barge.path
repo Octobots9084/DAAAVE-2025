@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 6.257581967213115,
-        "y": 4.0549692622950815
+        "x": 6.161680327868852,
+        "y": 4.030993852459016
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.853404259503882,
-        "y": 4.624892162354918
+        "x": 6.7575026201596184,
+        "y": 4.6009167525188515
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 7.815983606557377,
-        "y": 4.810194672131147
+        "x": 7.708094262295082,
+        "y": 4.7982069672131145
       },
       "prevControl": {
-        "x": 7.9095196547721445,
-        "y": 4.464999309223848
+        "x": 7.801630310509849,
+        "y": 4.453011604305815
       },
       "nextControl": null,
       "isLocked": false,
@@ -48,7 +48,7 @@
   "eventMarkers": [
     {
       "name": "BringUpElevator",
-      "waypointRelativePos": 0.3,
+      "waypointRelativePos": 0.6,
       "endWaypointRelativePos": null,
       "command": null
     }
@@ -63,13 +63,13 @@
   },
   "goalEndState": {
     "velocity": 0.0,
-    "rotation": 0.674036897984506
+    "rotation": 0.0
   },
   "reversed": false,
   "folder": "Place to barge",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -179.5017883873863
+    "rotation": 180.0
   },
   "useDefaultConstraints": true
 }

@@ -32,6 +32,7 @@ import frc.robot.Commands.Elevator.SetElevatorStateTolerance;
 import frc.robot.Commands.ReefSelection.manager;
 import frc.robot.Commands.Wrist.SetWristState;
 import frc.robot.Commands.auto.AlignCollect;
+import frc.robot.Commands.auto.AlignInAuto;
 import frc.robot.Commands.auto.SuperCycleInAuto;
 import frc.robot.Commands.auto.PlaceCoralInAuto;
 import frc.robot.Commands.complex.CollectCoral;
@@ -40,7 +41,6 @@ import frc.robot.Commands.complex.BargeThrow;
 import frc.robot.Commands.auto.RemoveAlgaeInAuto;
 import frc.robot.Commands.auto.SuperCycleInAuto;
 import frc.robot.Commands.auto.testing.TestAlignAnyInAuto;
-import frc.robot.Commands.auto.testing.TestAlignInAuto;
 import frc.robot.States.ReefTargetLevel;
 import frc.robot.States.ReefTargetOrientation;
 import frc.robot.States.ReefTargetSide;
@@ -286,42 +286,42 @@ public class Swerve extends SubsystemBase {
 
             public void registerTesting () {
                 NamedCommands.registerCommand("AlignB",
-                        new TestAlignInAuto(ElevatorStates.LEVEL1, ReefTargetSide.RIGHT, ReefTargetOrientation.AB));
+                        new AlignInAuto(ElevatorStates.LEVEL1, ReefTargetSide.RIGHT, ReefTargetOrientation.AB));
                 NamedCommands.registerCommand("AlignC",
-                        new TestAlignInAuto(ElevatorStates.LEVEL1, ReefTargetSide.LEFT, ReefTargetOrientation.CD));
+                        new AlignInAuto(ElevatorStates.LEVEL1, ReefTargetSide.LEFT, ReefTargetOrientation.CD));
                 NamedCommands.registerCommand("AlignD",
-                        new TestAlignInAuto(ElevatorStates.LEVEL1, ReefTargetSide.RIGHT, ReefTargetOrientation.CD));
+                        new AlignInAuto(ElevatorStates.LEVEL1, ReefTargetSide.RIGHT, ReefTargetOrientation.CD));
                 NamedCommands.registerCommand("AlignE",
-                        new TestAlignInAuto(ElevatorStates.LEVEL1, ReefTargetSide.LEFT, ReefTargetOrientation.EF));
+                        new AlignInAuto(ElevatorStates.LEVEL1, ReefTargetSide.LEFT, ReefTargetOrientation.EF));
                 NamedCommands.registerCommand("AlignF",
-                        new TestAlignInAuto(ElevatorStates.LEVEL1, ReefTargetSide.RIGHT, ReefTargetOrientation.EF));
+                        new AlignInAuto(ElevatorStates.LEVEL1, ReefTargetSide.RIGHT, ReefTargetOrientation.EF));
                 NamedCommands.registerCommand("AlignG",
-                        new TestAlignInAuto(ElevatorStates.LEVEL1, ReefTargetSide.LEFT, ReefTargetOrientation.GH));
+                        new AlignInAuto(ElevatorStates.LEVEL1, ReefTargetSide.LEFT, ReefTargetOrientation.GH));
                 NamedCommands.registerCommand("AlignH",
-                        new TestAlignInAuto(ElevatorStates.LEVEL1, ReefTargetSide.RIGHT, ReefTargetOrientation.GH));
+                        new AlignInAuto(ElevatorStates.LEVEL1, ReefTargetSide.RIGHT, ReefTargetOrientation.GH));
                 NamedCommands.registerCommand("AlignI",
-                        new TestAlignInAuto(ElevatorStates.LEVEL1, ReefTargetSide.LEFT, ReefTargetOrientation.IJ));
+                        new AlignInAuto(ElevatorStates.LEVEL1, ReefTargetSide.LEFT, ReefTargetOrientation.IJ));
                 NamedCommands.registerCommand("AlignJ",
-                        new TestAlignInAuto(ElevatorStates.LEVEL1, ReefTargetSide.RIGHT, ReefTargetOrientation.IJ));
+                        new AlignInAuto(ElevatorStates.LEVEL1, ReefTargetSide.RIGHT, ReefTargetOrientation.IJ));
                 NamedCommands.registerCommand("AlignK",
-                        new TestAlignInAuto(ElevatorStates.LEVEL1, ReefTargetSide.LEFT, ReefTargetOrientation.KL));
+                        new AlignInAuto(ElevatorStates.LEVEL1, ReefTargetSide.LEFT, ReefTargetOrientation.KL));
                 NamedCommands.registerCommand("AlignL",
-                        new TestAlignInAuto(ElevatorStates.LEVEL1, ReefTargetSide.RIGHT, ReefTargetOrientation.KL));
+                        new AlignInAuto(ElevatorStates.LEVEL1, ReefTargetSide.RIGHT, ReefTargetOrientation.KL));
                 NamedCommands.registerCommand("AlignA",
-                        new TestAlignInAuto(ElevatorStates.LEVEL1, ReefTargetSide.LEFT, ReefTargetOrientation.AB));
+                        new AlignInAuto(ElevatorStates.LEVEL1, ReefTargetSide.LEFT, ReefTargetOrientation.AB));
 
                 NamedCommands.registerCommand("AlignAB",
-                        new TestAlignInAuto(ElevatorStates.LEVEL1, ReefTargetSide.ALGAE, ReefTargetOrientation.AB));
+                        new AlignInAuto(ElevatorStates.LEVEL1, ReefTargetSide.ALGAE, ReefTargetOrientation.AB));
                 NamedCommands.registerCommand("AlignCD",
-                        new TestAlignInAuto(ElevatorStates.LEVEL1, ReefTargetSide.ALGAE, ReefTargetOrientation.CD));
+                        new AlignInAuto(ElevatorStates.LEVEL1, ReefTargetSide.ALGAE, ReefTargetOrientation.CD));
                 NamedCommands.registerCommand("AlignEF",
-                        new TestAlignInAuto(ElevatorStates.LEVEL1, ReefTargetSide.ALGAE, ReefTargetOrientation.EF));
+                        new AlignInAuto(ElevatorStates.LEVEL1, ReefTargetSide.ALGAE, ReefTargetOrientation.EF));
                 NamedCommands.registerCommand("AlignGH",
-                        new TestAlignInAuto(ElevatorStates.LEVEL1, ReefTargetSide.ALGAE, ReefTargetOrientation.GH));
+                        new AlignInAuto(ElevatorStates.LEVEL1, ReefTargetSide.ALGAE, ReefTargetOrientation.GH));
                 NamedCommands.registerCommand("AlignIJ",
-                        new TestAlignInAuto(ElevatorStates.LEVEL1, ReefTargetSide.ALGAE, ReefTargetOrientation.IJ));
+                        new AlignInAuto(ElevatorStates.LEVEL1, ReefTargetSide.ALGAE, ReefTargetOrientation.IJ));
                 NamedCommands.registerCommand("AlignKL",
-                        new TestAlignInAuto(ElevatorStates.LEVEL1, ReefTargetSide.ALGAE, ReefTargetOrientation.KL));
+                        new AlignInAuto(ElevatorStates.LEVEL1, ReefTargetSide.ALGAE, ReefTargetOrientation.KL));
             }
 
 

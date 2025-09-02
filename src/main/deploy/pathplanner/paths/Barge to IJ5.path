@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.815983606557377,
-        "y": 4.810194672131147
+        "x": 7.708094262295082,
+        "y": 4.7982069672131145
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.59043259033985,
-        "y": 4.789661642097089
+        "x": 6.4825432460775545,
+        "y": 4.777673937179056
       },
       "isLocked": false,
       "linkedName": "iwet587wte5"
     },
     {
       "anchor": {
-        "x": 5.5383196721311485,
-        "y": 5.33765368852459
+        "x": 5.598258196721312,
+        "y": 5.481506147540983
       },
       "prevControl": {
-        "x": 6.03918361891234,
-        "y": 5.0446853453723275
+        "x": 6.099122143502503,
+        "y": 5.188537804388721
       },
       "nextControl": null,
       "isLocked": false,
@@ -45,7 +45,14 @@
     }
   ],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "BringUpElevator",
+      "waypointRelativePos": 0.6,
+      "endWaypointRelativePos": null,
+      "command": null
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 8.0,
     "maxAcceleration": 8.0,
@@ -55,14 +62,14 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 0.5,
+    "velocity": 0.25,
     "rotation": -120.74926181202576
   },
   "reversed": false,
   "folder": "Barge to place",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 0.674036897984506
+    "rotation": 0.0
   },
   "useDefaultConstraints": true
 }

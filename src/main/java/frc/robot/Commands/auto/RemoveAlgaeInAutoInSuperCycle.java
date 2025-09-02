@@ -38,16 +38,18 @@ public class RemoveAlgaeInAutoInSuperCycle extends SequentialCommandGroup{
         BooleanSupplier isTop =  () -> targetOrientation == States.ReefTargetOrientation.AB || targetOrientation == States.ReefTargetOrientation.EF || targetOrientation == States.ReefTargetOrientation.IJ;
 
         addCommands(
-            new InstantCommand(()->{SmartDashboard.putString("test", "before");}),
             new SetWristStateTolerance(WristStates.ALAGESTACKREMOVAL, 0.05, ClosedLoopSlot.kSlot0),
-            new InstantCommand(()->{SmartDashboard.putString("test", "after");}),
+            new SetCoralRollersState(CoralRollersState.ALGAEINTAKING),
             new ConditionalCommand(
                 new SetElevatorState(ElevatorStates.TOPALGAEFAST),
                 new SetElevatorState(ElevatorStates.BOTTOMALGAEFAST),
                 isTop
             ),//NEED TO GO DOWN
-            new SetCoralRollersState(CoralRollersState.ALGAEINTAKING),
-            new WaitCommand(0.45),
+            // new WaitCommand(0.45),
+            new ConditionalCommand(
+                new WaitCommand(0.3),
+                new WaitCommand(0.4),
+                isTop),
             new ParallelCommandGroup(
                 new DriveBack().withTimeout(0.5),
                 new SetElevatorStateTolerance(ElevatorStates.LOW, 0.05),

@@ -1,4 +1,4 @@
-package frc.robot.Commands.auto.testing;
+package frc.robot.Commands.auto;
 
 import com.revrobotics.spark.ClosedLoopSlot;
 
@@ -16,7 +16,6 @@ import frc.robot.States.ReefTargetSide;
 import frc.robot.Commands.Elevator.SetElevatorStateTolerance;
 import frc.robot.Commands.ReefSelection.manager;
 import frc.robot.Commands.Wrist.SetWristStateTolerance;
-import frc.robot.Commands.auto.PrepReefPlacementAuto;
 import frc.robot.Subsystems.CoralRollers.CoralRollers;
 import frc.robot.Subsystems.CoralRollers.CoralRollersState;
 import frc.robot.Subsystems.Elevator.Elevator;
@@ -30,13 +29,13 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.Commands.Elevator.SetElevatorState;
 import frc.robot.Commands.Wrist.SetWristState;
 
-public class TestAlignInAuto extends Command {
+public class AlignInAuto extends Command {
     ReefTargetOrientation targetOrientation;
     ReefTargetSide targetSide;
     ElevatorStates targetLevel;
     private Debouncer debouncer;
 
-    public TestAlignInAuto(ElevatorStates targetLevel, ReefTargetSide targetSide, ReefTargetOrientation targetOrientation) {
+    public AlignInAuto(ElevatorStates targetLevel, ReefTargetSide targetSide, ReefTargetOrientation targetOrientation) {
         this.targetLevel = targetLevel;
         this.targetSide = targetSide;
         this.targetOrientation = targetOrientation;
@@ -47,9 +46,9 @@ public class TestAlignInAuto extends Command {
         debouncer = new Debouncer(0.05);
         manager.orientation = targetOrientation;
         manager.selectedReefSide = targetSide;
-        manager.level = targetLevel;
+        // manager.level = targetLevel;
 
-        AlignVision.setPoleLevel(manager.level);
+        // AlignVision.setPoleLevel(manager.level);
         AlignVision.setPoleSide(manager.selectedReefSide);
         AlignVision.setReefOrientation(manager.orientation);
     }

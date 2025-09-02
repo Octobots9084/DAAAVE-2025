@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
+import frc.robot.Commands.auto.AlignInAuto;
 import frc.robot.Constants.Mode;
 import frc.robot.States.ReefTargetOrientation;
 import frc.robot.States.ReefTargetSide;
@@ -18,12 +19,12 @@ import frc.robot.Subsystems.Wrist.Wrist;
 public class TestAlignAnyInAuto extends ParallelCommandGroup{
     public TestAlignAnyInAuto (ReefTargetSide targetSide) {
         addCommands(
-            new TestAlignInAuto(ElevatorStates.LOW, targetSide, ReefTargetOrientation.AB),
-            new TestAlignInAuto(ElevatorStates.LOW, targetSide, ReefTargetOrientation.CD),
-            new TestAlignInAuto(ElevatorStates.LOW, targetSide, ReefTargetOrientation.EF),
-            new TestAlignInAuto(ElevatorStates.LOW, targetSide, ReefTargetOrientation.GH),
-            new TestAlignInAuto(ElevatorStates.LOW, targetSide, ReefTargetOrientation.IJ),
-            new TestAlignInAuto(ElevatorStates.LOW, targetSide, ReefTargetOrientation.KL)
+            new AlignInAuto(ElevatorStates.LOW, targetSide, ReefTargetOrientation.AB),
+            new AlignInAuto(ElevatorStates.LOW, targetSide, ReefTargetOrientation.CD),
+            new AlignInAuto(ElevatorStates.LOW, targetSide, ReefTargetOrientation.EF),
+            new AlignInAuto(ElevatorStates.LOW, targetSide, ReefTargetOrientation.GH),
+            new AlignInAuto(ElevatorStates.LOW, targetSide, ReefTargetOrientation.IJ),
+            new AlignInAuto(ElevatorStates.LOW, targetSide, ReefTargetOrientation.KL)
         );
     }
 }//NEEDS TEST
