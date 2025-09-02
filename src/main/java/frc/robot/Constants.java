@@ -104,6 +104,9 @@ public final class Constants {
         // Max Depth Distance of Back Lidar from Tag (Meters)
         public static final double maxBackLidarDepthDistance = 0.55;
 
+        // Max Depth Distance of Barge Lidar from Tag (Meters)
+        public static final double maxBargeLidarDepthDistance = 3;//TODO: set value
+
         // Max Depth Distance of Camera from Tag (Meters)
         public static final double maxBackCameraDepthDistance = -0.75;
 

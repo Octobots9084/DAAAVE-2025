@@ -264,6 +264,13 @@ public class AlignVision extends SubsystemBase {
         return gyroRotationPIDController;
     }
 
+    public ChassisSpeeds getAlignBargeSpeeds() {
+        double xSpeed = bargeXPIDController.calculate(this.getBargeLidarDistance(), VisionConstants.maxBargeLidarDepthDistance);
+
+        return new ChassisSpeeds(xSpeed, 0, 0);
+
+    }
+
     public ChassisSpeeds getAlignChassisSpeeds(AlignState state) {
         try {
             this.finalAngles = Constants.isBlueAlliance ? blueAlignAngles : redAlignAngles;

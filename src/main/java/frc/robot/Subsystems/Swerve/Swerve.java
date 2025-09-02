@@ -132,11 +132,11 @@ public class Swerve extends SubsystemBase {
     }
 
     public boolean ableToAlignBarge () {
+        boolean ableToAlign = Swerve.getInstance().getPose().getTranslation().getMeasureX().magnitude() > 10;
         if (Constants.isBlueAlliance) {// <7.6, red = > 10
-            return Swerve.getInstance().getPose().getTranslation().getMeasureX().magnitude() < 7.6;
+            ableToAlign = Swerve.getInstance().getPose().getTranslation().getMeasureX().magnitude() < 7.6;
         }
-        return Swerve.getInstance().getPose().getTranslation().getMeasureX().magnitude() > 10;//red
-        
+        return ableToAlign;
     }
 
     public void configurePathplanner() {
