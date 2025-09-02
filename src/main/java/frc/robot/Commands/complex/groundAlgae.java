@@ -12,7 +12,7 @@ import frc.robot.Subsystems.CoralRollers.CoralRollersState;
 import frc.robot.Subsystems.Elevator.ElevatorStates;
 import frc.robot.Subsystems.Wrist.WristStates;
 
-public class groundAlgae extends SequentialCommandGroup{
+public class groundAlgae extends SequentialCommandGroup {
     public groundAlgae(){
         addCommands(
             new SetElevatorState(ElevatorStates.LOW),
