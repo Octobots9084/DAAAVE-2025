@@ -7,7 +7,7 @@ public enum ElevatorStates {
     LEVEL2(3.5),
     LEVEL3(17.57),
     LEVEL4(48.45),
-    BARGE(47),
+    BARGE(46),
     INTAKE(0),
     // all in terms of "arbitrary encoder units"
     MANUAL(0),

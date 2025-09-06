@@ -265,7 +265,7 @@ public class AlignVision extends SubsystemBase {
     }
 
     public ChassisSpeeds getAlignBargeSpeeds() {
-        double xSpeed = bargeXPIDController.calculate(this.getBargeLidarDistance(), VisionConstants.maxBargeLidarDepthDistance);
+        double xSpeed = bargeXPIDController.calculate(this.getBargeLidarDistance()-110, VisionConstants.maxBargeLidarDepthDistance);
 
         return new ChassisSpeeds(xSpeed, 0, 0);
 
