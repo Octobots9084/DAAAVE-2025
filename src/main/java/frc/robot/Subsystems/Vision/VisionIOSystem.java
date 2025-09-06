@@ -15,7 +15,7 @@ public class VisionIOSystem implements VisionIO {
     private final Swerve swerve;
     public static VisionIOSystem INSTANCE;
 
-    public final PieceVisionCamera algaeAlignCamera = new PieceVisionCamera("Velociraptor", VisionConstants.tranformCenterRobotToAlgaeCamera); //TODO change name to actual photon vision name to be velociraptor and update the transform 3d to the accurate one on robot.
+    public final PieceVisionCamera algaeAlignCamera = new PieceVisionCamera("HD_Web_Camera", VisionConstants.tranformCenterRobotToAlgaeCamera); //TODO change name to actual photon vision name to be velociraptor and update the transform 3d to the accurate one on robot.
     public final VisionCamera frontLeftCamera = new VisionCamera("FrontLeft", VisionConstants.transformFrontLeftToRobot);
     public final VisionCamera frontRightCamera = new VisionCamera("FrontRight",
             VisionConstants.transformFrontRightToRobot);

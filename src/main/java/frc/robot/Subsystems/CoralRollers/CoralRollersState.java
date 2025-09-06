@@ -7,7 +7,7 @@ public enum CoralRollersState {
     LEVEL1(-6.75),
     ALGAEINTAKING(-10),
     AlGAEOUTPUT(10),
-    ALGAEHOLD(5); //TODO update this value based on testing
+    ALGAEHOLD(-7); //TODO update this value based on testing
 
     public double voltage;
 

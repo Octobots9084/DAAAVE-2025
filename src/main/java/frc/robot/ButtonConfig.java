@@ -101,12 +101,6 @@ public class ButtonConfig {
             Swerve.getInstance().zeroGyro();
         }));
 
-        driverLeft.button(1).whileTrue(new ClearAlgae());
-
-        driverLeft.button(1).onFalse(new InstantCommand(() -> {
-            Swerve.getInstance().setDriveState(DriveState.Manual);
-        }));
-
         driverButtons.button(20).onTrue(new InstantCommand(() -> {
             Swerve.getInstance().rotLock = false;
         }));
@@ -199,6 +193,8 @@ public class ButtonConfig {
 
 
         driverLeft.button(2).whileTrue(new ConditionalCommand(new CoralPlaceAndRemoveAlgaeFast(), new ClearAlgae(), () -> CoralRollers.getInstance().HasCoral()))
+                .onFalse(new SetDriveState(DriveState.Manual));
+        driverLeft.button(1).whileTrue(new GroundAlgaeAlign())
                 .onFalse(new SetDriveState(DriveState.Manual));
         driverButtons.button(9).onTrue(new RobotStop());
         driverButtons.button(8).onTrue(new RobotSafeState());
