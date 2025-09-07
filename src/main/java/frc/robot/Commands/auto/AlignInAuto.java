@@ -32,11 +32,9 @@ import frc.robot.Commands.Wrist.SetWristState;
 public class AlignInAuto extends Command {
     ReefTargetOrientation targetOrientation;
     ReefTargetSide targetSide;
-    ElevatorStates targetLevel;
     private Debouncer debouncer;
 
-    public AlignInAuto(ElevatorStates targetLevel, ReefTargetSide targetSide, ReefTargetOrientation targetOrientation) {
-        this.targetLevel = targetLevel;
+    public AlignInAuto(ReefTargetSide targetSide, ReefTargetOrientation targetOrientation) {
         this.targetSide = targetSide;
         this.targetOrientation = targetOrientation;
     }

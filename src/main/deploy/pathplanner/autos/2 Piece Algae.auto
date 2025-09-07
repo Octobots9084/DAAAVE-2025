@@ -17,7 +17,7 @@
           }
         },
         {
-          "type": "O",
+          "type": "named",
           "data": {
             "name": "SuperCycleH"
           }
@@ -49,7 +49,7 @@
         {
           "type": "named",
           "data": {
-            "name": "RemoveAlgaeInAutoL"
+            "name": "RemoveAlgaeIJ"
           }
         },
         {
@@ -62,6 +62,12 @@
           "type": "named",
           "data": {
             "name": "ScoreAlgae"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "BringDownElevator"
           }
         }
       ]

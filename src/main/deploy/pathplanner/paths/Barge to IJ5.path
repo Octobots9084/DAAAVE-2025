@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.708094262295082,
-        "y": 4.7982069672131145
+        "x": 7.3125,
+        "y": 4.810194672131147
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.4825432460775545,
-        "y": 4.777673937179056
+        "x": 6.086948983782473,
+        "y": 4.789661642097089
       },
       "isLocked": false,
       "linkedName": "iwet587wte5"
@@ -45,14 +45,7 @@
     }
   ],
   "pointTowardsZones": [],
-  "eventMarkers": [
-    {
-      "name": "BringUpElevator",
-      "waypointRelativePos": 0.6,
-      "endWaypointRelativePos": null,
-      "command": null
-    }
-  ],
+  "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 8.0,
     "maxAcceleration": 8.0,

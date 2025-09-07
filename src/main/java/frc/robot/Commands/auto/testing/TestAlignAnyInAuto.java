@@ -19,12 +19,12 @@ import frc.robot.Subsystems.Wrist.Wrist;
 public class TestAlignAnyInAuto extends ParallelCommandGroup{
     public TestAlignAnyInAuto (ReefTargetSide targetSide) {
         addCommands(
-            new AlignInAuto(ElevatorStates.LOW, targetSide, ReefTargetOrientation.AB),
-            new AlignInAuto(ElevatorStates.LOW, targetSide, ReefTargetOrientation.CD),
-            new AlignInAuto(ElevatorStates.LOW, targetSide, ReefTargetOrientation.EF),
-            new AlignInAuto(ElevatorStates.LOW, targetSide, ReefTargetOrientation.GH),
-            new AlignInAuto(ElevatorStates.LOW, targetSide, ReefTargetOrientation.IJ),
-            new AlignInAuto(ElevatorStates.LOW, targetSide, ReefTargetOrientation.KL)
+            new AlignInAuto(targetSide, ReefTargetOrientation.AB),
+            new AlignInAuto(targetSide, ReefTargetOrientation.CD),
+            new AlignInAuto(targetSide, ReefTargetOrientation.EF),
+            new AlignInAuto(targetSide, ReefTargetOrientation.GH),
+            new AlignInAuto(targetSide, ReefTargetOrientation.IJ),
+            new AlignInAuto(targetSide, ReefTargetOrientation.KL)
         );
     }
 }//NEEDS TEST

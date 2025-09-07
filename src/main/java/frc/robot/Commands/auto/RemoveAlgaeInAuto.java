@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.States;
 import frc.robot.States.ReefTargetOrientation;
 import frc.robot.States.ReefTargetSide;
@@ -20,6 +21,7 @@ import frc.robot.Commands.Wrist.SetWristState;
 import frc.robot.Commands.Wrist.SetWristStateTolerance;
 import frc.robot.Commands.auto.testing.Algae.TestRemoveAlgaeBottom;
 import frc.robot.Commands.auto.testing.Algae.TestRemoveAlgaeTop;
+import frc.robot.Subsystems.CoralRollers.CoralRollers;
 import frc.robot.Subsystems.CoralRollers.CoralRollersState;
 import frc.robot.Subsystems.Elevator.ElevatorStates;
 import frc.robot.Subsystems.Wrist.WristStates;
@@ -29,22 +31,27 @@ public class RemoveAlgaeInAuto extends SequentialCommandGroup {
         BooleanSupplier isTop =  () -> targetOrientation == States.ReefTargetOrientation.AB || targetOrientation == States.ReefTargetOrientation.EF || targetOrientation == States.ReefTargetOrientation.IJ;
 
         addCommands(
-            new AlignInAuto(ElevatorStates.LEVEL1, ReefTargetSide.ALGAE, targetOrientation),
-
+            new ParallelCommandGroup(
+                new ConditionalCommand(
+                    new SetElevatorState(ElevatorStates.TOPALGAE),
+                    new SetElevatorState(ElevatorStates.BOTTOMALGAE),
+                isTop),
+                new AlignInAuto(ReefTargetSide.ALGAE, targetOrientation),
+                new SetCoralRollersState(CoralRollersState.ALGAEINTAKING)
+            ),
             new SetWristStateTolerance(WristStates.ALGAEREMOVAL, 0.05, ClosedLoopSlot.kSlot0),
-            new SetCoralRollersState(CoralRollersState.ALGAEINTAKING),
             new ConditionalCommand(
-                new SetElevatorState(ElevatorStates.TOPALGAEFAST),
-                new SetElevatorState(ElevatorStates.BOTTOMALGAEFAST),
+                new SetElevatorState(ElevatorStates.TOPALGAE),
+                new SetElevatorState(ElevatorStates.BOTTOMALGAE),
                 isTop
             ),
-            // new WaitCommand(0.45),//make conditional; if top, its less time, if bottom, more to go down more
-            new ConditionalCommand(
-                new WaitCommand(0.3),
-                new WaitCommand(0.4),
-                isTop),
+            // new ConditionalCommand(
+            //     new WaitCommand(0.5),
+            //     new WaitCommand(0.6),
+            //     isTop),
+            new WaitUntilCommand(() -> CoralRollers.getInstance().isStalled()),
             new ParallelCommandGroup(
-                new DriveBack().withTimeout(0.5),
+                new DriveBack().withTimeout(0.3),
                 new SetElevatorStateTolerance(ElevatorStates.LOW, 0.05),
                 new SetWristState(WristStates.PREP,ClosedLoopSlot.kSlot0)
             ).withTimeout(1)

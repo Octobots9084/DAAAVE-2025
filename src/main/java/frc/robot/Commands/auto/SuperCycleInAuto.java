@@ -39,10 +39,10 @@ public class SuperCycleInAuto extends SequentialCommandGroup {
         this.targetSide = targetSide;
         this.targetOrientation = targetOrientation;
         addCommands(
-            new AlignInAuto(targetLevel, targetSide, targetOrientation),
-            new TestPlaceCoralInAuto().withTimeout(2),
+            new PlaceCoralInAuto(targetLevel, targetSide, targetOrientation).withTimeout(4),
             // new WaitCommand(0.15),
-            new AlignInAuto(targetLevel, ReefTargetSide.ALGAE, targetOrientation),//works before this
+            // new AlignInAuto(ReefTargetSide.ALGAE, targetOrientation),//works before this
+            // new SetElevatorState(targetLevel),
 
             // new DriveBack().withTimeout(0.5),//works abive this
 

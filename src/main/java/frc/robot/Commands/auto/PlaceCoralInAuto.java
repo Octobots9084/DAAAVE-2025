@@ -48,10 +48,12 @@ public class PlaceCoralInAuto extends Command {
     public void initialize() {
         debouncer = new Debouncer(0.05);
 
+        manager.level = ElevatorStates.LEVEL4;
+        manager.selectedReefSide = targetSide;
+        manager.orientation = targetOrientation;
         AlignVision.setPoleLevel(targetLevel);
         AlignVision.setPoleSide(targetSide);
         AlignVision.setReefOrientation(targetOrientation);
-        manager.level = ElevatorStates.LEVEL4;
         CommandScheduler.getInstance().schedule(new PrepReefPlacementAuto());
     }
 
