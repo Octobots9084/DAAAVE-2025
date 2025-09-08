@@ -15,7 +15,7 @@ public class RunClimbRollers extends InstantCommand {
 
     @Override
     public void initialize() {
-        climbInstance.setTalonVoltage(5);
+        climbInstance.setTalonVoltage(10);
         stalledCylces = 0;
     }
 

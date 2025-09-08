@@ -35,6 +35,7 @@ import frc.robot.Commands.complex.ScoreCoral;
 import frc.robot.Commands.complex.ScoreCoralAndBackOff;
 import frc.robot.Commands.complex.deployClimb;
 import frc.robot.Commands.complex.groundAlgae;
+import frc.robot.Commands.complex.setClimbChasisSpeed;
 import frc.robot.Commands.swerve.drivebase.SetDriveState;
 import frc.robot.States.ReefTargetSide;
 import frc.robot.Commands.CoralRollers.SetAlgaeRollerState;
@@ -107,6 +108,8 @@ public class ButtonConfig {
         driverButtons.button(20).onFalse(new InstantCommand(() -> {
             Swerve.getInstance().rotLock = true;
         }));
+
+        driverButtons.button(13).onTrue(new setClimbChasisSpeed());
 
         // driverButtons.button(2).onTrue(new RemoveAlgaeBottom().onlyIf(
         // () -> {

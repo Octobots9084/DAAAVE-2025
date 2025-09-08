@@ -179,7 +179,7 @@ public class Robot extends LoggedRobot {
         if (m_autonomousCommand != null) {
             m_autonomousCommand.cancel();
         }
-
+        SmartDashboard.putBoolean("IsFast",true);
         Constants.isInAuto = false;
         Swerve.getInstance().setDriveState(DriveState.Manual);
         Climb.getInstance().allStop();
