@@ -48,13 +48,13 @@
   "eventMarkers": [
     {
       "name": "BringDownElevator",
-      "waypointRelativePos": 0.01,
+      "waypointRelativePos": 0.1,
       "endWaypointRelativePos": null,
       "command": null
     },
     {
       "name": "InitalWristPos",
-      "waypointRelativePos": 0.01,
+      "waypointRelativePos": 0.1,
       "endWaypointRelativePos": null,
       "command": null
     },

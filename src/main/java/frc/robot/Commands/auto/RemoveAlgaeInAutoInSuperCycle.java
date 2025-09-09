@@ -9,7 +9,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
@@ -40,35 +39,40 @@ public class RemoveAlgaeInAutoInSuperCycle extends SequentialCommandGroup{
         BooleanSupplier isTop =  () -> targetOrientation == States.ReefTargetOrientation.AB || targetOrientation == States.ReefTargetOrientation.EF || targetOrientation == States.ReefTargetOrientation.IJ;
 
         addCommands(
-            new ParallelCommandGroup(
-                new AlignInAuto(ReefTargetSide.ALGAE, targetOrientation),
-                new SetWristStateTolerance(WristStates.ALAGESTACKREMOVAL, 0.05, ClosedLoopSlot.kSlot0),
-                // new ParallelCommandGroup(
-                new ConditionalCommand(
-                    new SetElevatorState(ElevatorStates.TOPALGAEFAST),
-                    new SetElevatorState(ElevatorStates.BOTTOMALGAEFAST),
-                    isTop)
-            ),
-            // ),
+            new AlignInAuto(ReefTargetSide.ALGAE, targetOrientation),
+            new SetWristStateTolerance(WristStates.ALAGESTACKREMOVAL, 0.05, ClosedLoopSlot.kSlot0),
             new SetCoralRollersState(CoralRollersState.ALGAEINTAKING),
+            // new ParallelCommandGroup(
+            new ConditionalCommand(
+                new SetElevatorState(ElevatorStates.TOPALGAEFAST),
+                new SetElevatorState(ElevatorStates.BOTTOMALGAEFAST),
+                isTop
+            ),//NEED TO GO DOWN
+            // new WaitCommand(0.45),
+            // new ConditionalCommand(
+            //     new WaitCommand(0.3),
+            //     new WaitCommand(0.4),
+            //     isTop),
+            // // ),
+            // new SetCoralRollersState(CoralRollersState.ALGAEINTAKING),
+            // new WaitCommand(0.5),
+            // new ConditionalCommand(
+            //     new SetElevatorState(ElevatorStates.TOPALGAEFAST),
+            //     new SetElevatorState(ElevatorStates.BOTTOMALGAEFAST),
+            //     isTop
+            // ),//NEED TO GO DOWN
+            // new WaitCommand(0.45),
+            // new ConditionalCommand(
+            //     new WaitCommand(0.3),
+            //     new WaitCommand(0.4),
+            //     isTop),
             new WaitUntilCommand(() -> CoralRollers.getInstance().isStalled()),
-            new DriveBack().withTimeout(0.3).withTimeout(1)
+            // new ParallelCommandGroup(
+                // new DriveBack().withTimeout(0.5),
+                new DriveBack().withTimeout(0.3)
+                // new SetElevatorStateTolerance(ElevatorStates.LOW, 0.05),
+                // new SetWristState(WristStates.PREP,ClosedLoopSlot.kSlot0)
+            // ).withTimeout(1)
         );
     }
-
-    // @Override
-    // public void initialize() {
-        // new InstantCommand(() -> {
-        //     AlignVision.setPoleSide(targetSide);
-        // });
-        // new WaitCommand(0.15);
-        // Swerve.getInstance().driveRobotRelative(AlignVision.getInstance().getAlignChassisSpeeds(AlignState.Reef));
-        // new WaitUntilCommand(() -> AlignVision.getInstance().isAligned());
-        
-    // }
-
-    // @Override
-    // public boolean isFinished() {
-    //     return Elevator.getInstance().isAtState(ElevatorStates.LOW, 1) && Wrist.getInstance().getState() == WristStates.PREP;
-    // }
 }

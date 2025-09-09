@@ -31,17 +31,28 @@ public class RemoveAlgaeInAuto extends SequentialCommandGroup {
         BooleanSupplier isTop =  () -> targetOrientation == States.ReefTargetOrientation.AB || targetOrientation == States.ReefTargetOrientation.EF || targetOrientation == States.ReefTargetOrientation.IJ;
 
         addCommands(
+
             new ParallelCommandGroup(
-                new SetCoralRollersState(CoralRollersState.ALGAEINTAKING),
                 new ConditionalCommand(
                     new SetElevatorState(ElevatorStates.TOPALGAE),
                     new SetElevatorState(ElevatorStates.BOTTOMALGAE),
                 isTop),
-                new AlignInAuto(ReefTargetSide.ALGAE, targetOrientation),
-                new SetWristStateTolerance(WristStates.ALGAEREMOVAL, 0.05, ClosedLoopSlot.kSlot0)
+                new SetCoralRollersState(CoralRollersState.ALGAEINTAKING)
             ),
+            new AlignInAuto(ReefTargetSide.ALGAE, targetOrientation),
+            new SetWristStateTolerance(WristStates.ALGAEREMOVAL, 0.05, ClosedLoopSlot.kSlot0),
+            // new SetCoralRollersState(CoralRollersState.ALGAEINTAKING),
+            // new WaitCommand(0.45),//make conditional; if top, its less time, if bottom, more to go down more
             new WaitUntilCommand(() -> CoralRollers.getInstance().isStalled()),
-            new ParallelCommandGroup(new DriveBack().withTimeout(0.3)).withTimeout(1)
+            // new ConditionalCommand(
+            //     new WaitCommand(0.5),
+            //     new WaitCommand(0.6),
+            //     isTop),
+            // new ParallelCommandGroup(
+                new DriveBack().withTimeout(0.3)
+                // new SetElevatorStateTolerance(ElevatorStates.LOW, 0.05),
+                // new SetWristState(WristStates.PREP,ClosedLoopSlot.kSlot0)
+            // ).withTimeout(1)
         );
     }
 }
