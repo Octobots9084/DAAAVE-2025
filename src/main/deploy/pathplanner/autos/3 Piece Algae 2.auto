@@ -5,6 +5,12 @@
     "data": {
       "commands": [
         {
+          "type": "named",
+          "data": {
+            "name": "InitalWristPos"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "Barge to GH4"
@@ -31,13 +37,37 @@
         {
           "type": "path",
           "data": {
+            "pathName": "Barge to EF3"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "RemoveAlgaeIJ"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "EF to barge"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ScoreAlgae"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
             "pathName": "Barge to IJ5"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "RemoveAlgaeInAutoL"
+            "name": "RemoveAlgaeEF"
           }
         },
         {

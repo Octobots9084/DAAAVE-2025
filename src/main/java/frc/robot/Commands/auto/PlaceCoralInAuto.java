@@ -32,13 +32,13 @@ import frc.robot.Subsystems.Vision.AlignVision;
 import frc.robot.Subsystems.Wrist.Wrist;
 import frc.robot.Subsystems.Wrist.WristStates;
 
-public class testPlace extends Command {
+public class PlaceCoralInAuto extends Command {
     ElevatorStates targetLevel;
     ReefTargetSide targetSide;
     ReefTargetOrientation targetOrientation;
     private Debouncer debouncer;
 
-    public testPlace(ElevatorStates targetLevel, ReefTargetSide targetSide, ReefTargetOrientation targetOrientation) {
+    public PlaceCoralInAuto(ElevatorStates targetLevel, ReefTargetSide targetSide, ReefTargetOrientation targetOrientation) {
         this.targetLevel = targetLevel;
         this.targetSide = targetSide;
         this.targetOrientation = targetOrientation;
@@ -48,10 +48,12 @@ public class testPlace extends Command {
     public void initialize() {
         debouncer = new Debouncer(0.05);
 
+        manager.level = ElevatorStates.LEVEL4;
+        manager.selectedReefSide = targetSide;
+        manager.orientation = targetOrientation;
         AlignVision.setPoleLevel(targetLevel);
         AlignVision.setPoleSide(targetSide);
         AlignVision.setReefOrientation(targetOrientation);
-        manager.level = ElevatorStates.LEVEL4;
         CommandScheduler.getInstance().schedule(new PrepReefPlacementAuto());
     }
 
@@ -78,6 +80,7 @@ public class testPlace extends Command {
         CommandScheduler.getInstance()
                 .schedule(new SetWristStateTolerance(WristStates.PREP, 0.01, ClosedLoopSlot.kSlot0));
         Swerve.getInstance().driveRobotRelative(new ChassisSpeeds());
+        CoralRollers.getInstance().setState(CoralRollersState.STOPPED);
     }
 
 }
