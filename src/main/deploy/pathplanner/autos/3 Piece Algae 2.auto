@@ -35,9 +35,27 @@
           }
         },
         {
+          "type": "path",
+          "data": {
+            "pathName": "Barge to EF3"
+          }
+        },
+        {
           "type": "named",
           "data": {
-            "name": "BringDownElevator"
+            "name": "RemoveAlgaeIJ"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "EF to barge"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ScoreAlgae"
           }
         },
         {
@@ -49,7 +67,7 @@
         {
           "type": "named",
           "data": {
-            "name": "RemoveAlgaeIJ"
+            "name": "RemoveAlgaeEF"
           }
         },
         {
@@ -62,12 +80,6 @@
           "type": "named",
           "data": {
             "name": "ScoreAlgae"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "BringDownElevator"
           }
         }
       ]

@@ -32,29 +32,16 @@ public class RemoveAlgaeInAuto extends SequentialCommandGroup {
 
         addCommands(
             new ParallelCommandGroup(
+                new SetCoralRollersState(CoralRollersState.ALGAEINTAKING),
                 new ConditionalCommand(
                     new SetElevatorState(ElevatorStates.TOPALGAE),
                     new SetElevatorState(ElevatorStates.BOTTOMALGAE),
                 isTop),
                 new AlignInAuto(ReefTargetSide.ALGAE, targetOrientation),
-                new SetCoralRollersState(CoralRollersState.ALGAEINTAKING)
+                new SetWristStateTolerance(WristStates.ALGAEREMOVAL, 0.05, ClosedLoopSlot.kSlot0)
             ),
-            new SetWristStateTolerance(WristStates.ALGAEREMOVAL, 0.05, ClosedLoopSlot.kSlot0),
-            new ConditionalCommand(
-                new SetElevatorState(ElevatorStates.TOPALGAE),
-                new SetElevatorState(ElevatorStates.BOTTOMALGAE),
-                isTop
-            ),
-            // new ConditionalCommand(
-            //     new WaitCommand(0.5),
-            //     new WaitCommand(0.6),
-            //     isTop),
             new WaitUntilCommand(() -> CoralRollers.getInstance().isStalled()),
-            new ParallelCommandGroup(
-                new DriveBack().withTimeout(0.3),
-                new SetElevatorStateTolerance(ElevatorStates.LOW, 0.05),
-                new SetWristState(WristStates.PREP,ClosedLoopSlot.kSlot0)
-            ).withTimeout(1)
+            new ParallelCommandGroup(new DriveBack().withTimeout(0.3)).withTimeout(1)
         );
     }
 }
