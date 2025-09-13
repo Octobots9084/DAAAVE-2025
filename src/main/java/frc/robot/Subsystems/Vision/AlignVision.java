@@ -85,6 +85,7 @@ public class AlignVision extends SubsystemBase {
 
     private boolean isFirstTime = false;
     private boolean usingGlobalVision = false;
+    private boolean reached_first_target_position = false;
 
     private double deltaTime = 0.02;
 
@@ -129,7 +130,7 @@ public class AlignVision extends SubsystemBase {
         this.cameraXPIDController = new PIDController(2, 0, 0);
         this.backCameraXPIDController = new PIDController(3.5, 0, 0);
 
-        this.cameraYPIDController = new PIDController(2.75, 0, 0);
+        this.cameraYPIDController = new PIDController(2.5, 0, 0);
         this.cameraYPIDControllerSource = new PIDController(2, 0.01, 0);
 
         this.lidarXPIDController = new PIDController(4, 0, 0);
@@ -262,7 +263,7 @@ public class AlignVision extends SubsystemBase {
             if (swerve.getPreviousDriveState() != DriveState.AlignReef || swerve.getPreviousDriveState() != DriveState.AlignSource
                     || swerve.getPreviousDriveState() != DriveState.AlignProcessor) {
                 isFirstTime = true;
-
+                reached_first_target_position = false;
                 cameraXPIDController.reset();
                 cameraYPIDController.reset();
                 cameraYPIDControllerSource.reset();
@@ -518,22 +519,37 @@ public class AlignVision extends SubsystemBase {
                 return -backCameraXPIDController.calculate(refPosition.getX(), VisionConstants.maxBackCameraDepthDistance);
             }
 
-        } else { // If no lidars are valid, then use the camera distance to calculate the x speed
+        } else if (selectedPoleSide == ReefTargetSide.ALGAE){ // If no lidars are valid, then use the camera distance to calculate the x speed
             isCollecting = false;
 
-            if(targetSide != ReefTargetSide.PREALGAE){
-                // Check if the robot x position is in tolerance for the target x position
-                xInTolerance = MathUtil.isNear(refPosition.getX(), VisionConstants.maxCameraDepthDistance, 0.05);
+            // Check if the robot x position is in tolerance for the target x position
+            if (!reached_first_target_position){
+                xInTolerance = MathUtil.isNear(refPosition.getX(), VisionConstants.maxCameraDepthDistancePreAlgae, 0.05) && (swerve.getSpeeds().vxMetersPerSecond < 1);
 
-                // Calculate the x speed for the robot to align with the target
-                return -cameraXPIDController.calculate(refPosition.getX(), VisionConstants.maxCameraDepthDistance);
+                if (xInTolerance){
+                    reached_first_target_position = true;
+                    xInTolerance = false;
+
+                
+                    // Calculate the x speed for the robot to align with the target
+                    return -cameraXPIDController.calculate(refPosition.getX(), VisionConstants.maxCameraDepthDistanceAlgae);
+                }else{
+                    return -cameraXPIDController.calculate(refPosition.getX(), VisionConstants.maxCameraDepthDistancePreAlgae);
+                }
+
             }else{
-                // Check if the robot x position is in tolerance for the target x position
-                xInTolerance = MathUtil.isNear(refPosition.getX(), VisionConstants.maxCameraDepthDistancePreAlgae, 0.05);
+                xInTolerance = MathUtil.isNear(refPosition.getX(), VisionConstants.maxCameraDepthDistanceAlgae, 0.05);
 
                 // Calculate the x speed for the robot to align with the target
-                return -cameraXPIDController.calculate(refPosition.getX(), VisionConstants.maxCameraDepthDistancePreAlgae);
+                return -cameraXPIDController.calculate(refPosition.getX(), VisionConstants.maxCameraDepthDistanceAlgae);
             }
+
+        } else {
+            // Check if the robot x position is in tolerance for the target x position
+            xInTolerance = MathUtil.isNear(refPosition.getX(), VisionConstants.maxCameraDepthDistance, 0.05);
+
+            // Calculate the x speed for the robot to align with the target
+            return -cameraXPIDController.calculate(refPosition.getX(), VisionConstants.maxCameraDepthDistance);
         }
     }
 

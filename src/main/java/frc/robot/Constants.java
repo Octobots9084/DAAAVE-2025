@@ -115,7 +115,8 @@ public final class Constants {
         // Max Depth Distance of Camera from Tag (Meters)
         public static final double maxCameraDepthDistance = 0.65;
 
-        public static final double maxCameraDepthDistancePreAlgae =  1.0;
+        public static final double maxCameraDepthDistancePreAlgae =  1.1;
+        public static final double maxCameraDepthDistanceAlgae =  0.8;
 
         // Lidar Turn Angle Baseline (Might Be Radians)
         public static final double lidarTurnAngleBaseline = 0.605;

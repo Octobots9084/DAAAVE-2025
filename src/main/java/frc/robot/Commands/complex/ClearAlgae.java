@@ -35,16 +35,15 @@ public class ClearAlgae extends SequentialCommandGroup {
                                     || targetOrientation == ReefTargetOrientation.IJ);
                         }),
                 new SetDriveState(DriveState.AlignReef),
-                new InstantCommand(() -> {
-                    AlignVision.setPoleSide(ReefTargetSide.PREALGAE);
-                }),
-                new WaitUntilCommand(() -> AlignVision.getInstance().isAligned()),
-                new WaitCommand(0.2),
+                // new InstantCommand(() -> {
+                //     AlignVision.setPoleSide(ReefTargetSide.PREALGAE);
+                // }),
+                // new WaitUntilCommand(() -> AlignVision.getInstance().isAligned()),
+                // new WaitCommand(0.2),
                 new InstantCommand(() -> {
                     AlignVision.setPoleSide(ReefTargetSide.ALGAE);
                 }),
                 new WaitUntilCommand(() -> AlignVision.getInstance().isAligned()),
-                new WaitCommand(0.2),
                 new WaitUntilCommand(() -> CoralRollers.getInstance().isStalled()),
 
                 new InstantCommand(() -> {
