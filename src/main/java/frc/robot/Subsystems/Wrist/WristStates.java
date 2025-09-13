@@ -5,8 +5,8 @@ public enum WristStates {
     INTAKE(0.375),
     ELEPHANTIASIS(0.425),
     L1(0.5),
-    L2(0.828),
-    L3(0.828),
+    L2(0.864),
+    L3(0.864),
     L4(0.745),
     PREP(0.92),
     MANUAL(0.45),
@@ -14,13 +14,13 @@ public enum WristStates {
     TOPALGAEREMOVAL(0.678),
 
     ALAGESTACKREMOVAL(0.610),
-    BARGEALGAE(0.83),
+    BARGEALGAE(0.9),//TODO:make sure this is good
     TUNING(0.7561), // TODO actually set this value
     TOPALGAEINTAKE(00000000),
     BOTTOMALGAEINTAKE(00000000),
     QUICKALGAEREMOVALLOW(0.575),
     QUICKALGAEREMOVALHIGH(0.575),
-    GROUNDALGAE(0.565);
+    GROUNDALGAE(0.56);
     public double wristPosition;
 
     WristStates(double totalPosition) {

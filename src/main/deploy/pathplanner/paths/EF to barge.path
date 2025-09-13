@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.3066598360655735,
-        "y": 7.075870901639344
+        "x": 5.274590163934427,
+        "y": 2.652407786885245
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.7127054457246829,
-        "y": 6.26914674481132
+        "x": 6.43320904317126,
+        "y": 3.2033145281243094
       },
       "isLocked": false,
-      "linkedName": "topstation"
+      "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.8770491803278686,
-        "y": 4.342674180327869
+        "x": 7.3125,
+        "y": 4.810194672131147
       },
       "prevControl": {
-        "x": 2.9209625775815655,
-        "y": 5.558784146828197
+        "x": 7.378242933255412,
+        "y": 4.460854519437339
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "a_skid"
+      "linkedName": "iwet587wte5"
     }
   ],
   "rotationTargets": [],
@@ -33,14 +33,20 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
+      "name": "BringDownElevator",
+      "waypointRelativePos": 0.01,
+      "endWaypointRelativePos": null,
+      "command": null
+    },
+    {
       "name": "InitalWristPos",
-      "waypointRelativePos": 0.5,
+      "waypointRelativePos": 0.01,
       "endWaypointRelativePos": null,
       "command": null
     },
     {
       "name": "BringUpElevator",
-      "waypointRelativePos": 0.74,
+      "waypointRelativePos": 0.4,
       "endWaypointRelativePos": null,
       "command": null
     }
@@ -54,14 +60,14 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 0.5,
+    "velocity": 0.0,
     "rotation": 0.0
   },
   "reversed": false,
-  "folder": "Topstation to place",
+  "folder": "Place to barge",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -55.0
+    "rotation": 120.17352002964432
   },
   "useDefaultConstraints": true
 }

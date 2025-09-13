@@ -174,4 +174,10 @@ public class VisionIOSim implements VisionIO {
       swerve.addVisionReading(pose2d, pose.timestampSeconds, stdDevs);
     }
   }
+
+@Override
+public PieceVisionCamera getAlgaeCamera() {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'getAlgaeCamera'");
+}
 }

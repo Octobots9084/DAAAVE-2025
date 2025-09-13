@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.814036885245901,
-        "y": 4.04298155737705
+        "x": 6.161680327868852,
+        "y": 4.030993852459016
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.063005897964514,
-        "y": 4.506335678607225
+        "x": 6.766878259561673,
+        "y": 4.8922320521466265
       },
       "isLocked": false,
-      "linkedName": "GH4_close"
+      "linkedName": null
     },
     {
       "anchor": {
-        "x": 7.720081967213115,
-        "y": 4.82218237704918
+        "x": 7.3125,
+        "y": 4.810194672131147
       },
       "prevControl": {
-        "x": 7.771795167295122,
-        "y": 4.345811437139624
+        "x": 7.331825262538496,
+        "y": 4.560942722835223
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "barge1"
+      "linkedName": "iwet587wte5"
     }
   ],
   "rotationTargets": [],
@@ -35,8 +35,8 @@
       "minWaypointRelativePos": 0.75,
       "maxWaypointRelativePos": 1.0,
       "constraints": {
-        "maxVelocity": 4.0,
-        "maxAcceleration": 4.5,
+        "maxVelocity": 8.0,
+        "maxAcceleration": 8.0,
         "maxAngularVelocity": 540.0,
         "maxAngularAcceleration": 720.0,
         "nominalVoltage": 10.0,
@@ -47,8 +47,20 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
+      "name": "BringDownElevator",
+      "waypointRelativePos": 0.1,
+      "endWaypointRelativePos": null,
+      "command": null
+    },
+    {
+      "name": "InitalWristPos",
+      "waypointRelativePos": 0.1,
+      "endWaypointRelativePos": null,
+      "command": null
+    },
+    {
       "name": "BringUpElevator",
-      "waypointRelativePos": 0.3,
+      "waypointRelativePos": 0.15,
       "endWaypointRelativePos": null,
       "command": null
     }
@@ -69,7 +81,7 @@
   "folder": "Place to barge",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -179.5017883873863
+    "rotation": 180.0
   },
   "useDefaultConstraints": true
 }

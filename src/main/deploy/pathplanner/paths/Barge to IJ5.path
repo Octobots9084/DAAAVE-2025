@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.720081967213115,
-        "y": 4.82218237704918
+        "x": 7.3125,
+        "y": 4.810194672131147
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.552838307173666,
-        "y": 4.802760935485991
+        "x": 6.2336065573770485,
+        "y": 5.025973360655737
       },
       "isLocked": false,
-      "linkedName": "barge1"
+      "linkedName": "iwet587wte5"
     },
     {
       "anchor": {
-        "x": 5.322540983606557,
-        "y": 5.33765368852459
+        "x": 5.33452868852459,
+        "y": 5.313678278688524
       },
       "prevControl": {
-        "x": 5.917194503359573,
-        "y": 4.989805575172148
+        "x": 5.549020288127191,
+        "y": 5.185251826195599
       },
       "nextControl": null,
       "isLocked": false,
@@ -48,7 +48,7 @@
   "eventMarkers": [
     {
       "name": "BringDownElevator",
-      "waypointRelativePos": 0.2,
+      "waypointRelativePos": 0.05,
       "endWaypointRelativePos": null,
       "command": null
     }
@@ -62,7 +62,7 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 0,
+    "velocity": 0.5,
     "rotation": -120.74926181202576
   },
   "reversed": false,

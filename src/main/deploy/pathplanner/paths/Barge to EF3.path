@@ -3,39 +3,39 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.025681818181818,
-        "y": 5.266463068181817
+        "x": 7.3125,
+        "y": 4.810194672131147
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.865895102522928,
-        "y": 5.505724254275948
+        "x": 6.958881930421742,
+        "y": 3.1060411451696153
       },
       "isLocked": false,
-      "linkedName": "j"
+      "linkedName": "iwet587wte5"
     },
     {
       "anchor": {
-        "x": 2.817110655737705,
-        "y": 6.440522540983607
+        "x": 5.4304303278688515,
+        "y": 2.71234631147541
       },
       "prevControl": {
-        "x": 3.1389519760207376,
-        "y": 6.130461963484835
+        "x": 5.9013188078651115,
+        "y": 3.031853816578944
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "mid_high"
+      "linkedName": null
     }
   ],
   "rotationTargets": [],
   "constraintZones": [
     {
       "name": "Constraints Zone",
-      "minWaypointRelativePos": 0,
-      "maxWaypointRelativePos": 0.29979743416609966,
+      "minWaypointRelativePos": 0.7132841328413282,
+      "maxWaypointRelativePos": 1.0,
       "constraints": {
-        "maxVelocity": 8.0,
+        "maxVelocity": 4.0,
         "maxAcceleration": 4.5,
         "maxAngularVelocity": 540.0,
         "maxAngularAcceleration": 720.0,
@@ -47,29 +47,29 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "PrepCollect",
-      "waypointRelativePos": 0.12,
+      "name": "BringDownElevator",
+      "waypointRelativePos": 0.01,
       "endWaypointRelativePos": null,
       "command": null
     }
   ],
   "globalConstraints": {
     "maxVelocity": 8.0,
-    "maxAcceleration": 6.0,
+    "maxAcceleration": 8.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 10.0,
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 2.0,
-    "rotation": -51.34019174590996
+    "velocity": 0.5,
+    "rotation": 120.17352002964432
   },
   "reversed": false,
-  "folder": "Place to topstation",
+  "folder": "Barge to place",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -119.99999999999999
+    "rotation": 0.0
   },
   "useDefaultConstraints": true
 }

@@ -5,12 +5,6 @@
     "data": {
       "commands": [
         {
-          "type": "named",
-          "data": {
-            "name": "InitalWristPos"
-          }
-        },
-        {
           "type": "path",
           "data": {
             "pathName": "nothin2"
@@ -25,7 +19,13 @@
         {
           "type": "named",
           "data": {
-            "name": "AlignG"
+            "name": "TESTREMOVEALGAEINAUTO"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "BringDownElevator"
           }
         }
       ]

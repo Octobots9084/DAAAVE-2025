@@ -5,45 +5,33 @@
     "data": {
       "commands": [
         {
+          "type": "named",
+          "data": {
+            "name": "InitalWristPos"
+          }
+        },
+        {
           "type": "path",
           "data": {
-            "pathName": "Barge to GH4"
+            "pathName": "nothin2"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.0
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "AlignGH"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "GH to barge"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Barge to IJ5"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "AlignIJ"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "IJ to barge"
+            "name": "placeG"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": null,
+  "folder": "testing",
   "choreoAuto": false
 }

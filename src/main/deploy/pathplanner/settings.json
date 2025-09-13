@@ -14,7 +14,9 @@
     "Start to algea",
     "Topstation to place"
   ],
-  "autoFolders": [],
+  "autoFolders": [
+    "testing"
+  ],
   "defaultMaxVel": 8.0,
   "defaultMaxAccel": 8.0,
   "defaultMaxAngVel": 540.0,

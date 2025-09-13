@@ -70,7 +70,7 @@ public class ClimbIOSystems implements ClimbIO {
         talonFXSConfig.CurrentLimits.SupplyCurrentLimit = 40;
         talonFXSConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
 
-        talonFXSConfig.CurrentLimits.StatorCurrentLimit = 40;
+        talonFXSConfig.CurrentLimits.StatorCurrentLimit = 80;
         talonFXSConfig.CurrentLimits.StatorCurrentLimitEnable = true;
 
         SmartDashboard.putString("ClimbTalonError", talonFXS.getConfigurator().apply(talonFXSConfig).toString());
@@ -87,7 +87,7 @@ public class ClimbIOSystems implements ClimbIO {
         SmartDashboard.putNumber("ClimbTalonSupplyCurrent", talonFXS.getSupplyCurrent().getValueAsDouble());
         SmartDashboard.putNumber("ClimbTalonStatorCurrent", talonFXS.getStatorCurrent().getValueAsDouble());
         SmartDashboard.putBoolean("ClimbTalonStallCurrent", talonFXS.getFault_StatorCurrLimit().getValue());
-
+        inputs.climbClamped = this.isClimbClamped();
     }
 
     @Override
@@ -125,7 +125,8 @@ public class ClimbIOSystems implements ClimbIO {
 
     @Override
     public boolean isClimbClamped () {
-        return !topLimitSwitch.get() && !bottomLimitSwitch.get();
+        // return !topLimitSwitch.get() && !bottomLimitSwitch.get();
+        return !topLimitSwitch.get();
         //limit switches true by default, false when pressed
     }
 }

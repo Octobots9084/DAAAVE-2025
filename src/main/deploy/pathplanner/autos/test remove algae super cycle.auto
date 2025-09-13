@@ -5,12 +5,6 @@
     "data": {
       "commands": [
         {
-          "type": "named",
-          "data": {
-            "name": "InitalWristPos"
-          }
-        },
-        {
           "type": "path",
           "data": {
             "pathName": "nothin2"
@@ -25,7 +19,7 @@
         {
           "type": "named",
           "data": {
-            "name": "AlignG"
+            "name": "REMOVEALGAESUPERCYCLE"
           }
         }
       ]

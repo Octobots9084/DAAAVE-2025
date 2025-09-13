@@ -121,6 +121,7 @@ public class Robot extends LoggedRobot {
         Elevator.getInstance().setTargetState(ElevatorStates.LEVEL1);
         Elevator.getInstance().setState(ElevatorStates.LEVEL1);
         Wrist.getInstance().setState(WristStates.INTAKE, ClosedLoopSlot.kSlot0);
+        VisionSubsystem.getInstance().io.getAlgaeCamera().getCenterOffset();
 
     }
 
@@ -178,7 +179,7 @@ public class Robot extends LoggedRobot {
         if (m_autonomousCommand != null) {
             m_autonomousCommand.cancel();
         }
-
+        SmartDashboard.putBoolean("IsFast",true);
         Constants.isInAuto = false;
         Swerve.getInstance().setDriveState(DriveState.Manual);
         Climb.getInstance().allStop();

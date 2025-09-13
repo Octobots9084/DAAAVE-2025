@@ -23,6 +23,7 @@ import frc.robot.Commands.complex.CoralPlaceAndAlgaeReefClear;
 import frc.robot.Commands.complex.CoralPlaceAndRemoveAlgaeFast;
 import frc.robot.Commands.complex.EjectCoral;
 import frc.robot.Commands.complex.Elephantiasis;
+import frc.robot.Commands.complex.GroundAlgaeAlign;
 // import frc.robot.Commands.complex.ClearAlgae;
 import frc.robot.Commands.complex.Intake;
 import frc.robot.Commands.complex.PrepReefPlacement;
@@ -32,7 +33,9 @@ import frc.robot.Commands.complex.RobotSafeState;
 import frc.robot.Commands.complex.RobotStop;
 import frc.robot.Commands.complex.ScoreCoral;
 import frc.robot.Commands.complex.ScoreCoralAndBackOff;
+import frc.robot.Commands.complex.deployClimb;
 import frc.robot.Commands.complex.groundAlgae;
+import frc.robot.Commands.complex.setClimbChasisSpeed;
 import frc.robot.Commands.swerve.drivebase.SetDriveState;
 import frc.robot.States.ReefTargetSide;
 import frc.robot.Commands.CoralRollers.SetAlgaeRollerState;
@@ -80,6 +83,8 @@ public class ButtonConfig {
         driverButtons.button(1)
                 .onTrue(new EjectCoral());
 
+        driverButtons.button(5).onTrue(new GroundAlgaeAlign());
+
         driverButtons.button(2).onTrue(new InstantCommand(() -> {
             Swerve.getInstance().setDriveState(DriveState.AlignReef);
         }));
@@ -97,18 +102,14 @@ public class ButtonConfig {
             Swerve.getInstance().zeroGyro();
         }));
 
-        driverLeft.button(1).whileTrue(new ClearAlgae());
-
-        driverLeft.button(1).onFalse(new InstantCommand(() -> {
-            Swerve.getInstance().setDriveState(DriveState.Manual);
-        }));
-
         driverButtons.button(20).onTrue(new InstantCommand(() -> {
             Swerve.getInstance().rotLock = false;
         }));
         driverButtons.button(20).onFalse(new InstantCommand(() -> {
             Swerve.getInstance().rotLock = true;
         }));
+
+        driverButtons.button(13).onTrue(new setClimbChasisSpeed());
 
         // driverButtons.button(2).onTrue(new RemoveAlgaeBottom().onlyIf(
         // () -> {
@@ -137,10 +138,10 @@ public class ButtonConfig {
         // ZeroClimb());
 
         coDriverButtons.button(1).onTrue(new EjectCoral().andThen(new RobotStop()));
-        coDriverButtons.button(4).onTrue(new Intake().onlyIf(
-                () -> {
-                    return !CoralRollers.getInstance().HasCoral();
-                }));
+        coDriverButtons.button(4).onTrue(new Intake());//.onlyIf(
+                // () -> {
+                //     return !CoralRollers.getInstance().HasCoral();
+                // }));
         coDriverButtons.button(2).onTrue(new ConditionalCommand(new AlgaeFlickTop(), new RemoveAlgaeTop().onlyIf(
                 () -> {
                     return !CoralRollers.getInstance().HasCoral();
@@ -164,7 +165,7 @@ public class ButtonConfig {
 
         // Reef mode active (Switch 20)
         // Reef selection
-        coDriverButtons.button(20).onTrue(new DeployClimb()); // new ClimbSequence());
+        coDriverButtons.button(20).onTrue(new deployClimb()); // new ClimbSequence());
        
         coDriverButtons.button(10).onTrue(new ReefLevelSelection(4));
         coDriverButtons.button(12).onTrue(new ReefLevelSelection(3));
@@ -195,6 +196,8 @@ public class ButtonConfig {
 
 
         driverLeft.button(2).whileTrue(new ConditionalCommand(new CoralPlaceAndRemoveAlgaeFast(), new ClearAlgae(), () -> CoralRollers.getInstance().HasCoral()))
+                .onFalse(new SetDriveState(DriveState.Manual));
+        driverLeft.button(1).whileTrue(new GroundAlgaeAlign())
                 .onFalse(new SetDriveState(DriveState.Manual));
         driverButtons.button(9).onTrue(new RobotStop());
         driverButtons.button(8).onTrue(new RobotSafeState());
