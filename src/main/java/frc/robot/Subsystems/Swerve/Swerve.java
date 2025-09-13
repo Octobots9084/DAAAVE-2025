@@ -62,6 +62,7 @@ public class Swerve extends SubsystemBase {
 
     public ReefTargetOrientation alignmentOrientation;
     public ReefTargetSide reefTargetSide;
+    public boolean autoselectToggle = false;
 
     public static enum DriveState {
         None,
@@ -127,6 +128,14 @@ public class Swerve extends SubsystemBase {
     public Swerve(SwerveIO io) {
         this.io = io;
 
+    }
+
+    public boolean getAutoselectState() {
+        return autoselectToggle;
+    }
+
+    public void setAutoselectState(boolean theState) {
+        autoselectToggle = theState;
     }
 
     public void configurePathplanner() {
@@ -308,6 +317,7 @@ public class Swerve extends SubsystemBase {
     public void periodic() {
         this.io.updateInputs(inputs);
         Logger.processInputs("Swerve Drive", inputs);
+        this.io.theHumbleAutoselectinator();
     }
 
     public double getGyro() {
@@ -426,5 +436,10 @@ public class Swerve extends SubsystemBase {
     public void addVisionReading(
             Pose2d robotPose, double timestamp, Matrix<N3, N1> visionMeasurementStdDevs) {
         this.io.addVisionReading(robotPose, timestamp, visionMeasurementStdDevs);
+    }
+
+    public void theHumbleAutoselectinator()
+    {
+        
     }
 }

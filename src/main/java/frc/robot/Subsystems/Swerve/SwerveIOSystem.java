@@ -192,4 +192,33 @@ public class SwerveIOSystem implements SwerveIO {
         inputs.reefTargetSide = swerve.getReefTargetSide();
         inputs.reefTargetOrientation = swerve.getReefTargetOrientation();
     }
+
+    @Override
+    public void theHumbleAutoselectinator()
+    {
+        new double angleThing = 0;
+        if (Constants.isBlueAlliance) {
+            angleThing = 180 + math.tan((getPose().getX() - 13.06)/(getPose().getY() - 4.01));
+        }
+        else {
+            angleThing = 180 + math.tan((getPose().getX() - 4.50)/(getPose().getY() - 4.01));
+        }
+        angleThing = amgleThing / 60;
+        angleThing = math.round(angleThing);
+        angleThing = angleThing * 60;
+            switch (angleThing) {
+                case 0:
+                CommandScheduler.getInstance().schedule(SetTargetReefSide(1));
+                case 60:
+                CommandScheduler.getInstance().schedule(SetTargetReefSide(2));
+                case 120:
+                CommandScheduler.getInstance().schedule(SetTargetReefSide(3));
+                case 180:
+                CommandScheduler.getInstance().schedule(SetTargetReefSide(4));
+                case 240:
+                CommandScheduler.getInstance().schedule(SetTargetReefSide(5));
+                case 300:
+                CommandScheduler.getInstance().schedule(SetTargetReefSide(6));
+            }
+            CommandScheduler.getInstance().schedule(RotateToAngle(angleThing));
 }
