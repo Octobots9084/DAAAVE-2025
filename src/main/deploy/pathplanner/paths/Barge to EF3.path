@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.958881930421742,
-        "y": 3.1060411451696153
+        "x": 7.178454190792651,
+        "y": 2.8936760034221916
       },
       "isLocked": false,
       "linkedName": "iwet587wte5"
@@ -17,11 +17,11 @@
     {
       "anchor": {
         "x": 5.4304303278688515,
-        "y": 2.71234631147541
+        "y": 2.3167520491803284
       },
       "prevControl": {
-        "x": 5.9013188078651115,
-        "y": 3.031853816578944
+        "x": 5.627193675505247,
+        "y": 2.4709732702457794
       },
       "nextControl": null,
       "isLocked": false,
@@ -45,14 +45,7 @@
     }
   ],
   "pointTowardsZones": [],
-  "eventMarkers": [
-    {
-      "name": "BringDownElevator",
-      "waypointRelativePos": 0.01,
-      "endWaypointRelativePos": null,
-      "command": null
-    }
-  ],
+  "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 8.0,
     "maxAcceleration": 8.0,
@@ -62,7 +55,7 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 0.5,
+    "velocity": 0.0,
     "rotation": 120.17352002964432
   },
   "reversed": false,

@@ -33,18 +33,6 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "BringDownElevator",
-      "waypointRelativePos": 0.01,
-      "endWaypointRelativePos": null,
-      "command": null
-    },
-    {
-      "name": "InitalWristPos",
-      "waypointRelativePos": 0.01,
-      "endWaypointRelativePos": null,
-      "command": null
-    },
-    {
       "name": "BringUpElevator",
       "waypointRelativePos": 0.4,
       "endWaypointRelativePos": null,

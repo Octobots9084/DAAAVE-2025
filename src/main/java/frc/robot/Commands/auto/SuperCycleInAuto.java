@@ -46,7 +46,7 @@ public class SuperCycleInAuto extends SequentialCommandGroup {
             // new AlignInAuto(ReefTargetSide.ALGAE, targetOrientation),//works before this
             // new SetElevatorState(targetLevel),
 
-            // new DriveBack().withTimeout(0.5),//works abive this
+            new DriveBack().withTimeout(0.2),//works abive this
 
             new RemoveAlgaeInAutoInSuperCycle(targetOrientation, ReefTargetSide.ALGAE)
             // new WaitCommand(0.34)

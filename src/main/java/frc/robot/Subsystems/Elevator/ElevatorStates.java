@@ -9,6 +9,9 @@ public enum ElevatorStates {
     LEVEL4(48.45),
     BARGE(47),
     INTAKE(0),
+
+    BrazillianCycle(5),
+    BrazillianCycle2(4),
     // all in terms of "arbitrary encoder units"
     MANUAL(0),
     BOTTOMALGAE(6.929), // TODO: make it below algae bottom so we can go up from there and push off

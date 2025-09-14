@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.766878259561673,
-        "y": 4.8922320521466265
+        "x": 6.813286225369074,
+        "y": 4.866780378021876
       },
       "isLocked": false,
       "linkedName": null
@@ -20,8 +20,8 @@
         "y": 4.810194672131147
       },
       "prevControl": {
-        "x": 7.331825262538496,
-        "y": 4.560942722835223
+        "x": 7.110504340693039,
+        "y": 4.533202041619066
       },
       "nextControl": null,
       "isLocked": false,
@@ -47,30 +47,18 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "BringDownElevator",
-      "waypointRelativePos": 0.1,
-      "endWaypointRelativePos": null,
-      "command": null
-    },
-    {
-      "name": "InitalWristPos",
-      "waypointRelativePos": 0.1,
-      "endWaypointRelativePos": null,
-      "command": null
-    },
-    {
       "name": "BringUpElevator",
-      "waypointRelativePos": 0.15,
+      "waypointRelativePos": 0.05,
       "endWaypointRelativePos": null,
       "command": null
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 8.0,
-    "maxAcceleration": 8.0,
+    "maxVelocity": 4.0,
+    "maxAcceleration": 4.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
-    "nominalVoltage": 10.0,
+    "nominalVoltage": 12.0,
     "unlimited": false
   },
   "goalEndState": {
@@ -83,5 +71,5 @@
     "velocity": 0,
     "rotation": 180.0
   },
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }

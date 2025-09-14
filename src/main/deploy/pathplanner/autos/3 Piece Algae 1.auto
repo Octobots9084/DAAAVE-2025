@@ -23,6 +23,12 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "BringUpElevator"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "GH to barge"
@@ -56,12 +62,6 @@
           "type": "named",
           "data": {
             "name": "ScoreAlgae"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 5.0
           }
         },
         {
