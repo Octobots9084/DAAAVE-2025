@@ -3,6 +3,7 @@ package frc.robot.Commands.auto;
 import com.fasterxml.jackson.annotation.JsonCreator.Mode;
 
 import edu.wpi.first.math.filter.Debouncer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.States.AlignState;
@@ -19,7 +20,7 @@ import frc.robot.Subsystems.Vision.AlignVision;
 public class AlignCollect extends Command {
     private Debouncer debouncer;
     private boolean shouldTakeControlFromDrivers = false;
-
+    private double frames;
     public AlignCollect() {
         debouncer = new Debouncer(0.05);
     }
@@ -28,6 +29,7 @@ public class AlignCollect extends Command {
     public void initialize() {
         Swerve.getInstance().setDriveState(DriveState.AlignSource);
         CommandScheduler.getInstance().schedule(new Intake());
+        frames = 0;
     }
 
     @Override
@@ -37,6 +39,7 @@ public class AlignCollect extends Command {
         // if (shouldTakeControlFromDrivers) {
         Swerve.getInstance().driveRobotRelative(AlignVision.getInstance().getAlignChassisSpeeds(AlignVision.getInstance().getAlignSourceSide()));
         // }
+        frames += 1;
     }
 
     @Override
@@ -51,5 +54,12 @@ public class AlignCollect extends Command {
     @Override
     public void end(boolean interrupted) {
         Swerve.getInstance().setDriveState(DriveState.Manual);
+        frames *= 0.02;
+        Constants.intakeTimes.add(frames);
+        double total = 0;
+        for(double i: Constants.intakeTimes){
+            total += i;
+        }
+        SmartDashboard.putNumber("Average Intake Time Auto", total/Constants.intakeTimes.size());
     }
 }

@@ -25,6 +25,8 @@ import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.numbers.N4;
 import edu.wpi.first.wpilibj.RobotBase;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -42,6 +44,7 @@ public final class Constants {
     public static boolean isBlueAlliance = true;
     public static int NUM_LEDS;
     public static double LOOP_TIME = 0.02;
+    public static List<Double> intakeTimes = new ArrayList<>();
 
     public static enum Mode {
         /** Running on a real robot. */

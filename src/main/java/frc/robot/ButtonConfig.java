@@ -53,6 +53,7 @@ import frc.robot.Subsystems.Elevator.ElevatorStates;
 import frc.robot.Subsystems.Swerve.Swerve;
 import frc.robot.Subsystems.Swerve.Swerve.DriveState;
 import frc.robot.Subsystems.Vision.AlignVision;
+import frc.robot.Subsystems.Wrist.Wrist;
 import frc.robot.Subsystems.Wrist.WristStates;
 
 public class ButtonConfig {
@@ -94,7 +95,7 @@ public class ButtonConfig {
 
         driverButtons.button(4).onTrue(new Intake().onlyIf(
                 () -> {
-                    return !CoralRollers.getInstance().HasCoral();
+                    return (!CoralRollers.getInstance().HasCoral() || Wrist.getInstance().isAtState(WristStates.INTAKE,0.01));
                 }));
 
         // Zero gyro button

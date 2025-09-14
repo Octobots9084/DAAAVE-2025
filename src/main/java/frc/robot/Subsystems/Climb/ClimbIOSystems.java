@@ -126,6 +126,7 @@ public class ClimbIOSystems implements ClimbIO {
     @Override
     public boolean isClimbClamped () {
         // return !topLimitSwitch.get() && !bottomLimitSwitch.get();
+        SmartDashboard.putBoolean("topswitch",!topLimitSwitch.get());
         return !topLimitSwitch.get();
         //limit switches true by default, false when pressed
     }

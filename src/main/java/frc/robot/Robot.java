@@ -180,6 +180,8 @@ public class Robot extends LoggedRobot {
             m_autonomousCommand.cancel();
         }
         SmartDashboard.putBoolean("IsFast",true);
+        SmartDashboard.putNumber("Average Intake Time Teleop", 0.0);
+        SmartDashboard.putNumber("Average Intake Time Auto", 0.0);
         Constants.isInAuto = false;
         Swerve.getInstance().setDriveState(DriveState.Manual);
         Climb.getInstance().allStop();
