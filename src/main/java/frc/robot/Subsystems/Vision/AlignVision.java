@@ -255,6 +255,10 @@ public class AlignVision extends SubsystemBase {
         }
     }
 
+    public PIDController getGyroRotationPIDController(){
+        return gyroRotationPIDController;
+    }
+
     public ChassisSpeeds getAlignChassisSpeeds(AlignState state) {
         try {
             this.finalAngles = Constants.isBlueAlliance ? blueAlignAngles : redAlignAngles;

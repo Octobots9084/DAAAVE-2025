@@ -1,19 +1,21 @@
 package frc.robot.Commands.ReefSelection;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import frc.robot.Subsystems.Swerve;
+import frc.robot.Subsystems.Swerve.Swerve;
+import frc.robot.Subsystems.Swerve.SwerveIO;
 
 public class toggleAutoselect extends InstantCommand {
 
     private boolean currentState;
+    private Swerve swerve = Swerve.getInstance();
 
   @Override
   public void initialize() {
-   currentState = Swerve.getAutoselectState();
+   currentState = swerve.getInstance().getAutoselectState();
     if (currentState) {
-        Swerve.setAutoselectState(false);
+        swerve.setAutoselectState(false);
     } else {
-        Swerve.setAutoselectState(true);
+        swerve.setAutoselectState(true);
     }
   }
 }

@@ -63,6 +63,8 @@ public interface SwerveIO {
         return new ChassisSpeeds();
     }
 
+    public default void theHumbleAutoselectinator() {}
+
     public default void driveRobotRelativeAuto(ChassisSpeeds robotRelativeSpeeds) {}
 
     public default void driveRobotRelative(ChassisSpeeds robotRelativeSpeeds) {}

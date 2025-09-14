@@ -14,8 +14,12 @@ import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Constants;
 import frc.robot.Constants.Mode;
+import frc.robot.States.ReefTargetOrientation;
+import frc.robot.States.ReefTargetSide;
+import frc.robot.Commands.complex.RotateToAngle;
 import frc.robot.Subsystems.Elevator.Elevator;
 import frc.robot.Subsystems.Elevator.ElevatorStates;
 import frc.robot.util.MathUtil;
@@ -196,29 +200,30 @@ public class SwerveIOSystem implements SwerveIO {
     @Override
     public void theHumbleAutoselectinator()
     {
-        new double angleThing = 0;
+        double angleThing = 0;
         if (Constants.isBlueAlliance) {
-            angleThing = 180 + math.tan((getPose().getX() - 13.06)/(getPose().getY() - 4.01));
+            angleThing = 180 + Math.tan((getPose().getX() - 13.06)/(getPose().getY() - 4.01));
         }
         else {
-            angleThing = 180 + math.tan((getPose().getX() - 4.50)/(getPose().getY() - 4.01));
+            angleThing = 180 + Math.tan((getPose().getX() - 4.50)/(getPose().getY() - 4.01));
         }
-        angleThing = amgleThing / 60;
-        angleThing = math.round(angleThing);
+        angleThing = angleThing / 60;
+        angleThing = Math.round(angleThing);
         angleThing = angleThing * 60;
-            switch (angleThing) {
-                case 0:
-                CommandScheduler.getInstance().schedule(SetTargetReefSide(1));
-                case 60:
-                CommandScheduler.getInstance().schedule(SetTargetReefSide(2));
-                case 120:
-                CommandScheduler.getInstance().schedule(SetTargetReefSide(3));
-                case 180:
-                CommandScheduler.getInstance().schedule(SetTargetReefSide(4));
-                case 240:
-                CommandScheduler.getInstance().schedule(SetTargetReefSide(5));
-                case 300:
-                CommandScheduler.getInstance().schedule(SetTargetReefSide(6));
-            }
-            CommandScheduler.getInstance().schedule(RotateToAngle(angleThing));
+        switch ((int)angleThing) {
+            case 0:
+            Swerve.getInstance().setReefTargetOrientation(ReefTargetOrientation.AB);
+            case 60:
+            Swerve.getInstance().setReefTargetOrientation(ReefTargetOrientation.CD);
+            case 120:
+            Swerve.getInstance().setReefTargetOrientation(ReefTargetOrientation.EF);
+            case 180:
+            Swerve.getInstance().setReefTargetOrientation(ReefTargetOrientation.GH);
+            case 240:
+            Swerve.getInstance().setReefTargetOrientation(ReefTargetOrientation.IJ);
+            case 300:
+            Swerve.getInstance().setReefTargetOrientation(ReefTargetOrientation.KL);
+        }
+        CommandScheduler.getInstance().schedule(new RotateToAngle((int)angleThing));
+    }
 }
