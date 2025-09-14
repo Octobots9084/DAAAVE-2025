@@ -23,12 +23,6 @@
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "BringUpElevator"
-          }
-        },
-        {
           "type": "path",
           "data": {
             "pathName": "GH to barge"

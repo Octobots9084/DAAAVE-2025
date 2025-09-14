@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Commands.CoralRollers.SetCoralRollersState;
 import frc.robot.Commands.Elevator.SetElevatorState;
+import frc.robot.Commands.Elevator.SetElevatorStateTolerance;
 import frc.robot.Commands.Wrist.SetWristState;
 import frc.robot.Subsystems.CoralRollers.CoralRollersState;
 import frc.robot.Subsystems.Elevator.ElevatorStates;
@@ -15,12 +16,12 @@ public class BargeThrow extends SequentialCommandGroup{
     public BargeThrow(){
         addCommands(
             new SetWristState(WristStates.PREP, ClosedLoopSlot.kSlot0),
-            new SetElevatorState(ElevatorStates.LEVEL4),       
+            new SetElevatorStateTolerance(ElevatorStates.LEVEL4, 3).withTimeout(4),      
             // new WaitCommand(0.7),
             // new SetWristState(WristStates.BARGEALGAE, ClosedLoopSlot.kSlot0),
-            new WaitCommand(0.25),
+            // new WaitCommand(0.4),
             new SetCoralRollersState(CoralRollersState.AlGAEOUTPUT),
-            new WaitCommand(0.25),
+            // new WaitCommand(0.25),
             new SetElevatorState(ElevatorStates.LOW)
 
             // new WaitCommand(0.5),

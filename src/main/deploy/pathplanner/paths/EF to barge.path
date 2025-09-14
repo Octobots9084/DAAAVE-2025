@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.43320904317126,
-        "y": 3.2033145281243094
+        "x": 6.389446721311475,
+        "y": 2.7722848360655736
       },
       "isLocked": false,
       "linkedName": null
@@ -17,15 +17,15 @@
     {
       "anchor": {
         "x": 7.3125,
-        "y": 4.810194672131147
+        "y": 4.858145491803278
       },
       "prevControl": {
-        "x": 7.378242933255412,
-        "y": 4.460854519437339
+        "x": 5.909938524590164,
+        "y": 3.6713627049180326
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "iwet587wte5"
+      "linkedName": "ewt"
     }
   ],
   "rotationTargets": [],
@@ -48,7 +48,7 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 0.0,
+    "velocity": 0.5,
     "rotation": 0.0
   },
   "reversed": false,

@@ -41,8 +41,10 @@ public class RemoveAlgaeInAutoInSuperCycle extends SequentialCommandGroup{
 
         addCommands(
             new AlignInAuto(ReefTargetSide.ALGAE, targetOrientation),
-            new SetWristStateTolerance(WristStates.ALAGESTACKREMOVAL, 0.05, ClosedLoopSlot.kSlot0),
-            new SetCoralRollersState(CoralRollersState.ALGAEINTAKING),
+            new ParallelCommandGroup(
+                new SetWristStateTolerance(WristStates.ALAGESTACKREMOVAL, 0.05, ClosedLoopSlot.kSlot0),
+                new SetCoralRollersState(CoralRollersState.ALGAEINTAKING)
+            ),
             // new ParallelCommandGroup(
             new ConditionalCommand(
                 new SetElevatorState(ElevatorStates.TOPALGAEFAST),
@@ -52,11 +54,15 @@ public class RemoveAlgaeInAutoInSuperCycle extends SequentialCommandGroup{
 
             new WaitUntilCommand(() -> CoralRollers.getInstance().isStalled()),
             new DriveBack().withTimeout(0.2),
-
             new ParallelCommandGroup(
                 new SetWristState(WristStates.PREP, ClosedLoopSlot.kSlot0),
                 new SetElevatorState(ElevatorStates.LOW)
             )
+
+            // ,new ParallelCommandGroup(
+            //     new SetWristState(WristStates.PREP, ClosedLoopSlot.kSlot0),
+            //     new SetElevatorState(ElevatorStates.LOW)
+            // )
         );
     }
 }

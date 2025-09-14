@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.813286225369074,
-        "y": 4.866780378021876
+        "x": 6.216096673027704,
+        "y": 4.75385609480749
       },
       "isLocked": false,
       "linkedName": null
@@ -17,15 +17,15 @@
     {
       "anchor": {
         "x": 7.3125,
-        "y": 4.810194672131147
+        "y": 4.858145491803278
       },
       "prevControl": {
-        "x": 7.110504340693039,
-        "y": 4.533202041619066
+        "x": 6.83574470539042,
+        "y": 4.572497735669154
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "iwet587wte5"
+      "linkedName": "ewt"
     }
   ],
   "rotationTargets": [],
@@ -51,6 +51,12 @@
       "waypointRelativePos": 0.05,
       "endWaypointRelativePos": null,
       "command": null
+    },
+    {
+      "name": "InitalWristPos",
+      "waypointRelativePos": 0.2,
+      "endWaypointRelativePos": null,
+      "command": null
     }
   ],
   "globalConstraints": {
@@ -62,7 +68,7 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 0.0,
+    "velocity": 0.25,
     "rotation": 0.0
   },
   "reversed": false,
