@@ -16,13 +16,13 @@ public class BargeThrow extends SequentialCommandGroup{
     public BargeThrow(){
         addCommands(
             new SetWristState(WristStates.PREP, ClosedLoopSlot.kSlot0),
-            new SetElevatorStateTolerance(ElevatorStates.LEVEL4, 3).withTimeout(4),      
+            new SetElevatorState(ElevatorStates.LEVEL4).withTimeout(1),      
             // new WaitCommand(0.7),
             // new SetWristState(WristStates.BARGEALGAE, ClosedLoopSlot.kSlot0),
             // new WaitCommand(0.4),
             new SetCoralRollersState(CoralRollersState.AlGAEOUTPUT),
             // new WaitCommand(0.25),
-            new SetElevatorState(ElevatorStates.LOW)
+            new SetElevatorStateTolerance(ElevatorStates.LOW, 10).withTimeout(3)
 
             // new WaitCommand(0.5),
             // new SetCoralRollersState(CoralRollersState.STOPPED).withTimeout(1)

@@ -17,10 +17,17 @@ import frc.robot.Subsystems.Wrist.WristStates;
 public class BrazilianCycle extends SequentialCommandGroup {
     public BrazilianCycle() {
         addCommands(
-            new SetWristState(WristStates.BrazilianCycle2, ClosedLoopSlot.kSlot0).withTimeout(0.5),
-            new SetCoralRollersState(CoralRollersState.ALGAEINTAKING),
-            new SetElevatorState(ElevatorStates.BrazillianCycle),
-            new SetWristState(WristStates.BrazilianCycle, ClosedLoopSlot.kSlot0).withTimeout(0.5),
+            new SetWristState(WristStates.L1, ClosedLoopSlot.kSlot0).withTimeout(0.5),
+            new ParallelCommandGroup(
+                new SetWristState(WristStates.BrazilianCycle2, ClosedLoopSlot.kSlot0).withTimeout(0.5),
+                new SetElevatorState(ElevatorStates.BrazillianCycle)
+            ),
+            new SetWristState(WristStates.BrazilianCycle3, ClosedLoopSlot.kSlot0).withTimeout(0.5),
+            new ParallelCommandGroup(
+                new SetCoralRollersState(CoralRollersState.BrazilianCycle),
+                new SetElevatorState(ElevatorStates.LOW),
+                new SetWristState(WristStates.L1, ClosedLoopSlot.kSlot0)
+            ),
             new Intake()
             //olier
             // new SetWristState(WristStates.BrazilianCycle3, ClosedLoopSlot.kSlot0),

@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
+import frc.robot.Commands.CoralRollers.SetCoralRollersState;
 import frc.robot.Commands.Elevator.SetElevatorState;
 import frc.robot.Commands.Elevator.SetElevatorStateTolerance;
 import frc.robot.Commands.ReefSelection.SetTargetReefSide;
@@ -31,8 +32,9 @@ public class ClearAlgae extends SequentialCommandGroup {
                         new RemoveAlgaeBottom(),
                         () -> {
                             ReefTargetOrientation targetOrientation = Swerve.getInstance().getReefTargetOrientation();
-                            return (targetOrientation == ReefTargetOrientation.AB || targetOrientation == ReefTargetOrientation.EF
-                                    || targetOrientation == ReefTargetOrientation.IJ);
+                            return true;
+                            // (targetOrientation == ReefTargetOrientation.AB || targetOrientation == ReefTargetOrientation.EF
+                            //         || targetOrientation == ReefTargetOrientation.IJ);
                         }),
                 new SetDriveState(DriveState.AlignReef),
                 // new InstantCommand(() -> {
@@ -44,6 +46,7 @@ public class ClearAlgae extends SequentialCommandGroup {
                     AlignVision.setPoleSide(ReefTargetSide.ALGAE);
                 }),
                 new WaitUntilCommand(() -> AlignVision.getInstance().isAligned()),
+                new SetCoralRollersState(CoralRollersState.ALGAEINTAKING),
                 new WaitUntilCommand(() -> CoralRollers.getInstance().isStalled()),
 
                 new InstantCommand(() -> {

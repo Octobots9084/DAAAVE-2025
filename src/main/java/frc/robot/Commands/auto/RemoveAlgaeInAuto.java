@@ -16,9 +16,9 @@ import frc.robot.States.ReefTargetOrientation;
 import frc.robot.States.ReefTargetSide;
 import frc.robot.Commands.CoralRollers.SetCoralRollersState;
 import frc.robot.Commands.Elevator.SetElevatorState;
-import frc.robot.Commands.Elevator.SetElevatorStateTolerance;
+import frc.robot.Commands.Elevator.SetElevatorState;
 import frc.robot.Commands.Wrist.SetWristState;
-import frc.robot.Commands.Wrist.SetWristStateTolerance;
+import frc.robot.Commands.Wrist.SetWristState;
 import frc.robot.Commands.auto.testing.Algae.TestRemoveAlgaeBottom;
 import frc.robot.Commands.auto.testing.Algae.TestRemoveAlgaeTop;
 import frc.robot.Subsystems.CoralRollers.CoralRollers;
@@ -31,18 +31,26 @@ public class RemoveAlgaeInAuto extends SequentialCommandGroup {
         BooleanSupplier isTop =  () -> targetOrientation == States.ReefTargetOrientation.AB || targetOrientation == States.ReefTargetOrientation.EF || targetOrientation == States.ReefTargetOrientation.IJ;
 
         addCommands(
-
+            new ParallelCommandGroup(
+                new AlignInAuto(ReefTargetSide.ALGAE, targetOrientation),
+                new SetWristState(WristStates.PREP, ClosedLoopSlot.kSlot0)
+            ),
+            
+            new SetCoralRollersState(CoralRollersState.ALGAEINTAKING),
+            
             new ParallelCommandGroup(
                 new ConditionalCommand(
-                    new SetElevatorState(ElevatorStates.TOPALGAE),
-                    new SetElevatorState(ElevatorStates.BOTTOMALGAE),
-                isTop),
-                new SetWristStateTolerance(WristStates.ALGAEREMOVAL, 0.05, ClosedLoopSlot.kSlot0),
-                new SetCoralRollersState(CoralRollersState.ALGAEINTAKING)
+                    new SetElevatorState(ElevatorStates.BrazillianCycle),
+                    new SetElevatorState(ElevatorStates.BOTTOMALGAEFAST),
+                    isTop
+                ),
+                new ConditionalCommand(
+                    new SetWristState(WristStates.L3, ClosedLoopSlot.kSlot0),
+                    new SetWristState(WristStates.ALAGESTACKREMOVAL, ClosedLoopSlot.kSlot0),
+                    isTop
+                )
             ),
-            new WaitCommand(0.1),
-            new AlignInAuto(ReefTargetSide.ALGAE, targetOrientation),
-
+            
             new WaitUntilCommand(() -> CoralRollers.getInstance().isStalled()),
             
             new DriveBack().withTimeout(0.2),

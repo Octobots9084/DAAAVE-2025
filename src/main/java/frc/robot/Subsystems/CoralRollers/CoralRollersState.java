@@ -11,7 +11,7 @@ public enum CoralRollersState {
     AlGAEOUTPUT(10),
     ALGAEHOLD(-7), //TODO update this value based on testing
 
-    BrazilianCycle(-6);
+    BrazilianCycle(-12);
 
     public double voltage;
 

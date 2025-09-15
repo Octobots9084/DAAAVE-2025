@@ -40,6 +40,7 @@ import frc.robot.Commands.complex.CollectCoral;
 import frc.robot.Commands.complex.PrepCollect;
 import frc.robot.Commands.complex.BargeThrow;
 import frc.robot.Commands.auto.RemoveAlgaeInAuto;
+import frc.robot.Commands.auto.RemoveAlgaeInAuto;
 import frc.robot.Commands.auto.SuperCycleInAuto;
 import frc.robot.Commands.auto.testing.TestAlignAnyInAuto;
 import frc.robot.States.ReefTargetLevel;

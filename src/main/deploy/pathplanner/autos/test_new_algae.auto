@@ -9,6 +9,12 @@
           "data": {
             "pathName": "18-s_delete me"
           }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "RemoveAlgaeGH"
+          }
         }
       ]
     }

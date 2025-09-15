@@ -10,7 +10,7 @@ public enum ElevatorStates {
     BARGE(47),
     INTAKE(0),
 
-    BrazillianCycle(5),
+    BrazillianCycle(6),
     BrazillianCycle2(4),
     // all in terms of "arbitrary encoder units"
     MANUAL(0),
