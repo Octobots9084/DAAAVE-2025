@@ -40,6 +40,7 @@ import frc.robot.Commands.Elevator.SetElevatorState;
 import frc.robot.Commands.Elevator.SetElevatorStateTolerance;
 import frc.robot.Commands.ReefSelection.ReefLevelSelection;
 import frc.robot.Commands.ReefSelection.SetOrientation;
+import frc.robot.Commands.ReefSelection.manager;
 import frc.robot.Commands.ReefSelection.toggleAutoselect;
 import frc.robot.Commands.Wrist.SetWristState;
 import frc.robot.Commands.Wrist.SetWristStateTolerance;
@@ -51,6 +52,7 @@ import frc.robot.Subsystems.Elevator.ElevatorStates;
 import frc.robot.Subsystems.Swerve.Swerve;
 import frc.robot.Subsystems.Swerve.Swerve.DriveState;
 import frc.robot.Subsystems.Vision.AlignVision;
+import frc.robot.Subsystems.Vision.AutoSelector;
 import frc.robot.Subsystems.Wrist.WristStates;
 
 public class ButtonConfig {
@@ -202,6 +204,10 @@ public class ButtonConfig {
         driverButtons.button(7).onTrue(new groundAlgae());
         driverButtons.button(2).onTrue(new BargeThrow());
         driverButtons.button(13).onTrue(new toggleAutoselect());
+        coDriverButtons.button(19).whileTrue(new InstantCommand(() -> {
+            AutoSelector.pickASide();})).onTrue(new InstantCommand(()->{
+            manager.isAuto = true;})).onFalse(new InstantCommand(()->{
+            manager.isAuto = false;}));
         
     }
 }

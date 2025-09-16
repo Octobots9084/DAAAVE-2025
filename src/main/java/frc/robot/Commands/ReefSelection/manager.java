@@ -11,6 +11,7 @@ public class manager {
     public static ElevatorStates level = ElevatorStates.LEVEL1;
     public static ReefTargetOrientation orientation = ReefTargetOrientation.NONE;
     public static ReefTargetSide selectedReefSide = ReefTargetSide.ALGAE;
+    public static boolean isAuto;
 
     public static void clearReef() {
         for (int i = 0; i < reef.length; i++) {
@@ -22,6 +23,11 @@ public class manager {
 
     public static void setReef(int row, int col, boolean state) {
         reef[row][col] = state;
+    }
+
+    public static void setReefSide(int row, boolean state){
+        reef[row][0] = state;
+        reef[row][1] = state;
     }
 
     public static boolean getReefPos(int row, int col) {

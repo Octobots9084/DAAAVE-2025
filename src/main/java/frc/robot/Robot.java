@@ -33,6 +33,7 @@ import frc.robot.Subsystems.Lights.Light;
 import frc.robot.Subsystems.Swerve.Swerve;
 import frc.robot.Subsystems.Swerve.Swerve.DriveState;
 import frc.robot.Subsystems.Vision.AlignVision;
+import frc.robot.Subsystems.Vision.AutoSelector;
 import frc.robot.Subsystems.Vision.VisionSubsystem;
 import frc.robot.Subsystems.Wrist.*;
 
@@ -182,6 +183,7 @@ public class Robot extends LoggedRobot {
         Constants.isInAuto = false;
         Swerve.getInstance().setDriveState(DriveState.Manual);
         Climb.getInstance().allStop();
+        SmartDashboard.putBoolean("is",false);
     }
 
     /** This function is called periodically during operator control. */
