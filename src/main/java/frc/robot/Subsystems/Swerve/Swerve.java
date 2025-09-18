@@ -83,7 +83,7 @@ public class Swerve extends SubsystemBase {
     private ReefTargetSide targetSide = ReefTargetSide.LEFT;
     private ReefTargetOrientation targetOrientation = ReefTargetOrientation.AB; // AB
     public static DriveState previousDriveState;
-    public static boolean rotLock = true;
+    public static boolean rotLock = false;
 
     public static Swerve getInstance() {
         if (INSTANCE == null) {

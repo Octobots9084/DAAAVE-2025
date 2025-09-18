@@ -38,6 +38,7 @@ import frc.robot.States.ReefTargetSide;
 import frc.robot.Commands.CoralRollers.SetAlgaeRollerState;
 import frc.robot.Commands.Elevator.SetElevatorState;
 import frc.robot.Commands.Elevator.SetElevatorStateTolerance;
+import frc.robot.Commands.ReefSelection.AutoSelectorSidePickerWhileTrue;
 import frc.robot.Commands.ReefSelection.ReefLevelSelection;
 import frc.robot.Commands.ReefSelection.SetOrientation;
 import frc.robot.Commands.ReefSelection.manager;
@@ -157,7 +158,6 @@ public class ButtonConfig {
         coDriverButtons.button(3).onTrue(new BargeAlgae());
 
         coDriverButtons.button(6).onTrue(new PrepReefPlacement());
-        coDriverButtons.button(15).onTrue(new SetElevatorState(ElevatorStates.LEVEL4).andThen(new SetWristStateTolerance(WristStates.BARGEALGAE, 1, ClosedLoopSlot.kSlot0)));
 
         // Return robot to a safe configuration
         // Score and Intake assistance buttons for right stick
@@ -169,9 +169,14 @@ public class ButtonConfig {
         // Reef selection
         coDriverButtons.button(20).onTrue(new DeployClimb()); // new ClimbSequence());
        
-        coDriverButtons.button(10).onTrue(new ReefLevelSelection(4));
-        coDriverButtons.button(12).onTrue(new ReefLevelSelection(3));
-        coDriverButtons.button(14).onTrue(new ReefLevelSelection(2));
+        coDriverButtons.button(10).onTrue(new ReefLevelSelection(4,1));
+        coDriverButtons.button(12).onTrue(new ReefLevelSelection(3,1));
+        coDriverButtons.button(14).onTrue(new ReefLevelSelection(2,1));
+
+        coDriverButtons.button(11).onTrue(new ReefLevelSelection(4,0));
+        coDriverButtons.button(13).onTrue(new ReefLevelSelection(3,0));
+        coDriverButtons.button(15).onTrue(new ReefLevelSelection(2,0));
+        
         coDriverButtons.button(16)
                 .onTrue(new ConditionalCommand(new InstantCommand(), new ReefLevelSelection(1).andThen(new InstantCommand(() -> {
                     AlignVision.setPoleSide(ReefTargetSide.ALGAE);
@@ -208,6 +213,8 @@ public class ButtonConfig {
             AutoSelector.pickASide();})).onTrue(new InstantCommand(()->{
             manager.isAuto = true;})).onFalse(new InstantCommand(()->{
             manager.isAuto = false;}));
-        
+        coDriverButtons.button(19).whileTrue(new AutoSelectorSidePickerWhileTrue()).onTrue(new InstantCommand(()->{
+            manager.isAuto = true;})).onFalse(new InstantCommand(()->{
+            manager.isAuto = false;}));
     }
 }
