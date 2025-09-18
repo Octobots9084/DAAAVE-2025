@@ -209,7 +209,7 @@ public class ButtonConfig {
         driverButtons.button(9).onTrue(new RobotStop());
         driverButtons.button(8).onTrue(new RobotSafeState());
         driverButtons.button(7).onTrue(new groundAlgae());
-        driverButtons.button(2).onTrue(new BargeThrow());
+        driverButtons.button(5).onTrue(new BargeThrow());
         
     }
 }

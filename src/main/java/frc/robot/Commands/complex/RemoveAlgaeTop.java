@@ -20,11 +20,8 @@ import frc.robot.Subsystems.Wrist.WristStates;
 public class RemoveAlgaeTop extends SequentialCommandGroup {
     public RemoveAlgaeTop() {
         addCommands(
-                new ConditionalCommand(new SetWristState(WristStates.L3, ClosedLoopSlot.kSlot0), new InstantCommand(), () -> {
-                    return Wrist.getInstance().IsInsideRobot();
-                }),
-                new InstantCommand(() -> AlignVision.setPoleSide(ReefTargetSide.ALGAE)),
-                new SetElevatorState(ElevatorStates.BrazillianCycle),
-                new SetWristState(WristStates.L3, ClosedLoopSlot.kSlot0));
+            new SetElevatorState(ElevatorStates.BrazillianCycle),
+            new SetWristState(WristStates.L3, ClosedLoopSlot.kSlot0)
+        );
     }
 }

@@ -25,7 +25,8 @@ public enum WristStates {
     
     BrazilianCycle(0.78),
     BrazilianCycle2(0.72),
-    BrazilianCycle3(0.745);
+    BrazilianCycle3(0.745),
+    BOTTOMALGAE2(0.83);
 
     public double wristPosition;
 

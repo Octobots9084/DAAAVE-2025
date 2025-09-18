@@ -17,7 +17,8 @@ public enum ElevatorStates {
     BOTTOMALGAE(6.929), // TODO: make it below algae bottom so we can go up from there and push off
     // algae
     TOPALGAE(22.143),
-    BOTTOMALGAEFAST(16), // TODO: make it below algae bottom so we can go up from there and push off
+    BOTTOMALGAEFAST(16),
+    BOTTOMALGAENEW(12), // TODO: make it below algae bottom so we can go up from there and push off
     // algae
     TOPALGAEFAST(29), // TOTO: make it the tall algae bottom
     TOPALGAEREMOVAL(5),

@@ -54,10 +54,10 @@ public class RemoveAlgaeInAuto extends SequentialCommandGroup {
             new WaitUntilCommand(() -> CoralRollers.getInstance().isStalled()),
             
             new DriveBack().withTimeout(0.2),
-            new ParallelCommandGroup(
-                new SetWristState(WristStates.PREP, ClosedLoopSlot.kSlot0),
+            // new ParallelCommandGroup(
+                // new SetWristState(WristStates.PREP, ClosedLoopSlot.kSlot0),
                 new SetElevatorState(ElevatorStates.LOW)
-            )
+            // )
         );
     }
 }
