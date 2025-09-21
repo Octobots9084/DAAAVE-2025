@@ -18,8 +18,8 @@ import frc.robot.Subsystems.Climb.ClimbStates;
 import frc.robot.Subsystems.Vision.AlignVision;
 import frc.robot.Subsystems.Wrist.WristStates;
 
-public class deployClimb extends SequentialCommandGroup{
-    public deployClimb(){
+public class deployClimbAuto extends SequentialCommandGroup{
+    public deployClimbAuto(){
         addCommands(
             new InstantCommand(() -> {
                 Climb.getInstance().releaseClimb();

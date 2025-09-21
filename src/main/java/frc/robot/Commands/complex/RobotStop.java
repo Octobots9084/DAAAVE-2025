@@ -41,6 +41,7 @@ public class RobotStop extends InstantCommand {
 
         CommandScheduler.getInstance().cancelAll();
         CommandScheduler.getInstance().clearComposedCommands();
+            Swerve.getInstance().setDriveState(DriveState.Manual);
     }
 
 }
