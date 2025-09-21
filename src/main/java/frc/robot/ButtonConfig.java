@@ -53,6 +53,7 @@ import frc.robot.Subsystems.Swerve.Swerve;
 import frc.robot.Subsystems.Swerve.Swerve.DriveState;
 import frc.robot.Subsystems.Vision.AlignVision;
 import frc.robot.Subsystems.Vision.AutoSelector;
+import frc.robot.Subsystems.Wrist.Wrist;
 import frc.robot.Subsystems.Wrist.WristStates;
 
 public class ButtonConfig {
@@ -92,7 +93,7 @@ public class ButtonConfig {
 
         driverButtons.button(4).onTrue(new Intake().onlyIf(
                 () -> {
-                    return !CoralRollers.getInstance().HasCoral();
+                    return !CoralRollers.getInstance().HasCoral() || Wrist.getInstance().isAtState(WristStates.INTAKE,0.05);
                 }));
 
         // Zero gyro button
@@ -194,7 +195,7 @@ public class ButtonConfig {
         coDriverRight.button(2).onTrue(new SetOrientation(1));
         coDriverButtons.button(13).onTrue(new SetWristStateTolerance(WristStates.PREP, 0.01, ClosedLoopSlot.kSlot0)
                 .andThen(new SetElevatorStateTolerance(ElevatorStates.CLIMB, 1.5).andThen(new SetWristState(WristStates.TUNING, ClosedLoopSlot.kSlot0))));
-        // Climb mode active (Switch 20)
+        // Climb mode active (Switch 20)d
 
 
         driverLeft.button(2).whileTrue(new ConditionalCommand(new CoralPlaceAndRemoveAlgaeFast(), new ClearAlgae(), () -> CoralRollers.getInstance().HasCoral()))
@@ -202,7 +203,7 @@ public class ButtonConfig {
         driverButtons.button(9).onTrue(new RobotStop());
         driverButtons.button(8).onTrue(new RobotSafeState());
         driverButtons.button(7).onTrue(new groundAlgae());
-        driverButtons.button(2).onTrue(new BargeThrow());
+        driverLeft.button(1).onTrue(new BargeThrow());
         driverButtons.button(13).onTrue(new toggleAutoselect());
         coDriverButtons.button(19).whileTrue(new InstantCommand(() -> {
             AutoSelector.pickASide();})).onTrue(new InstantCommand(()->{
