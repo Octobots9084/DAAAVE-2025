@@ -84,15 +84,17 @@ public class ButtonConfig {
         driverButtons.button(1)
                 .onTrue(new EjectCoral());
 
-        // driverButtons.button(2).onTrue(new InstantCommand(() -> {
-        //     Swerve.getInstance().setDriveState(DriveState.AlignReef);
-        // }));
+        driverButtons.button(2).onTrue(new InstantCommand(() -> {
+            Swerve.getInstance().setDriveState(DriveState.AlignReef);
+        })).onTrue( new InstantCommand(() -> {
+            Swerve.getInstance().setReefTargetSide(ReefTargetSide.ALGAE);
+        }));
 
 
         
-        // driverButtons.button(2).onFalse(new InstantCommand(() -> {
-        //     Swerve.getInstance().setDriveState(DriveState.Manual);
-        // }));
+        driverButtons.button(2).onFalse(new InstantCommand(() -> {
+            Swerve.getInstance().setDriveState(DriveState.Manual);
+        }));
 
         driverButtons.button(4).onTrue(new Intake().onlyIf(
                 () -> {

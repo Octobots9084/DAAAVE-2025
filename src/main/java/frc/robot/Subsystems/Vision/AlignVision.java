@@ -407,7 +407,7 @@ public class AlignVision extends SubsystemBase {
 
             turnAngle = handleTurnAngle(state);
 
-            double diffLidarDist = this.getRightLidarDistance() - this.getLeftLidarDistance() - 0.01;
+            double diffLidarDist = this.getRightLidarDistance() - this.getLeftLidarDistance() - 0.01; //TODO CALIBRATION HERE
 
             return this.calculateTurnSpeed(diffLidarDist);
         } catch (Exception e) {
