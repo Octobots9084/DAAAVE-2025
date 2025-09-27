@@ -26,7 +26,7 @@ public class Intake extends SequentialCommandGroup {
                 new ConditionalCommand(
                     new SequentialCommandGroup(
                         new CollectCoral(),
-                        new ConditionalCommand(new SetWristState(WristStates.L1, ClosedLoopSlot.kSlot0), new SetWristState(WristStates.PREP, ClosedLoopSlot.kSlot0), () -> manager.level == ElevatorStates.LEVEL1)
+                        new ConditionalCommand(new SetWristState(WristStates.PRETROUGH, ClosedLoopSlot.kSlot0), new SetWristState(WristStates.PREP, ClosedLoopSlot.kSlot0), () -> manager.level == ElevatorStates.LEVEL1)
                     ),
                     new InstantCommand(), () -> {return Wrist.getInstance().isAtState(WristStates.INTAKE, 0.2);})
             )

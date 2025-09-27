@@ -56,9 +56,10 @@ public class ElevatorIOSparkMax implements ElevatorIO {
         rightConfig.closedLoop.maxMotion.allowedClosedLoopError(0);
         rightConfig.closedLoop.positionWrappingEnabled(false);
         rightConfig.voltageCompensation(10);
-        rightConfig.smartCurrentLimit(60, 60);
+        rightConfig.smartCurrentLimit(60, 60);//60-60
         rightConfig.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder).pid(0.15, 0.000, 0);
         rightConfig.closedLoop.iZone(5);
+        rightConfig.follow(leftMotor, true);
         rightMotor.configure(
                 rightConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         rightMotor.setPeriodicFrameTimeout(30);
@@ -90,7 +91,7 @@ public class ElevatorIOSparkMax implements ElevatorIO {
         inputs.rightPositionRotations = -rightMotor.getEncoder().getPosition();
         inputs.rightVelocityRPM = rightMotor.getEncoder().getPosition();
         inputs.rightAppliedVolts = rightMotor.getAppliedOutput() * rightMotor.getBusVoltage();
-        inputs.rightTemperature = leftMotor.getMotorTemperature();
+        inputs.rightTemperature = rightMotor.getMotorTemperature();
         inputs.rightCurrentAmps = rightMotor.getOutputCurrent();
         inputs.elevatorTargetState = elevator.getTargetState();
     }
@@ -111,9 +112,9 @@ public class ElevatorIOSparkMax implements ElevatorIO {
         leftMotor
                 .getClosedLoopController()
                 .setReference(position, ControlType.kPosition, ClosedLoopSlot.kSlot0, feedForward);
-        rightMotor
-                .getClosedLoopController()
-                .setReference(-position, ControlType.kPosition, ClosedLoopSlot.kSlot0, -feedForward);
+        // rightMotor
+        //         .getClosedLoopController()
+        //         .setReference(-position, ControlType.kPosition, ClosedLoopSlot.kSlot0, -feedForward);
     }
 
     @Override

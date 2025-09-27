@@ -21,6 +21,7 @@ public enum WristStates {
     QUICKALGAEREMOVALLOW(0.575),
     QUICKALGAEREMOVALHIGH(0.575),
     GROUNDALGAE(0.56),
+    PRETROUGH(0.478),
 
     
     BrazilianCycle(0.78),
