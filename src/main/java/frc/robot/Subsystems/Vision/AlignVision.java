@@ -286,7 +286,7 @@ public class AlignVision extends SubsystemBase {
             double turnSpeed = 0;
             double targetDistance = 0;
             double aveLidarDist = (this.getRightLidarDistance() + this.getLeftLidarDistance()) / 2;
-            double diffLidarDist = this.getRightLidarDistance() - this.getLeftLidarDistance() - 0.01;
+            double diffLidarDist = this.getRightLidarDistance() - this.getLeftLidarDistance();
             Pose3d refPosition = null;
 
             // If the final result is null, then use global pose to get to the target
@@ -347,6 +347,7 @@ public class AlignVision extends SubsystemBase {
                     // Check if the robot y position is in tolerance for the target y rotation
                     SmartDashboard.putNumber("Vision/RefX", refPosition.getX());
                     SmartDashboard.putNumber("Vision/RefY", refPosition.getY());
+                    SmartDashboard.putBoolean("Vision/Lidars_valid", this.areBothLidarsValid());
                     SmartDashboard.putNumber("Vision/TargetY", targetDistance);
                     yInTolerance = MathUtil.isNear(refPosition.getY(), targetDistance, 0.03);
                     ySetpoint = yProfile.calculate(deltaTime, ySetpoint, yGoal);
