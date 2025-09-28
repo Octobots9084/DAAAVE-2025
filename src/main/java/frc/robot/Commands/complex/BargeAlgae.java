@@ -14,8 +14,7 @@ public class BargeAlgae extends SequentialCommandGroup{
     public BargeAlgae(){
         addCommands(
             new SetElevatorState(ElevatorStates.LEVEL4),
-            new SetWristState(WristStates.BARGEALGAE, ClosedLoopSlot.kSlot0),
-            new SetCoralRollersState(CoralRollersState.AlGAEOUTPUT)
+            new SetWristState(WristStates.BARGEALGAE, ClosedLoopSlot.kSlot0)
         );
     }
 }

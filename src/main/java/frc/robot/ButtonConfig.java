@@ -1,46 +1,32 @@
 package frc.robot;
-
-import com.ctre.phoenix6.swerve.SwerveModuleConstants.DriveMotorArrangement;
 import com.revrobotics.spark.ClosedLoopSlot;
 
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
-import frc.robot.Commands.Climb.DeployClimb;
-import frc.robot.Commands.Climb.RunClimbRollers;
 import frc.robot.Commands.Climb.SetClimbState;
 import frc.robot.Commands.complex.AlgaeFlickBottom;
 import frc.robot.Commands.complex.AlgaeFlickTop;
-import frc.robot.Commands.complex.AlignReef;
-import frc.robot.Commands.complex.AlgaeInOut;
 import frc.robot.Commands.complex.AlignSource;
 import frc.robot.Commands.complex.BargeAlgae;
 import frc.robot.Commands.complex.BargeThrow;
-import frc.robot.Commands.complex.BargeAlgae;
 import frc.robot.Commands.complex.CollectAlgaeStack;
-import frc.robot.Commands.complex.CoralPlaceAndAlgaeReefClear;
 import frc.robot.Commands.complex.CoralPlaceAndRemoveAlgaeFast;
 import frc.robot.Commands.complex.EjectCoral;
-import frc.robot.Commands.complex.Elephantiasis;
 import frc.robot.Commands.complex.GroundAlgaeAlign;
-// import frc.robot.Commands.complex.ClearAlgae;
 import frc.robot.Commands.complex.Intake;
 import frc.robot.Commands.complex.PrepReefPlacement;
 import frc.robot.Commands.complex.RemoveAlgaeBottom;
 import frc.robot.Commands.complex.RemoveAlgaeTop;
 import frc.robot.Commands.complex.RobotSafeState;
 import frc.robot.Commands.complex.RobotStop;
-import frc.robot.Commands.complex.ScoreCoral;
 import frc.robot.Commands.complex.ScoreCoralAndBackOff;
 import frc.robot.Commands.complex.deployClimbAuto;
 import frc.robot.Commands.complex.groundAlgae;
 import frc.robot.Commands.swerve.drivebase.SetDriveState;
 import frc.robot.States.ReefTargetSide;
-import frc.robot.Commands.CoralRollers.SetAlgaeRollerState;
 import frc.robot.Commands.Elevator.SetElevatorState;
 import frc.robot.Commands.Elevator.SetElevatorStateTolerance;
-import frc.robot.Commands.Emote.BrazilianCycle;
 import frc.robot.Commands.ReefSelection.ReefLevelSelection;
 import frc.robot.Commands.ReefSelection.SetOrientation;
 import frc.robot.Commands.Wrist.SetWristState;
@@ -48,7 +34,6 @@ import frc.robot.Commands.Wrist.SetWristStateTolerance;
 import frc.robot.Commands.complex.ClearAlgae;
 import frc.robot.Subsystems.Climb.ClimbStates;
 import frc.robot.Subsystems.CoralRollers.CoralRollers;
-import frc.robot.Subsystems.CoralRollers.CoralRollersState;
 import frc.robot.Subsystems.Elevator.ElevatorStates;
 import frc.robot.Subsystems.Swerve.Swerve;
 import frc.robot.Subsystems.Swerve.Swerve.DriveState;
@@ -70,7 +55,8 @@ public class ButtonConfig {
                 () -> {
                     return CoralRollers.getInstance().HasCoral();
                 })).onFalse(new SetDriveState(DriveState.Manual));
-
+        
+        // Alligns to the sorse if it has coral for right stick
         driverRight.button(2).whileTrue(new AlignSource().onlyIf(
                 () -> {
                     return !CoralRollers.getInstance().HasCoral();
@@ -79,23 +65,23 @@ public class ButtonConfig {
             Swerve.getInstance().setDriveState(DriveState.Manual);
         }));
 
-        // driverLeft.button(1).onTrue(new ClearAlgae());
-
+        // Ejects coral in driver side
         driverButtons.button(1)
                 .onTrue(new EjectCoral());
 
+        // Just alligns to the middle of the selected reef side
         driverButtons.button(2).onTrue(new InstantCommand(() -> {
             Swerve.getInstance().setDriveState(DriveState.AlignReef);
         })).onTrue( new InstantCommand(() -> {
             Swerve.getInstance().setReefTargetSide(ReefTargetSide.ALGAE);
         }));
 
-
-        
+        //sets drive state back to manuel from allighn button
         driverButtons.button(2).onFalse(new InstantCommand(() -> {
             Swerve.getInstance().setDriveState(DriveState.Manual);
         }));
 
+        // Intake for driver
         driverButtons.button(4).onTrue(new Intake().onlyIf(
                 () -> {
                     return (!CoralRollers.getInstance().HasCoral() || Wrist.getInstance().isAtState(WristStates.INTAKE,0.01));
@@ -106,48 +92,15 @@ public class ButtonConfig {
             Swerve.getInstance().zeroGyro();
         }));
 
-        // driverLeft.button(1).whileTrue(new ClearAlgae());
-
-        // driverLeft.button(1).onFalse(new InstantCommand(() -> {
-        //     Swerve.getInstance().setDriveState(DriveState.Manual);
-        // }));
-
+        // WTF
         driverButtons.button(20).onTrue(new InstantCommand(() -> {
             Swerve.getInstance().rotLock = false;
         }));
 
-        // driverButtons.button(20).onTrue(new InstantCommand(() -> {
-        //     Swerve.getInstance().setDriveState(DriveState.Reverse);
-        // }));
-
+        // WTF
         driverButtons.button(20).onTrue(new InstantCommand(() -> {
             
         }));
-        // driverButtons.button(2).onTrue(new RemoveAlgaeBottom().onlyIf(
-        // () -> {
-        // return !CoralRollers.getInstance().HasCoral();
-        // }));
-        // driverButtons.button(5).onTrue(new RemoveAlgaeTop().onlyIf(
-        // () -> {
-        // return !CoralRollers.getInstance().HasCoral();
-        // }));
-
-        // driverButtons.button(17).whileTrue(new Elephantiasis().onlyIf(
-        // () -> {
-        // return !CoralRollers.getInstance().HasCoral();
-        // }));
-
-        // Climb mode active (Switch 20)
-        // driverButtons.button(14).and(driverButtons.button(20)).whileTrue(new
-        // SetClimbState(ClimbStates.Stored));
-        // driverButtons.button(16).and(driverButtons.button(20)).whileTrue(new
-        // SetClimbState(ClimbStates.Deployed));
-        // driverButtons.button(14).and(driverButtons.button(20)).onFalse(new
-        // SetClimbState(ClimbStates.Climbing));
-        // driverButtons.button(16).and(driverButtons.button(20)).onFalse(new
-        // SetClimbState(ClimbStates.Climbing));
-        // driverButtons.button(17).and(driverButtons.button(20)).whileTrue(new
-        // ZeroClimb());
 
         coDriverButtons.button(1).onTrue(new EjectCoral().andThen(new RobotStop()));
         coDriverButtons.button(4).onTrue(new Intake().onlyIf(

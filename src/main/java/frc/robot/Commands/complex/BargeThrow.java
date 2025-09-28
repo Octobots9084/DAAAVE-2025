@@ -43,8 +43,10 @@ public class BargeThrow extends SequentialCommandGroup{
 
             // new WaitCommand(0.5),
             // new SetCoralRollersState(CoralRollersState.STOPPED).withTimeout(1)
-            new SetCoralRollersState(CoralRollersState.STOPPED)
+            new SetCoralRollersState(CoralRollersState.STOPPED),
+            new WaitCommand(0.5)
 
         );
     }
 }
+

@@ -1,6 +1,9 @@
 package frc.robot.Subsystems.CoralRollers;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Commands.ReefSelection.manager;
+import frc.robot.Subsystems.Elevator.ElevatorStates;
+
 import org.littletonrobotics.junction.Logger;
 
 public class CoralRollers extends SubsystemBase {
@@ -33,7 +36,15 @@ public class CoralRollers extends SubsystemBase {
 
   public void setState(CoralRollersState state) {
     coralRollersState = state;
-    io.setVoltage(state.voltage);
+    if ((manager.level == ElevatorStates.LEVEL3 || manager.level == ElevatorStates.LEVEL2) && state ==CoralRollersState.OUTPUT)
+    {
+        io.setVoltage(state.voltage-2.0);
+    }
+    else
+    {
+        io.setVoltage(state.voltage);
+    }
+    
   }
 
   public CoralRollersState getState() {

@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.States;
 import frc.robot.Commands.CoralRollers.SetCoralRollersState;
 import frc.robot.Commands.Elevator.SetElevatorState;
+import frc.robot.Subsystems.CoralRollers.CoralRollers;
 import frc.robot.Subsystems.CoralRollers.CoralRollersState;
 import frc.robot.Subsystems.Elevator.ElevatorStates;
 import frc.robot.Subsystems.Swerve.Swerve;
@@ -36,7 +37,8 @@ public class CoralPlaceAndRemoveAlgaeFast extends SequentialCommandGroup{
             new SetWristState(WristStates.ALAGESTACKREMOVAL,ClosedLoopSlot.kSlot0),
             new ConditionalCommand(new SetElevatorState(ElevatorStates.TOPALGAEFAST),new SetElevatorState(ElevatorStates.BOTTOMALGAEFAST),isTop),
             new SetCoralRollersState(CoralRollersState.ALGAEINTAKING),
-            new WaitCommand(0.34),
+            new WaitUntilCommand(() -> CoralRollers.getInstance().isStalled()).withTimeout(2),
+            // new WaitCommand(0.34),
             new ParallelCommandGroup(
                 new SetDriveState(DriveState.Reverse),
                 new SetElevatorState(ElevatorStates.LOW),

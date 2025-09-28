@@ -3,16 +3,16 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.1566598360655735,
-        "y": 4.714293032786885
+        "x": 7.0,
+        "y": 5.75
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.880942622950819,
-        "y": 3.647387295081966
+        "x": 7.017346554740605,
+        "y": 4.044929275643428
       },
       "isLocked": false,
-      "linkedName": "jbewt"
+      "linkedName": "yeroin"
     },
     {
       "anchor": {
@@ -20,8 +20,8 @@
         "y": 2.3407274590163936
       },
       "prevControl": {
-        "x": 6.593237704918032,
-        "y": 3.299743852459016
+        "x": 7.050033786823559,
+        "y": 3.310453687217753
       },
       "nextControl": null,
       "isLocked": false,
@@ -32,24 +32,11 @@
   "constraintZones": [
     {
       "name": "Constraints Zone",
-      "minWaypointRelativePos": 0.7132841328413282,
+      "minWaypointRelativePos": 0.81,
       "maxWaypointRelativePos": 1.0,
       "constraints": {
         "maxVelocity": 4.0,
         "maxAcceleration": 4.5,
-        "maxAngularVelocity": 540.0,
-        "maxAngularAcceleration": 720.0,
-        "nominalVoltage": 10.0,
-        "unlimited": false
-      }
-    },
-    {
-      "name": "Constraints Zone",
-      "minWaypointRelativePos": 0,
-      "maxWaypointRelativePos": 0.2,
-      "constraints": {
-        "maxVelocity": 4.0,
-        "maxAcceleration": 4.0,
         "maxAngularVelocity": 540.0,
         "maxAngularAcceleration": 720.0,
         "nominalVoltage": 10.0,

@@ -9,6 +9,7 @@ public enum CoralRollersState {
     LEVEL1(-6.75),
     ALGAEINTAKING(-13),
     AlGAEOUTPUT(10),
+    MANUALAlGAEOUTPUT(5),
     ALGAEHOLD(-7), //TODO update this value based on testing
 
     BrazilianCycle(-12);
