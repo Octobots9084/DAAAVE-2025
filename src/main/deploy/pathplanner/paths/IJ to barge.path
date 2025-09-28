@@ -62,6 +62,12 @@
       "waypointRelativePos": 0.7,
       "endWaypointRelativePos": null,
       "command": null
+    },
+    {
+      "name": "InitalWristPos",
+      "waypointRelativePos": 0.8,
+      "endWaypointRelativePos": null,
+      "command": null
     }
   ],
   "globalConstraints": {

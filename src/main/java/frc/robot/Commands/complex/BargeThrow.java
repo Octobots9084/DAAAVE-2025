@@ -36,7 +36,7 @@ public class BargeThrow extends SequentialCommandGroup{
             // new WaitCommand(0.4),
             new WaitUntilCommand(()->
                 Wrist.getInstance().isAtState(WristStates.BARGEALGAE, 0.05)
-            ),
+            ).withTimeout(1),
             new SetCoralRollersState(CoralRollersState.AlGAEOUTPUT),
             // new WaitCommand(0.25),
             new SetElevatorStateTolerance(ElevatorStates.LOW, 10).withTimeout(3),
