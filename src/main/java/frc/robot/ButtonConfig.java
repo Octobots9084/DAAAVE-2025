@@ -21,6 +21,7 @@ import frc.robot.Commands.complex.RemoveAlgaeTop;
 import frc.robot.Commands.complex.RobotSafeState;
 import frc.robot.Commands.complex.RobotStop;
 import frc.robot.Commands.complex.ScoreCoralAndBackOff;
+import frc.robot.Commands.complex.algaeCatch;
 import frc.robot.Commands.complex.deployClimbAuto;
 import frc.robot.Commands.complex.groundAlgae;
 import frc.robot.Commands.swerve.drivebase.SetDriveState;
@@ -165,6 +166,7 @@ public class ButtonConfig {
         driverButtons.button(9).onTrue(new RobotStop());
         driverButtons.button(8).onTrue(new RobotSafeState());
         driverButtons.button(7).onTrue(new groundAlgae());
+        driverButtons.button(17).onTrue(new algaeCatch());
         driverButtons.button(11).whileTrue(new GroundAlgaeAlign()).onFalse(new InstantCommand(() -> {
             Swerve.getInstance().setDriveState(DriveState.Manual);
         }));
