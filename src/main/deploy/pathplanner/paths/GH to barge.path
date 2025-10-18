@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 6.161680327868852,
+        "x": 6.162,
         "y": 4.030993852459016
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.464930201217926,
-        "y": 5.5208896158313765
+        "x": 6.31677961390804,
+        "y": 5.688708484636297
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 7.0,
+        "x": 7.5,
         "y": 5.75
       },
       "prevControl": {
-        "x": 6.928482744431658,
-        "y": 5.238797448073835
+        "x": 6.880760252780981,
+        "y": 5.342657451039076
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "yeroin"
+      "linkedName": "eryeryer"
     }
   ],
   "rotationTargets": [
@@ -80,7 +80,7 @@
   },
   "goalEndState": {
     "velocity": 0.0,
-    "rotation": 0.0
+    "rotation": -0.5291213189738561
   },
   "reversed": false,
   "folder": "Place to barge",

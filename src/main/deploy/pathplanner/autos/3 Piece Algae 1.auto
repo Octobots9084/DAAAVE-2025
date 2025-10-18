@@ -41,6 +41,12 @@
           }
         },
         {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.0
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "Barge to IJ5"
@@ -71,6 +77,12 @@
           }
         },
         {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.0
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "Barge to EF3"
@@ -98,6 +110,12 @@
           "type": "named",
           "data": {
             "name": "ScoreAlgae"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.0
           }
         }
       ]
