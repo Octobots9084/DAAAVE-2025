@@ -24,7 +24,6 @@ import frc.robot.Subsystems.Wrist.WristStates;
 public class BargeThrow extends SequentialCommandGroup{
     public BargeThrow(){
         BooleanSupplier inPrep = () -> Wrist.getInstance().getState() == WristStates.PREP;
-        SmartDashboard.putBoolean("Barge Throw In Prep", inPrep.getAsBoolean());
         addCommands(
             // new SetCoralRollersState(CoralRollersState.ALGAEINTAKING),
                 new SetWristStateTolerance(WristStates.BARGEALGAE, 0.04, ClosedLoopSlot.kSlot0),

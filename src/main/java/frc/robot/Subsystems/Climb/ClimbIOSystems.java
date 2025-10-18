@@ -73,7 +73,7 @@ public class ClimbIOSystems implements ClimbIO {
         talonFXSConfig.CurrentLimits.StatorCurrentLimit = 80;
         talonFXSConfig.CurrentLimits.StatorCurrentLimitEnable = true;
 
-        SmartDashboard.putString("ClimbTalonError", talonFXS.getConfigurator().apply(talonFXSConfig).toString());
+        // SmartDashboard.putString("ClimbTalonError", talonFXS.getConfigurator().apply(talonFXSConfig).toString());
 
     }
 
@@ -84,9 +84,9 @@ public class ClimbIOSystems implements ClimbIO {
         inputs.appliedVolts = sparkMax.getAppliedOutput();
         inputs.busVoltage = sparkMax.getBusVoltage();
         inputs.currentAmps = sparkMax.getOutputCurrent();
-        SmartDashboard.putNumber("ClimbTalonSupplyCurrent", talonFXS.getSupplyCurrent().getValueAsDouble());
-        SmartDashboard.putNumber("ClimbTalonStatorCurrent", talonFXS.getStatorCurrent().getValueAsDouble());
-        SmartDashboard.putBoolean("ClimbTalonStallCurrent", talonFXS.getFault_StatorCurrLimit().getValue());
+        // SmartDashboard.putNumber("ClimbTalonSupplyCurrent", talonFXS.getSupplyCurrent().getValueAsDouble());
+        // SmartDashboard.putNumber("ClimbTalonStatorCurrent", talonFXS.getStatorCurrent().getValueAsDouble());
+        // SmartDashboard.putBoolean("ClimbTalonStallCurrent", talonFXS.getFault_StatorCurrLimit().getValue());
         inputs.climbClamped = this.isClimbClamped();
     }
 

@@ -81,7 +81,7 @@ public class Light extends SubsystemBase {
             io.getcandle().setLEDs(0, 0, 255);
         } else if (AlignVision.isCollecting) {
             candleOff();
-            SmartDashboard.putNumber("test", (AlignVision.getInstance().getBackLidarDistance()));
+            // SmartDashboard.putNumber("test", (AlignVision.getInstance().getBackLidarDistance()));
             io.getcandle().setLEDs(0, 0, 255);
         } else if (Elevator.getInstance().getTargetState() == ElevatorStates.INTAKE &&
                 (Wrist.getInstance().getState() == WristStates.INTAKE || Wrist.getInstance().getState() == WristStates.ELEPHANTIASIS)

@@ -29,7 +29,7 @@ public class PieceVisionCamera{
         List<TargetCorner> corners = target.getDetectedCorners();
         
         if (corners.size() < 2) {
-            SmartDashboard.putNumber("algae depth", -1);
+            // SmartDashboard.putNumber("algae depth", -1);
             return -1;
         }
     
@@ -45,7 +45,7 @@ public class PieceVisionCamera{
         double angularWidth = Math.toRadians(maxX - minX);
         double depth = halfAlgae / Math.tan(angularWidth / 2); 
     
-        SmartDashboard.putNumber("algae depth", depth);
+        // SmartDashboard.putNumber("algae depth", depth);
         return depth;
     }
     

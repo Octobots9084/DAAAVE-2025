@@ -330,10 +330,10 @@ public class AlignVision extends SubsystemBase {
                     }
 
                     // Check if the robot y position is in tolerance for the target y rotation
-                    SmartDashboard.putNumber("Vision/RefX", refPosition.getX());
-                    SmartDashboard.putNumber("Vision/RefY", refPosition.getY());
-                    SmartDashboard.putBoolean("Vision/Lidars_valid", this.areBothLidarsValid());
-                    SmartDashboard.putNumber("Vision/TargetY", targetDistance);
+                    // SmartDashboard.putNumber("Vision/RefX", refPosition.getX());
+                    // SmartDashboard.putNumber("Vision/RefY", refPosition.getY());
+                    // SmartDashboard.putBoolean("Vision/Lidars_valid", this.areBothLidarsValid());
+                    // SmartDashboard.putNumber("Vision/TargetY", targetDistance);
                     yInTolerance = MathUtil.isNear(refPosition.getY(), targetDistance, 0.03);
                     ySetpoint = yProfile.calculate(deltaTime, ySetpoint, yGoal);
                     // Logger.recordOutput("Vision/SetPointY", ySetpoint.position);
@@ -342,7 +342,7 @@ public class AlignVision extends SubsystemBase {
                     ySpeed = ((state == AlignState.SourceLeft) || state == AlignState.SourceRight) ? -cameraYPIDControllerSource.calculate(refPosition.getY(), targetDistance)
                             : -cameraYPIDController.calculate(refPosition.getY(), targetDistance);
 
-                    SmartDashboard.putBoolean("AlignVision/UsingGlobalVision", usingGlobalVision);
+                    // SmartDashboard.putBoolean("AlignVision/UsingGlobalVision", usingGlobalVision);
 
                     xSpeed = this.calculateXSpeed(aveLidarDist, refPosition, state, selectedPoleSide);
 
@@ -369,9 +369,9 @@ public class AlignVision extends SubsystemBase {
                 turnSpeed = 0;
             }
 
-            SmartDashboard.putNumber("AlignVision/XSpeed", xSpeed);
-            SmartDashboard.putNumber("AlignVision/YSpeed", ySpeed);
-            SmartDashboard.putNumber("AlignVision/TurnSpeed", turnSpeed);
+            // SmartDashboard.putNumber("AlignVision/XSpeed", xSpeed);
+            // SmartDashboard.putNumber("AlignVision/YSpeed", ySpeed);
+            // SmartDashboard.putNumber("AlignVision/TurnSpeed", turnSpeed);
 
             // Return the calculated speeds for the robot to align with the target
             return new ChassisSpeeds(xSpeed, ySpeed, turnSpeed);
@@ -418,7 +418,7 @@ public class AlignVision extends SubsystemBase {
     }
 
     public int handleTurnAngle(AlignState state) {
-        SmartDashboard.putString("selectedReefOrientation", selectedReefOrientation.toString());
+        // SmartDashboard.putString("selectedReefOrientation", selectedReefOrientation.toString());
         if (state == AlignState.Reef) {
 
             // Sets the correct tag ID and angles of alignment based on the alliance for

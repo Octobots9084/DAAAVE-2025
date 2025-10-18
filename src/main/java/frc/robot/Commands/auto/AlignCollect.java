@@ -54,12 +54,5 @@ public class AlignCollect extends Command {
     @Override
     public void end(boolean interrupted) {
         Swerve.getInstance().setDriveState(DriveState.Manual);
-        frames *= 0.02;
-        Constants.intakeTimes.add(frames);
-        double total = 0;
-        for(double i: Constants.intakeTimes){
-            total += i;
-        }
-        SmartDashboard.putNumber("Average Intake Time Auto", total/Constants.intakeTimes.size());
     }
 }
