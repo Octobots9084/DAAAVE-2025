@@ -94,12 +94,12 @@ public class ButtonConfig {
 
         // WTF
         driverButtons.button(20).onTrue(new InstantCommand(() -> {
-            Swerve.getInstance().rotLock = false;
+            Swerve.getInstance().rotLock = true;
         }));
 
         // WTF
-        driverButtons.button(20).onTrue(new InstantCommand(() -> {
-            
+        driverButtons.button(20).onFalse(new InstantCommand(() -> {
+            Swerve.getInstance().rotLock = false;
         }));
 
         coDriverButtons.button(1).onTrue(new EjectCoral().andThen(new RobotStop()));

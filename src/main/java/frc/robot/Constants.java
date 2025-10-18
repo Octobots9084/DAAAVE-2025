@@ -116,7 +116,7 @@ public final class Constants {
         public static final double maxBackCameraDepthDistance = -0.75;
 
         // Max Depth Distance of Camera from Tag (Meters)
-        public static final double maxCameraDepthDistance = 0.65;
+        public static final double maxCameraDepthDistance = 0.575;
 
         public static final double maxCameraDepthDistancePreAlgae =  1.1;
         public static final double maxCameraDepthDistanceAlgae =  0.8;
