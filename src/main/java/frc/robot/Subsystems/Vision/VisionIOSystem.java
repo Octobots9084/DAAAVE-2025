@@ -23,7 +23,7 @@ public class VisionIOSystem implements VisionIO {
             VisionConstants.transformMiddleRightToRobot);
     public final VisionCamera middleLeftCamera = new VisionCamera("SideLeft",
             VisionConstants.transformMiddleLeftToRobot);
-    public final VisionCamera backCamera = new VisionCamera("Back", VisionConstants.transformBackToRobot);
+    // public final VisionCamera backCamera = new VisionCamera("Back", VisionConstants.transformBackToRobot);
 
     private final Notifier allNotifier = new Notifier(
             () -> {
@@ -31,7 +31,7 @@ public class VisionIOSystem implements VisionIO {
                 frontRightCamera.run();
                 middleLeftCamera.run();
                 middleRightCamera.run();
-                backCamera.run();
+                // backCamera.run();
             });
 
     public VisionIOSystem() {
@@ -51,13 +51,13 @@ public class VisionIOSystem implements VisionIO {
         inputs.frontRightConnected = frontRightCamera.isConnected();
         inputs.middleLeftConnected = middleLeftCamera.isConnected();
         inputs.middleRightConnected = middleRightCamera.isConnected();
-        inputs.backMiddleConnected = backCamera.isConnected();
+        // inputs.backMiddleConnected = backCamera.isConnected();
 
         inputs.frontLeftResult = frontLeftCamera.grabLatestResult();
         inputs.frontRightResult = frontRightCamera.grabLatestResult();
         inputs.middleLeftResult = middleLeftCamera.grabLatestResult();
         inputs.middleRightResult = middleRightCamera.grabLatestResult();
-        inputs.backMiddleResult = backCamera.grabLatestResult();
+        // inputs.backMiddleResult = backCamera.grabLatestResult();
 
         inputs.leftLidarDistance = AlignVision.getInstance().getLeftLidarDistance();
         inputs.rightLidarDistance = AlignVision.getInstance().getRightLidarDistance();
@@ -71,19 +71,19 @@ public class VisionIOSystem implements VisionIO {
         EstimatedRobotPose frontRightPose = frontRightCamera.grabLatestEstimatedPose();
         EstimatedRobotPose middleLeftPose = middleLeftCamera.grabLatestEstimatedPose();
         EstimatedRobotPose middleRightPose = middleRightCamera.grabLatestEstimatedPose();
-        EstimatedRobotPose backMiddlePose = backCamera.grabLatestEstimatedPose();
+        //EstimatedRobotPose backMiddlePose = backCamera.grabLatestEstimatedPose();
 
         Matrix<N3, N1> frontLeftStdDevs = frontLeftCamera.grabLatestStdDev();
         Matrix<N3, N1> frontRightStdDevs = frontRightCamera.grabLatestStdDev();
         Matrix<N3, N1> middleLeftStdDevs = middleLeftCamera.grabLatestStdDev();
         Matrix<N3, N1> middleRightStdDevs = middleRightCamera.grabLatestStdDev();
-        Matrix<N3, N1> backStdDevs = backCamera.grabLatestStdDev();
+        // Matrix<N3, N1> backStdDevs = backCamera.grabLatestStdDev();
 
         addVisionReading("Front Left", frontLeftPose, frontLeftStdDevs);
         addVisionReading("Front Right", frontRightPose, frontRightStdDevs);
         addVisionReading("Middle Left", middleLeftPose, middleLeftStdDevs);
         addVisionReading("Middle Right", middleRightPose, middleRightStdDevs);
-        addVisionReading("Back", backMiddlePose, backStdDevs);
+        // addVisionReading("Back", backMiddlePose, backStdDevs);
     }
 
     public VisionCamera getFrontLeftCamera() {
