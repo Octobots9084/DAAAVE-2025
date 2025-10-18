@@ -131,7 +131,7 @@ public class SwerveIOSystem implements SwerveIO {
         if (MathUtil.isWithinTolerance(Elevator.getInstance().getPosition(), ElevatorStates.LOW.position, 0.5)) {
             return 14;
         }
-        return (10.5 - (Elevator.getInstance().getPosition() / ElevatorStates.LEVEL4.position)*7);
+        return (10.5 - (Elevator.getInstance().getPosition() / ElevatorStates.LEVEL4.position)*8);
 
     }
 
