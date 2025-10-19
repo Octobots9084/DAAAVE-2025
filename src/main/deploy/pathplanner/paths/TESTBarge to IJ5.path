@@ -1,0 +1,68 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 7.7,
+        "y": 5.75
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 6.710749056446902,
+        "y": 5.525877498274566
+      },
+      "isLocked": false,
+      "linkedName": "eryeryer"
+    },
+    {
+      "anchor": {
+        "x": 5.469349315068493,
+        "y": 5.369798801369864
+      },
+      "prevControl": {
+        "x": 5.748654195613551,
+        "y": 5.922202443377872
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "iutfidrytc"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [
+    {
+      "name": "Constraints Zone",
+      "minWaypointRelativePos": 0.6071428571428571,
+      "maxWaypointRelativePos": 1.0,
+      "constraints": {
+        "maxVelocity": 4.0,
+        "maxAcceleration": 4.5,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0,
+        "nominalVoltage": 10.0,
+        "unlimited": false
+      }
+    }
+  ],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 4.0,
+    "maxAcceleration": 4.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0.0,
+    "rotation": -120.74926181202576
+  },
+  "reversed": false,
+  "folder": "Barge to place",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": -0.5291213189738561
+  },
+  "useDefaultConstraints": false
+}
