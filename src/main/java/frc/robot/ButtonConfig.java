@@ -108,14 +108,14 @@ public class ButtonConfig {
                 () -> {
                     return !CoralRollers.getInstance().HasCoral();
                 }));
-        coDriverButtons.button(2).onTrue(new ConditionalCommand(new AlgaeFlickTop(), new RemoveAlgaeTop().onlyIf(
+        coDriverButtons.button(2).onTrue(new RemoveAlgaeTop().onlyIf(
                 () -> {
                     return !CoralRollers.getInstance().HasCoral();
-                }), coDriverButtons.button(19)));
-        coDriverButtons.button(5).onTrue(new ConditionalCommand(new AlgaeFlickBottom(), new RemoveAlgaeBottom().onlyIf(
+                }));
+        coDriverButtons.button(5).onTrue(new RemoveAlgaeBottom().onlyIf(
                 () -> {
                     return !CoralRollers.getInstance().HasCoral();
-                }), coDriverButtons.button(19)));
+                }));
 
         coDriverButtons.button(8).onTrue(new CollectAlgaeStack());
         coDriverButtons.button(3).onTrue(new BargeAlgae());
@@ -166,11 +166,16 @@ public class ButtonConfig {
         driverButtons.button(9).onTrue(new RobotStop());
         driverButtons.button(8).onTrue(new RobotSafeState());
         driverButtons.button(7).onTrue(new groundAlgae());
-        driverButtons.button(17).onTrue(new algaeCatch());
+        driverButtons.button(17).onTrue(new algaeCatch());//actually js a driveback rn
         driverButtons.button(11).whileTrue(new GroundAlgaeAlign()).onFalse(new InstantCommand(() -> {
             Swerve.getInstance().setDriveState(DriveState.Manual);
         }));
         driverLeft.button(1).onTrue(new BargeThrow());
+        coDriverButtons.button(19).onTrue(new InstantCommand(() ->{
+            Swerve.getInstance().TidalBlueCompensator = true;
+        })).onFalse(new InstantCommand(() -> {
+            Swerve.getInstance().TidalBlueCompensator = false;
+        }));
         
     }
 }

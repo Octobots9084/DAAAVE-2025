@@ -11,10 +11,12 @@ import frc.robot.States.ReefTargetSide;
 import frc.robot.Commands.Climb.RunClimbRollers;
 import frc.robot.Commands.Climb.SetClimbState;
 import frc.robot.Commands.Climb.StopClimbTemporary;
+import frc.robot.Commands.Elevator.SetElevatorState;
 import frc.robot.Commands.ReefSelection.ReefLevelSelection;
 import frc.robot.Commands.Wrist.SetWristState;
 import frc.robot.Subsystems.Climb.Climb;
 import frc.robot.Subsystems.Climb.ClimbStates;
+import frc.robot.Subsystems.Elevator.ElevatorStates;
 import frc.robot.Subsystems.Vision.AlignVision;
 import frc.robot.Subsystems.Wrist.WristStates;
 
@@ -25,7 +27,8 @@ public class deployClimbAuto extends SequentialCommandGroup{
                 Climb.getInstance().releaseClimb();
             }),
             new WaitCommand(1),
-            new SetWristState(WristStates.ALGAEREMOVAL, ClosedLoopSlot.kSlot0),
+            new SetWristState(WristStates.ALGAEREMOVAL, ClosedLoopSlot.kSlot0).withTimeout(0.5),
+            new SetElevatorState(ElevatorStates.LOW).withTimeout(0.5),
             new RunClimbRollers(), 
             new SetClimbState(ClimbStates.Deployed, ClosedLoopSlot.kSlot1),
             new WaitUntilCommand(() -> Climb.getInstance().isClimbClamped()),

@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.Constants;
 import frc.robot.Commands.CoralRollers.SetCoralRollersState;
 import frc.robot.Commands.Elevator.SetElevatorState;
 import frc.robot.States.ReefTargetOrientation;
@@ -46,6 +47,8 @@ public class ScoreCoral extends Command {
         swerve = Swerve.getInstance();
         targetSide = manager.selectedReefSide;
 
+        targetOrientation = swerve.getReefTargetOrientation();
+
         swerve.setReefTargetSide(targetSide);
 
         swerve.setDriveState(DriveState.AlignReef);
@@ -72,7 +75,11 @@ public class ScoreCoral extends Command {
 
         // wristState1 is to stop it from constantly setting
         if (!wristInPosition && elevatorWiderInPosition && isWristPrepped) {
-            wrist.setState(targetElevatorState, ClosedLoopSlot.kSlot0); // TODO do slot (remove? make actual slot? idk)
+            if(swerve.TidalBlueCompensator && Constants.isBlueAlliance && targetElevatorState == ElevatorStates.LEVEL4 && (targetOrientation == ReefTargetOrientation.AB || targetOrientation == ReefTargetOrientation.CD || targetOrientation == ReefTargetOrientation.KL)){
+                wrist.setState(WristStates.TIDALL4, ClosedLoopSlot.kSlot0);
+            }else{
+                wrist.setState(targetElevatorState, ClosedLoopSlot.kSlot0); // TODO do slot (remove? make actual slot? idk)
+            }
         }
 
         if (debouncer.calculate(elevatorInPosition && wristWiderInPosition && isAligned && (coralRollers.getState() != CoralRollersState.OUTPUT))) {

@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Commands.CoralRollers.SetAlgaeRollerState;
 import frc.robot.Commands.Elevator.SetElevatorState;
 import frc.robot.Commands.Wrist.SetWristState;
+import frc.robot.Commands.auto.DriveBack;
 import frc.robot.Subsystems.CoralRollers.CoralRollersState;
 import frc.robot.Subsystems.Elevator.ElevatorStates;
 import frc.robot.Subsystems.Wrist.WristStates;
@@ -15,10 +16,7 @@ import frc.robot.Subsystems.Wrist.WristStates;
 public class algaeCatch extends SequentialCommandGroup{
     public algaeCatch(){
         addCommands(
-            new SetElevatorState(ElevatorStates.LOW),
-            new WaitCommand(0.2),
-            new SetWristState(WristStates.PREP, ClosedLoopSlot.kSlot0),
-            new SetAlgaeRollerState(CoralRollersState.ALGAEINTAKING)
+            new DriveBack().withTimeout(0.2)
         );
     }
 

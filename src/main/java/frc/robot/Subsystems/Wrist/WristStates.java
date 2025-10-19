@@ -7,6 +7,7 @@ public enum WristStates {
     L1(0.5),
     L2(0.864),
     L3(0.864),
+    TIDALL4(0.76),
     L4(0.745),
     PREP(0.92),
     MANUAL(0.45),

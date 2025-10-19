@@ -68,6 +68,7 @@ public class Swerve extends SubsystemBase {
 
     public ReefTargetOrientation alignmentOrientation;
     public ReefTargetSide reefTargetSide;
+    public boolean TidalBlueCompensator = false;
 
     public static enum DriveState {
         None,
