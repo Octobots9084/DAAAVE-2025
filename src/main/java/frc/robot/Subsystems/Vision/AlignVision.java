@@ -114,7 +114,7 @@ public class AlignVision extends SubsystemBase {
         this.cameraXPIDController = new PIDController(2, 0, 0);
         this.backCameraXPIDController = new PIDController(3.5, 0, 0);
 
-        this.cameraYPIDController = new PIDController(2.5, 0, 0);
+        this.cameraYPIDController = new PIDController(3, 0, 0);
         this.cameraYPIDControllerSource = new PIDController(2, 0.01, 0);
 
         this.lidarXPIDController = new PIDController(4, 0, 0);
@@ -190,7 +190,7 @@ public class AlignVision extends SubsystemBase {
                     transformCameraToRobot = VisionConstants.transformFrontRightToRobot;
                     return rightCamResult;
                 }
-            } else if (leftBestTransform != null) { // If only the left camera has a target, then return the left camera result
+            } else if (leftBestTransform != null ) { // If only the left camera has a target, then return the left camera result
                 transformCameraToRobot = VisionConstants.transformFrontLeftToRobot;
                 return leftCamResult;
             } else if (rightBestTransform != null) { // If only the right camera has a target, then return the right camera result
@@ -330,17 +330,17 @@ public class AlignVision extends SubsystemBase {
                     }
 
                     // Check if the robot y position is in tolerance for the target y rotation
-                    // SmartDashboard.putNumber("Vision/RefX", refPosition.getX());
-                    // SmartDashboard.putNumber("Vision/RefY", refPosition.getY());
-                    // SmartDashboard.putBoolean("Vision/Lidars_valid", this.areBothLidarsValid());
-                    // SmartDashboard.putNumber("Vision/TargetY", targetDistance);
+                    Logger.recordOutput("Vision/RefX", refPosition.getX());
+                    Logger.recordOutput("Vision/RefY", refPosition.getY());
+                    Logger.recordOutput("Vision/Lidars_valid", this.areBothLidarsValid());
+                    Logger.recordOutput("Vision/TargetY", targetDistance);
                     yInTolerance = MathUtil.isNear(refPosition.getY(), targetDistance, 0.03);
                     ySetpoint = yProfile.calculate(deltaTime, ySetpoint, yGoal);
                     // Logger.recordOutput("Vision/SetPointY", ySetpoint.position);
 
                     // Calculate the speeds for the robot to align with the target
                     ySpeed = ((state == AlignState.SourceLeft) || state == AlignState.SourceRight) ? -cameraYPIDControllerSource.calculate(refPosition.getY(), targetDistance)
-                            : -cameraYPIDController.calculate(refPosition.getY(), targetDistance);
+                    : -cameraYPIDController.calculate(refPosition.getY(), targetDistance);
 
                     // SmartDashboard.putBoolean("AlignVision/UsingGlobalVision", usingGlobalVision);
 
@@ -369,9 +369,9 @@ public class AlignVision extends SubsystemBase {
                 turnSpeed = 0;
             }
 
-            // SmartDashboard.putNumber("AlignVision/XSpeed", xSpeed);
-            // SmartDashboard.putNumber("AlignVision/YSpeed", ySpeed);
-            // SmartDashboard.putNumber("AlignVision/TurnSpeed", turnSpeed);
+            Logger.recordOutput("AlignVision/XSpeed", xSpeed);
+            Logger.recordOutput("AlignVision/YSpeed", ySpeed);
+            Logger.recordOutput("AlignVision/TurnSpeed", turnSpeed);
 
             // Return the calculated speeds for the robot to align with the target
             return new ChassisSpeeds(xSpeed, ySpeed, turnSpeed);
@@ -607,9 +607,9 @@ public class AlignVision extends SubsystemBase {
     }
 
     public boolean isAligned() {
-        SmartDashboard.putBoolean("X Alignment Happy", xInTolerance);
-        SmartDashboard.putBoolean("Y Alignment Happy", yInTolerance);
-        SmartDashboard.putBoolean("Z Alignment Happy", rotInTolerance);
+        Logger.recordOutput("X Alignment Happy", xInTolerance);
+        Logger.recordOutput("Y Alignment Happy", yInTolerance);
+        Logger.recordOutput("Z Alignment Happy", rotInTolerance);
 
         return xInTolerance && yInTolerance && rotInTolerance;
     }
