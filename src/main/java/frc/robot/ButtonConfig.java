@@ -28,6 +28,7 @@ import frc.robot.Commands.swerve.drivebase.SetDriveState;
 import frc.robot.States.ReefTargetSide;
 import frc.robot.Commands.Elevator.SetElevatorState;
 import frc.robot.Commands.Elevator.SetElevatorStateTolerance;
+import frc.robot.Commands.Emote.BrazilianCycle;
 import frc.robot.Commands.ReefSelection.ReefLevelSelection;
 import frc.robot.Commands.ReefSelection.SetOrientation;
 import frc.robot.Commands.Wrist.SetWristState;
@@ -166,7 +167,7 @@ public class ButtonConfig {
         driverButtons.button(9).onTrue(new RobotStop());
         driverButtons.button(8).onTrue(new RobotSafeState());
         driverButtons.button(7).onTrue(new groundAlgae());
-        driverButtons.button(17).onTrue(new algaeCatch());//actually js a driveback rn
+        driverButtons.button(17).onTrue(new BrazilianCycle());
         driverButtons.button(11).whileTrue(new GroundAlgaeAlign()).onFalse(new InstantCommand(() -> {
             Swerve.getInstance().setDriveState(DriveState.Manual);
         }));

@@ -1,15 +1,22 @@
 package frc.robot.Commands.Emote;
 
+import java.time.InstantSource;
+import java.util.function.BooleanSupplier;
+
 import com.revrobotics.spark.ClosedLoopSlot;
 
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.Commands.CoralRollers.SetCoralRollersState;
 import frc.robot.Commands.Elevator.SetElevatorState;
 import frc.robot.Commands.Wrist.SetWristState;
 import frc.robot.Commands.complex.Intake;
+import frc.robot.Subsystems.CoralRollers.CoralRollers;
 import frc.robot.Subsystems.CoralRollers.CoralRollersState;
 import frc.robot.Subsystems.Elevator.ElevatorStates;
 import frc.robot.Subsystems.Wrist.WristStates;
@@ -17,17 +24,16 @@ import frc.robot.Subsystems.Wrist.WristStates;
 public class BrazilianCycle extends SequentialCommandGroup {
     public BrazilianCycle() {
         addCommands(
-            new SetWristState(WristStates.L1, ClosedLoopSlot.kSlot0).withTimeout(0.5),
+            new SetWristState(WristStates.L1, ClosedLoopSlot.kSlot0),
             new ParallelCommandGroup(
-                new SetWristState(WristStates.BrazilianCycle2, ClosedLoopSlot.kSlot0).withTimeout(0.5),
+                new SetWristState(WristStates.BrazilianCycle2, ClosedLoopSlot.kSlot0),
                 new SetElevatorState(ElevatorStates.BrazillianCycle)
             ),
-            new SetWristState(WristStates.BrazilianCycle3, ClosedLoopSlot.kSlot0).withTimeout(0.5),
+            // new SetWristState(WristStates.BrazilianCycle3, ClosedLoopSlot.kSlot0),
             new ParallelCommandGroup(
-                new SetCoralRollersState(CoralRollersState.BrazilianCycle),
-                new SetElevatorState(ElevatorStates.LOW),
-                new SetWristState(WristStates.L1, ClosedLoopSlot.kSlot0)
+                new SetCoralRollersState(CoralRollersState.BrazilianCycle)
             ),
+            new WaitUntilCommand(() -> !CoralRollers.getInstance().HasCoral()),
             new Intake()
             //olier
             // new SetWristState(WristStates.BrazilianCycle3, ClosedLoopSlot.kSlot0),
